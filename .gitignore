@@ -1,0 +1,4 @@
+*.log
+Routine/.idea/
+.gradle/
+.idea/
