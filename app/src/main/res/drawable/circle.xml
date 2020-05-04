@@ -1,37 +1,22 @@
-<!-- Ellipse 1 -->
-<View
-    android:id="@+id/ellipse_1"
-    android:layout_width="215dp"
-    android:layout_height="215dp"
-    android:layout_alignParentLeft="true"
-    android:layout_marginLeft="93dp"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="183dp"
-    android:background="@drawable/ellipse_1"
-    />
-
-
-    <!-- drawable/ellipse_1.xml -->
 <vector
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:aapt="http://schemas.android.com/aapt"
-android:width="215dp"
-android:height="215dp"
-android:viewportWidth="215"
-android:viewportHeight="215"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="215dp"
+    android:height="215dp"
+    android:viewportWidth="215"
+    android:viewportHeight="215"
     >
 
-<group>
+    <group>
 
-    <clip-path
-        android:pathData="M215 107.5C215 166.871 166.871 215 107.5 215C48.1294 215 0 166.871 0 107.5C0 48.1294 48.1294 0 107.5 0C166.871 0 215 48.1294 215 107.5Z"
-        />
+        <clip-path
+            android:pathData="M215 107.5C215 166.871 166.871 215 107.5 215C48.1294 215 0 166.871 0 107.5C0 48.1294 48.1294 0 107.5 0C166.871 0 215 48.1294 215 107.5Z"
+            />
 
-    <path
-        android:pathData="M0 0V215H215V0"
-        android:fillColor="#FFFFFF"
-        />
+        <path
+            android:pathData="M0 0V215H215V0"
+            android:fillColor="#FFFFFF"
+            />
 
-</group>
+    </group>
 
 </vector>
