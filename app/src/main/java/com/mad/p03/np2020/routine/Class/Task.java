@@ -1,4 +1,6 @@
-package app.Class;
+package com.mad.p03.np2020.routine.Class;
+
+import com.mad.p03.np2020.routine.Class.Label;
 
 import java.util.Date;
 import java.util.List;

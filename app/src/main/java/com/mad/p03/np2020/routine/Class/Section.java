@@ -1,4 +1,4 @@
-package app.Class;
+package com.mad.p03.np2020.routine.Class;
 
 import java.util.List;
 

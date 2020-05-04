@@ -1,4 +1,8 @@
-package app.Class;
+package com.mad.p03.np2020.routine.Class;
+
+import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.Class.Label;
+import com.mad.p03.np2020.routine.Class.Section;
 
 import java.sql.Date;
 import java.util.List;
