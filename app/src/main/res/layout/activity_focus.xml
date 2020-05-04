@@ -1,97 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CAF4F4"
     android:layout_alignParentStart="true"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_alignParentTop="true"
+    android:background="#CAF4F4"
+    android:orientation="vertical"
     tools:context=".FocusActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <ImageButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        >
-
-        <ImageView
-            android:layout_width="215dp"
-            android:layout_height="215dp"
-            android:background="@drawable/circle"
-            android:src="@drawable/focus_ast"
-            />
-    </RelativeLayout>
+        android:layout_gravity="right|top"
+        android:background="@drawable/icon_history"
+        android:layout_marginTop="15.3dp"
+        android:layout_marginRight="15.3dp"
+        />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/arrow_up"
-                />
+            android:gravity="center">
 
-            <ImageButton
-                android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="215dp"
+                android:layout_height="215dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/focus_ast" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/arrow_up"
-                />
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/arrow_up" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/arrow_up" />
+                </TableRow>
+
+
+            </TableLayout>
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/timer_ground"
+                android:textColor="#000000"
+                android:textSize="72sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/timer_center"
+                android:textColor="#000000"
+                android:textSize="72sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/timer_ground"
+                android:textColor="#000000"
+                android:textSize="72sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:rotation="180">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/arrow_up" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/arrow_up" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:elevation="3dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="@string/timer_ground"
-            android:textColor="#000000"
-            android:textSize="72sp" />
+            android:outlineProvider="bounds"
+            android:stateListAnimator="@null"
+            android:text="Start"
+            android:translationY="2dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@string/timer_center"
-            android:textColor="#000000"
-            android:textSize="72sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@string/timer_ground"
-            android:textColor="#000000"
-            android:textSize="72sp" />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:rotation="180"
-        android:gravity="center"
-        >
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/arrow_up"
-            />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/arrow_up"
-            />
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>
