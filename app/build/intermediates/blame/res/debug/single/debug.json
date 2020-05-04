@@ -1,11 +1,55 @@
 [
     {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\font_montserrat_regular.ttf.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\font\\montserrat_regular.ttf"
+    },
+    {
         "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_arrow_up.png.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable-xxhdpi\\arrow_up.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_arrow_up.png.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable-mdpi\\arrow_up.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable_circle.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable\\circle.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
     },
     {
         "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
@@ -20,24 +64,32 @@
         "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\layout\\activity_focus.xml"
     },
     {
-        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_habit.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\layout\\activity_habit.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_arrow_up.png.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable-hdpi\\arrow_up.png"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_arrow_up.png.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable-xhdpi\\arrow_up.png"
     },
     {
         "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable\\ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable_focus_ast.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable\\focus_ast.xml"
+    },
+    {
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_arrow_up.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable-anydpi\\arrow_up.xml"
     },
     {
         "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
-    },
-    {
-        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
         "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
@@ -48,23 +100,11 @@
         "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
-    },
-    {
         "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
-    },
-    {
-        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+        "merged": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\build\\intermediates\\res\\merged\\debug\\font_montserrat.xml.flat",
+        "source": "C:\\Users\\User\\Desktop\\Poly\\Sem 2\\Mobile Application Development (MAD)\\Assignment\\Routine\\Routine\\app\\src\\main\\res\\font\\montserrat.xml"
     }
 ]
