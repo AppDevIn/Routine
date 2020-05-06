@@ -3,10 +3,12 @@ package com.mad.p03.np2020.routine.Class;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,7 @@ import com.mad.p03.np2020.routine.R;
 public class habitListAdapter extends ArrayAdapter<HabitTracker> {
 
     private static final String TAG = "habitListAdapter";
-
+    private ImageButton addCnt;
     private Context mContext;
     private int mResource;
 
@@ -32,9 +34,9 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
         mResource = resource;
     }
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        String title = getItem(position).getTitle();
+        final String title = getItem(position).getTitle();
         int occurrence = getItem(position).getOccurrence();
         int count = getItem(position).getCount();
 
@@ -42,6 +44,21 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent,false);
+
+        addCnt = (ImageButton) convertView.findViewById(R.id.addCnt);
+        addCnt.setTag(position);
+        addCnt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (Integer) v.getTag();
+                // Access the row position here to get the correct data item
+                HabitTracker habit = getItem(position);
+                habit.addCount();
+                notifyDataSetChanged();
+                Log.v(TAG,String.valueOf("Row" + position + " " + habit.getCount()));
+
+            }
+        });
 
         _title = (TextView) convertView.findViewById(R.id.habitTitle);
         _occurrence = (TextView) convertView.findViewById(R.id.habitOccurence);
@@ -52,6 +69,7 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
         _occurrence.setText(String.valueOf(occurrence));
         _count1.setText(String.valueOf(count));
         _count2.setText(String.valueOf(count));
+
 
         return convertView;
     }

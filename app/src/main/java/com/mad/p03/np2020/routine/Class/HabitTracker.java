@@ -43,8 +43,8 @@ public class HabitTracker {
         // TODO: Please upload any chnages to this class to the main branch
     }
 
-    public void addCount(int count){
-        // TODO: Please upload any chnages to this class to the main branch`
+    public void addCount(){
+        this.setCount(this.getCount()+1);
     }
 
     public void modifyCount(int count){

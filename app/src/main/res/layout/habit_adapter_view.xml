@@ -6,6 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="100"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:descendantFocusability="blocksDescendants"
+    android:clickable="false"
     android:baselineAligned="false">
 
     <LinearLayout
@@ -71,13 +75,13 @@
             android:textSize="15sp" />
 
         <ImageButton
-            android:id="@+id/addBtn"
+            android:id="@+id/addCnt"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:src="@android:drawable/ic_input_add"
-            android:contentDescription="TODO" />
+ />
 
     </LinearLayout>
 
