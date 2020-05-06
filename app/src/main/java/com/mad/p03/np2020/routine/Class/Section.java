@@ -2,7 +2,7 @@ package com.mad.p03.np2020.routine.Class;
 
 import java.util.List;
 
-class Section {
+public class Section {
 
     private String mName;
     private List<Task> mTaskList;
@@ -10,6 +10,15 @@ class Section {
     public Section(String name,List<Task> taskList) {
         this.mName = name;
         this.mTaskList = taskList;
+    }
+
+
+    public List<Task> getTaskList() {
+        return mTaskList;
+    }
+
+    public String getName() {
+        return mName;
     }
 
     public void addTask(Task task){

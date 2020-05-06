@@ -5,7 +5,7 @@ import com.mad.p03.np2020.routine.Class.Label;
 import java.util.Date;
 import java.util.List;
 
-class Task {
+public class Task {
 
     private String mName;
     private int mUID;
