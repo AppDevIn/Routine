@@ -2,41 +2,41 @@ package com.mad.p03.np2020.routine.Class;
 
 import java.util.List;
 
-class HabitTracker {
-    
-    private String Title;
-    private int Occurence;
-    private int Count;
+public class HabitTracker {
+
+    private String title;
+    private String occurrence;
+    private String count;
     private List<Integer> mCountList;
 
+    public HabitTracker(String title, String occurrence, String count) {
+        this.title = title;
+        this.occurrence = occurrence;
+        this.count = count;
+    }
+
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
-    public int getOccurence() {
-        return Occurence;
+    public String getOccurrence() {
+        return occurrence;
     }
 
-    public void setOccurence(int occurence) {
-        Occurence = occurence;
+    public void setOccurrence(String occurrence) {
+        this.occurrence = occurrence;
     }
 
-    public int getCount() {
-        return Count;
+    public String getCount() {
+        return count;
     }
 
-    public void setCount(int count) {
-        Count = count;
-    }
-
-    public HabitTracker(String title, int occurence, int count) {
-        Title = title;
-        Occurence = occurence;
-        Count = count;
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public HabitTracker() {
@@ -51,11 +51,11 @@ class HabitTracker {
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
-    public void calculateProgress(String Occurence, int count){
+    public void calculateProgress(String Occurrence, int count){
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
-    public void displayProgress(String Occurence, int count){
+    public void displayProgress(String Occurrence, int count){
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
