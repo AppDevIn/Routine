@@ -1,20 +1,30 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-class HomePageAdapter extends ArrayAdapter {
+public class HomePageAdapter extends ArrayAdapter {
 
-    public HomePageAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
+    List<Section> mSectionList = new ArrayList<>();
+
+    public HomePageAdapter(Context context, int textViewResourceId, List objects) {
+        super(context, textViewResourceId, objects);
+
+        mSectionList =objects;
     }
 
 
@@ -26,6 +36,23 @@ class HomePageAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return super.getView(position, convertView, parent);
+
+        //Local variables
+        TextView textView;
+
+
+        View v = convertView;
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        v = inflater.inflate(R.layout.home_grid_view_items, null);
+
+        //Initialize variables
+        textView = v.findViewById(R.id.listName);
+
+
+        //Set values into view
+        textView.setText(mSectionList.get(position).getName());
+
+        return  v;
+
     }
 }
