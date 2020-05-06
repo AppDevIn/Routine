@@ -6,10 +6,12 @@ public class Section {
 
     private String mName;
     private List<Task> mTaskList;
+    private String mBackgroundColor;
 
-    public Section(String name,List<Task> taskList) {
+    public Section(String name,List<Task> taskList, String backgroundColor) {
         this.mName = name;
         this.mTaskList = taskList;
+        this.mBackgroundColor = backgroundColor;
     }
 
 
@@ -19,6 +21,10 @@ public class Section {
 
     public String getName() {
         return mName;
+    }
+
+    public String getBackgroundColor() {
+        return mBackgroundColor;
     }
 
     public void addTask(Task task){
