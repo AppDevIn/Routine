@@ -17,11 +17,15 @@ class Task {
     private List<Steps> mSteps;
     private List<Label> mLabelList;
 
-    public Task() {
+    public Task(String name) {
+
+        this.mName = name;
     }
 
-    
-    
+
+    public String getName() {
+        return mName;
+    }
 
     public void changeName(String name){
         // TODO: Please upload any chnages to this class to the main branch`
