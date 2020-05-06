@@ -20,10 +20,10 @@ public class HabitActivity extends AppCompatActivity {
         Log.v(Tag,"onCreate");
         ListView mListView = (ListView) findViewById(R.id.listView);
 
-        HabitTracker act1 = new HabitTracker("Drink water","20","0");
-        HabitTracker act2 = new HabitTracker("Exercise","7","0");
-        HabitTracker act3 = new HabitTracker("Revision","2","0");
-        HabitTracker act4 = new HabitTracker("Eating snack","2","0");
+        HabitTracker act1 = new HabitTracker("Drink water",20,0);
+        HabitTracker act2 = new HabitTracker("Exercise",7,0);
+        HabitTracker act3 = new HabitTracker("Revision",2,0);
+        HabitTracker act4 = new HabitTracker("Eating snack",2,0);
 
         ArrayList<HabitTracker> habitList = new ArrayList<>();
         habitList.add(act1);

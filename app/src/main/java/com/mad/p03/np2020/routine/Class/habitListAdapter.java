@@ -39,8 +39,8 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         String title = getItem(position).getTitle();
-        String occurrence = getItem(position).getOccurrence();
-        String count = getItem(position).getCount();
+        int occurrence = getItem(position).getOccurrence();
+        int count = getItem(position).getCount();
 
         HabitTracker habit = new HabitTracker(title,occurrence,count);
 
@@ -61,9 +61,9 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
         }
 
         holder.title.setText(habit.getTitle());
-        holder.occurrence.setText(habit.getOccurrence());
-        holder.count1.setText(habit.getCount());
-        holder.count2.setText(habit.getCount());
+        holder.occurrence.setText(String.valueOf(habit.getOccurrence()));
+        holder.count1.setText(String.valueOf(habit.getCount()));
+        holder.count2.setText(String.valueOf(habit.getCount()));
 
         return convertView;
     }

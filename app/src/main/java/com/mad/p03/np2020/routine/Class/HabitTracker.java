@@ -5,15 +5,9 @@ import java.util.List;
 public class HabitTracker {
 
     private String title;
-    private String occurrence;
-    private String count;
+    private int occurrence;
+    private int count;
     private List<Integer> mCountList;
-
-    public HabitTracker(String title, String occurrence, String count) {
-        this.title = title;
-        this.occurrence = occurrence;
-        this.count = count;
-    }
 
     public String getTitle() {
         return title;
@@ -23,19 +17,25 @@ public class HabitTracker {
         this.title = title;
     }
 
-    public String getOccurrence() {
+    public int getOccurrence() {
         return occurrence;
     }
 
-    public void setOccurrence(String occurrence) {
+    public void setOccurrence(int occurrence) {
         this.occurrence = occurrence;
     }
 
-    public String getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public HabitTracker(String title, int occurrence, int count) {
+        this.title = title;
+        this.occurrence = occurrence;
         this.count = count;
     }
 
