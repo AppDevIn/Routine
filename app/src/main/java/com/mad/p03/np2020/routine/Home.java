@@ -60,7 +60,7 @@ public class Home extends AppCompatActivity {
 
         sectionList.add(new Section("MAD", taskList,"#CAF4F4"));
         sectionList.add(new Section("Home", taskList,"#B8EFEF"));
-        sectionList.add(new Section("Girlfriend", taskList, "#FFEAAC"));
+        sectionList.add(new Section("Web", taskList, "#FFEAAC"));
         sectionList.add(new Section("School", taskList, "#FFC2B4"));
 
 
