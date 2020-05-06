@@ -21,20 +21,16 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
     private Context mContext;
     private int mResource;
 
-    private static class ViewHolder {
-        TextView title;
-        TextView count1;
-        TextView count2;
-        TextView occurrence;
-    }
+    private TextView _title;
+    private TextView _count1;
+    private TextView _count2;
+    private TextView _occurrence;
 
     public habitListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<HabitTracker> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
     }
-
-
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
@@ -44,26 +40,18 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
 
         HabitTracker habit = new HabitTracker(title,occurrence,count);
 
-        ViewHolder holder;
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        convertView = inflater.inflate(mResource, parent,false);
 
-        if (convertView == null){
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(mResource, parent,false);
-            holder = new ViewHolder();
-            holder.title = (TextView) convertView.findViewById(R.id.habitTitle);
-            holder.occurrence = (TextView) convertView.findViewById(R.id.habitOccurence);
-            holder.count1 = (TextView) convertView.findViewById(R.id.habitCount);
-            holder.count2 = (TextView) convertView.findViewById(R.id.habitCount2);
-            convertView.setTag(holder);
-        }
-        else{
-            holder = (ViewHolder) convertView.getTag();
-        }
+        _title = (TextView) convertView.findViewById(R.id.habitTitle);
+        _occurrence = (TextView) convertView.findViewById(R.id.habitOccurence);
+        _count1 = (TextView) convertView.findViewById(R.id.habitCount);
+        _count2 = (TextView) convertView.findViewById(R.id.habitCount2);
 
-        holder.title.setText(habit.getTitle());
-        holder.occurrence.setText(String.valueOf(habit.getOccurrence()));
-        holder.count1.setText(String.valueOf(habit.getCount()));
-        holder.count2.setText(String.valueOf(habit.getCount()));
+        _title.setText(title);
+        _occurrence.setText(String.valueOf(occurrence));
+        _count1.setText(String.valueOf(count));
+        _count2.setText(String.valueOf(count));
 
         return convertView;
     }
