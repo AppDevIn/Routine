@@ -3,6 +3,9 @@ package com.mad.p03.np2020.routine;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
@@ -43,6 +46,13 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("Home Activity", "onItemClick: "+hardCodedList().get(i).getName());
+            }
+        });
     }
 
     List<Section> hardCodedList(){

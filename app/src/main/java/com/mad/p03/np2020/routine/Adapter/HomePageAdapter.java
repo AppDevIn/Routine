@@ -42,7 +42,10 @@ public class HomePageAdapter extends ArrayAdapter {
         TextView textView;
         Button btnBackground;
 
+
         View v = convertView;
+
+        //Creating a new layout
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.home_grid_view_items, null);
 
