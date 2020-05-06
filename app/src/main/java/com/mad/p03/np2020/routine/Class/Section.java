@@ -1,5 +1,7 @@
 package com.mad.p03.np2020.routine.Class;
 
+import android.graphics.Color;
+
 import java.util.List;
 
 public class Section {
@@ -23,8 +25,8 @@ public class Section {
         return mName;
     }
 
-    public String getBackgroundColor() {
-        return mBackgroundColor;
+    public int getBackgroundColor() {
+        return Color.parseColor(mBackgroundColor);
     }
 
     public void addTask(Task task){
