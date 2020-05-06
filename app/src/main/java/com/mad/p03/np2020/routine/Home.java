@@ -58,13 +58,14 @@ public class Home extends AppCompatActivity {
         taskList.add(new Task("Kill myself"));
 
 
-        sectionList.add(new Section("MAD", taskList));
-        sectionList.add(new Section("Home", taskList));
-        sectionList.add(new Section("Girlfriend", taskList));
-        sectionList.add(new Section("School", taskList));
+        sectionList.add(new Section("MAD", taskList,"#CAF4F4"));
+        sectionList.add(new Section("Home", taskList,"#B8EFEF"));
+        sectionList.add(new Section("Girlfriend", taskList, "#FFEAAC"));
+        sectionList.add(new Section("School", taskList, "#FFC2B4"));
 
 
         return sectionList;
 
     }
 }
+

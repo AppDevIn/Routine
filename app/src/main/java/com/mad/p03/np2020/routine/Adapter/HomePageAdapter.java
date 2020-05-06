@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.Section;
@@ -39,7 +40,7 @@ public class HomePageAdapter extends ArrayAdapter {
 
         //Local variables
         TextView textView;
-
+        Button btnBackground;
 
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,10 +48,15 @@ public class HomePageAdapter extends ArrayAdapter {
 
         //Initialize variables
         textView = v.findViewById(R.id.listName);
+        btnBackground = v.findViewById(R.id.backgroud);
 
+        //***************** Set values into view *****************//
 
-        //Set values into view
+        //For the TextView
         textView.setText(mSectionList.get(position).getName());
+
+        //For button background
+        btnBackground.setBackgroundColor(mSectionList.get(position).getBackgroundColor());
 
         return  v;
 
