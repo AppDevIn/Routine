@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.Class;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,8 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
+
+
         final String title = getItem(position).getTitle();
         int occurrence = getItem(position).getOccurrence();
         int count = getItem(position).getCount();
@@ -47,16 +50,17 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
 
         addCnt = (ImageButton) convertView.findViewById(R.id.addCnt);
         addCnt.setTag(position);
+        final HabitTracker _habit = getItem(position);
+        addCnt.setBackgroundColor(Color.TRANSPARENT);
+        if (habit.getCount() >= habit.getOccurrence()){
+            addCnt.setImageResource(R.drawable.habit_tick);
+        }
+
         addCnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = (Integer) v.getTag();
-                // Access the row position here to get the correct data item
-                HabitTracker habit = getItem(position);
-                habit.addCount();
+                _habit.addCount();
                 notifyDataSetChanged();
-                Log.v(TAG,String.valueOf("Row" + position + " " + habit.getCount()));
-
             }
         });
 
