@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,14 +67,17 @@ public class HabitActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.habit_menu, menu);
 
-        Button addHabit_btn = (Button) menu.findItem(R.id.menu_add_btn).getActionView();
-//        addHabit_btn.setBackgroundColor(Color.TRANSPARENT);
+        ImageButton addHabit_btn = (ImageButton) menu.findItem(R.id.menu_add_btn).getActionView();
+        addHabit_btn.setImageResource(R.drawable.menu_addhabit);
+        addHabit_btn.setBackgroundColor(Color.TRANSPARENT);
         View view = getLayoutInflater().inflate(R.layout.activity_main,null);
         dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
         dialog.setContentView(view);
         addHabit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                habitList.add(new HabitTracker("Drink water",20,0));
+//                adapter.notifyDataSetChanged();
                 dialog.show();
             }
 
