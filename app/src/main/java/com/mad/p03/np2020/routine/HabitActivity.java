@@ -1,15 +1,19 @@
 package com.mad.p03.np2020.routine;
-import androidx.appcompat.app.AppCompatActivity;
-import com.mad.p03.np2020.routine.Class.HabitTracker;
-import com.mad.p03.np2020.routine.Class.habitListAdapter;
 
 import android.os.Bundle;
+import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.mad.p03.np2020.routine.Class.HabitTracker;
+import com.mad.p03.np2020.routine.Class.habitListAdapter;
 
 import java.util.ArrayList;
 
@@ -24,6 +28,10 @@ public class HabitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
         ListView mListView = (ListView) findViewById(R.id.listView);
 
 
@@ -50,8 +58,10 @@ public class HabitActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.habit_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }
