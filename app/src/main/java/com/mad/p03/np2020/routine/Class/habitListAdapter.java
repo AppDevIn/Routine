@@ -52,6 +52,7 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
         addCnt.setTag(position);
         final HabitTracker _habit = getItem(position);
         addCnt.setBackgroundColor(Color.TRANSPARENT);
+
         if (habit.getCount() >= habit.getOccurrence()){
             addCnt.setImageResource(R.drawable.habit_tick);
         }

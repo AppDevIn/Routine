@@ -1,16 +1,17 @@
 package com.mad.p03.np2020.routine;
 
+import android.app.Dialog;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.mad.p03.np2020.routine.Class.HabitTracker;
 import com.mad.p03.np2020.routine.Class.habitListAdapter;
@@ -22,6 +23,7 @@ public class HabitActivity extends AppCompatActivity {
     private static final String TAG = "HabitTracker";
     ArrayList<HabitTracker> habitList;
     private habitListAdapter adapter;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,20 @@ public class HabitActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.habit_menu, menu);
+
+        Button addHabit_btn = (Button) menu.findItem(R.id.menu_add_btn).getActionView();
+//        addHabit_btn.setBackgroundColor(Color.TRANSPARENT);
+        View view = getLayoutInflater().inflate(R.layout.activity_main,null);
+        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+        dialog.setContentView(view);
+        addHabit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 }

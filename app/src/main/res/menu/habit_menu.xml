@@ -5,6 +5,9 @@
     <item
         android:id="@+id/menu_add_btn"
         android:icon="@drawable/menu_addhabit"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.Button"
+        android:title="TODO" />
+
 
 </menu>
