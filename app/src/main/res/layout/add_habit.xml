@@ -125,14 +125,14 @@
                 android:hint="1" />
 
             <TextView
-                android:letterSpacing="0.1"
-                android:layout_marginLeft="15dp"
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OR MORE TIMES PER DAY"
+                android:layout_marginStart="15dp"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorBlack"
-                />
+                android:letterSpacing="0.1"
+                android:text="OR MORE TIMES PER DAY"
+                android:textColor="@color/colorBlack" />
 
         </LinearLayout>
 
