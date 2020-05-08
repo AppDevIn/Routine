@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-    android:background="#FFFFFF"
+    android:background="@color/colorWhite"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,7 +31,7 @@
             android:layout_centerInParent="true"
             android:letterSpacing="0.2"
             android:text="TODAY"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
             android:textSize="20dp"
             android:textStyle="bold" />
 

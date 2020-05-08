@@ -34,7 +34,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="#000"/>
+                android:background="@color/colorWhite"/>
 
             <Button
                 android:id="@+id/habit_close"
