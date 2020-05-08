@@ -1,47 +1,47 @@
 package com.mad.p03.np2020.routine;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.BitSet;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link historyfocus#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class historyfocus extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TEXT = "What you want?";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mText;
+
+    private ImageButton buttonFragment;
+    private TextView textFragment;
+    private OnFragmentInteractionListener mListener;
+    private final String TAG = "Focus";
 
     public historyfocus() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment historyfocus.
-     */
     // TODO: Rename and change types and number of parameters
-    public static historyfocus newInstance(String param1, String param2) {
+    public static historyfocus newInstance(String Text) {
         historyfocus fragment = new historyfocus();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(TEXT, Text);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,8 +50,15 @@ public class historyfocus extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mText = getArguments().getString(TEXT);
+            Log.v(TAG, "Created fragment");
+        }
+    }
+
+    public void sendBack(){
+        if(mListener != null){
+            mListener.onFragmentInteraction();
+            Log.v(TAG, "Sending back");
         }
     }
 
@@ -59,6 +66,40 @@ public class historyfocus extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_historyfocus, container, false);
+        View view = inflater.inflate(R.layout.fragment_historyfocus, container, false);
+        buttonFragment = view.findViewById(R.id.closeFragment);
+        textFragment = view.findViewById(R.id.text_cool);
+        textFragment.setText(mText);
+
+        buttonFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendBack();
+            }
+        });
+        return view;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener{
+        void onFragmentInteraction();
+    }
+
 }
