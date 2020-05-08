@@ -1,19 +1,13 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.mad.p03.np2020.routine.Class.HabitTracker;
 import com.mad.p03.np2020.routine.Class.habitListAdapter;
@@ -33,8 +27,6 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
 
         ListView mListView = (ListView) findViewById(R.id.listView);
 
@@ -62,27 +54,27 @@ public class HabitActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.habit_menu, menu);
-
-        ImageButton addHabit_btn = (ImageButton) menu.findItem(R.id.menu_add_btn).getActionView();
-        addHabit_btn.setImageResource(R.drawable.menu_addhabit);
-        addHabit_btn.setBackgroundColor(Color.TRANSPARENT);
-        View view = getLayoutInflater().inflate(R.layout.activity_main,null);
-        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
-        dialog.setContentView(view);
-        addHabit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                habitList.add(new HabitTracker("Drink water",20,0));
-//                adapter.notifyDataSetChanged();
-                dialog.show();
-            }
-
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.habit_menu, menu);
+//
+//        ImageButton addHabit_btn = (ImageButton) menu.findItem(R.id.menu_add_btn).getActionView();
+//        addHabit_btn.setImageResource(R.drawable.menu_addhabit);
+//        addHabit_btn.setBackgroundColor(Color.TRANSPARENT);
+//        View view = getLayoutInflater().inflate(R.layout.activity_main,null);
+//        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+//        dialog.setContentView(view);
+//        addHabit_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                habitList.add(new HabitTracker("Drink water",20,0));
+////                adapter.notifyDataSetChanged();
+//                dialog.show();
+//            }
+//
+//        });
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
 }
