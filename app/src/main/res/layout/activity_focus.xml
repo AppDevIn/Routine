@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,21 +11,45 @@
     tools:context=".FocusActivity">
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
+        android:id="@+id/history"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="28dp"
         android:background="@drawable/icon_history"
-        android:layout_marginTop="15.3dp"
-        android:layout_marginRight="15.3dp"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toEndOf="@+id/menu"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="start|top"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/icon_menu"
+        android:contentDescription="@string/side_navigation_drawer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.005"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="72dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:stateListAnimator="@null"
+        tools:layout_editor_absoluteX="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,15 +57,21 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="215dp"
-                android:layout_height="215dp"
+                android:id="@+id/assistant"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:background="@drawable/circle"
-                android:src="@drawable/focus_ast" />
+                android:elevation="3dp"
+                android:src="@drawable/focus_ast"
+                android:stateListAnimator="@null"
+                android:translationY="2dp" />
+
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="26.3dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -52,20 +82,41 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_height="76dp">
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <ImageView
+                        android:id="@+id/minUp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/arrow_up" />
 
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
                     <ImageView
+                        android:id="@+id/secUp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/arrow_up" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </TableRow>
 
 
@@ -79,9 +130,11 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/mins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
+                android:includeFontPadding="false"
                 android:text="@string/timer_ground"
                 android:textColor="#000000"
                 android:textSize="72sp" />
@@ -90,14 +143,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
+                android:includeFontPadding="false"
                 android:text="@string/timer_center"
                 android:textColor="#000000"
                 android:textSize="72sp" />
 
             <TextView
+                android:id="@+id/secs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
+                android:includeFontPadding="false"
                 android:text="@string/timer_ground"
                 android:textColor="#000000"
                 android:textSize="72sp" />
@@ -117,34 +173,70 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_height="76dp">
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <ImageView
+                        android:id="@+id/secDown"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/arrow_up" />
 
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
                     <ImageView
+                        android:id="@+id/minDown"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@drawable/arrow_up" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </TableRow>
+
+
             </TableLayout>
+
         </LinearLayout>
 
         <Button
+            android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:background="@drawable/button"
             android:elevation="3dp"
             android:fontFamily="@font/montserrat_regular"
             android:outlineProvider="bounds"
             android:stateListAnimator="@null"
-            android:text="Start"
+            android:text="@string/start"
             android:translationY="2dp" />
 
     </LinearLayout>
-</FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
