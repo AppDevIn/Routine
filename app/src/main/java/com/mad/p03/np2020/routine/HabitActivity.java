@@ -1,19 +1,22 @@
 package com.mad.p03.np2020.routine;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.mad.p03.np2020.routine.Class.CustomDialogFragment;
 import com.mad.p03.np2020.routine.Class.HabitTracker;
 import com.mad.p03.np2020.routine.Class.habitListAdapter;
 
@@ -24,9 +27,7 @@ public class HabitActivity extends AppCompatActivity {
     private static final String TAG = "HabitTracker";
     ArrayList<HabitTracker> habitList;
     private habitListAdapter adapter;
-    Dialog dialog;
     ImageButton add_habit;
-    private boolean isLargeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +35,72 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
 
-        isLargeLayout = getResources().getBoolean(R.bool.large_layout);
-//        View view = getLayoutInflater().inflate(R.layout.activity_focus,null);
-//        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
-//        dialog.setContentView(view);
-
         add_habit = findViewById(R.id.add_habit);
         add_habit.setBackgroundColor(Color.TRANSPARENT);
         add_habit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
-//                dialog.show();
+                Rect displayRectangle = new Rect();
+                Window window = HabitActivity.this.getWindow();
+                window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
+                dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
+                dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+                final TextView menu_count = dialogView.findViewById(R.id.menu_count);
+                final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
+                final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
+                Button buttonClose = dialogView.findViewById(R.id.habit_close);
+                buttonClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+                Button buttonOk = dialogView.findViewById(R.id.create_habit);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String cnt = menu_count.getText().toString();
+                        String name = habit_name.getText().toString();
+                        String occur = habit_occur.getText().toString();
+                        HabitTracker habit = new HabitTracker(name,Integer.parseInt(occur),Integer.parseInt(cnt));
+                        habitList.add(habit);
+                        adapter.notifyDataSetChanged();
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+
+
+                ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
+                ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
+
+                add_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String cnt = menu_count.getText().toString();
+                        int count = Integer.parseInt(cnt);
+                        count++;
+                        menu_count.setText(String.valueOf(count));
+                    }
+                });
+
+                minus_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String cnt = menu_count.getText().toString();
+                        int count = Integer.parseInt(cnt);
+                        if (count > 0){
+                            count--;
+                        }
+                       menu_count.setText(String.valueOf(count));
+                    }
+                });
+
                 Log.v(TAG,"BTN");
             }
         });
@@ -74,43 +129,4 @@ public class HabitActivity extends AppCompatActivity {
         });
     }
 
-    public void showDialog() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        CustomDialogFragment newFragment = new CustomDialogFragment();
-
-        if (isLargeLayout) {
-            // The device is using a large layout, so show the fragment as a dialog
-            newFragment.show(fragmentManager, "dialog");
-        } else {
-            // The device is smaller, so show the fragment fullscreen
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            // For a little polish, specify a transition animation
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            // To make it fullscreen, use the 'content' root view as the container
-            // for the fragment, which is always the root view for the activity
-            transaction.add(android.R.id.content, newFragment)
-                    .addToBackStack(null).commit();
-        }
-    }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.habit_menu, menu);
-//
-//        ImageButton addHabit_btn = (ImageButton) menu.findItem(R.id.menu_add_btn).getActionView();
-//        addHabit_btn.setImageResource(R.drawable.menu_addhabit);
-//        addHabit_btn.setBackgroundColor(Color.TRANSPARENT);
-//
-//        addHabit_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                habitList.add(new HabitTracker("Drink water",20,0));
-////                adapter.notifyDataSetChanged();
-//                dialog.show();
-//            }
-//
-//        });
-//
-//        return super.onCreateOptionsMenu(menu);
-//    }
 }
