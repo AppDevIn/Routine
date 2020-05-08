@@ -1,10 +1,12 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ public class HabitActivity extends AppCompatActivity {
     ArrayList<HabitTracker> habitList;
     private habitListAdapter adapter;
     Dialog dialog;
+    ImageButton add_habit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,8 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
 
-
+        add_habit = findViewById(R.id.add_habit);
+        add_habit.setBackgroundColor(Color.TRANSPARENT);
         ListView mListView = (ListView) findViewById(R.id.listView);
 
 
