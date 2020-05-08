@@ -50,9 +50,11 @@ public class HabitActivity extends AppCompatActivity {
                 dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
                 builder.setView(dialogView);
                 final AlertDialog alertDialog = builder.create();
+
                 final TextView menu_count = dialogView.findViewById(R.id.menu_count);
                 final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                 final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
+
                 Button buttonClose = dialogView.findViewById(R.id.habit_close);
                 buttonClose.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -60,6 +62,7 @@ public class HabitActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
+
                 Button buttonOk = dialogView.findViewById(R.id.create_habit);
                 buttonOk.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -73,8 +76,6 @@ public class HabitActivity extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
-                alertDialog.show();
-
 
                 ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
                 ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
@@ -101,6 +102,7 @@ public class HabitActivity extends AppCompatActivity {
                     }
                 });
 
+                alertDialog.show();
                 Log.v(TAG,"BTN");
             }
         });
