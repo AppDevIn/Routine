@@ -30,8 +30,19 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
 
+        View view = getLayoutInflater().inflate(R.layout.activity_main,null);
+        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+        dialog.setContentView(view);
+
         add_habit = findViewById(R.id.add_habit);
         add_habit.setBackgroundColor(Color.TRANSPARENT);
+        add_habit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+                Log.v(TAG,"BTN");
+            }
+        });
         ListView mListView = (ListView) findViewById(R.id.listView);
 
 
@@ -66,9 +77,7 @@ public class HabitActivity extends AppCompatActivity {
 //        ImageButton addHabit_btn = (ImageButton) menu.findItem(R.id.menu_add_btn).getActionView();
 //        addHabit_btn.setImageResource(R.drawable.menu_addhabit);
 //        addHabit_btn.setBackgroundColor(Color.TRANSPARENT);
-//        View view = getLayoutInflater().inflate(R.layout.activity_main,null);
-//        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
-//        dialog.setContentView(view);
+//
 //        addHabit_btn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
