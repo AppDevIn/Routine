@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class HabitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
+
 
         add_habit = findViewById(R.id.add_habit);
         add_habit.setBackgroundColor(Color.TRANSPARENT);

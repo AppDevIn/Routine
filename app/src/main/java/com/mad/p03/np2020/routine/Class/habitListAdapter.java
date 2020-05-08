@@ -37,9 +37,7 @@ public class habitListAdapter extends ArrayAdapter<HabitTracker> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-
-
-        final String title = getItem(position).getTitle();
+        final String title = getItem(position).getTitle().toUpperCase();
         int occurrence = getItem(position).getOccurrence();
         int count = getItem(position).getCount();
 

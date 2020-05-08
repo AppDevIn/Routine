@@ -5,4 +5,7 @@
     <color name="colorAccent">#FDE0D9</color>
     <color name="colorFocus">#CAF4F4</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorFieryRose">#F45B69</color>
+    <color name="colorLightCoral">#F08080</color>
 </resources>
