@@ -10,7 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.mad.p03.np2020.routine.Class.CustomDialogFragment;
 import com.mad.p03.np2020.routine.Class.HabitTracker;
 import com.mad.p03.np2020.routine.Class.habitListAdapter;
 
@@ -23,6 +26,7 @@ public class HabitActivity extends AppCompatActivity {
     private habitListAdapter adapter;
     Dialog dialog;
     ImageButton add_habit;
+    private boolean isLargeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +34,18 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
 
-        View view = getLayoutInflater().inflate(R.layout.activity_main,null);
-        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
-        dialog.setContentView(view);
+        isLargeLayout = getResources().getBoolean(R.bool.large_layout);
+//        View view = getLayoutInflater().inflate(R.layout.activity_focus,null);
+//        dialog = new Dialog(this,android.R.style.Theme_DeviceDefault_Dialog);
+//        dialog.setContentView(view);
 
         add_habit = findViewById(R.id.add_habit);
         add_habit.setBackgroundColor(Color.TRANSPARENT);
         add_habit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show();
+                showDialog();
+//                dialog.show();
                 Log.v(TAG,"BTN");
             }
         });
@@ -68,7 +74,24 @@ public class HabitActivity extends AppCompatActivity {
         });
     }
 
+    public void showDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        CustomDialogFragment newFragment = new CustomDialogFragment();
 
+        if (isLargeLayout) {
+            // The device is using a large layout, so show the fragment as a dialog
+            newFragment.show(fragmentManager, "dialog");
+        } else {
+            // The device is smaller, so show the fragment fullscreen
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            // For a little polish, specify a transition animation
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            // To make it fullscreen, use the 'content' root view as the container
+            // for the fragment, which is always the root view for the activity
+            transaction.add(android.R.id.content, newFragment)
+                    .addToBackStack(null).commit();
+        }
+    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        MenuInflater inflater = getMenuInflater();
