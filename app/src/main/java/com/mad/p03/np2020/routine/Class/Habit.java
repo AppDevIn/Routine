@@ -2,8 +2,7 @@ package com.mad.p03.np2020.routine.Class;
 
 import java.util.List;
 
-public class HabitTracker {
-
+public class Habit {
     private String title;
     private int occurrence;
     private int count;
@@ -33,15 +32,13 @@ public class HabitTracker {
         this.count = count;
     }
 
-    public HabitTracker(String title, int occurrence, int count) {
+    public Habit(String title, int occurrence, int count) {
         this.title = title;
         this.occurrence = occurrence;
         this.count = count;
     }
 
-    public HabitTracker() {
-        // TODO: Please upload any chnages to this class to the main branch
-    }
+    public Habit(){}
 
     public void addCount(){
         this.setCount(this.getCount()+1);
@@ -62,10 +59,4 @@ public class HabitTracker {
     public void changeDescNoun(String descNoun){
         // TODO: Please upload any chnages to this class to the main branch`
     }
-
-
-
-
-
-
 }

@@ -9,25 +9,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Class.HabitTracker;
-import com.mad.p03.np2020.routine.Class.habitListAdapter;
+import com.mad.p03.np2020.routine.Class.Habit;
 
 import java.util.ArrayList;
 
 public class HabitActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitTracker";
-    ArrayList<HabitTracker> habitList;
-    private habitListAdapter adapter;
+    ArrayList<Habit> habitList;
     ImageButton add_habit;
+    RecyclerView mRecyclerView;
+    HabitAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +71,9 @@ public class HabitActivity extends AppCompatActivity {
                         String cnt = menu_count.getText().toString();
                         String name = habit_name.getText().toString();
                         String occur = habit_occur.getText().toString();
-                        HabitTracker habit = new HabitTracker(name,Integer.parseInt(occur),Integer.parseInt(cnt));
+                        Habit habit = new Habit(name,Integer.parseInt(occur),Integer.parseInt(cnt));
                         habitList.add(habit);
-                        adapter.notifyDataSetChanged();
+                        myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
                 });
@@ -107,29 +107,30 @@ public class HabitActivity extends AppCompatActivity {
                 Log.v(TAG,"BTN");
             }
         });
-        ListView mListView = (ListView) findViewById(R.id.listView);
 
+        mRecyclerView = findViewById(R.id.my_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        HabitTracker act1 = new HabitTracker("Drink water",20,0);
-        HabitTracker act2 = new HabitTracker("Exercise",7,0);
-        HabitTracker act3 = new HabitTracker("Revision",2,0);
-        HabitTracker act4 = new HabitTracker("Eating snack",2,0);
+        myAdapter = new HabitAdapter(this, getList(),new HabitAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(Habit habit){
+                Log.v(TAG,habit.getTitle());
+            }
+        });
+        mRecyclerView.setAdapter(myAdapter);
+    }
 
+    public ArrayList<Habit> getList() {
+        Habit act1 = new Habit("Drink water", 20, 0);
+        Habit act2 = new Habit("Exercise", 7, 0);
+        Habit act3 = new Habit("Revision", 2, 0);
+        Habit act4 = new Habit("Eating snack", 2, 0);
         habitList = new ArrayList<>();
         habitList.add(act1);
         habitList.add(act2);
         habitList.add(act3);
         habitList.add(act4);
 
-        adapter = new habitListAdapter(this,R.layout.habit_adapter_view, habitList);
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v(TAG,"yo");
-            }
-
-        });
+        return habitList;
     }
-
 }
