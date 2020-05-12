@@ -4,4 +4,6 @@
     <string name="timer_center">:</string>
     <string name="homePageHeading">My Task Lists</string>
     <string name="plusSign">+</string>
+    <string name="holder">TextView</string>
+    <string name="TO_DO_LIST_Description">Is the icon representing the to-do List</string>
 </resources>

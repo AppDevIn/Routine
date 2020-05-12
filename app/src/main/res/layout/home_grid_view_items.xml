@@ -8,26 +8,38 @@
 
     <Button
         android:id="@+id/backgroud"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="178dp"
+
+
+        android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+
+
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+
+
         android:translationZ="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:descendantFocusability="blocksDescendants"
-        android:clickable="false"/>
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/todoIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="16dp"
         android:translationZ="100dp"
+
+        android:contentDescription="@string/TO_DO_LIST_Description"
+
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +51,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="TextView"
+
+        android:text="@string/holder"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/todoIcon"
         app:layout_constraintStart_toStartOf="@+id/todoIcon"

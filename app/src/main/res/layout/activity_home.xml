@@ -35,8 +35,14 @@
         android:id="@+id/section_grid_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+
         android:numColumns="2"
-        android:verticalSpacing="50dp"
+        android:horizontalSpacing="20dp"
+        android:verticalSpacing="20dp"
+        android:padding="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
