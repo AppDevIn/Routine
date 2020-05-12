@@ -25,7 +25,7 @@ public class HomePageAdapter extends ArrayAdapter {
     public HomePageAdapter(Context context, int textViewResourceId, List objects) {
         super(context, textViewResourceId, objects);
 
-        mSectionList =objects;
+        mSectionList = objects;
     }
 
 

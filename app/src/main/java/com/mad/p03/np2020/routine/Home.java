@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
@@ -18,19 +19,22 @@ import java.util.List;
 public class Home extends AppCompatActivity {
 
     //Declare Constants
+    final String TAG = "Home Activity";
 
 
     //Declare member variables
     GridView mGridView;
     HomePageAdapter mHomePageAdapter;
+    ImageButton mImgAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //Find view by ID
+        //TODO: Find view by ID
         mGridView = findViewById(R.id.section_grid_view);
+        mImgAdd = findViewById(R.id.imgBtnTodo);
     }
 
     @Override
@@ -50,11 +54,25 @@ public class Home extends AppCompatActivity {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Logging the name of the list clicked
                 Log.i("Home Activity", "onItemClick: "+hardCodedList().get(i).getName());
+            }
+        });
+        
+        mImgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "onClick: Adding new list clicked");
+
+                //TODO: Make the edit text visible for the use to type
+
+                //TODO: Add a new section object
             }
         });
     }
 
+
+    //Temp hard code for fake user data
     List<Section> hardCodedList(){
         List<Section> sectionList = new ArrayList<>();
         List<Task> taskList = new ArrayList<>();

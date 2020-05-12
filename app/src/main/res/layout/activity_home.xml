@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home"
+
     android:background="@color/homeBackground">
 
     <androidx.constraintlayout.widget.Guideline
@@ -26,10 +27,31 @@
         android:textAlignment="center"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtnTodo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:hint="@string/add_new_list"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
+
+        android:translationZ="100dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="" />
 
     <GridView
         android:id="@+id/section_grid_view"
@@ -46,16 +68,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" >
+
+
+    </GridView>
 
     <ImageButton
-        android:id="@+id/button"
+        android:id="@+id/imgBtnTodo"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginEnd="10dp"
 
         android:src="@drawable/ic_icons8_plus"
         android:background="@drawable/round_button"
+        android:contentDescription="@string/to_add_new_icon"
 
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"

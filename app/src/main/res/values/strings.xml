@@ -6,4 +6,6 @@
     <string name="plusSign">+</string>
     <string name="holder">TextView</string>
     <string name="TO_DO_LIST_Description">Is the icon representing the to-do List</string>
+    <string name="to_add_new_icon">To add new icon</string>
+    <string name="add_new_list">Add new list</string>
 </resources>

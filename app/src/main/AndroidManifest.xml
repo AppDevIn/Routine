@@ -12,12 +12,14 @@
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".HabitActivity" />
         <activity android:name=".FocusActivity" />
-        <activity android:name=".Home">
+        <activity android:name=".Home"
+            android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
