@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
@@ -26,6 +28,7 @@ public class Home extends AppCompatActivity {
     GridView mGridView;
     HomePageAdapter mHomePageAdapter;
     ImageButton mImgAdd;
+    EditText mEditAddList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class Home extends AppCompatActivity {
         //TODO: Find view by ID
         mGridView = findViewById(R.id.section_grid_view);
         mImgAdd = findViewById(R.id.imgBtnTodo);
+        mEditAddList = findViewById(R.id.txtAddList);
     }
 
     @Override
@@ -44,6 +48,9 @@ public class Home extends AppCompatActivity {
         //TODO: Initialize any value
         mHomePageAdapter = new HomePageAdapter(this,R.layout.home_grid_view_items, hardCodedList());
         mGridView.setAdapter(mHomePageAdapter);
+
+        //Set the cursor to the start
+        mEditAddList.setSelection(0);
 
     }
 
