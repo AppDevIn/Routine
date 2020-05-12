@@ -2,9 +2,14 @@ package com.mad.p03.np2020.routine;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -71,12 +76,59 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i(TAG, "onClick: Adding new list clicked");
 
-                //TODO: Make the edit text visible for the use to type
+                //Make the edit text visible for the use to type
+                mEditAddList.setVisibility(View.VISIBLE);
 
-                //TODO: Add a new section object
+
             }
         });
+
+        mEditAddList.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                    String listName = textView.getText().toString();
+                    Log.i(TAG, "onEditorAction: " + listName);
+
+                    addSection(listName);
+
+                    //The Textview disappear after entered is pressed
+                    mEditAddList.setVisibility(View.INVISIBLE);
+
+                    //Empty the edit text
+                    mEditAddList.setText("");
+
+                    //Hide the soft keyboard
+                    InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    assert mgr != null;
+                    mgr.hideSoftInputFromWindow(mEditAddList.getWindowToken(), 0);
+
+                    return true; // consume.
+                }
+
+                return false;
+            }
+        });
+
+
     }
+
+
+    void addSection(String name){
+
+        Section section = new Section(name, new ArrayList<Task>(),"#CAF4F4");
+
+        //Add new section object into the adapter
+        mHomePageAdapter.add(section);
+
+        //TODO: Add the object the user class
+    }
+
+
 
 
     //Temp hard code for fake user data
