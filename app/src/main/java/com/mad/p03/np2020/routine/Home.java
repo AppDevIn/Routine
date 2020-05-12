@@ -1,6 +1,8 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -56,6 +58,8 @@ public class Home extends AppCompatActivity {
 
         //Set the cursor to the start
         mEditAddList.setSelection(0);
+
+
 
     }
 

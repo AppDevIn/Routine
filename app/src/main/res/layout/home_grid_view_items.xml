@@ -7,11 +7,13 @@
     android:layout_height="match_parent"
     >
 
-    <Button
+    <ImageView
         android:id="@+id/backgroud"
         android:layout_width="0dp"
         android:layout_height="178dp"
 
+
+<!--        android:elevation="4dp"-->
 
         android:clickable="false"
         android:descendantFocusability="blocksDescendants"
