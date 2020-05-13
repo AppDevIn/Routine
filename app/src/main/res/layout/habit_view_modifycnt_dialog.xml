@@ -11,17 +11,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="MODIFY COUNT"
             android:textColor="@color/colorBlack"
-            android:letterSpacing="0.1"
-            android:textSize="30dp"
+            android:letterSpacing="0.05"
+            android:textSize="25dp"
             android:textAlignment="center" />
 
         <TextView
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_regular"
             android:layout_marginTop="10dp"
             android:id="@+id/habit_view_dialog_title"
             android:layout_width="match_parent"

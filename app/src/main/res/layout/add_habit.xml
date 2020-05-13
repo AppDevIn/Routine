@@ -74,11 +74,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="130dp"
+        android:layout_marginStart="20dp"
         android:orientation="vertical">
 
        <TextView
            android:layout_marginTop="30dp"
-           android:layout_marginStart="20dp"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:textColor="@color/colorBlack"
@@ -90,7 +90,6 @@
             android:inputType="text"
             android:id="@+id/add_habit_name"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:fontFamily="@font/montserrat"
@@ -102,13 +101,74 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="SET A GOAL PERIOD:"
+            android:letterSpacing="0.1"/>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/daily_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="DAILY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/weekly_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="WEEKLY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/monthly_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="MONTHLY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/yearly_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="YEARLY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_marginTop="30dp"
-            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
@@ -125,7 +185,6 @@
                 android:inputType="number"
                 android:padding="10dp"
                 android:id="@+id/habit_occurence"
-                android:layout_marginStart="20dp"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:fontFamily="@font/montserrat"
@@ -140,8 +199,20 @@
                 android:layout_marginStart="15dp"
                 android:fontFamily="@font/montserrat"
                 android:letterSpacing="0.1"
-                android:text="OR MORE TIMES PER DAY"
+                android:text="OR MORE TIMES PER "
                 android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:id="@+id/period_txt"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:letterSpacing="0.1"
+                android:text="DAY"
+                android:textColor="@color/colorBlack" />
+
+
 
         </LinearLayout>
 
@@ -193,6 +264,7 @@
                 android:background="@drawable/edit_text_background"/>
 
         </LinearLayout>
+
 
     </LinearLayout>
 

@@ -39,13 +39,13 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toStartOf="@id/_today"
-                app:srcCompat="?attr/homeAsUpIndicator" />
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:layout_toStartOf="@id/_today"-->
+<!--                app:srcCompat="?attr/homeAsUpIndicator" />-->
 
             <TextView
                 android:id="@+id/_today"
@@ -59,14 +59,14 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="20dp" />
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/_today"
-                android:rotation="180"
-                app:srcCompat="?attr/homeAsUpIndicator" />
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_toEndOf="@id/_today"-->
+<!--                android:rotation="180"-->
+<!--                app:srcCompat="?attr/homeAsUpIndicator" />-->
 
         </RelativeLayout>
 

@@ -27,6 +27,8 @@ public class HabitActivity extends AppCompatActivity {
     ImageButton add_habit;
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
+    private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
+    private final static String[] period_textList = {"DAILY", "WEEKLY", "MONTHLY", "YEARLY"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class HabitActivity extends AppCompatActivity {
                 window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
-                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
+                final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
                 dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
                 dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
                 builder.setView(dialogView);
@@ -54,6 +56,31 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView menu_count = dialogView.findViewById(R.id.menu_count);
                 final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                 final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
+                final TextView period_text = dialogView.findViewById(R.id.period_txt);
+
+                for (final int i :period_buttonIDS){
+                    final Button btn = dialogView.findViewById(i);
+                    btn.setBackgroundColor(Color.TRANSPARENT);
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int id = btn.getId();
+
+                            for (int i = 0; i < 4; i++){
+                                Button _btn = dialogView.findViewById(period_buttonIDS[i]);
+                                if (id == period_buttonIDS[i]){
+                                    _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
+                                    period_text.setText(period_textList[i]);
+                                }else {
+                                    _btn.setBackgroundColor(Color.TRANSPARENT);
+                                }
+
+                            }
+                        }
+                    });
+                }
+
+                dialogView.findViewById(R.id.daily_period).setBackgroundColor(Color.parseColor("#dfdfdf"));
 
                 Button buttonClose = dialogView.findViewById(R.id.habit_close);
                 buttonClose.setOnClickListener(new View.OnClickListener() {
@@ -228,4 +255,8 @@ public class HabitActivity extends AppCompatActivity {
 
         return habitList;
     }
+
+
+
+
 }
