@@ -30,6 +30,7 @@ public class HabitActivity extends AppCompatActivity {
     HabitAdapter myAdapter;
     private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
     private final static String[] period_textList = {"DAILY", "WEEKLY", "MONTHLY", "YEARLY"};
+    private final static int[] period_countList = {1, 7, 30, 365};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,8 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                 final TextView period_text = dialogView.findViewById(R.id.period_txt);
 
+                final int[] period = new int[1];
+
                 for (final int i :period_buttonIDS){
                     final Button btn = dialogView.findViewById(i);
                     btn.setBackgroundColor(Color.TRANSPARENT);
@@ -68,6 +71,7 @@ public class HabitActivity extends AppCompatActivity {
                                 if (id == period_buttonIDS[i]){
                                     _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
                                     period_text.setText(period_textList[i]);
+                                    period[0] = period_countList[i];
                                 }else {
                                     _btn.setBackgroundColor(Color.TRANSPARENT);
                                 }
@@ -94,7 +98,7 @@ public class HabitActivity extends AppCompatActivity {
                         int cnt = Integer.parseInt(menu_count.getText().toString());
                         String name = habit_name.getText().toString();
                         int occur = Integer.parseInt(habit_occur.getText().toString());
-                        myAdapter._habitList.addItem(name, occur, cnt, 30);
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0]);
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -140,7 +144,7 @@ public class HabitActivity extends AppCompatActivity {
             public void onItemClick(final int position) {
                 final Habit habit = myAdapter._habitList.getItemAt(position);
 
-                Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence())));
+                Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence()) + " " + habit.getPeriod()));
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -247,6 +251,8 @@ public class HabitActivity extends AppCompatActivity {
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                         final TextView period_text = dialogView.findViewById(R.id.period_txt);
 
+                        final int[] period = new int[1];
+
                         for (final int i :period_buttonIDS){
                             final Button btn = dialogView.findViewById(i);
                             btn.setBackgroundColor(Color.TRANSPARENT);
@@ -260,6 +266,7 @@ public class HabitActivity extends AppCompatActivity {
                                         if (id == period_buttonIDS[i]){
                                             _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
                                             period_text.setText(period_textList[i]);
+                                            period[0] = period_countList[i];
                                         }else {
                                             _btn.setBackgroundColor(Color.TRANSPARENT);
                                         }
@@ -313,6 +320,7 @@ public class HabitActivity extends AppCompatActivity {
                                 habit.modifyCount(Integer.parseInt(menu_count.getText().toString()));
                                 habit.modifyTitle(habit_name.getText().toString().trim());
                                 habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
+                                habit.setPeriod(period[0]);
                                 cnt.setText(menu_count.getText().toString());
                                 title.setText(habit_name.getText().toString().trim());
 
