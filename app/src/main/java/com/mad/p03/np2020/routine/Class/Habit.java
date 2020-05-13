@@ -78,7 +78,22 @@ public class Habit {
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
+    public String returnPeriodText(int period){
+        switch(period){
+            case 1:
+                return "TODAY:";
 
+            case 7:
+                return "THIS WEEK:";
+
+            case 30:
+                return "THIS MONTH:";
+
+            case 365:
+                return "THIS YEAR:";
+        }
+        return "nothing";
+    }
 
     public static class HabitList {
 

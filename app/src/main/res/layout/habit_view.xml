@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/habit_view_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorLightCoral"
@@ -122,6 +123,69 @@
             android:layout_width="match_parent"
             android:layout_height="100dp">
         </View>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/colorGrey"
+        android:layout_below="@id/habit_view_upper"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/habit_period"
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:letterSpacing="0.1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="TODAY:"
+                android:textColor="@color/colorWhite"
+                android:layout_marginRight="4dp"/>
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:textColor="@color/colorWhite"
+                android:letterSpacing="0.1"
+                android:id="@+id/habitCount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="0" />
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:textColor="@color/colorWhite"
+                android:letterSpacing="0.1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:id="@+id/symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="/" />
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:textColor="@color/colorWhite"
+                android:letterSpacing="0.1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/habitOccurence"
+                android:text="10" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
