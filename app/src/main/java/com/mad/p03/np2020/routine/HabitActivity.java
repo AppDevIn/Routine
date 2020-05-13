@@ -141,9 +141,8 @@ public class HabitActivity extends AppCompatActivity {
             @Override
             public void onItemClick(final int position) {
                 final Habit habit = myAdapter._habitList.getItemAt(position);
-                final String _habitTitle = habit.getTitle().toUpperCase();
-                final int _habitCount = habit.getCount();
 
+                Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence())));
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -160,8 +159,8 @@ public class HabitActivity extends AppCompatActivity {
                 final ImageButton editBtn = dialogView.findViewById(R.id.habit_view_edit);
                 final ImageButton deletebtn = dialogView.findViewById(R.id.habit_view_delete);
 
-                title.setText(_habitTitle);
-                cnt.setText(String.valueOf(_habitCount));
+                title.setText(habit.getTitle());
+                cnt.setText(String.valueOf(habit.getCount()));
                 reduceBtn.setBackgroundColor(Color.TRANSPARENT);
                 addBtn.setBackgroundColor(Color.TRANSPARENT);
                 modifyBtn.setBackgroundColor(Color.TRANSPARENT);
@@ -213,7 +212,7 @@ public class HabitActivity extends AppCompatActivity {
                         final Button saveBtn = dialogView.findViewById(R.id.save_dialog);
                         final EditText dialog_cnt = dialogView.findViewById(R.id.dialog_cnt);
 
-                        dialog_title.setText(_habitTitle);
+                        dialog_title.setText(habit.getTitle());
                         dialog_cnt.setHint(cnt.getText().toString());
 
                         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -245,6 +244,62 @@ public class HabitActivity extends AppCompatActivity {
                         builder.setView(dialogView);
                         final AlertDialog alertDialog = builder.create();
 
+                        final TextView menu_count = dialogView.findViewById(R.id.menu_count);
+                        final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
+                        final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
+                        final TextView period_text = dialogView.findViewById(R.id.period_txt);
+
+                        for (final int i :period_buttonIDS){
+                            final Button btn = dialogView.findViewById(i);
+                            btn.setBackgroundColor(Color.TRANSPARENT);
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int id = btn.getId();
+
+                                    for (int i = 0; i < 4; i++){
+                                        Button _btn = dialogView.findViewById(period_buttonIDS[i]);
+                                        if (id == period_buttonIDS[i]){
+                                            _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
+                                            period_text.setText(period_textList[i]);
+                                        }else {
+                                            _btn.setBackgroundColor(Color.TRANSPARENT);
+                                        }
+
+                                    }
+                                }
+                            });
+                        }
+
+                        dialogView.findViewById(R.id.daily_period).setBackgroundColor(Color.parseColor("#dfdfdf"));
+                        habit_name.setText(habit.getTitle());
+                        habit_occur.setText(String.valueOf(habit.getOccurrence()));
+                        menu_count.setText(String.valueOf(habit.getCount()));
+
+                        ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
+                        add_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String cnt = menu_count.getText().toString();
+                                int count = Integer.parseInt(cnt);
+                                count++;
+                                menu_count.setText(String.valueOf(count));
+                            }
+                        });
+
+                        ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
+                        minus_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String cnt = menu_count.getText().toString();
+                                int count = Integer.parseInt(cnt);
+                                if (count > 0){
+                                    count--;
+                                }
+                                menu_count.setText(String.valueOf(count));
+                            }
+                        });
+
                         Button buttonClose = dialogView.findViewById(R.id.habit_close);
                         buttonClose.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -257,9 +312,13 @@ public class HabitActivity extends AppCompatActivity {
                         buttonOk.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                habit.modifyCount(5);
+                                habit.modifyCount(Integer.parseInt(menu_count.getText().toString()));
+                                habit.modifyTitle(habit_name.getText().toString().trim());
+                                habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
+                                cnt.setText(menu_count.getText().toString());
+                                title.setText(habit_name.getText().toString().trim());
+
                                 myAdapter.notifyDataSetChanged();
-                                Log.d(TAG, String.valueOf(habit.getCount()));
                                 alertDialog.dismiss();
                             }
                         });

@@ -51,9 +51,14 @@ public class Habit {
         }
     }
 
+    public void modifyTitle(String title){
+        this.title = title;
+    }
     public void modifyCount(int count){
         this.count = count;
     }
+
+
 
     public void calculateProgress(String Occurrence, int count){
         // TODO: Please upload any chnages to this class to the main branch`
