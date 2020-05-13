@@ -1,5 +1,7 @@
 package app.Class;
 
+import com.mad.p03.np2020.routine.Class.Focus;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -10,9 +12,9 @@ class User {
     private String mEmailAddr;
     private String mEpassword;
     private Date mDateOfBirth;
-    private List<Section> mSectionList;
+    private List<app.Class.Section> mSectionList;
     private String mPPID;
-    private List<Label> mListLabel;
+    private List<app.Class.Label> mListLabel;
     private List<Focus> mFocusList;
 
 

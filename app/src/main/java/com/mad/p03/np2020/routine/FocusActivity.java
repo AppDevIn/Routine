@@ -1,11 +1,23 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -21,7 +33,14 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.Class.FocusAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FocusActivity extends AppCompatActivity implements View.OnClickListener, historyfocus.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
     private FrameLayout fragmentContainer;
@@ -29,26 +48,33 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     private ImageButton imageButton;
     private Button startTimer;
 
-    private TextView min, sec;
+    private TextView min, sec, semicolon;
     private ImageView minup, mindown, secup, secdown, mface;
 
     private int tmins, tsecs = 0;
     private long totaltime = 0;
-    boolean bupmin, bdownmin, bupsec, bdownsec;
+    private boolean bupmin, bdownmin, bupsec, bdownsec;
 
     private Handler repeatUpdateHandler = new Handler();
-    private CountDownTimer mCountDownTimer;
+    private CountDownTimer mCountDownTimer; //Main Countdowntimer for Focus
+    private CountDownTimer eCountDownTimer; //Auto closed for Focus
 
     private boolean mAutoIncrement = false;
     private boolean mAutoDecrement = false;
-    private boolean mTimerRunning = false;
+    private String BUTTON_STATE = "Running";
 
     private long mStartTimeInMillis = 0;
     private long mTimeLeftInMillis = 0;
     private long mEndTime;
 
+    private final String TAG = "Focus";
 
-    private static final String TAG = "Focus";
+    //Notfication variables
+    public static final String CHANNEL_1_ID = "channel1";
+    public static final String CHANNEL_2_ID = "channel2";
+
+    String title = "You have an ongoing Focus";
+    String message = "Come back now before your Sun becomes depressed!";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +84,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
         fragmentContainer = findViewById(R.id.fragment_container);
-
         intializtion(); //Process of data
+
 
         //ImageButton
         imageButton = findViewById(R.id.history);
@@ -75,6 +101,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         //TextView
         min = findViewById(R.id.mins);
         sec = findViewById(R.id.secs);
+        semicolon = findViewById(R.id.semicolon);
 
         //SetOnclickListener
         imageButton.setOnClickListener(this);
@@ -97,6 +124,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         mindown.setOnTouchListener(this);
 
         mface.startAnimation(translateAnimation);
+
+
     }
 
     @Override
@@ -127,43 +156,94 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
                 Log.v(TAG, "Decrease Seconds:" + tsecs);
                 break;
             case R.id.start:
+                //this button has 4 types: Start, Give up, Try Again, Restart
                 focusTime();
                 break;
         }
     }
 
-    private void focusTime(){
-        if (mTimerRunning){
-            mTimerRunning = false;
-            mCountDownTimer.cancel();
-            mCountDownTimer.onFinish();
-        }else {
-            mTimerRunning = true;
-            totaltime = (tmins) + tsecs / 60;
-            long millisInput = totaltime * 60000;
-            Log.v(TAG, String.valueOf(millisInput));
-            setTime(millisInput);
+    private void focusTime() {
+        //Running, Fail, Success, Reset
+        switch (BUTTON_STATE) {
+            case "Reset":
+                timerReset();
+                BUTTON_STATE = "Running";
+                break;
+
+            case "Running":
+                timeRunner();
+                totaltime = (tmins * 60) + tsecs;
+                long millisInput = totaltime * 1000;
+                Log.v(TAG, String.valueOf(millisInput));
+                BUTTON_STATE = "Fail";
+                setTime(millisInput);
+                break;
+
+            case "Success":
+                timerSuccess();
+                BUTTON_STATE = "Reset";
+                break;
+
+            case "Fail":
+                timerFail();
+                mCountDownTimer.cancel(); //Pause timer
+                BUTTON_STATE = "Reset";
+                break;
         }
     }
 
-    private void updateButtons() {
-        if (mTimerRunning) {
-            startTimer.setText(R.string.StopTimer);
+    //Used for update button sequencing (timer)
 
-            minup.setVisibility(View.INVISIBLE);
-            mindown.setVisibility(View.INVISIBLE);
-            secup.setVisibility(View.INVISIBLE);
-            secdown.setVisibility(View.INVISIBLE);
-        } else {
-            startTimer.setText(R.string.startTimer);
+    private void timeRunner() { //Timer running
+        BUTTON_STATE = "Running";
 
-            minup.setVisibility(View.VISIBLE);
-            mindown.setVisibility(View.VISIBLE);
-            secup.setVisibility(View.VISIBLE);
-            secdown.setVisibility(View.VISIBLE);
-            min.setText("00");
-            sec.setText("00");
-        }
+        startTimer.setText(R.string.StopTimer);
+        minup.setVisibility(View.INVISIBLE);
+        mindown.setVisibility(View.INVISIBLE);
+        secup.setVisibility(View.INVISIBLE);
+        secdown.setVisibility(View.INVISIBLE);
+        mface.setImageResource(R.drawable.ic_focus_ast_down);
+    }
+
+    private void timerFail() { //Give up
+        BUTTON_STATE = "Fail";
+
+        sec.setTextColor(Color.RED);
+        min.setTextColor(Color.RED);
+        semicolon.setTextColor(Color.RED);
+        startTimer.setText("Try Again");
+        mface.setImageResource(R.drawable.ic_focus_ast_sad);
+    }
+
+    private void timerSuccess() { //Timer hits 0
+        BUTTON_STATE = "Success";
+
+        sec.setTextColor(Color.parseColor("#CAEFD1"));
+        min.setTextColor(Color.parseColor("#CAEFD1"));
+        semicolon.setTextColor(Color.parseColor("#CAEFD1"));
+        startTimer.setText("Restart");
+        mface.setImageResource(R.drawable.ic_focus_ast_happy);
+    }
+
+    private void timerReset() { //Resetting to state
+        BUTTON_STATE = "Reset";
+
+        sec.setTextColor(Color.BLACK);
+        min.setTextColor(Color.BLACK);
+        semicolon.setTextColor(Color.BLACK);
+        startTimer.setText(R.string.startTimer);
+        mface.setImageResource(R.drawable.focus_ast);
+
+        minup.setVisibility(View.VISIBLE);
+        mindown.setVisibility(View.VISIBLE);
+        secup.setVisibility(View.VISIBLE);
+        secdown.setVisibility(View.VISIBLE);
+
+        min.setText("00");
+        sec.setText("00");
+        tsecs = 0;
+        tmins = 0;
+        startTimer.setText("Start");
     }
 
     private void setTime(long milliseconds) {
@@ -172,7 +252,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void updateCountDownText() {
-        int minutes = (int) (mTimeLeftInMillis / 1000) / 60 ;
+        int minutes = (int) (mTimeLeftInMillis / 1000) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
 
         Log.v(TAG, "Counting down");
@@ -226,18 +306,32 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    protected void onStop(){
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        if (BUTTON_STATE.equals("Fail")) {
+            createNotification();
+            eCountDownTimer = new CountDownTimer(10000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    Log.v(TAG, "Time left for user to entry before auto destroy: " + millisUntilFinished);
+                }
 
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
+                @Override
+                public void onFinish() {
+                    startTimer.callOnClick();
+                    Log.v(TAG, "Destroyed");
+                }
+            }.start();
+        }
+    }
 
-        editor.putLong("millisLeft", mTimeLeftInMillis);
-        editor.putBoolean("timerRunning", mTimerRunning);
-        editor.putLong("endTime", mEndTime);
-
-        editor.apply();
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (eCountDownTimer != null) {
+            eCountDownTimer.cancel();
+            Log.v(TAG, "Resume");
+        }
     }
 
     public boolean touchRelease(boolean btimer, MotionEvent event) { //On release hold of timer
@@ -302,34 +396,60 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void StartTimer(long TimeLeftInMillis) {
-        Log.v(TAG,"Timer Start");
+        Log.v(TAG, "Timer Start");
 
         mEndTime = System.currentTimeMillis() + TimeLeftInMillis;
 
         mCountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                Log.v(TAG,"OnTick");
+                Log.v(TAG, "OnTick: " + millisUntilFinished);
                 mTimeLeftInMillis = millisUntilFinished;
                 updateCountDownText();
             }
 
             @Override
             public void onFinish() {
-                Log.v(TAG,"Completed");
-                mTimerRunning = false;
-                tsecs = 0;
-                tmins = 0;
-                updateButtons();
+                Log.v(TAG, "Completed");
+                BUTTON_STATE = "Success";
+                focusTime();
             }
         }.start();
-
-        mTimerRunning = true;
-        updateButtons();
     }
 
-    private void intializtion(){
+    private void intializtion() {
         tmins = 0;
         tsecs = 0;
+    }
+
+    private void createNotification() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) { //API level for Kitkat
+            Intent intent = new Intent(this, FocusActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(FocusActivity.this, (int) System.currentTimeMillis(), intent, 0);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            Notification noti = new Notification.Builder(FocusActivity.this).setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground).setContentIntent(pIntent).build();
+            notificationManager.notify(0, noti);
+            Log.v("Notification", "Pushed");
+        } else { //API level for others
+            //Creation Channel
+            NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("Focus");
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+            sendtoChannel1();
+        }
+
+    }
+
+    private void sendtoChannel1() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), FocusActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
+        notificationManager.notify(1, notification);
+
     }
 }
