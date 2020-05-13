@@ -72,6 +72,25 @@
                 android:text="You have completed\n3 Focus"
                 android:textColor="#000000"
                 android:textSize="24sp" />
+
+            <RelativeLayout
+                android:layout_marginTop="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerHistory"
+                    android:layout_width="344dp"
+                    android:clipToPadding="false"
+                    android:layout_height="match_parent"
+                    />
+
+            </RelativeLayout>
+
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
