@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
 
         public TextView mTitle,mCount,mCount2,mOccurrence;
         public ImageButton addBtn;
+//        public LinearLayout habit_row;
 
         public MyHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -50,6 +52,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
             this.mCount2 = itemView.findViewById(R.id.habitCount2);
             this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
             this.addBtn = itemView.findViewById(R.id.addCnt);
+//            this.habit_row = itemView.findViewById(R.id.habit_row);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,6 +82,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
     public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
         final Habit habit = _habitList.getItemAt(position);
 
+//        holder.habit_row.setBackgroundColor(Color.GRAY);
         holder.mTitle.setText(habit.getTitle().toUpperCase().trim());
         holder.mCount.setText(String.valueOf(habit.getCount()));
         holder.mCount2.setText(String.valueOf(habit.getCount()));

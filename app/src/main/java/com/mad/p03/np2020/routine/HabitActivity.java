@@ -42,14 +42,10 @@ public class HabitActivity extends AppCompatActivity {
         add_habit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Rect displayRectangle = new Rect();
-                Window window = HabitActivity.this.getWindow();
-                window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
                 final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
-                dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
-                dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
                 builder.setView(dialogView);
                 final AlertDialog alertDialog = builder.create();
 
@@ -145,14 +141,10 @@ public class HabitActivity extends AppCompatActivity {
                 final String _habitTitle = habit.getTitle().toUpperCase();
                 final int _habitCount = habit.getCount();
 
-                Rect displayRectangle = new Rect();
-                Window window = HabitActivity.this.getWindow();
-                window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
                 View dialogView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.habit_view, viewGroup, false);
-                dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
-                dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
                 builder.setView(dialogView);
                 final AlertDialog alertDialog = builder.create();
 
@@ -162,6 +154,7 @@ public class HabitActivity extends AppCompatActivity {
                 final ImageButton addBtn = dialogView.findViewById(R.id.habit_view_add);
                 final ImageButton modifyBtn = dialogView.findViewById(R.id.habit_view_modify);
                 final ImageButton closeBtn = dialogView.findViewById(R.id.habit_view_close);
+                final ImageButton editBtn = dialogView.findViewById(R.id.habit_view_edit);
 
                 title.setText(_habitTitle);
                 cnt.setText(String.valueOf(_habitCount));
@@ -169,6 +162,7 @@ public class HabitActivity extends AppCompatActivity {
                 addBtn.setBackgroundColor(Color.TRANSPARENT);
                 modifyBtn.setBackgroundColor(Color.TRANSPARENT);
                 closeBtn.setBackgroundColor(Color.TRANSPARENT);
+                editBtn.setBackgroundColor(Color.TRANSPARENT);
 
                 closeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -176,7 +170,6 @@ public class HabitActivity extends AppCompatActivity {
                         int _cnt = Integer.parseInt(cnt.getText().toString());
                         habit.modifyCount(_cnt);
                         myAdapter.notifyDataSetChanged();
-
                         alertDialog.dismiss();
                     }
                 });
@@ -185,22 +178,18 @@ public class HabitActivity extends AppCompatActivity {
                 addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String _cnt = cnt.getText().toString();
-                        int count = Integer.parseInt(_cnt);
-                        count++;
-                        cnt.setText(String.valueOf(count));
+                       habit.addCount();
+                       myAdapter.notifyDataSetChanged();
+                       cnt.setText(String.valueOf(habit.getCount()));
                     }
                 });
 
                 reduceBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String _cnt = cnt.getText().toString();
-                        int count = Integer.parseInt(_cnt);
-                        if (count > 0){
-                            count--;
-                        }
-                        cnt.setText(String.valueOf(count));
+                        habit.minusCount();
+                        myAdapter.notifyDataSetChanged();
+                        cnt.setText(String.valueOf(habit.getCount()));
                     }
                 });
 
@@ -220,7 +209,7 @@ public class HabitActivity extends AppCompatActivity {
                         final EditText dialog_cnt = dialogView.findViewById(R.id.dialog_cnt);
 
                         dialog_title.setText(_habitTitle);
-                        dialog_cnt.setText(cnt.getText().toString());
+                        dialog_cnt.setHint(cnt.getText().toString());
 
                         cancelBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -233,12 +222,47 @@ public class HabitActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 int dialogCnt = Integer.parseInt(dialog_cnt.getText().toString());
+                                habit.modifyCount(dialogCnt);
+                                myAdapter.notifyDataSetChanged();
                                 cnt.setText(String.valueOf(dialogCnt));
                                 alertDialog.dismiss();
                             }
                         });
                     }
                 });
+
+                editBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
+                        ViewGroup viewGroup = findViewById(android.R.id.content);
+                        final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_edit, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+
+                        Button buttonClose = dialogView.findViewById(R.id.habit_close);
+                        buttonClose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        Button buttonOk = dialogView.findViewById(R.id.create_habit);
+                        buttonOk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                habit.modifyCount(5);
+                                myAdapter.notifyDataSetChanged();
+                                Log.d(TAG, String.valueOf(habit.getCount()));
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        alertDialog.show();
+                    }
+                });
+
 
                 alertDialog.show();
 

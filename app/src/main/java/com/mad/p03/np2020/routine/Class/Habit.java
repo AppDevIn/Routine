@@ -42,7 +42,13 @@ public class Habit {
     public Habit(){}
 
     public void addCount(){
-        this.setCount(this.getCount()+1);
+        this.setCount(this.getCount() + 1);
+    }
+
+    public void minusCount() {
+        if (this.getCount() > 0){
+            this.setCount(this.getCount() - 1);
+        }
     }
 
     public void modifyCount(int count){
