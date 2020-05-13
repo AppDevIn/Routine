@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -118,29 +122,106 @@ public class HabitActivity extends AppCompatActivity {
         myAdapter.setOnItemClickListener(new HabitAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final int position) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
-//                builder.setTitle("Delete");
-//                builder.setMessage("Are you sure you want to delete this task?");
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Log.v(TAG, format("%s deleted!",habitList.getItemAt(position).getTitle()));
-//                        myAdapter._habitList.removeItemAt(position);
-//                        myAdapter.notifyItemRemoved(position);
-//                        myAdapter.notifyItemRangeChanged(position, habitList.size());
-//                        myAdapter.notifyDataSetChanged();
-//                    }
-//                });
+                final Habit habit = myAdapter._habitList.getItemAt(position);
+                final String _habitTitle = habit.getTitle().toUpperCase();
+                final int _habitCount = habit.getCount();
 
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
-//                    public void onClick(DialogInterface dialog, int id){
-//                        Log.v(TAG,"User refuses to delete!");
-//                    }
-//                });
-//
-//                AlertDialog alert = builder.create();
-//                alert.show();
+                Rect displayRectangle = new Rect();
+                Window window = HabitActivity.this.getWindow();
+                window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.habit_view, viewGroup, false);
+                dialogView.setMinimumWidth((int)(displayRectangle.width() * 1f));
+                dialogView.setMinimumHeight((int)(displayRectangle.height() * 1f));
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+
+                final TextView title = dialogView.findViewById(R.id.habit_view_title);
+                final TextView cnt = dialogView.findViewById(R.id.habit_view_count);
+                final ImageButton reduceBtn = dialogView.findViewById(R.id.habit_view_reduce);
+                final ImageButton addBtn = dialogView.findViewById(R.id.habit_view_add);
+                final ImageButton modifyBtn = dialogView.findViewById(R.id.habit_view_modify);
+                final ImageButton closeBtn = dialogView.findViewById(R.id.habit_view_close);
+
+                title.setText(_habitTitle);
+                cnt.setText(String.valueOf(_habitCount));
+                reduceBtn.setBackgroundColor(Color.TRANSPARENT);
+                addBtn.setBackgroundColor(Color.TRANSPARENT);
+                modifyBtn.setBackgroundColor(Color.TRANSPARENT);
+                closeBtn.setBackgroundColor(Color.TRANSPARENT);
+
+                closeBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int _cnt = Integer.parseInt(cnt.getText().toString());
+                        habit.modifyCount(_cnt);
+                        myAdapter.notifyDataSetChanged();
+
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+                addBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String _cnt = cnt.getText().toString();
+                        int count = Integer.parseInt(_cnt);
+                        count++;
+                        cnt.setText(String.valueOf(count));
+                    }
+                });
+
+                reduceBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String _cnt = cnt.getText().toString();
+                        int count = Integer.parseInt(_cnt);
+                        if (count > 0){
+                            count--;
+                        }
+                        cnt.setText(String.valueOf(count));
+                    }
+                });
+
+                modifyBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+                        ViewGroup viewGroup = findViewById(android.R.id.content);
+                        View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_view_modifycnt_dialog, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                        final TextView dialog_title = dialogView.findViewById(R.id.habit_view_dialog_title);
+                        final Button cancelBtn = dialogView.findViewById(R.id.cancel_dialog);
+                        final Button saveBtn = dialogView.findViewById(R.id.save_dialog);
+                        final EditText dialog_cnt = dialogView.findViewById(R.id.dialog_cnt);
+
+                        dialog_title.setText(_habitTitle);
+                        dialog_cnt.setText(cnt.getText().toString());
+
+                        cancelBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        saveBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int dialogCnt = Integer.parseInt(dialog_cnt.getText().toString());
+                                cnt.setText(String.valueOf(dialogCnt));
+                                alertDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+
+                alertDialog.show();
 
             }
         });

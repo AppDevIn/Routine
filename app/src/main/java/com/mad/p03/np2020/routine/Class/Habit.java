@@ -46,7 +46,7 @@ public class Habit {
     }
 
     public void modifyCount(int count){
-        // TODO: Please upload any chnages to this class to the main branch`
+        this.count = count;
     }
 
     public void calculateProgress(String Occurrence, int count){

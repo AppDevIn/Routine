@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:fontFamily="@font/montserrat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modify Count"
+            android:textColor="@color/colorBlack"
+            android:letterSpacing="0.1"
+            android:textSize="30dp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:fontFamily="@font/montserrat"
+            android:layout_marginTop="10dp"
+            android:id="@+id/habit_view_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Swimming"
+            android:textColor="@color/colorPrimary"
+            android:letterSpacing="0.1"
+            android:textSize="20dp"
+            android:textAlignment="center" />
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="number"
+            android:padding="10dp"
+            android:id="@+id/dialog_cnt"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:fontFamily="@font/montserrat"
+            android:background="@drawable/edit_text_background"
+            android:maxLines="1"
+            android:hint="1" />
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_marginStart="70dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/cancel_dialog"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/menu_addhabit"
+                android:text="CANCEL"
+                android:letterSpacing="0.1"/>
+
+            <Button
+                android:layout_marginEnd="70dp"
+                android:id="@+id/save_dialog"
+                android:text="SAVE"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:src="@drawable/menu_addhabit"
+                android:letterSpacing="0.1"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
