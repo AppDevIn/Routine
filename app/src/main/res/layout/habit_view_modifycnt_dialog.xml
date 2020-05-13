@@ -11,23 +11,23 @@
         android:orientation="vertical">
 
         <TextView
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/montserrat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Modify Count"
+            android:text="MODIFY COUNT"
             android:textColor="@color/colorBlack"
             android:letterSpacing="0.1"
             android:textSize="30dp"
             android:textAlignment="center" />
 
         <TextView
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/montserrat"
             android:layout_marginTop="10dp"
             android:id="@+id/habit_view_dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Swimming"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorLightCoral"
             android:letterSpacing="0.1"
             android:textSize="20dp"
             android:textAlignment="center" />
