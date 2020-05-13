@@ -2,20 +2,16 @@ package com.mad.p03.np2020.routine;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
-
-import java.util.ArrayList;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
 
@@ -40,7 +36,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
 
     public static class MyHolder extends RecyclerView.ViewHolder {
 
-        public TextView mTitle,mCount,mCount2,mOccurrence;
+        public TextView mTitle,mCount,mCount2,mOccurrence, mPeriod;
         public ImageButton addBtn;
 //        public LinearLayout habit_row;
 
@@ -52,6 +48,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
             this.mCount2 = itemView.findViewById(R.id.habitCount2);
             this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
             this.addBtn = itemView.findViewById(R.id.addCnt);
+            this.mPeriod = itemView.findViewById(R.id.habit_period);
 //            this.habit_row = itemView.findViewById(R.id.habit_row);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +92,18 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
                 notifyDataSetChanged();
             }
         });
+
+        switch (habit.getPeriod()){
+            case 7:
+                holder.mPeriod.setText("THIS WEEK:");
+                break;
+            case 30:
+                holder.mPeriod.setText("THIS MONTH:");
+                break;
+            case 365:
+                holder.mPeriod.setText("THIS YEAR:");
+                break;
+        }
 
         if (habit.getCount() >= habit.getOccurrence()){
             holder.addBtn.setImageResource(R.drawable.habit_tick);

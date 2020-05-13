@@ -50,6 +50,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/habit_period"
                     android:fontFamily="@font/montserrat_regular"
                     android:textSize="12dp"
                     android:letterSpacing="0.1"

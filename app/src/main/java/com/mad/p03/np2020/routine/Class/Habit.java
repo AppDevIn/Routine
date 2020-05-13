@@ -7,6 +7,7 @@ public class Habit {
     private String title;
     private int occurrence;
     private int count;
+    private int period;
     private List<Integer> mCountList;
 
     public String getTitle() {
@@ -33,13 +34,12 @@ public class Habit {
         this.count = count;
     }
 
-    public Habit(String title, int occurrence, int count) {
+    public Habit(String title, int occurrence, int count, int period) {
         this.title = title;
         this.occurrence = occurrence;
         this.count = count;
+        this.period = period;
     }
-
-    public Habit(){}
 
     public void addCount(){
         this.setCount(this.getCount() + 1);
@@ -58,7 +58,13 @@ public class Habit {
         this.count = count;
     }
 
+    public int getPeriod() {
+        return period;
+    }
 
+    public void setPeriod(int period) {
+        this.period = period;
+    }
 
     public void calculateProgress(String Occurrence, int count){
         // TODO: Please upload any chnages to this class to the main branch`
@@ -72,6 +78,8 @@ public class Habit {
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
+
+
     public static class HabitList {
 
         private ArrayList<Habit> habitList;
@@ -80,7 +88,7 @@ public class Habit {
 
         public Habit getItemAt(Integer index) { return this.habitList.get(index); }
 
-        public void addItem(String title, int occurrence, int count) { this.habitList.add(new Habit(title, occurrence, count)); }
+        public void addItem(String title, int occurrence, int count, int period) { this.habitList.add(new Habit(title, occurrence, count, period)); }
 
         public void removeItemAt(int position) { this.habitList.remove(position); }
 

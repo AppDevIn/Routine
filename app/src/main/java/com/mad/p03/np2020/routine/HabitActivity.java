@@ -3,13 +3,11 @@ package com.mad.p03.np2020.routine;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -96,7 +94,7 @@ public class HabitActivity extends AppCompatActivity {
                         int cnt = Integer.parseInt(menu_count.getText().toString());
                         String name = habit_name.getText().toString();
                         int occur = Integer.parseInt(habit_occur.getText().toString());
-                        myAdapter._habitList.addItem(name, occur, cnt);
+                        myAdapter._habitList.addItem(name, occur, cnt, 30);
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -365,10 +363,10 @@ public class HabitActivity extends AppCompatActivity {
 
     public Habit.HabitList getList() {
         habitList = new Habit.HabitList();
-        habitList.addItem("Drink water", 20, 0);
-        habitList.addItem("Exercise", 7,0 );
-        habitList.addItem("Revision", 2, 0);
-        habitList.addItem("Eating snack", 2, 0);
+        habitList.addItem("Drink water", 20, 0,1);
+        habitList.addItem("Exercise", 7,0 ,7);
+        habitList.addItem("Revision", 2, 0,365);
+        habitList.addItem("Eating snack", 2, 0,30);
 
         return habitList;
     }
