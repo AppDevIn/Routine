@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Class;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Habit {
@@ -58,5 +59,20 @@ public class Habit {
 
     public void changeDescNoun(String descNoun){
         // TODO: Please upload any chnages to this class to the main branch`
+    }
+
+    public static class HabitList {
+
+        private ArrayList<Habit> habitList;
+
+        public HabitList() { this.habitList = new ArrayList<>(); }
+
+        public Habit getItemAt(Integer index) { return this.habitList.get(index); }
+
+        public void addItem(String title, int occurrence, int count) { this.habitList.add(new Habit(title, occurrence, count)); }
+
+        public void removeItemAt(int position) { this.habitList.remove(position); }
+
+        public Integer size() { return this.habitList.size(); }
     }
 }

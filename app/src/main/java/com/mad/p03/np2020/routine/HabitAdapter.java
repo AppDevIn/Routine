@@ -18,16 +18,23 @@ import java.util.ArrayList;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
 
+
     final static String TAG = "HabitAdapter";
     Context c;
-    ArrayList<Habit> habitList;
-    private OnItemClickListener listener;
+    Habit.HabitList _habitList;
+    private OnItemClickListener mListener;
     static View view;
 
-    public HabitAdapter(Context c, ArrayList<Habit> habitList, OnItemClickListener listener) {
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public HabitAdapter(Context c, Habit.HabitList habitList) {
         this.c = c;
-        this.habitList = habitList;
-        this.listener = listener;
+        this._habitList = habitList;
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
     }
 
     public static class MyHolder extends RecyclerView.ViewHolder {
@@ -35,7 +42,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
         public TextView mTitle,mCount,mCount2,mOccurrence;
         public ImageButton addBtn;
 
-        public MyHolder(@NonNull View itemView) {
+        public MyHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             this.mTitle = itemView.findViewById(R.id.habitTitle);
@@ -43,17 +50,20 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
             this.mCount2 = itemView.findViewById(R.id.habitCount2);
             this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
             this.addBtn = itemView.findViewById(R.id.addCnt);
-        }
 
-        public void bind(final Habit habit, final OnItemClickListener listener) {
-
-            view.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(habit);
+                    if (listener!=null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
                 }
             });
         }
+
     }
 
     @NonNull
@@ -62,12 +72,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_row,null);
 
-        return new MyHolder(view);
+        return new MyHolder(view, mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-        final Habit habit = habitList.get(position);
+    public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
+        final Habit habit = _habitList.getItemAt(position);
 
         holder.mTitle.setText(habit.getTitle().toUpperCase().trim());
         holder.mCount.setText(String.valueOf(habit.getCount()));
@@ -86,18 +96,11 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
             holder.addBtn.setImageResource(R.drawable.habit_tick);
         }
 
-        holder.bind(habit, listener);
-
     }
 
     @Override
     public int getItemCount() {
-        return habitList.size();
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(Habit habit);
-
+        return _habitList.size();
     }
 
 }

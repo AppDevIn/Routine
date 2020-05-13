@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/habit_today"
                 android:text="CREATE"
-                android:letterSpacing="0.2"
+                android:letterSpacing="0.1"
                 android:textSize="20dp"
                 android:textColor="@color/colorBlack"
                 android:layout_centerVertical="true"
@@ -78,7 +78,7 @@
            android:layout_height="wrap_content"
            android:textColor="@color/colorBlack"
            android:text="NAME YOUR HABIT:"
-           android:letterSpacing="0.2"/>
+           android:letterSpacing="0.1"/>
 
         <EditText
             android:maxLength="20"
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:text="SET YOUR GOAL:"
-            android:letterSpacing="0.2"/>
+            android:letterSpacing="0.1"/>
 
         <LinearLayout
             android:layout_marginTop="10dp"
@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:text="DEFAULT COUNT:"
-            android:letterSpacing="0.2"/>
+            android:letterSpacing="0.1"/>
 
         <LinearLayout
             android:layout_marginStart="25dp"

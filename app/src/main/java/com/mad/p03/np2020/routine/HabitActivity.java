@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,10 +22,12 @@ import com.mad.p03.np2020.routine.Class.Habit;
 
 import java.util.ArrayList;
 
+import static java.lang.String.format;
+
 public class HabitActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitTracker";
-    ArrayList<Habit> habitList;
+    Habit.HabitList habitList;
     ImageButton add_habit;
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
@@ -68,11 +71,10 @@ public class HabitActivity extends AppCompatActivity {
                 buttonOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String cnt = menu_count.getText().toString();
+                        int cnt = Integer.parseInt(menu_count.getText().toString());
                         String name = habit_name.getText().toString();
-                        String occur = habit_occur.getText().toString();
-                        Habit habit = new Habit(name,Integer.parseInt(occur),Integer.parseInt(cnt));
-                        habitList.add(habit);
+                        int occur = Integer.parseInt(habit_occur.getText().toString());
+                        myAdapter._habitList.addItem(name, occur, cnt);
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -111,25 +113,45 @@ public class HabitActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new HabitAdapter(this, getList(),new HabitAdapter.OnItemClickListener(){
+        myAdapter = new HabitAdapter(this, getList());
+        mRecyclerView.setAdapter(myAdapter);
+        myAdapter.setOnItemClickListener(new HabitAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Habit habit){
-                Log.v(TAG,habit.getTitle());
+            public void onItemClick(final int position) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+//                builder.setTitle("Delete");
+//                builder.setMessage("Are you sure you want to delete this task?");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Log.v(TAG, format("%s deleted!",habitList.getItemAt(position).getTitle()));
+//                        myAdapter._habitList.removeItemAt(position);
+//                        myAdapter.notifyItemRemoved(position);
+//                        myAdapter.notifyItemRangeChanged(position, habitList.size());
+//                        myAdapter.notifyDataSetChanged();
+//                    }
+//                });
+
+//                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+//                    public void onClick(DialogInterface dialog, int id){
+//                        Log.v(TAG,"User refuses to delete!");
+//                    }
+//                });
+//
+//                AlertDialog alert = builder.create();
+//                alert.show();
+
             }
         });
-        mRecyclerView.setAdapter(myAdapter);
     }
 
-    public ArrayList<Habit> getList() {
-        Habit act1 = new Habit("Drink water", 20, 0);
-        Habit act2 = new Habit("Exercise", 7, 0);
-        Habit act3 = new Habit("Revision", 2, 0);
-        Habit act4 = new Habit("Eating snack", 2, 0);
-        habitList = new ArrayList<>();
-        habitList.add(act1);
-        habitList.add(act2);
-        habitList.add(act3);
-        habitList.add(act4);
+    public Habit.HabitList getList() {
+        habitList = new Habit.HabitList();
+        habitList.addItem("Drink water", 20, 0);
+        habitList.addItem("Exercise", 7,0 );
+        habitList.addItem("Revision", 2, 0);
+        habitList.addItem("Eating snack", 2, 0);
 
         return habitList;
     }
