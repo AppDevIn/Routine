@@ -241,7 +241,8 @@ public class HabitActivity extends AppCompatActivity {
                                 int dialogCnt = Integer.parseInt(dialog_cnt.getText().toString());
                                 habit.modifyCount(dialogCnt);
                                 myAdapter.notifyDataSetChanged();
-                                cnt.setText(String.valueOf(dialogCnt));
+                                cnt.setText(String.valueOf(habit.getCount()));
+                                cnt2.setText(String.valueOf(habit.getCount()));
                                 alertDialog.dismiss();
                             }
                         });
