@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
+
+import static java.lang.String.format;
 
 public class HabitActivity extends AppCompatActivity {
 
@@ -155,6 +158,7 @@ public class HabitActivity extends AppCompatActivity {
                 final ImageButton modifyBtn = dialogView.findViewById(R.id.habit_view_modify);
                 final ImageButton closeBtn = dialogView.findViewById(R.id.habit_view_close);
                 final ImageButton editBtn = dialogView.findViewById(R.id.habit_view_edit);
+                final ImageButton deletebtn = dialogView.findViewById(R.id.habit_view_delete);
 
                 title.setText(_habitTitle);
                 cnt.setText(String.valueOf(_habitCount));
@@ -163,6 +167,7 @@ public class HabitActivity extends AppCompatActivity {
                 modifyBtn.setBackgroundColor(Color.TRANSPARENT);
                 closeBtn.setBackgroundColor(Color.TRANSPARENT);
                 editBtn.setBackgroundColor(Color.TRANSPARENT);
+                deletebtn.setBackgroundColor(Color.TRANSPARENT);
 
                 closeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -263,6 +268,35 @@ public class HabitActivity extends AppCompatActivity {
                     }
                 });
 
+                deletebtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+                        builder.setTitle("Delete");
+                        builder.setMessage("Are you sure you want to delete this habit?");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.v(TAG, format("%s deleted!",habitList.getItemAt(position).getTitle()));
+                                myAdapter._habitList.removeItemAt(position);
+                                myAdapter.notifyItemRemoved(position);
+                                myAdapter.notifyItemRangeChanged(position, habitList.size());
+                                myAdapter.notifyDataSetChanged();
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Log.v(TAG,"User refuses to delete!");
+                            }
+                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                });
 
                 alertDialog.show();
 
