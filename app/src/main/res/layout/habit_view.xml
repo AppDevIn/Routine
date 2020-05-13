@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:background="@color/colorLightCoral"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.1"
+            android:text="STUDY"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack" />
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:layout_toStartOf="@id/_today"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="?attr/homeAsUpIndicator" />
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_centerHorizontal="true"
+                android:letterSpacing="0.1"
+                android:text="TODAY"
+                android:textSize="20dp"
+                android:textColor="@color/colorWhite" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/_today"
+                android:rotation="180"
+                app:srcCompat="?attr/homeAsUpIndicator" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <ImageButton
+                android:id="@+id/habit_view_reduce"
+                android:layout_width="22dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="30dp"
+                android:layout_toStartOf="@+id/habit_view_count"
+                android:scaleX="-1"
+                android:src="@drawable/habit_refresh" />
+
+
+            <TextView
+                android:id="@+id/habit_view_count"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="60dp"
+                android:fontFamily="@font/montserrat"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorWhite"
+                android:letterSpacing="0.3"
+                android:text="11" />
+
+
+            <ImageButton
+                android:id="@+id/habit_view_add"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="30dp"
+                android:layout_toEndOf="@+id/habit_view_count"
+                android:src="@drawable/habit_add" />
+
+            <ImageButton
+                android:id="@+id/habit_view_modify"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_toEndOf="@id/habit_view_add"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/habit_modify"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </View>
+
+</LinearLayout>
