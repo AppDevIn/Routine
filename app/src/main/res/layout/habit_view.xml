@@ -6,58 +6,58 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="@color/colorLightCoral"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorLightCoral"
         android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/habit_view_close"
-            android:layout_marginTop="40dp"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="right"
-            android:src="@drawable/habit_close"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/habit_close" />
 
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/habit_view_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/montserrat_regular"
             android:gravity="center_horizontal"
             android:letterSpacing="0.1"
             android:text="STUDY"
+            android:textColor="@color/colorBlack"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/colorBlack" />
+            android:textStyle="bold" />
 
         <RelativeLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_marginRight="10dp"
-                android:layout_toStartOf="@id/_today"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toStartOf="@id/_today"
                 app:srcCompat="?attr/homeAsUpIndicator" />
 
             <TextView
-                android:layout_centerVertical="true"
                 android:id="@+id/_today"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
                 android:text="TODAY"
-                android:textSize="20dp"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
 
             <ImageView
                 android:layout_width="24dp"
@@ -71,9 +71,9 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp">
 
             <ImageButton
                 android:id="@+id/habit_view_reduce"
@@ -88,15 +88,15 @@
 
             <TextView
                 android:id="@+id/habit_view_count"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="60dp"
-                android:fontFamily="@font/montserrat"
                 android:layout_centerHorizontal="true"
-                android:textColor="@color/colorWhite"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/montserrat"
                 android:letterSpacing="0.1"
-                android:text="11" />
+                android:text="11"
+                android:textColor="@color/colorWhite"
+                android:textSize="60dp" />
 
 
             <ImageButton
@@ -112,11 +112,10 @@
                 android:id="@+id/habit_view_modify"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_toEndOf="@id/habit_view_add"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/habit_modify"
-                />
+                android:layout_toEndOf="@id/habit_view_add"
+                android:src="@drawable/habit_modify" />
 
         </RelativeLayout>
 
@@ -126,8 +125,6 @@
         </View>
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

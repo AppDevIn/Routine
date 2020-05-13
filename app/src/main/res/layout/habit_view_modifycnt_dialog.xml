@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Modify Count"
@@ -21,13 +21,13 @@
             android:textAlignment="center" />
 
         <TextView
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_regular"
             android:layout_marginTop="10dp"
             android:id="@+id/habit_view_dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Swimming"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             android:letterSpacing="0.1"
             android:textSize="20dp"
             android:textAlignment="center" />
@@ -48,11 +48,15 @@
 
         <LinearLayout
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal">
 
             <Button
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/habit_btn_background2"
                 android:layout_marginStart="70dp"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/cancel_dialog"
@@ -64,6 +68,10 @@
                 android:letterSpacing="0.1"/>
 
             <Button
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorWhite"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/habit_btn_background"
                 android:layout_marginEnd="70dp"
                 android:id="@+id/save_dialog"
                 android:text="SAVE"
