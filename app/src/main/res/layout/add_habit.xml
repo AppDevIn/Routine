@@ -200,10 +200,11 @@
                 android:layout_marginStart="15dp"
                 android:fontFamily="@font/montserrat"
                 android:letterSpacing="0.1"
-                android:text="OR MORE TIMES PER "
+                android:text="PER"
                 android:textColor="@color/colorBlack" />
 
             <TextView
+                android:layout_marginStart="7dp"
                 android:id="@+id/period_txt"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"

@@ -200,10 +200,11 @@
                 android:layout_marginStart="15dp"
                 android:fontFamily="@font/montserrat"
                 android:letterSpacing="0.1"
-                android:text="OR MORE TIMES PER "
+                android:text="PER"
                 android:textColor="@color/colorBlack" />
 
             <TextView
+                android:layout_marginStart="7dp"
                 android:id="@+id/period_txt"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
@@ -219,53 +220,53 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginStart="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="130dp"-->
+<!--        android:orientation="vertical">-->
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:text="HABIT COUNT:"
-            android:letterSpacing="0.1"/>
+<!--        <TextView-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/colorBlack"-->
+<!--            android:text="HABIT COUNT:"-->
+<!--            android:letterSpacing="0.1"/>-->
 
-        <LinearLayout
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_marginStart="25dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:orientation="horizontal">-->
 
-            <TextView
-                android:textColor="@color/colorBlack"
-                android:id="@+id/menu_count"
-                android:layout_width="10dp"
-                android:layout_height="30dp"
-                android:textSize="20dp"
-                android:text="0"/>
+<!--            <TextView-->
+<!--                android:textColor="@color/colorBlack"-->
+<!--                android:id="@+id/menu_count"-->
+<!--                android:layout_width="10dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:textSize="20dp"-->
+<!--                android:text="0"/>-->
 
 
-            <ImageButton
-                android:id="@+id/menu_minus_count"
-                android:layout_marginStart="30dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/habit_minus_count"
-                android:background="@drawable/edit_text_background" />
+<!--            <ImageButton-->
+<!--                android:id="@+id/menu_minus_count"-->
+<!--                android:layout_marginStart="30dp"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:src="@drawable/habit_minus_count"-->
+<!--                android:background="@drawable/edit_text_background" />-->
 
-            <ImageButton
-                android:id="@+id/menu_add_count"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/habit_add"
-                android:background="@drawable/edit_text_background"/>
+<!--            <ImageButton-->
+<!--                android:id="@+id/menu_add_count"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:src="@drawable/habit_add"-->
+<!--                android:background="@drawable/edit_text_background"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </LinearLayout>

@@ -29,7 +29,7 @@ public class HabitActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
     private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
-    private final static String[] period_textList = {"DAILY", "WEEKLY", "MONTHLY", "YEARLY"};
+    private final static String[] period_textList = {"DAY", "WEEK", "MONTH", "YEAR"};
     private final static int[] period_countList = {1, 7, 30, 365};
 
     @Override
@@ -125,7 +125,7 @@ public class HabitActivity extends AppCompatActivity {
                         if (count > 0){
                             count--;
                         }
-                       menu_count.setText(String.valueOf(count));
+                        menu_count.setText(String.valueOf(count));
                     }
                 });
 
@@ -191,9 +191,9 @@ public class HabitActivity extends AppCompatActivity {
                 addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       habit.addCount();
-                       myAdapter.notifyDataSetChanged();
-                       cnt.setText(String.valueOf(habit.getCount()));
+                        habit.addCount();
+                        myAdapter.notifyDataSetChanged();
+                        cnt.setText(String.valueOf(habit.getCount()));
                         cnt2.setText(String.valueOf(habit.getCount()));
                     }
                 });
@@ -256,7 +256,7 @@ public class HabitActivity extends AppCompatActivity {
                         builder.setView(dialogView);
                         final AlertDialog alertDialog = builder.create();
 
-                        final TextView menu_count = dialogView.findViewById(R.id.menu_count);
+//                        final TextView menu_count = dialogView.findViewById(R.id.menu_count);
                         final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                         final TextView period_text = dialogView.findViewById(R.id.period_txt);
@@ -289,6 +289,7 @@ public class HabitActivity extends AppCompatActivity {
                         for(int i = 0; i < 4; i++){
                             if (period_countList[i] == habit.getPeriod()){
                                 _period[0] = period_countList[i];
+                                period_text.setText(period_textList[i]);
                                 dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(Color.parseColor("#dfdfdf"));
                                 break;
                             }
@@ -296,29 +297,29 @@ public class HabitActivity extends AppCompatActivity {
 
                         habit_name.setText(habit.getTitle());
                         habit_occur.setText(String.valueOf(habit.getOccurrence()));
-                        menu_count.setText(String.valueOf(habit.getCount()));
+//                        menu_count.setText(String.valueOf(habit.getCount()));
 
-                        ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
-                        add_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int _count = Integer.parseInt(menu_count.getText().toString());
-                                _count ++ ;
-                                menu_count.setText(String.valueOf(_count));
-                            }
-                        });
-
-                        ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
-                        minus_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int _count = Integer.parseInt(menu_count.getText().toString());
-                                if (_count > 0){
-                                    _count -- ;
-                                }
-                                menu_count.setText(String.valueOf(_count));
-                            }
-                        });
+//                        ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
+//                        add_btn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                int _count = Integer.parseInt(menu_count.getText().toString());
+//                                _count ++ ;
+//                                menu_count.setText(String.valueOf(_count));
+//                            }
+//                        });
+//
+//                        ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
+//                        minus_btn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                int _count = Integer.parseInt(menu_count.getText().toString());
+//                                if (_count > 0){
+//                                    _count -- ;
+//                                }
+//                                menu_count.setText(String.valueOf(_count));
+//                            }
+//                        });
 
                         Button buttonClose = dialogView.findViewById(R.id.habit_close);
                         buttonClose.setOnClickListener(new View.OnClickListener() {
@@ -332,12 +333,12 @@ public class HabitActivity extends AppCompatActivity {
                         buttonOk.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                habit.modifyCount(Integer.parseInt(menu_count.getText().toString()));
+//                                habit.modifyCount(Integer.parseInt(menu_count.getText().toString()));
                                 habit.modifyTitle(habit_name.getText().toString());
                                 habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
                                 habit.setPeriod(_period[0]);
-                                cnt.setText(menu_count.getText().toString());
-                                cnt2.setText(menu_count.getText().toString());
+//                                cnt.setText(menu_count.getText().toString());
+//                                cnt2.setText(menu_count.getText().toString());
                                 title.setText(habit_name.getText().toString());
                                 occurrence.setText(String.valueOf(habit.getOccurrence()));
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
