@@ -291,6 +291,7 @@ public class HabitActivity extends AppCompatActivity {
 
                         for(int i = 0; i < 4; i++){
                             if (period_countList[i] == habit.getPeriod()){
+                                _period[0] = period_countList[i];
                                 dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(Color.parseColor("#dfdfdf"));
                                 break;
                             }
