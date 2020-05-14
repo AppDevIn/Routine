@@ -230,7 +230,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
-            android:text="DEFAULT COUNT:"
+            android:text="HABIT COUNT:"
             android:letterSpacing="0.1"/>
 
         <LinearLayout

@@ -263,7 +263,6 @@ public class HabitActivity extends AppCompatActivity {
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                         final TextView period_text = dialogView.findViewById(R.id.period_txt);
 
-
                         final int[] _period = new int[1];
 
                         for (final int i :period_buttonIDS){
@@ -305,8 +304,9 @@ public class HabitActivity extends AppCompatActivity {
                         add_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                habit.addCount();
-                                menu_count.setText(String.valueOf(habit.getCount()));
+                                int _count = Integer.parseInt(menu_count.getText().toString());
+                                _count ++ ;
+                                menu_count.setText(String.valueOf(_count));
                             }
                         });
 
@@ -314,8 +314,11 @@ public class HabitActivity extends AppCompatActivity {
                         minus_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                habit.minusCount();
-                                menu_count.setText(String.valueOf(habit.getCount()));
+                                int _count = Integer.parseInt(menu_count.getText().toString());
+                                if (_count > 0){
+                                    _count -- ;
+                                }
+                                menu_count.setText(String.valueOf(_count));
                             }
                         });
 
