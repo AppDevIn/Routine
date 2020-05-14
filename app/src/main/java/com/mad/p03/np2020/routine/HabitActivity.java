@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
 
-import org.w3c.dom.Text;
-
 import static java.lang.String.format;
 
 public class HabitActivity extends AppCompatActivity {

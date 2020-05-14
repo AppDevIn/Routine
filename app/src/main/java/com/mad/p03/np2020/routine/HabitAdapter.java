@@ -107,6 +107,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
 
         if (habit.getCount() >= habit.getOccurrence()){
             holder.addBtn.setImageResource(R.drawable.habit_tick);
+        }else{
+            holder.addBtn.setImageResource(R.drawable.habit_add);
         }
 
     }
