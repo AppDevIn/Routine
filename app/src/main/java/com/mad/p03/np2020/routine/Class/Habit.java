@@ -11,11 +11,7 @@ public class Habit {
     private List<Integer> mCountList;
 
     public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+        return title.toUpperCase().trim();
     }
 
     public int getOccurrence() {
@@ -52,7 +48,7 @@ public class Habit {
     }
 
     public void modifyTitle(String title){
-        this.title = title;
+        this.title = title.toUpperCase().trim();
     }
     public void modifyCount(int count){
         this.count = count;

@@ -332,12 +332,12 @@ public class HabitActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 habit.modifyCount(Integer.parseInt(menu_count.getText().toString()));
-                                habit.modifyTitle(habit_name.getText().toString().trim());
+                                habit.modifyTitle(habit_name.getText().toString());
                                 habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
                                 habit.setPeriod(_period[0]);
                                 cnt.setText(menu_count.getText().toString());
                                 cnt2.setText(menu_count.getText().toString());
-                                title.setText(habit_name.getText().toString().trim());
+                                title.setText(habit_name.getText().toString());
                                 occurrence.setText(String.valueOf(habit.getOccurrence()));
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
 

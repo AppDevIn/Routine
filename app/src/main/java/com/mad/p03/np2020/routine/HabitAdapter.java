@@ -80,7 +80,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
         final Habit habit = _habitList.getItemAt(position);
 
 //        holder.habit_row.setBackgroundColor(Color.GRAY);
-        holder.mTitle.setText(habit.getTitle().toUpperCase().trim());
+        holder.mTitle.setText(habit.getTitle());
         holder.mCount.setText(String.valueOf(habit.getCount()));
         holder.mCount2.setText(String.valueOf(habit.getCount()));
         holder.mOccurrence.setText(String.valueOf(habit.getOccurrence()));
