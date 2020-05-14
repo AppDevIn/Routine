@@ -31,5 +31,7 @@
     <color name="green_yellow">#F7EF99</color>
     <color name="turquoise">#41D3BD</color>
 
+    <color name="pink">#FDE0E9</color>
+    <color name="yellow">#FCFFE9</color>
+    <color name="red">#FF2000</color>
 </resources>
-
