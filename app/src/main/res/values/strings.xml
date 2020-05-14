@@ -4,6 +4,7 @@
     <string name="timer_center">:</string>
     <string name="start">Start</string>
     <string name="side_navigation_drawer">Side Navigation drawer</string>
+    <string name="modify">+ Modify</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">History</string>
