@@ -112,9 +112,14 @@ public class HabitActivity extends AppCompatActivity {
                 buttonOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int cnt = Integer.parseInt(menu_count.getText().toString());
                         String name = habit_name.getText().toString();
+                        if (name.equalsIgnoreCase("")){
+                            habit_name.setError("Please enter habit name");
+                            return;
+                        }
+
                         int occur = Integer.parseInt(habit_occur.getText().toString());
+                        int cnt = Integer.parseInt(menu_count.getText().toString());
                         Date date = new Date();
                         myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date));
                         myAdapter.notifyDataSetChanged();
