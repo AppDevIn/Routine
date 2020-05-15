@@ -3,6 +3,9 @@ package com.mad.p03.np2020.routine;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,14 +16,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
 
+import java.util.Date;
+
 import static java.lang.String.format;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class HabitActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitTracker";
@@ -33,6 +40,8 @@ public class HabitActivity extends AppCompatActivity {
     private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
     private final static String[] period_textList = {"DAY", "WEEK", "MONTH", "YEAR"};
     private final static int[] period_countList = {1, 7, 30, 365};
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +115,8 @@ public class HabitActivity extends AppCompatActivity {
                         int cnt = Integer.parseInt(menu_count.getText().toString());
                         String name = habit_name.getText().toString();
                         int occur = Integer.parseInt(habit_occur.getText().toString());
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0]);
+                        Date date = new Date();
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date));
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -153,6 +163,7 @@ public class HabitActivity extends AppCompatActivity {
                 final Habit habit = myAdapter._habitList.getItemAt(position);
 
                 Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence()) + " " + habit.getPeriod()));
+                Log.d(TAG, habit.getTime_created());
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -398,10 +409,11 @@ public class HabitActivity extends AppCompatActivity {
 
     public Habit.HabitList getList() {
         habitList = new Habit.HabitList();
-        habitList.addItem("Drink water", 20, 0,1);
-        habitList.addItem("Exercise", 7,0 ,7);
-        habitList.addItem("Revision", 2, 0,365);
-        habitList.addItem("Eating snack", 2, 0,30);
+        Date date = new Date();
+        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date));
+        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date));
+        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date));
+        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date));
         return habitList;
     }
 
