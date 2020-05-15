@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:id="@+id/habit_menu"
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:letterSpacing="0.2"
+            android:letterSpacing="0.1"
             android:text="TODAY"
             android:textColor="@color/colorBlack"
             android:textSize="20dp"
@@ -49,11 +49,11 @@
         android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/habit_checkCount"
+            android:id="@+id/habit_dashboard"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="50dp"
-            android:src="@drawable/habit_checkcount" />
+            android:src="@drawable/habit_dashboard" />
 
         <ImageButton
             android:id="@+id/add_habit"
@@ -63,11 +63,11 @@
             android:src="@drawable/habit_add" />
 
         <ImageButton
-            android:id="@+id/habit_dashboard"
+            android:id="@+id/habit_chart"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="50dp"
-            android:src="@drawable/habit_dashboard" />
+            android:src="@drawable/habit_chart" />
 
     </LinearLayout>
 

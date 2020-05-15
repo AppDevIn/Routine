@@ -26,7 +26,7 @@ public class HabitActivity extends AppCompatActivity {
     private static final String TAG = "HabitTracker";
     Habit.HabitList habitList;
     ImageButton add_habit;
-    ImageButton habit_checkCount;
+    ImageButton habit_chart;
     ImageButton habit_dashboard;
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
@@ -42,11 +42,11 @@ public class HabitActivity extends AppCompatActivity {
 
 
         add_habit = findViewById(R.id.add_habit);
-        habit_checkCount = findViewById(R.id.habit_checkCount);
+        habit_chart = findViewById(R.id.habit_chart);
         habit_dashboard = findViewById(R.id.habit_dashboard);
 
         add_habit.setBackgroundColor(Color.TRANSPARENT);
-        habit_checkCount.setBackgroundColor(Color.TRANSPARENT);
+        habit_chart.setBackgroundColor(Color.TRANSPARENT);
         habit_dashboard.setBackgroundColor(Color.TRANSPARENT);
 
         add_habit.setOnClickListener(new View.OnClickListener() {
