@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
@@ -75,6 +77,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
         return new MyHolder(view, mListener);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
         final Habit habit = _habitList.getItemAt(position);

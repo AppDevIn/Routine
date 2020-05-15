@@ -148,7 +148,7 @@ public class HabitActivity extends AppCompatActivity {
                 });
 
                 alertDialog.show();
-                Log.v(TAG,"BTN");
+
             }
         });
 
