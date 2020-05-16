@@ -9,17 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Register"></activity>
+        <activity
+            android:name=".ui.login.Register"
+            android:label="@string/title_activity_register" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".HabitActivity" />
         <activity android:name=".FocusActivity" />
-        <activity android:name=".Home"
+        <activity
+            android:name=".Home"
             android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
