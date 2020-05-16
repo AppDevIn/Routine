@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/first"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal">
@@ -72,6 +72,8 @@
 
 
     <LinearLayout
+        android:id="@+id/second"
+        android:layout_below="@id/first"
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:layout_marginStart="20dp"
@@ -101,6 +103,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@id/second"
+        android:id="@+id/third"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"
         android:layout_height="110dp"
@@ -163,6 +167,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@id/third"
+        android:id="@+id/fourth"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -222,6 +228,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/fifth"
+        android:layout_below="@id/fourth"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"
         android:layout_height="130dp"
@@ -271,6 +279,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@id/fifth"
+        android:id="@+id/sixth"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginStart="20dp"
@@ -323,4 +333,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
