@@ -269,4 +269,56 @@
 
 <!--    </LinearLayout>-->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="SELECT A COLOR:"
+            android:letterSpacing="0.1"/>
+
+        <LinearLayout
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/lightcoral_btn"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorLightCoral" />
+
+            <Button
+                android:id="@+id/slightdesblue_btn"
+                android:layout_marginStart="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorSlightDesBlue" />
+
+            <Button
+                android:id="@+id/fadepurple_btn"
+                android:layout_marginStart="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorFadePurple" />
+
+            <Button
+                android:id="@+id/cyangreen_btn"
+                android:layout_marginStart="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorCyanGreen" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
 </LinearLayout>

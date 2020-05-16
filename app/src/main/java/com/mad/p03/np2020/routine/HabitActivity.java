@@ -218,6 +218,7 @@ public class HabitActivity extends AppCompatActivity {
 
                 Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence()) + " " + habit.getPeriod()));
                 Log.d(TAG, habit.getTime_created());
+                Log.d(TAG, habit.getHolder_color());
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -251,23 +252,7 @@ public class HabitActivity extends AppCompatActivity {
                 editBtn.setBackgroundColor(Color.TRANSPARENT);
                 deletebtn.setBackgroundColor(Color.TRANSPARENT);
 
-                switch (habit.getHolder_color()){
-                    case ("cyangreen"):
-                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorCyanGreen));
-                        break;
-
-                    case ("lightcoral"):
-                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorLightCoral));
-                        break;
-
-                    case ("fadepurple"):
-                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorFadePurple));
-                        break;
-
-                    case ("slightdesblue"):
-                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorSlightDesBlue));
-                        break;
-                }
+                habit_view_upper.setBackgroundColor(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
 
                 closeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -387,6 +372,51 @@ public class HabitActivity extends AppCompatActivity {
                             }
                         }
 
+
+                        final String[] _color = new String[1];
+                        final Button lightcoral_btn = dialogView.findViewById(R.id.lightcoral_btn);
+                        final Button slightdesblue_btn = dialogView.findViewById(R.id.slightdesblue_btn);
+                        final Button fadepurple_btn = dialogView.findViewById(R.id.fadepurple_btn);
+                        final Button cyangreen_btn = dialogView.findViewById(R.id.cyangreen_btn);
+
+                        for(int i = 0; i < 4; i++){
+                            if (colorList[i].equals(habit.getHolder_color())){
+                                _color[0] = colorList[i];
+                                GradientDrawable drawable = new GradientDrawable();
+                                drawable.setShape(GradientDrawable.RECTANGLE);
+                                drawable.setStroke(5, Color.BLACK);
+                                drawable.setColor(getResources().getColor(color_schemeIDS[i]));
+                                dialogView.findViewById(color_buttonIDS[i]).setBackground(drawable);
+                                break;
+                            }
+                        }
+
+
+                        for (final int i :color_buttonIDS){
+                            final Button btn = dialogView.findViewById(i);
+
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int id = btn.getId();
+
+                                    for (int i = 0; i < 4; i++){
+                                        Button _btn = dialogView.findViewById(color_buttonIDS[i]);
+                                        if (id == color_buttonIDS[i]){
+                                            GradientDrawable drawable = new GradientDrawable();
+                                            drawable.setShape(GradientDrawable.RECTANGLE);
+                                            drawable.setStroke(5, Color.BLACK);
+                                            drawable.setColor(getResources().getColor(color_schemeIDS[i]));
+                                            _btn.setBackground(drawable);
+                                            _color[0] = colorList[i];
+                                        }else
+                                            _btn.setBackgroundResource(color_schemeIDS[i]);
+                                        }
+                                    }
+                                });
+                            }
+
+
                         habit_name.setText(habit.getTitle());
                         habit_occur.setText(String.valueOf(habit.getOccurrence()));
 //                        menu_count.setText(String.valueOf(habit.getCount()));
@@ -429,11 +459,13 @@ public class HabitActivity extends AppCompatActivity {
                                 habit.modifyTitle(habit_name.getText().toString());
                                 habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
                                 habit.setPeriod(_period[0]);
+                                habit.setHolder_color(_color[0]);
 //                                cnt.setText(menu_count.getText().toString());
 //                                cnt2.setText(menu_count.getText().toString());
                                 title.setText(habit_name.getText().toString());
                                 occurrence.setText(String.valueOf(habit.getOccurrence()));
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
+                                habit_view_upper.setBackgroundResource(habit.returnColorID(habit.getHolder_color()));
 
                                 myAdapter.notifyDataSetChanged();
                                 alertDialog.dismiss();

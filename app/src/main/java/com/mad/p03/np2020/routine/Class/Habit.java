@@ -1,5 +1,7 @@
 package com.mad.p03.np2020.routine.Class;
 
+import com.mad.p03.np2020.routine.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +92,10 @@ public class Habit {
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
+    public void setHolder_color(String holder_color) {
+        this.holder_color = holder_color;
+    }
+
     public String returnPeriodText(int period){
         switch(period){
             case 1:
@@ -105,6 +111,23 @@ public class Habit {
                 return "THIS YEAR:";
         }
         return "nothing";
+    }
+
+    public int returnColorID(String color) {
+        switch (color) {
+            case ("cyangreen"):
+                return R.color.colorCyanGreen;
+
+            case ("lightcoral"):
+                return R.color.colorLightCoral;
+
+            case ("fadepurple"):
+                return R.color.colorFadePurple;
+
+            case ("slightdesblue"):
+                return R.color.colorSlightDesBlue;
+        }
+        return 0;
     }
 
     public static class HabitList {
