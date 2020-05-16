@@ -10,4 +10,8 @@
     <color name="colorLightCoral">#F08080</color>
     <color name="colorNCS_Blue">#3498DB</color>
     <color name="colorGrey">#bcc0c8</color>
+    <color name="colorSlightDesBlue">#6882ba</color>
+    <color name="colorCyanGreen">#6ecfba</color>
+    <color name="colorFadePurple">#d488db</color>
+    <color name="colorWhiteGrey">#dfdfdf</color>
 </resources>

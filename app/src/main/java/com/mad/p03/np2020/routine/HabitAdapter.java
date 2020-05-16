@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,7 +41,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
 
         public TextView mTitle,mCount,mCount2,mOccurrence, mPeriod;
         public ImageButton addBtn;
-//        public LinearLayout habit_row;
+        public RelativeLayout habit_row;
 
         public MyHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -51,7 +52,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
             this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
             this.addBtn = itemView.findViewById(R.id.addCnt);
             this.mPeriod = itemView.findViewById(R.id.habit_period);
-//            this.habit_row = itemView.findViewById(R.id.habit_row);
+            this.habit_row = itemView.findViewById(R.id.habit_row);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,8 +82,24 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
         final Habit habit = _habitList.getItemAt(position);
+        switch (habit.getHolder_color()){
+            case ("cyangreen"):
+                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_cyangreen);
+                break;
 
-//        holder.habit_row.setBackgroundColor(Color.GRAY);
+            case ("lightcoral"):
+                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_lightcoral);
+                break;
+
+            case ("fadepurple"):
+                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_fadepurple);
+                break;
+
+            case ("slightdesblue"):
+                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_slightdesblue);
+                break;
+        }
+
         holder.mTitle.setText(habit.getTitle());
         holder.mCount.setText(String.valueOf(habit.getCount()));
         holder.mCount2.setText(String.valueOf(habit.getCount()));

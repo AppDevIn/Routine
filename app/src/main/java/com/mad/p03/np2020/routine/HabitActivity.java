@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -121,7 +122,7 @@ public class HabitActivity extends AppCompatActivity {
                         int occur = Integer.parseInt(habit_occur.getText().toString());
                         int cnt = Integer.parseInt(menu_count.getText().toString());
                         Date date = new Date();
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date));
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),"lightcoral");
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -187,6 +188,7 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView occurrence = dialogView.findViewById(R.id.habitOccurence);
                 final TextView cnt2 = dialogView.findViewById(R.id.habitCount);
                 final TextView period = dialogView.findViewById(R.id.habit_period);
+                final LinearLayout habit_view_upper = dialogView.findViewById(R.id.habit_view_upper);
 
                 title.setText(habit.getTitle());
                 cnt.setText(String.valueOf(habit.getCount()));
@@ -200,6 +202,24 @@ public class HabitActivity extends AppCompatActivity {
                 closeBtn.setBackgroundColor(Color.TRANSPARENT);
                 editBtn.setBackgroundColor(Color.TRANSPARENT);
                 deletebtn.setBackgroundColor(Color.TRANSPARENT);
+
+                switch (habit.getHolder_color()){
+                    case ("cyangreen"):
+                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorCyanGreen));
+                        break;
+
+                    case ("lightcoral"):
+                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorLightCoral));
+                        break;
+
+                    case ("fadepurple"):
+                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorFadePurple));
+                        break;
+
+                    case ("slightdesblue"):
+                        habit_view_upper.setBackgroundColor(getResources().getColor(R.color.colorSlightDesBlue));
+                        break;
+                }
 
                 closeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -298,7 +318,7 @@ public class HabitActivity extends AppCompatActivity {
                                     for (int i = 0; i < 4; i++){
                                         Button _btn = dialogView.findViewById(period_buttonIDS[i]);
                                         if (id == period_buttonIDS[i]){
-                                            _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
+                                            _btn.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
                                             period_text.setText(period_textList[i]);
                                             _period[0] = period_countList[i];
                                         }else {
@@ -314,7 +334,7 @@ public class HabitActivity extends AppCompatActivity {
                             if (period_countList[i] == habit.getPeriod()){
                                 _period[0] = period_countList[i];
                                 period_text.setText(period_textList[i]);
-                                dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(Color.parseColor("#dfdfdf"));
+                                dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
                                 break;
                             }
                         }
@@ -415,10 +435,10 @@ public class HabitActivity extends AppCompatActivity {
     public Habit.HabitList getList() {
         habitList = new Habit.HabitList();
         Date date = new Date();
-        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date));
-        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date));
-        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date));
-        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date));
+        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral");
+        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen");
+        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple");
+        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue");
         return habitList;
     }
 

@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine.Class;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Habit {
@@ -10,6 +9,7 @@ public class Habit {
     private int count;
     private int period;
     private String time_created;
+    private String holder_color;
     private List<Integer> mCountList;
 
     public String getTitle() {
@@ -32,12 +32,13 @@ public class Habit {
         this.count = count;
     }
 
-    public Habit(String title, int occurrence, int count, int period, String time_created) {
+    public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color) {
         this.title = title;
         this.occurrence = occurrence;
         this.count = count;
         this.period = period;
         this.time_created = time_created;
+        this.holder_color = holder_color;
     }
 
     public void addCount(){
@@ -71,6 +72,10 @@ public class Habit {
 
     public void setTime_created(String time_created) {
         this.time_created = time_created;
+    }
+
+    public String getHolder_color() {
+        return holder_color;
     }
 
     public void calculateProgress(String Occurrence, int count){
@@ -110,7 +115,7 @@ public class Habit {
 
         public Habit getItemAt(Integer index) { return this.habitList.get(index); }
 
-        public void addItem(String title, int occurrence, int count, int period, String time_created) { this.habitList.add(new Habit(title, occurrence, count, period, time_created)); }
+        public void addItem(String title, int occurrence, int count, int period, String time_created, String holder_color) { this.habitList.add(new Habit(title, occurrence, count, period, time_created, holder_color)); }
 
         public void removeItemAt(int position) { this.habitList.remove(position); }
 
