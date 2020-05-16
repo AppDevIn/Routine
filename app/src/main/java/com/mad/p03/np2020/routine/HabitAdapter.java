@@ -114,6 +114,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
         });
 
         switch (habit.getPeriod()){
+            case 1:
+                holder.mPeriod.setText("TODAY:");
+                break;
             case 7:
                 holder.mPeriod.setText("THIS WEEK:");
                 break;

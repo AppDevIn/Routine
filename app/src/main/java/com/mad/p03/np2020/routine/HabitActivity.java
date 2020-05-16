@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
@@ -41,6 +42,10 @@ public class HabitActivity extends AppCompatActivity {
     private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
     private final static String[] period_textList = {"DAY", "WEEK", "MONTH", "YEAR"};
     private final static int[] period_countList = {1, 7, 30, 365};
+    private final static int[] color_buttonIDS = {R.id.lightcoral_btn, R.id.slightdesblue_btn, R.id.fadepurple_btn, R.id.cyangreen_btn};
+    private final static int[] color_schemeIDS = {R.color.colorLightCoral, R.color.colorSlightDesBlue, R.color.colorFadePurple, R.color.colorCyanGreen};
+    private final static String[] colorList = {"lightcoral", "slightdesblue", "fadepurple", "cyangreen"};
+
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -98,8 +103,48 @@ public class HabitActivity extends AppCompatActivity {
                         }
                     });
                 }
-
+                period[0] = 1;
                 dialogView.findViewById(R.id.daily_period).setBackgroundColor(Color.parseColor("#dfdfdf"));
+
+
+                final String[] color = new String[1];
+                final Button lightcoral_btn = dialogView.findViewById(R.id.lightcoral_btn);
+                final Button slightdesblue_btn = dialogView.findViewById(R.id.slightdesblue_btn);
+                final Button fadepurple_btn = dialogView.findViewById(R.id.fadepurple_btn);
+                final Button cyangreen_btn = dialogView.findViewById(R.id.cyangreen_btn);
+
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setShape(GradientDrawable.RECTANGLE);
+                drawable.setStroke(5, Color.BLACK);
+                drawable.setColor(getResources().getColor(R.color.colorLightCoral));
+                lightcoral_btn.setBackground(drawable);
+                color[0] = "lightcoral";
+
+                for (final int i :color_buttonIDS){
+                    final Button btn = dialogView.findViewById(i);
+
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int id = btn.getId();
+
+                            for (int i = 0; i < 4; i++){
+                                Button _btn = dialogView.findViewById(color_buttonIDS[i]);
+                                if (id == color_buttonIDS[i]){
+                                    GradientDrawable drawable = new GradientDrawable();
+                                    drawable.setShape(GradientDrawable.RECTANGLE);
+                                    drawable.setStroke(5, Color.BLACK);
+                                    drawable.setColor(getResources().getColor(color_schemeIDS[i]));
+                                    _btn.setBackground(drawable);
+                                    color[0] = colorList[i];
+                                }else {
+                                    _btn.setBackgroundResource(color_schemeIDS[i]);
+                                }
+                            }
+                        }
+                    });
+                }
+
 
                 Button buttonClose = dialogView.findViewById(R.id.habit_close);
                 buttonClose.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +167,7 @@ public class HabitActivity extends AppCompatActivity {
                         int occur = Integer.parseInt(habit_occur.getText().toString());
                         int cnt = Integer.parseInt(menu_count.getText().toString());
                         Date date = new Date();
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),"lightcoral");
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0]);
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -152,7 +197,10 @@ public class HabitActivity extends AppCompatActivity {
                         menu_count.setText(String.valueOf(count));
                     }
                 });
+                
 
+
+                        
                 alertDialog.show();
 
             }
