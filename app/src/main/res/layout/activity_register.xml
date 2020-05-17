@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        android:contentDescription="@string/logo_description" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -34,6 +35,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:layout_constraintVertical_bias="0.13999999"
+        app:cardCornerRadius="20sp"
         app:cardElevation="20dp">
 
 
@@ -84,7 +86,7 @@
                 tools:ignore="LabelFor" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
@@ -121,6 +123,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
 
