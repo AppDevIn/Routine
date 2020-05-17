@@ -21,4 +21,11 @@
     <string name="sign_up">Sign Up</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
+    <string name="start">Start</string>
+    <string name="side_navigation_drawer">Side Navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">History</string>
+    <string name="startTimer">Start</string>
+    <string name="StopTimer">Give Up</string>
 </resources>
