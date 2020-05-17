@@ -23,9 +23,16 @@
     <string name="cancel">Cancel</string>
     <string name="start">Start</string>
     <string name="side_navigation_drawer">Side Navigation drawer</string>
+    <string name="next">Next</string>
+    <string name="registerName">What is your name?</string>
+    <string name="registerEmail">What is your email?</string>
+    <string name="registerPassword">Enter a secure password</string>
+    <string name="registerDOB">What is your Date of Birth?</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">History</string>
     <string name="startTimer">Start</string>
     <string name="StopTimer">Give Up</string>
+    <string name="logo_description">Routine Logo</string>
+    <string name="dateFormat">DD/MM/YYYY</string>
 </resources>
