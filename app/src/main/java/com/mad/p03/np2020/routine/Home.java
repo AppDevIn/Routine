@@ -57,7 +57,7 @@ public class Home extends AppCompatActivity {
         mGridView.setAdapter(mHomePageAdapter);
 
         //Set the cursor to the start
-        mEditAddList.setSelection(0);
+        mEditAddList.setSelection(0);t
 
 
 
