@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+
 
     <LinearLayout
         android:id="@+id/first"
@@ -68,7 +75,6 @@
         </RelativeLayout>
 
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -232,7 +238,7 @@
         android:layout_below="@id/fourth"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="110dp"
         android:orientation="vertical">
 
         <TextView
@@ -328,9 +334,10 @@
                 android:layout_height="15dp"
                 android:background="@color/colorCyanGreen" />
 
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
-
-
-</RelativeLayout>
+    </TableLayout>
+    
+</ScrollView>
