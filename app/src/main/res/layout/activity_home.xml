@@ -4,6 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home">
+    tools:context=".Home"
 
+
+    android:background="@color/homeBackground">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="191dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/homePageHeading"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtnTodo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/txtAddList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:elevation="18dp"
+        android:visibility="invisible"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
+        android:autofillHints=""
+        android:background="@drawable/add_text_deisgn"
+
+
+        android:hint="@string/add_new_list"
+        android:inputType="text"
+
+        android:padding="10dp"
+        android:textColorHint="@color/black"
+        android:textCursorDrawable="@null"
+
+        android:textSize="18sp"
+        android:translationZ="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <GridView
+        android:id="@+id/section_grid_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+
+
+        android:numColumns="2"
+        android:horizontalSpacing="20dp"
+        android:verticalSpacing="20dp"
+        android:padding="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" >
+
+
+    </GridView>
+
+    <ImageButton
+        android:id="@+id/imgBtnTodo"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="10dp"
+
+        android:src="@drawable/ic_icons8_plus"
+        android:background="@drawable/round_button"
+        android:contentDescription="@string/to_add_new_icon"
+
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.922"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
