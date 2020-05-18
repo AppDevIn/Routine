@@ -1,7 +1,10 @@
 package com.mad.p03.np2020.routine;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -9,12 +12,23 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.mad.p03.np2020.routine.Class.Register;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
-public class Register extends AppCompatActivity {
-    
+public class RegisterActivity extends AppCompatActivity {
+
     //Declare Constants
     final static String TAG = "Register";
     final String EMAILPATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -28,32 +42,30 @@ public class Register extends AppCompatActivity {
     TextView mTxtQuestion;
     EditText mEdInput;
     HashMap<String, String> mRegisterMap = new HashMap<>();
+    ProgressBar mProgressBar;
+    Register mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        Log.d(TAG, "onCreate: Doing binding and startup logic");
+        Log.d(TAG, "UI is being created");
 
         //Find IDs
         mSubmit = findViewById(R.id.btnSubmit);
         mTxtQuestion = findViewById(R.id.txtQuestion);
         mEdInput = findViewById(R.id.input);
+        mProgressBar = findViewById(R.id.progressBar);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: GUI is started ready to move to foreground");
+        Log.d(TAG, "onStart: GUI is ready");
 
-        //Listener to the submit button
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateCardView(true);
-            }
-        });
+        //Default Update before the click
+        starterUI();
 
     }
 
@@ -62,10 +74,15 @@ public class Register extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: GUI is in the Foreground");
+        Log.d(TAG, "onResume: GUI is in the Foreground and Interactive");
 
-        //Default Update before the click
-        starterUI();
+        //Listener to the submit button
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateCardView(true);
+            }
+        });
 
 
     }
@@ -116,6 +133,12 @@ public class Register extends AppCompatActivity {
             mEdInput.setText(mRegisterMap.get("Name"));
 
             Log.d(TAG, "Value exists, Name: " + mRegisterMap.get("Name"));
+
+            //Enable the button
+            mSubmit.setEnabled(true);
+            Log.d(TAG,"Button enabled");
+
+
         }else {
             Log.d(TAG, "No Name value");
             mEdInput.setText("");
@@ -165,6 +188,10 @@ public class Register extends AppCompatActivity {
         //Show previous data if exist
         if(mRegisterMap.get("Email") != null){
             mEdInput.setText(mRegisterMap.get("Email"));
+
+            //Enable the button
+            mSubmit.setEnabled(true);
+            Log.d(TAG,"Button enabled");
 
             Log.d(TAG, "Value exists, Email: " + mRegisterMap.get("Email"));
         }else {
@@ -224,6 +251,10 @@ public class Register extends AppCompatActivity {
         //Show previous data if exist
         if(mRegisterMap.get("Password") != null){
             mEdInput.setText(mRegisterMap.get("Password"));
+
+            //Enable the button
+            mSubmit.setEnabled(true);
+            Log.d(TAG,"Button enabled");
 
             Log.d(TAG, "Value exists, Password: " + mRegisterMap.get("Password"));
         }else {
@@ -294,6 +325,10 @@ public class Register extends AppCompatActivity {
         if(mRegisterMap.get("DOB") != null){
             mEdInput.setText(mRegisterMap.get("DOB"));
 
+            //Enable the button
+            mSubmit.setEnabled(true);
+            Log.d(TAG,"Button enabled");
+
             Log.d(TAG, "Value exists, DOB: " + mRegisterMap.get("DOB"));
         }else {
             Log.d(TAG, "No DOB value");
@@ -332,7 +367,7 @@ public class Register extends AppCompatActivity {
 
                         //Move the next one
                         updateCardView(true);
-                        
+
                     } else {
 
 
@@ -364,10 +399,146 @@ public class Register extends AppCompatActivity {
         Log.d(TAG, mRegisterMap.toString());
 
 
+        //Get the date from String
+        Date DOB = stringToDate(mRegisterMap.get("DOB"));
+
+        //Create a User object
+        mUser = (Register) new Register(mRegisterMap.get("Name"), mRegisterMap.get("Password"), mRegisterMap.get("Email"), DOB );
+
+        //Register the user in firebase and run in background
+        RequestFirebase requestFirebase= new RequestFirebase();
+        requestFirebase.execute();
+
+
+    }
+
+    /**
+     * To convert string to date
+     * The function has 2 possible returns
+     *
+     * if Successfully changed a Date object will be return
+     * else null will be returned
+     *
+     * @param DOB is a String that is provided by the user
+     */
+
+    private Date stringToDate(String DOB){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+        try {
+            return sdf.parse(DOB);
+        } catch (ParseException ex) {
+            Log.e("Exception", "Date unable to change reason: "+ ex.getLocalizedMessage());
+            return null;
+        }
+    }
+
+    /**TODO
+     * Class to process the request to firebase
+     * in the backgrounf
+     */
+
+    @SuppressLint("StaticFieldLeak")
+    public class RequestFirebase extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mUser.createUser(RegisterActivity.this)
+                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() { // Check if the process is completed
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d(TAG, "Firebase password auth is been completed");
+
+                            //Check if is successful
+                            if(task.isSuccessful()){
+                                Log.d(TAG, mUser.getEmailAddr() + " is successfully created");
+
+                                //TODO: Move to another activity
+
+                            }else{
+                                Log.d(TAG, mUser.getEmailAddr() + " is unsuccessfully");
+
+                                //TODO: Do something
+
+                            }
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() { //If firebase fail to create
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(TAG, "Firebase error: " + e.getLocalizedMessage() );
+                    //TODO: Do something
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //Show the spinner
+            loadSpinner(true);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            //Don't show the spinner
+            loadSpinner(false);
+        }
+    }
+
+    /**
+     * Toggle between with spinner
+     * and without spinner
+     *
+     * @param isLoadSpinner is to check if they want the
+     *                      to load.
+     *                      Load the spinner : True
+     *                      Spinner stay invisible : False
+     *
+     */
+    private void loadSpinner(Boolean isLoadSpinner){
+
+        if(isLoadSpinner){
+
+            Log.d(TAG, "Hiding everything expect the spinner");
+
+            //Invisible to prevent from distraction
+            mEdInput.setVisibility(View.INVISIBLE);
+            mSubmit.setVisibility(View.INVISIBLE);
+            mTxtQuestion.setVisibility(View.INVISIBLE);
+
+            //Visible to see the progress
+            mProgressBar.setVisibility(View.VISIBLE);
+
+            Log.d(TAG, "Spinner started");
+
+        }
+        else{
+
+
+            Log.d(TAG, "Hiding the spinner");
+
+            //Remove the progress to have better UI
+            mProgressBar.setVisibility(View.INVISIBLE);
+
+            Log.d(TAG, "Showing the views");
+
+            //Visible to enter information
+            mEdInput.setVisibility(View.VISIBLE);
+            mSubmit.setVisibility(View.VISIBLE);
+            mTxtQuestion.setVisibility(View.VISIBLE);
+
+
+
+
+        }
 
 
 
     }
+
+
+
+
 
 
 }
