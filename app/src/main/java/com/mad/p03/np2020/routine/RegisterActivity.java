@@ -131,31 +131,40 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
+    private void askDefault(String name){
+        //Show previous data if exist
+        if(mRegisterMap.get(name) != null){
+            mEdInput.setText(mRegisterMap.get(name));
+
+            Log.d(TAG, "Value exists, " + name + ": " + mRegisterMap.get(name));
+
+            mSubmit.setEnabled(true);
+            Log.d(TAG, "Button enabled");
+
+
+        }else {
+            Log.d(TAG, "No " + name + " value");
+            mEdInput.setText("");
+
+            //Disable button until name has valid string
+            mSubmit.setEnabled(false);
+            Log.d(TAG, "Button disabled");
+
+        }
+
+        //Change the button Name
+        mSubmit.setText(R.string.submit);
+
+
+    }
+
+
     //Changes the cardview details to name
     private void askName() {
         Log.d(TAG, "Asking for name");
 
-        //Show previous data if exist
-        if(mRegisterMap.get("Name") != null){
-            mEdInput.setText(mRegisterMap.get("Name"));
-
-            Log.d(TAG, "Value exists, Name: " + mRegisterMap.get("Name"));
-
-            //Enable the button
-            mSubmit.setEnabled(true);
-            Log.d(TAG,"Button enabled");
-
-
-        }else {
-            Log.d(TAG, "No Name value");
-            mEdInput.setText("");
-        }
-
-        //Change the button Name
-        mSubmit.setText(R.string.next);
-
-        //Disable button until name has valid string
-        mSubmit.setEnabled(false);
+        //Run the default ask
+        askDefault("Name");
 
         //Ask for the name
         mTxtQuestion.setText(R.string.registerName);
@@ -195,25 +204,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void askEmail() {
         Log.d(TAG, "Ask for Email");
 
-        //Show previous data if exist
-        if(mRegisterMap.get("Email") != null){
-            mEdInput.setText(mRegisterMap.get("Email"));
-
-            //Enable the button
-            mSubmit.setEnabled(true);
-            Log.d(TAG,"Button enabled");
-
-            Log.d(TAG, "Value exists, Email: " + mRegisterMap.get("Email"));
-        }else {
-            Log.d(TAG, "No Email value");
-            mEdInput.setText("");
-        }
-
-        //Change the button Name
-        mSubmit.setText(R.string.next);
-
-        //Disable button until name has valid string
-        mSubmit.setEnabled(false);
+        //Run the default ask
+        askDefault("Email");
 
         //Ask for the email
         mTxtQuestion.setText(R.string.registerEmail);
@@ -261,25 +253,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void askPassword() {
         Log.d(TAG, "Ask for password");
 
-        //Show previous data if exist
-        if(mRegisterMap.get("Password") != null){
-            mEdInput.setText(mRegisterMap.get("Password"));
-
-            //Enable the button
-            mSubmit.setEnabled(true);
-            Log.d(TAG,"Button enabled");
-
-            Log.d(TAG, "Value exists, Password: " + mRegisterMap.get("Password"));
-        }else {
-            Log.d(TAG, "No Password value");
-            mEdInput.setText("");
-        }
-
-        //Change the button Name
-        mSubmit.setText(R.string.next);
-
-        //Disable button until Password has valid string
-        mSubmit.setEnabled(false);
+        //Run the default ask
+        askDefault("Password");
 
         //Set the the input the dots
         mEdInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -334,26 +309,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void askDateOfBirth() {
         Log.d(TAG, "Ask for DOB");
 
-        //Show previous data if exist
-        if(mRegisterMap.get("DOB") != null){
-            mEdInput.setText(mRegisterMap.get("DOB"));
-
-            //Enable the button
-            mSubmit.setEnabled(true);
-            Log.d(TAG,"Button enabled");
-
-            Log.d(TAG, "Value exists, DOB: " + mRegisterMap.get("DOB"));
-        }else {
-            Log.d(TAG, "No DOB value");
-            mEdInput.setText("");
-        }
-
-
-        //Change the button Name
-        mSubmit.setText(R.string.submit);
-
-        //Disable button until Password has valid string
-        mSubmit.setEnabled(false);
+        //Run the default ask
+        askDefault("DOB");
 
         //Ask for date for birth
         mTxtQuestion.setText(R.string.registerDOB);
