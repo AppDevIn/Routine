@@ -1,20 +1,22 @@
 package com.mad.p03.np2020.routine.Class;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.Label;
 import com.mad.p03.np2020.routine.Class.Section;
 
 import com.mad.p03.np2020.routine.Class.Focus;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
-class User {
+public class User {
 
-    private int mName;
+    FirebaseAuth mAuth;
+    private String mName;
     private int mUID;
     private String mEmailAddr;
-    private String mEpassword;
+    private String mPassword;
     private Date mDateOfBirth;
     private List<Section> mSectionList;
     private String mPPID;
@@ -22,24 +24,35 @@ class User {
     private List<Focus> mFocusList;
 
 
-    public User(String email, String password) {
-        // TODO: Please upload any chnages to this class to the main branch`
+    User(String name, String password) {
+        this.mName = name;
+        this.mPassword = password;
     }
 
+    User(String name, String password, String emailAddr, Date dateOfBirth) {
+        this.mName = name;
+        this.mPassword = password;
+        this.mEmailAddr = emailAddr;
+        this.mDateOfBirth = dateOfBirth;
+    }
 
-    public User(String email, String password, String name, Date DOB) {
-        // TODO: Please upload any chnages to this class to the main branch`
+    public String getName() {
+        return mName;
+    }
+
+    public String getEmailAddr() {
+        return mEmailAddr;
+    }
+
+    public String getPassword() {
+        return mPassword;
+    }
+
+    public Date getDateOfBirth() {
+        return mDateOfBirth;
     }
 
     public void changeName(String newName){
-        // TODO: Please upload any chnages to this class to the main branch`
-    }
-
-    private void authenticateUser(){
-        // TODO: Please upload any chnages to this class to the main branch`
-    }
-
-    private void createUser(){
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
@@ -48,14 +61,6 @@ class User {
     }
 
     public void addSection(Section section){
-        // TODO: Please upload any chnages to this class to the main branch`
-    }
-
-    public void resetEmail(){
-        // TODO: Please upload any chnages to this class to the main branch`
-    }
-
-    private void encryptEmail(){
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
