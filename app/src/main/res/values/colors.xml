@@ -8,4 +8,5 @@
     <color name="black">#000000</color>
     <color name="registerColor">#F3FBFF</color>
     <color name="colorHistory">#FCFFE9</color>
+    <color name="ErrorColor">#C0415E</color>
 </resources>

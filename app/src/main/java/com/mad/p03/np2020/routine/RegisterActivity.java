@@ -402,9 +402,9 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    /**TODO
+    /**
      * Class to process the request to firebase
-     * in the backgrounf
+     * in the background
      */
 
     @SuppressLint("StaticFieldLeak")
