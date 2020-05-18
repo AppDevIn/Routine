@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     //Declare member variables
-    Button mSubmit;
+    Button mSubmit, mBack;
     int mProgessCount = 0;
     TextView mTxtQuestion;
     EditText mEdInput;
@@ -56,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         mTxtQuestion = findViewById(R.id.txtQuestion);
         mEdInput = findViewById(R.id.input);
         mProgressBar = findViewById(R.id.progressBar);
+        mBack = findViewById(R.id.btnBack);
 
     }
 
@@ -81,6 +82,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updateCardView(true);
+            }
+        });
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateCardView(false);
             }
         });
 
@@ -153,6 +160,9 @@ public class RegisterActivity extends AppCompatActivity {
         //Ask for the name
         mTxtQuestion.setText(R.string.registerName);
 
+        //Invisible is because going back is not possible
+        mBack.setVisibility(View.INVISIBLE);
+
         //Check for input and ensure the string is not empty
         mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -207,6 +217,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Ask for the email
         mTxtQuestion.setText(R.string.registerEmail);
+
+        //Visible as going is possible
+        mBack.setVisibility(View.VISIBLE);
 
         //Check for input and ensure the string is not empty and is email
         mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
