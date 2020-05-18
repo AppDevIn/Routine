@@ -1,16 +1,24 @@
 package com.mad.p03.np2020.routine.Class;
 
-public class Focus {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Focus implements Parcelable {
     private String mDateTime;
     private String mDuration;
     private String mTask;
-    private boolean mCompletion;
+    private String mCompletion;
 
-    public Focus(String mDate, String mDuration, String mTask, boolean mCompletion) {
+    public Focus(String mDate, String mDuration, String mTask, String mCompletion) {
         this.mDateTime = mDate;
         this.mDuration = mDuration;
         this.mTask = mTask;
         this.mCompletion = mCompletion;
+    }
+
+    public Focus(Focus value) {
     }
 
     public String getmDateTime() {
@@ -37,24 +45,25 @@ public class Focus {
         this.mTask = mTask;
     }
 
-    public boolean ismCompletion() {
+    public String getmCompletion() {
         return mCompletion;
     }
 
-    public void setmCompletion(boolean mCompletion) {
+    public void setmCompletion(String mCompletion) {
         this.mCompletion = mCompletion;
     }
 
     public Focus() {
     }
 
-    public void TimeDone(){
-        //TODO: Please commit any chnages to the class to main branch 
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void exitedNotification(){
-        //TODO: Please commit any chnages to the class to main branch 
-    }
-    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
+    }
 }

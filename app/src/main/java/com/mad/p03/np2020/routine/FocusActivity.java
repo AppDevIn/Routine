@@ -14,6 +14,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -28,6 +29,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -36,45 +38,56 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.FocusAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FocusActivity extends AppCompatActivity implements View.OnClickListener, historyfocus.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
-    private FrameLayout fragmentContainer;
 
-    private ImageButton imageButton;
+    private ImageButton taskSubmit;
     private Button startTimer;
+    private String dateTimeTask, currentTask, mCompletion;
 
-    private TextView min, sec, semicolon;
+    private TextView min, sec, semicolon, textDisplay;
     private ImageView minup, mindown, secup, secdown, mface;
 
+    private EditText taskInput;
+
     private int tmins, tsecs = 0;
-    private long totaltime = 0;
     private boolean bupmin, bdownmin, bupsec, bdownsec;
 
-    private Handler repeatUpdateHandler = new Handler();
+    private Handler repeatUpdateHandler = new Handler(); //For long touch view
     private CountDownTimer mCountDownTimer; //Main Countdowntimer for Focus
     private CountDownTimer eCountDownTimer; //Auto closed for Focus
 
     private boolean mAutoIncrement = false;
     private boolean mAutoDecrement = false;
-    private String BUTTON_STATE = "Running";
+    private String BUTTON_STATE = "EnterTask";
 
-    private long mStartTimeInMillis = 0;
     private long mTimeLeftInMillis = 0;
-    private long mEndTime;
 
     private final String TAG = "Focus";
 
     //Notfication variables
     public static final String CHANNEL_1_ID = "channel1";
-    public static final String CHANNEL_2_ID = "channel2";
 
     String title = "You have an ongoing Focus";
     String message = "Come back now before your Sun becomes depressed!";
+
+    //Firebase Notification
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myRef;
+
+    private ArrayList<Focus> focusList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +96,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
-        fragmentContainer = findViewById(R.id.fragment_container);
+        FrameLayout fragmentContainer = findViewById(R.id.fragment_container);
         intializtion(); //Process of data
 
-
         //ImageButton
-        imageButton = findViewById(R.id.history);
+        ImageButton imageButton = findViewById(R.id.history);
         startTimer = findViewById(R.id.start);
+        taskSubmit = findViewById(R.id.taskSubmit);
 
         //ImageView
         minup = findViewById(R.id.minUp);
@@ -102,6 +115,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         min = findViewById(R.id.mins);
         sec = findViewById(R.id.secs);
         semicolon = findViewById(R.id.semicolon);
+        textDisplay = findViewById(R.id.diplayText);
+        taskInput = findViewById(R.id.taskInput);
 
         //SetOnclickListener
         imageButton.setOnClickListener(this);
@@ -110,6 +125,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         secup.setOnClickListener(this);
         mindown.setOnClickListener(this);
         startTimer.setOnClickListener(this);
+        taskSubmit.setOnClickListener(this);
 
         //SetLongClickListener
         minup.setOnLongClickListener(this);
@@ -125,38 +141,46 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
 
         mface.startAnimation(translateAnimation);
 
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {
-            case R.id.history:
+            case R.id.history: //Open history page
                 openHistory("History");
                 Log.v(TAG, "Open History Page");
                 break;
-            case R.id.minUp:
+            case R.id.minUp: //Increment Minutes
                 tmins = increment(tmins, "min");
                 min.setText(String.format("%02d", tmins));
                 Log.v(TAG, "Increase Minutes: " + tmins);
                 break;
-            case R.id.minDown:
+            case R.id.minDown:  //Decrement Minutes
                 tmins = decrement(tmins, "min");
                 min.setText(String.format("%02d", tmins));
                 Log.v(TAG, "Decrease Minutes: " + tmins);
                 break;
-            case R.id.secUp:
+            case R.id.secUp:    //Increment seconds
                 tsecs = increment(tsecs, "sec");
                 sec.setText(String.format("%02d", tsecs));
                 Log.v(TAG, "Increase Seconds:" + tsecs);
                 break;
-            case R.id.secDown:
+            case R.id.secDown:  //Decrement seconds
                 tsecs = decrement(tsecs, "sec");
                 sec.setText(String.format("%02d", tsecs));
                 Log.v(TAG, "Decrease Seconds:" + tsecs);
                 break;
             case R.id.start:
-                //this button has 4 types: Start, Give up, Try Again, Restart
+                //this button has 4 types: Start, Give up, Try Again, Restart, Enter Task
+                focusTime();
+                break;
+            case R.id.taskSubmit:
+                HideKeyboard();
+                currentTask = taskInput.getText().toString();
+                dateTimeTask = new SimpleDateFormat("dd/MM/yyyy, HH:mm").format(new Date());
+                Log.v(TAG, "Task: " + currentTask + " Date: " + dateTimeTask);
+                BUTTON_STATE = "Running";
+                taskSubmit.setVisibility(View.INVISIBLE);
                 focusTime();
                 break;
         }
@@ -165,14 +189,21 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     private void focusTime() {
         //Running, Fail, Success, Reset
         switch (BUTTON_STATE) {
+            case "EnterTask":
+                ShowKeyboard();
+                taskInput.setText("");
+                taskSubmit.setVisibility(View.VISIBLE);
+                break;
             case "Reset":
+                textDisplay.setText("What are you focusing today?");
                 timerReset();
-                BUTTON_STATE = "Running";
+                BUTTON_STATE = "EnterTask";
                 break;
 
             case "Running":
+                textDisplay.setText("While you are at it, Keep fighting!");
                 timeRunner();
-                totaltime = (tmins * 60) + tsecs;
+                long totaltime = (tmins * 60) + tsecs;
                 long millisInput = totaltime * 1000;
                 Log.v(TAG, String.valueOf(millisInput));
                 BUTTON_STATE = "Fail";
@@ -180,14 +211,20 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case "Success":
+                textDisplay.setText("Yayyyy! You have reach your goal!");
                 timerSuccess();
                 BUTTON_STATE = "Reset";
+                mCompletion = "True";
+                writeFirebase(currentTask, dateTimeTask, tmins + " Minutes", mCompletion);
                 break;
 
             case "Fail":
+                textDisplay.setText("Thanks for giving your best!");
                 timerFail();
                 mCountDownTimer.cancel(); //Pause timer
                 BUTTON_STATE = "Reset";
+                mCompletion = "False";
+                writeFirebase(currentTask, dateTimeTask, tmins + " Minutes", mCompletion);
                 break;
         }
     }
@@ -247,8 +284,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void setTime(long milliseconds) {
-        mStartTimeInMillis = milliseconds;
-        StartTimer(mStartTimeInMillis);
+        StartTimer(milliseconds);
     }
 
     private void updateCountDownText() {
@@ -342,7 +378,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void openHistory(String text) { //Open history tab
-        historyfocus fragmentfocus = historyfocus.newInstance(text);
+        historyfocus fragmentfocus = historyfocus.newInstance(focusList);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
@@ -398,8 +434,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     private void StartTimer(long TimeLeftInMillis) {
         Log.v(TAG, "Timer Start");
 
-        mEndTime = System.currentTimeMillis() + TimeLeftInMillis;
-
         mCountDownTimer = new CountDownTimer(TimeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -420,6 +454,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     private void intializtion() {
         tmins = 0;
         tsecs = 0;
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        FirebaseDatabase();
     }
 
     private void createNotification() {
@@ -451,5 +487,49 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
         notificationManager.notify(1, notification);
 
+    }
+
+    //Firebase
+    private void FirebaseDatabase(){ //Firebase Reference
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference("FocusData");
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                focusList.clear();
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    Focus focus = singleSnapshot.getValue(Focus.class);
+                    focusList.add(focus);
+                    Log.v(TAG, "Adding each list");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+
+    }
+
+    private void writeFirebase(String mTask, String mDateTimeTask, String mDuration, String mCompletion) {
+        Focus user = new Focus(mDateTimeTask, mDuration, mTask, mCompletion);
+        myRef.child(String.valueOf(focusList.size() + 1)).setValue(user);
+    }
+
+
+    private void ShowKeyboard(){
+        taskInput.setVisibility(View.VISIBLE);
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.showSoftInput(taskInput, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void HideKeyboard(){
+        taskInput.setVisibility(View.INVISIBLE);
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(taskInput.getWindowToken(), 0);
     }
 }
