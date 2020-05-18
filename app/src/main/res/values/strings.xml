@@ -28,6 +28,7 @@
     <string name="registerEmail">What is your email?</string>
     <string name="registerPassword">Enter a secure password</string>
     <string name="registerDOB">What is your Date of Birth?</string>
+    <string name="empty_text_error">This input is empty</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">History</string>
@@ -36,4 +37,7 @@
     <string name="logo_description">Routine Logo</string>
     <string name="dateFormat">DD/MM/YYYY</string>
     <string name="back">Back</string>
+    <string name="email_text_error">Please ensure you have @ and .com</string>
+    <string name="date_text_error">Does not match DD/MM/YYYY Format</string>
+    <string name="pwd_strong_error">Password must have 10, a, A and 8 characters</string>
 </resources>

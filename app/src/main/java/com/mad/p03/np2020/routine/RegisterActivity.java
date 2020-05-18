@@ -39,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     //Declare member variables
     Button mSubmit, mBack;
     int mProgessCount = 0;
-    TextView mTxtQuestion;
+    TextView mTxtQuestion, mTxtErrorMessage;
     EditText mEdInput;
     HashMap<String, String> mRegisterMap = new HashMap<>();
     ProgressBar mProgressBar;
@@ -57,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEdInput = findViewById(R.id.input);
         mProgressBar = findViewById(R.id.progressBar);
         mBack = findViewById(R.id.btnBack);
+        mTxtErrorMessage = findViewById(R.id.txtError);
 
     }
 
@@ -158,6 +159,22 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private void updateUI(String name, TextView textView){
+        Log.d(TAG, name + ": " + textView.getText().toString());
+
+        mSubmit.setEnabled(true);
+        Log.d(TAG,"Button enabled");
+
+        //Save the data
+        mRegisterMap.put(name, textView.getText().toString());
+
+        //Move the next one
+        updateCardView(true);
+
+        //Make the text invisible
+        toggleError();
+    }
+
 
     //Changes the cardview details to name
     private void askName() {
@@ -179,20 +196,12 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 if(!textView.getText().toString().isEmpty()){
-                    Log.d(TAG, "Name: " + textView.getText().toString());
-
-                    mSubmit.setEnabled(true);
-                    Log.d(TAG,"Button enabled");
-
-                    //Save the data
-                    mRegisterMap.put("Name", textView.getText().toString());
-
-                    //Move the next one
-                    updateCardView(true);
+                    updateUI("Name", textView);
                 }else {
                     Log.d(TAG, "Condition failed: Text is empty");
 
-                    //TODO: Error message
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
                 }
 
                 return false;
@@ -221,26 +230,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(!textView.getText().toString().isEmpty()){
                     if(textView.getText().toString().trim().matches(EMAILPATTERN)) {
-
-
-                        Log.d(TAG, "Email: " + textView.getText().toString());
-
-                        mSubmit.setEnabled(true);
-                        Log.d(TAG, "Button enabled");
-
-                        //Save the data
-                        mRegisterMap.put("Email", textView.getText().toString());
-
-                        //Move the next one
-                        updateCardView(true);
+                        updateUI("Email", textView);
                     }else{
-                        //TODO: ERROR Message
+                        //Error message for email when .com and @ is not present
                         Log.d(TAG, "Condition failed: Text does not have @");
+                        toggleError(R.string.email_text_error);
                     }
                 }else {
                     Log.d(TAG, "Condition failed: Text is empty");
 
-                    //TODO: Error message
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
                 }
 
                 return false;
@@ -270,16 +270,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(!textView.getText().toString().isEmpty()){
                     if(textView.getText().toString().trim().matches(STRONGPASSWORD)) {
-                        Log.d(TAG, "Password: " + textView.getText().toString());
-
-                        mSubmit.setEnabled(true);
-                        Log.d(TAG, "Button enabled");
-
-                        //Save the data
-                        mRegisterMap.put("Password", textView.getText().toString());
-
-                        //Move the next one
-                        updateCardView(true);
+                        updateUI("Password", textView);
                     } else {
 
 
@@ -292,12 +283,15 @@ public class RegisterActivity extends AppCompatActivity {
 
                         Log.d(TAG, "Condition failed: Text doesn't meet strong password requirement");
 
-                        //TODO: Error message
+                        //Error message for password when password doesn't
+                        //have digit, lower and upper case, special character and min 8 letter
+                        toggleError(R.string.pwd_strong_error);
                     }
                 } else {
                     Log.d(TAG, "Condition failed: Text is empty");
 
-                    //TODO: Error message
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
                 }
 
                 return false;
@@ -327,35 +321,18 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(!textView.getText().toString().isEmpty()){
                     if(textView.getText().toString().trim().matches(DOBPATTERN)) {
-                        Log.d(TAG, "DOB: " + textView.getText().toString());
-
-                        mSubmit.setEnabled(true);
-                        Log.d(TAG, "Button enabled");
-
-                        //Save the data
-                        mRegisterMap.put("DOB", textView.getText().toString());
-
-                        //Move the next one
-                        updateCardView(true);
-
+                        updateUI("DOB", textView);
                     } else {
-
-
-                        //a digit must occur at least once
-                        //a lower case letter must occur at least once
-                        //an upper case letter must occur at least once
-                        //a special character must occur at least once
-                        //    no whitespace allowed in the entire string
-                        //anything, at least eight places though
-
                         Log.d(TAG, "Condition failed: Text doesn't meet DOB (DD/MM/YYYY) requirement");
 
-                        //TODO: Error message
+                        //Error message for DOB when it does match DD/MM/YYYY
+                        toggleError(R.string.date_text_error);
                     }
                 } else {
                     Log.d(TAG, "Condition failed: Text is empty");
 
-                    //TODO: Error message
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
                 }
 
                 return false;
@@ -504,6 +481,26 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+    }
+
+    /**
+     * To toggle between showing and hiding the error text view
+     *
+     * @param resId is the String in strings.xml to show the error message
+     * @param isError is used to determine if is a error
+     */
+    private void toggleError(int resId){
+
+        Log.d(TAG, "Showing error message");
+        mTxtErrorMessage.setVisibility(View.VISIBLE);
+        //Error message for empty text
+        mTxtErrorMessage.setText(resId);
+
+    }
+
+    private void toggleError(){
+        Log.d(TAG, "Error text disappear");
+        mTxtErrorMessage.setVisibility(View.INVISIBLE);
     }
 
 
