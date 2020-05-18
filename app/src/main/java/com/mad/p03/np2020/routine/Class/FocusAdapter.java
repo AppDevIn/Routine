@@ -49,7 +49,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusViewHol
         holder.duration.setText(focusList.get(position).getmDuration());
         holder.Task.setText(focusList.get(position).getmTask());
         holder.date.setText(focusList.get(position).getmDateTime());
-        if(focusList.get(position).ismCompletion()) {
+        if(focusList.get(position).getmCompletion().equals("True")) {
             holder.iconComplete.setImageResource(R.drawable.ic_tick);
         }
         else{
