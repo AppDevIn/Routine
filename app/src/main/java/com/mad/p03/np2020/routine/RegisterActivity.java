@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -175,6 +176,30 @@ public class RegisterActivity extends AppCompatActivity {
         toggleError();
     }
 
+    /**
+     * show the error text view and make it visible
+     *
+     * @param resId is the String in strings.xml to show the error message
+     *
+     */
+    private void toggleError(int resId){
+
+        Log.d(TAG, "Showing error message");
+        mTxtErrorMessage.setVisibility(View.VISIBLE);
+        //Error message for empty text
+        mTxtErrorMessage.setText(resId);
+
+    }
+
+    /**
+     * make the text invisible
+     */
+    private void toggleError(){
+        Log.d(TAG, "Error text disappear");
+        mTxtErrorMessage.setVisibility(View.INVISIBLE);
+    }
+
+
 
     //Changes the cardview details to name
     private void askName() {
@@ -342,6 +367,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
     
     private void startRegistration(){
+
         Log.d(TAG, "Start to register ");
         Log.d(TAG, mRegisterMap.toString());
 
@@ -399,7 +425,11 @@ public class RegisterActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Log.d(TAG, mUser.getEmailAddr() + " is successfully created");
 
-                                //TODO: Move to another activity
+                                //Initialize in firebase
+                                mUser.initDate();
+
+                                //Move to another activity
+                                moveToHome();
 
                             }else{
                                 Log.d(TAG, mUser.getEmailAddr() + " is unsuccessfully");
@@ -475,38 +505,27 @@ public class RegisterActivity extends AppCompatActivity {
             mTxtQuestion.setVisibility(View.VISIBLE);
 
 
-
-
         }
-
-
 
     }
 
     /**
-     * To toggle between showing and hiding the error text view
-     *
-     * @param resId is the String in strings.xml to show the error message
-     * @param isError is used to determine if is a error
+     * Move to the home page
      */
-    private void toggleError(int resId){
-
-        Log.d(TAG, "Showing error message");
-        mTxtErrorMessage.setVisibility(View.VISIBLE);
-        //Error message for empty text
-        mTxtErrorMessage.setText(resId);
-
+    private void moveToHome(){
+        Intent homePage = new Intent(RegisterActivity.this, Home.class);
+        startActivity(homePage);
     }
 
-    private void toggleError(){
-        Log.d(TAG, "Error text disappear");
-        mTxtErrorMessage.setVisibility(View.INVISIBLE);
+    private void updateFailedUI(){
+        //Change the progress to 0
+        mProgessCount = 0;
+
+        //TODO Show error message
+
+        //TODO goes back to the start(Name)
+
     }
-
-
-
-
-
 
 }
 

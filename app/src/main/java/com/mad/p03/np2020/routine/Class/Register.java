@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mad.p03.np2020.routine.RegisterActivity;
 
 import java.util.Date;
@@ -17,7 +18,6 @@ import androidx.annotation.NonNull;
 
 public class Register extends User {
 
-    private FirebaseAuth mAuth;
 
     public Register(String name, String password, String Email, Date DOB) {
         super(name, password, Email, DOB);
@@ -48,5 +48,9 @@ public class Register extends User {
      * At same time save store the firebase user
      *
      */
+    public void initDate(){
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+    }
 
 }
