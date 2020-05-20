@@ -421,7 +421,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         Log.d(TAG, "Start to register ");
 
-
         //Register the user in firebase and run in background
         RequestFirebase requestFirebase= new RequestFirebase();
         requestFirebase.execute();
@@ -468,7 +467,7 @@ public class RegisterActivity extends AppCompatActivity {
             });
             return null;
         }
-        
+
     }
 
 
@@ -493,7 +492,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void firebaseFailedError(String errorMessage){
         Log.d(TAG, "firebaseFailedError: Alert dialog being created");
         //Change the progress to 0
-        mProgessCount = 0;
+        mProgessCount = 2; //To ensure it start from the email
 
         //Show error dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);

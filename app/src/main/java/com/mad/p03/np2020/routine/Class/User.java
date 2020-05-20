@@ -12,6 +12,7 @@ import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.R;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,7 +64,7 @@ public class User {
                 
             }else{
                 //Error message for email when .com and @ is not present
-                throw new FormatException("Text does not have @");
+                throw new FormatException("Text does not have @ and .com");
             
                 
             }
@@ -131,8 +132,10 @@ public class User {
         return mPassword;
     }
 
-    public Date getDateOfBirth() {
-        return mDateOfBirth;
+    public String getDateOfBirth() {
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return mDateOfBirth == null ? null : dateFormat.format(mDateOfBirth);
     }
 
     public void changeName(String newName){
