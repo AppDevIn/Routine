@@ -93,6 +93,8 @@ public class User implements Parcelable {
     public void removeFocusList(FocusHolder focusHolder){
         this.mFocusList.remove(focusHolder);
     }
+    private List<Label> mListLabel;
+    private List<Focus> mFocusList;
 
     public User() {
     }
@@ -124,12 +126,12 @@ public class User implements Parcelable {
             String EMAILPATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
             if(emailAdd.trim().matches(EMAILPATTERN)) {
                 mEmailAddr = emailAdd;
-                
+
             }else{
                 //Error message for email when .com and @ is not present
                 throw new FormatException("Text does not have @ and .com");
-            
-                
+
+
             }
         }else {
             throw new FormatException("Text is empty");
@@ -152,7 +154,7 @@ public class User implements Parcelable {
                 //a special character must occur at least once
                 //    no whitespace allowed in the entire string
                 //anything, at least eight places though
-                
+
                 //Error message for password when password doesn't
                 //have digit, lower and upper case, special character and min 8 letter
                 throw new FormatException("Text doesn't meet strong password requirement");
@@ -161,7 +163,7 @@ public class User implements Parcelable {
             //Error message for empty text
             throw new FormatException("Text is empty");
         }
-        
+
     }
 
     public void setDateOfBirth(String dateOfBirth) throws FormatException{
