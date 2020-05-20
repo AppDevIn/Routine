@@ -3,6 +3,8 @@ package com.mad.p03.np2020.routine;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -25,7 +27,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -453,6 +462,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 Log.i(TAG, "onComplete: The current user's email is " + mUser.getAuth().getEmail());
 
+                                //Save data
+                                SaveFirebaseTask saveFirebaseTask = new SaveFirebaseTask();
+                                saveFirebaseTask.execute();
+
                                 //Move to another activity
                                 moveToHome();
 
@@ -488,7 +501,7 @@ public class RegisterActivity extends AppCompatActivity {
     /**
      * Will show a error message to the user
      *
-     * Upon pressibng move the email
+     * Upon pressing move the email
      * Reason email is because the error is likely to be a firebase error
      * Which is either password or email going to the email since is before the password
      *
@@ -521,6 +534,42 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "firebaseFailedError: Alert dialog being Showed");
 
     }
+
+
+    /**
+     * Upload Name, Email, DOB up the firebase
+     * After registering successfully
+     *
+     * It will be done in the background
+     */
+    @SuppressLint("StaticFieldLeak")
+    private class SaveFirebaseTask extends AsyncTask<Void, Void, Void>{
+
+        DatabaseReference mDatabase;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.i(TAG, "onPreExecute(): Creating database reference");
+            //Getting a database reference to Users
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mUser.getUID());
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            //Setting data into the user portion
+            mDatabase.child("Name").setValue(mUser.getName()); //Setting the name
+            mDatabase.child("Email").setValue(mUser.getEmailAdd()); //Setting the Email
+            mDatabase.child("DOB").setValue("08/10/2000"); //Setting the DOB
+
+            Log.i(TAG, "doInBackground(): Name, Email and DOB are uploaded");
+
+            return null;
+        }
+    }
+
+
 
 
 
