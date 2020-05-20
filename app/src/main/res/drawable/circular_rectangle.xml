@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<vector-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:aapt="http://schemas.android.com/aapt"-->
+<!--    android:width="356dp"-->
+<!--    android:height="35dp"-->
+<!--    android:viewportWidth="356"-->
+<!--    android:viewportHeight="35"-->
+<!--    -->
+<!--    >-->
+
+<!--    <group>-->
+
+<!--        <clip-path-->
+<!--            android:pathData="M10 0H346C351.523 0 356 4.47715 356 10V25C356 30.5228 351.523 35 346 35H10C4.47715 35 0 30.5228 0 25V10C0 4.47715 4.47715 0 10 0Z"-->
+<!--            />-->
+
+<!--        <path-->
+<!--            android:pathData="M0 0V35H356V0"-->
+<!--            android:fillColor="#FFFFFF"-->
+<!--            />-->
+
+<!--    </group>-->
+
+
+
+<!--</vector>-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item >
+        <shape
+            android:shape="rectangle">
+            <solid android:color="@android:color/darker_gray" />
+            <corners android:radius="5dp"/>
+        </shape>
+    </item>
+    <item android:right="1dp" android:left="1dp" android:bottom="2dp">
+        <shape
+
+            android:shape="rectangle">
+            <solid android:color="@android:color/white"/>
+            <corners android:radius="5dp"/>
+            <size android:height="35dp"/>
+        </shape>
+    </item>
+</layer-list>

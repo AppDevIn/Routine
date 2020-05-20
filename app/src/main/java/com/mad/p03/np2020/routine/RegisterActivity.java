@@ -1,10 +1,13 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -20,8 +23,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.mad.p03.np2020.routine.Class.Register;
+import com.mad.p03.np2020.routine.Class.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mEdInput;
     HashMap<String, String> mRegisterMap = new HashMap<>();
     ProgressBar mProgressBar;
-    Register mUser;
+    User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,11 @@ public class RegisterActivity extends AppCompatActivity {
         //Default Update before the click
         starterUI();
 
+        //change Background olor of button transparent
+        mSubmit.setBackgroundColor(Color.TRANSPARENT);
+
+
+
     }
 
 
@@ -80,12 +89,6 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "onResume: GUI is in the Foreground and Interactive");
 
         //Listener to the submit button
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateCardView(true);
-            }
-        });
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +97,27 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: Activity not in foreground");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: The activity is no longer visible");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: Activity no longer exists");
     }
 
     //UI used when the layout is foreground
@@ -141,23 +165,14 @@ public class RegisterActivity extends AppCompatActivity {
 
             Log.d(TAG, "Existing value, " + name + ": " + mRegisterMap.get(name));
 
-            mSubmit.setEnabled(true);
-            Log.d(TAG, "Button enabled");
-
-
-
         }else {
             Log.d(TAG, "No Existing value, " + name + " value");
             mEdInput.setText("");
 
-            //Disable button until name has valid string
-            mSubmit.setEnabled(false);
-            Log.d(TAG, "Button disabled");
-
         }
 
         //Change the button Name
-        mSubmit.setText(R.string.submit);
+        //mSubmit.setText(R.string.submit);
 
 
     }
@@ -165,8 +180,6 @@ public class RegisterActivity extends AppCompatActivity {
     private void updateUI(String name, TextView textView){
         Log.d(TAG, name + ": " + textView.getText().toString());
 
-        mSubmit.setEnabled(true);
-        Log.d(TAG,"Button enabled");
 
         //Save the data
         mRegisterMap.put(name, textView.getText().toString());
@@ -224,18 +237,33 @@ public class RegisterActivity extends AppCompatActivity {
         mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-
-
+                Log.i(TAG, "onClick: " + textView.getText().toString());
                 if(!textView.getText().toString().isEmpty()){
                     updateUI("Name", textView);
                 }else {
-                    Log.d(TAG, "Condition failed: Text is empty");
+                    Log.e(TAG, "Condition failed: Text is empty");
 
                     //Error message for empty text
                     toggleError(R.string.empty_text_error);
                 }
 
                 return false;
+            }
+        });
+
+        //Setting a listener for the button
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "onClick: " + mEdInput.getText().toString());
+                if(!mEdInput.getText().toString().isEmpty()){
+                    updateUI("Name", mEdInput);
+                }else {
+                    Log.e(TAG, "Condition failed: Text is empty");
+
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
+                }
             }
         });
     }
@@ -264,11 +292,11 @@ public class RegisterActivity extends AppCompatActivity {
                         updateUI("Email", textView);
                     }else{
                         //Error message for email when .com and @ is not present
-                        Log.d(TAG, "Condition failed: Text does not have @");
+                        Log.e(TAG, "Condition failed: Text does not have @");
                         toggleError(R.string.email_text_error);
                     }
                 }else {
-                    Log.d(TAG, "Condition failed: Text is empty");
+                    Log.e(TAG, "Condition failed: Text is empty");
 
                     //Error message for empty text
                     toggleError(R.string.empty_text_error);
@@ -278,6 +306,26 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        //Setting a listener for the button
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!mEdInput.getText().toString().isEmpty()){
+                    if(mEdInput.getText().toString().trim().matches(EMAILPATTERN)) {
+                        updateUI("Email", mEdInput);
+                    }else{
+                        //Error message for email when .com and @ is not present
+                        Log.e(TAG, "Condition failed: Text does not have @");
+                        toggleError(R.string.email_text_error);
+                    }
+                }else {
+                    Log.e(TAG, "Condition failed: Text is empty");
+
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
+                }
+            }
+        });
     }
 
     //Changes the cardview details to Password
@@ -292,6 +340,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Aak for password
         mTxtQuestion.setText(R.string.registerPassword);
+
+        //TODO: Set dot as the password
 
         //Check for input and ensure the string is not empty
         mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -312,20 +362,53 @@ public class RegisterActivity extends AppCompatActivity {
                         //    no whitespace allowed in the entire string
                         //anything, at least eight places though
 
-                        Log.d(TAG, "Condition failed: Text doesn't meet strong password requirement");
+                        Log.e(TAG, "Condition failed: Text doesn't meet strong password requirement");
 
                         //Error message for password when password doesn't
                         //have digit, lower and upper case, special character and min 8 letter
                         toggleError(R.string.pwd_strong_error);
                     }
                 } else {
-                    Log.d(TAG, "Condition failed: Text is empty");
+                    Log.e(TAG, "Condition failed: Text is empty");
 
                     //Error message for empty text
                     toggleError(R.string.empty_text_error);
                 }
 
                 return false;
+            }
+        });
+
+        //Setting a listener for the button
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!mEdInput.getText().toString().isEmpty()){
+                    if(mEdInput.getText().toString().trim().matches(STRONGPASSWORD)) {
+                        updateUI("Password", mEdInput);
+                    } else {
+
+
+                        //a digit must occur at least once
+                        //a lower case letter must occur at least once
+                        //an upper case letter must occur at least once
+                        //a special character must occur at least once
+                        //    no whitespace allowed in the entire string
+                        //anything, at least eight places though
+
+                        Log.e(TAG, "Condition failed: Text doesn't meet strong password requirement");
+
+                        //Error message for password when password doesn't
+                        //have digit, lower and upper case, special character and min 8 letter
+                        toggleError(R.string.pwd_strong_error);
+                    }
+                } else {
+                    Log.e(TAG, "Condition failed: Text is empty");
+
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
+                }
+
             }
         });
     }
@@ -360,7 +443,7 @@ public class RegisterActivity extends AppCompatActivity {
                         toggleError(R.string.date_text_error);
                     }
                 } else {
-                    Log.d(TAG, "Condition failed: Text is empty");
+                    Log.e(TAG, "Condition failed: Text is empty");
 
                     //Error message for empty text
                     toggleError(R.string.empty_text_error);
@@ -370,8 +453,33 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        //Setting a listener for the button
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(!mEdInput.getText().toString().isEmpty()){
+                    if(mEdInput.getText().toString().trim().matches(DOBPATTERN)) {
+                        updateUI("DOB", mEdInput);
+                    } else {
+                        Log.e(TAG, "Condition failed: Text doesn't meet DOB (DD/MM/YYYY) requirement");
+
+                        //Error message for DOB when it does match DD/MM/YYYY
+                        toggleError(R.string.date_text_error);
+                    }
+                } else {
+                    Log.e(TAG, "Condition failed: Text is empty");
+
+                    //Error message for empty text
+                    toggleError(R.string.empty_text_error);
+                }
+
+
+            }
+        });
+
     }
-    
+
     private void startRegistration(){
 
         Log.d(TAG, "Start to register ");
@@ -382,7 +490,7 @@ public class RegisterActivity extends AppCompatActivity {
         Date DOB = stringToDate(mRegisterMap.get("DOB"));
 
         //Create a User object
-        mUser = (Register) new Register(mRegisterMap.get("Name"), mRegisterMap.get("Password"), mRegisterMap.get("Email"), DOB );
+        mUser = new User();
 
         //Register the user in firebase and run in background
         RequestFirebase requestFirebase= new RequestFirebase();
@@ -417,10 +525,10 @@ public class RegisterActivity extends AppCompatActivity {
      */
     @SuppressLint("StaticFieldLeak")
     public class RequestFirebase extends AsyncTask<Void, Void, Void>{
-
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         @Override
         protected Void doInBackground(Void... voids) {
-            mUser.createUser(RegisterActivity.this)
+            auth.createUserWithEmailAndPassword(mRegisterMap.get("Email"),mRegisterMap.get("Password"))
                     .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() { // Check if the process is completed
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -430,16 +538,9 @@ public class RegisterActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Log.d(TAG, mUser.getEmailAddr() + " is successfully created");
 
-                                //Initialize in firebase
-                                mUser.initDate();
 
                                 //Move to another activity
                                 moveToHome();
-
-                            }else{
-                                Log.d(TAG, mUser.getEmailAddr() + " is unsuccessfully");
-
-                                //TODO: Do something
 
                             }
 
@@ -447,8 +548,11 @@ public class RegisterActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() { //If firebase fail to create
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, mUser.getEmailAddr() + " is unsuccessfully");
                     Log.e(TAG, "Firebase error: " + e.getLocalizedMessage() );
-                    //TODO: Do something
+
+                    //Show error dialog to the user and move the email section
+                    firebaseFailedError(e.getLocalizedMessage());
                 }
             });
             return null;
@@ -522,15 +626,46 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(homePage);
     }
 
-    private void updateFailedUI(){
+
+    /**
+     * Will show a error message to the user
+     *
+     * Upon pressibng move the email
+     * Reason email is because the error is likely to be a firebase error
+     * Which is either password or email going to the email since is before the password
+     *
+     */
+    private void firebaseFailedError(String errorMessage){
+        Log.d(TAG, "firebaseFailedError: Alert dialog being created");
         //Change the progress to 0
         mProgessCount = 0;
 
-        //TODO Show error message
+        //Show error dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
 
-        //TODO goes back to the start(Name)
+        //Setting content into the builder
+        builder.setTitle("Firebase error");
+        builder.setMessage(errorMessage);
+        builder.setIcon(R.drawable.ic_error_black_24dp);
+
+        //To go the email
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //goes back to the start(Email)
+                askEmail();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        Log.d(TAG, "firebaseFailedError: Alert dialog being Showed");
 
     }
+
+
+
+
 
 }
 

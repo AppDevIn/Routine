@@ -6,7 +6,8 @@
     <color name="colorFocus">#CAF4F4</color>
     <color name="homeBackground">#FCFFE9</color>
     <color name="black">#000000</color>
-    <color name="registerColor">#F3FBFF</color>
+    <color name="registerColor">#4ECDC4</color>
     <color name="colorHistory">#FCFFE9</color>
-    <color name="ErrorColor">#C0415E</color>
+    <color name="ErrorColor">#EC6060</color>
+    <color name="grey">#908989</color>
 </resources>

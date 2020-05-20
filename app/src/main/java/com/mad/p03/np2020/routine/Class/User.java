@@ -23,6 +23,8 @@ public class User {
     private List<Label> mListLabel;
     private List<Focus> mFocusList;
 
+    public User() {
+    }
 
     User(String name, String password) {
         this.mName = name;

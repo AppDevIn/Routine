@@ -19,7 +19,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="background">Background</string>
     <string name="sign_up">Sign Up</string>
-    <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
     <string name="start">Start</string>
     <string name="side_navigation_drawer">Side Navigation drawer</string>
@@ -29,6 +28,7 @@
     <string name="registerPassword">Enter a secure password</string>
     <string name="registerDOB">What is your Date of Birth?</string>
     <string name="empty_text_error">This input is empty</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">History</string>
@@ -40,4 +40,6 @@
     <string name="email_text_error">Please ensure you have @ and .com</string>
     <string name="date_text_error">Does not match DD/MM/YYYY Format</string>
     <string name="pwd_strong_error">Password must have 10, a, A and 8 characters</string>
+    <string name="continue_txt">Continue</string>
+    <string name="ok">Ok</string>
 </resources>
