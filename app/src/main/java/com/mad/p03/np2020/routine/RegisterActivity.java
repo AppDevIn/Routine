@@ -448,6 +448,10 @@ public class RegisterActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Log.d(TAG, mUser.getEmailAdd() + " is successfully created");
 
+                                //Store the current user details
+                                mUser.setAuth(auth.getCurrentUser());
+
+                                Log.i(TAG, "onComplete: The current user's email is " + mUser.getAuth().getEmail());
 
                                 //Move to another activity
                                 moveToHome();

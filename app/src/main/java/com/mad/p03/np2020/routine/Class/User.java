@@ -5,6 +5,7 @@ import android.nfc.FormatException;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.Label;
 import com.mad.p03.np2020.routine.Class.Section;
@@ -20,9 +21,9 @@ import java.util.List;
 
 public class User {
 
-    FirebaseAuth mAuth;
+    FirebaseUser mAuth;
     private String mName;
-    private int mUID;
+    private String mUID;
     private String mEmailAddr;
     private String mPassword;
     private Date mDateOfBirth;
@@ -118,6 +119,25 @@ public class User {
             throw new  FormatException("Text is empty");
         }
 
+    }
+
+    public void setAuth(FirebaseUser auth) {
+        mAuth = auth;
+
+        //Set the UID for this user
+        this.setUID(this.mAuth.getUid());
+    }
+
+    public void setUID(String UID) {
+        mUID = UID;
+    }
+
+    public String getUID() {
+        return mUID;
+    }
+
+    public FirebaseUser getAuth() {
+        return mAuth;
     }
 
     public String getName() {
