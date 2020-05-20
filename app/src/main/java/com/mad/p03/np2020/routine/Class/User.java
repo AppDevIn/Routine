@@ -40,11 +40,11 @@ public class User {
         this.mPassword = password;
     }
 
-    User(String name, String password, String emailAddr, Date dateOfBirth) {
+    public User(String name, String password, String emailAddr) {
         this.mName = name;
         this.mPassword = password;
         this.mEmailAddr = emailAddr;
-        this.mDateOfBirth = dateOfBirth;
+//        this.mDateOfBirth = dateOfBirth;
     }
 
     public void setName(String name) throws FormatException {
