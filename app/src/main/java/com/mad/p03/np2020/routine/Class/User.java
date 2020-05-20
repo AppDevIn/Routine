@@ -16,9 +16,9 @@ class User {
     private String mEmailAddr;
     private String mEpassword;
     private Date mDateOfBirth;
-    private List<app.Class.Section> mSectionList;
+    private List<Section> mSectionList;
     private String mPPID;
-    private List<app.Class.Label> mListLabel;
+    private List<Label> mListLabel;
     private List<Focus> mFocusList;
 
 

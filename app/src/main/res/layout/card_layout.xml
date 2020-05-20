@@ -7,40 +7,18 @@
     android:background="@color/yellow">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottom_section"
-        android:layout_width="match_parent"
-        android:padding="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="280dp"
-            android:layout_height="38dp"
-            android:onClick="modifyList"
-            android:padding="10dp"
-            android:text="@string/modify"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/rounded_button"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_section"
         android:layout_width="match_parent"
-        android:layout_height="102dp"
-        android:layout_above="@+id/bottom_section"
+        android:layout_height="116dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="572dp"
+        android:layout_marginBottom="558dp"
         android:padding="10dp">
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="addItemToList"
             android:text="Navbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,11 +26,11 @@
             app:layout_constraintVertical_bias="0.037" />
 
         <EditText
+            android:autofillHints="Enter Card Name"
             android:id="@+id/id_edit_text"
             android:layout_width="207dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="[Card Name]"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
