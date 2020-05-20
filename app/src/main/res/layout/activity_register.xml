@@ -93,6 +93,8 @@
 
                 android:layout_marginEnd="24dp"
                 android:autofillHints=""
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/black"
 
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -119,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:text="@string/holder"
                 android:textColor="@color/ErrorColor"
                 android:visibility="invisible"
@@ -138,7 +140,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
 
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:text="@string/sign_up"
                 android:textColor="@color/black"
 

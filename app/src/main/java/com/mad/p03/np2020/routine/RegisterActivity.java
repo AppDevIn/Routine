@@ -113,6 +113,9 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         switch (mProgessCount){
+            case 1:
+                askName();
+                break;
             case 2:
                 askEmail();
                 break;
@@ -125,9 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
             case 5:
                 startRegistration();
                 break;
-            case 1:
             default:
-                askName();
                 break;
         }
     }
@@ -138,14 +139,15 @@ public class RegisterActivity extends AppCompatActivity {
         if(mRegisterMap.get(name) != null){
             mEdInput.setText(mRegisterMap.get(name));
 
-            Log.d(TAG, "Value exists, " + name + ": " + mRegisterMap.get(name));
+            Log.d(TAG, "Existing value, " + name + ": " + mRegisterMap.get(name));
 
             mSubmit.setEnabled(true);
             Log.d(TAG, "Button enabled");
 
 
+
         }else {
-            Log.d(TAG, "No " + name + " value");
+            Log.d(TAG, "No Existing value, " + name + " value");
             mEdInput.setText("");
 
             //Disable button until name has valid string
@@ -192,12 +194,16 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * make the text invisible
+     * Make the text invisible
      */
     private void toggleError(){
-        Log.d(TAG, "Error text disappear");
-        mTxtErrorMessage.setVisibility(View.INVISIBLE);
+        if(mTxtErrorMessage.getVisibility() == View.VISIBLE){
+            Log.d(TAG, "Error text disappear");
+            mTxtErrorMessage.setVisibility(View.INVISIBLE);
+        }
     }
+
+
 
 
 
@@ -409,7 +415,6 @@ public class RegisterActivity extends AppCompatActivity {
      * Class to process the request to firebase
      * in the background
      */
-
     @SuppressLint("StaticFieldLeak")
     public class RequestFirebase extends AsyncTask<Void, Void, Void>{
 
