@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,12 +9,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_section"
-        android:layout_width="match_parent"
-        android:layout_height="290dp"
+        android:layout_width="410dp"
+        android:layout_height="184dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="558dp"
-        android:padding="10dp">
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <Button
             android:id="@+id/button"
@@ -39,7 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.125" />
+            app:layout_constraintVertical_bias="0.065" />
 
         <Button
             android:id="@+id/schefuleButton"
@@ -59,9 +63,9 @@
             android:background="@drawable/label"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.615"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.555">
+            app:layout_constraintTop_toTopOf="parent">
 
         </TextView>
 
@@ -83,10 +87,10 @@
             android:text="+ Add Step"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.016"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.984" />
+            app:layout_constraintVertical_bias="0.957" />
 
         <Button
             android:id="@+id/stepAddButton2"
@@ -95,9 +99,10 @@
             android:text="+ Add Note"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.976" />
+            app:layout_constraintVertical_bias="0.957" />
 
         <Button
             android:id="@+id/stepAddButton3"
@@ -106,12 +111,22 @@
             android:text="Focus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.996"
+            app:layout_constraintHorizontal_bias="0.986"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.957" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="411dp"
+        android:layout_height="547dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_section"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
