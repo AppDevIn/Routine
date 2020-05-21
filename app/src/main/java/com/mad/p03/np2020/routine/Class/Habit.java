@@ -12,7 +12,9 @@ public class Habit {
     private int period;
     private String time_created;
     private String holder_color;
+    private HabitReminder habitReminder;
     private List<Integer> mCountList;
+
 
     public String getTitle() {
         return title.toUpperCase().trim();
@@ -34,13 +36,15 @@ public class Habit {
         this.count = count;
     }
 
-    public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color) {
+
+    public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder) {
         this.title = title;
         this.occurrence = occurrence;
         this.count = count;
         this.period = period;
         this.time_created = time_created;
         this.holder_color = holder_color;
+        this.habitReminder = habitReminder;
     }
 
     public void addCount(){
@@ -51,6 +55,14 @@ public class Habit {
         if (this.getCount() > 0){
             this.setCount(this.getCount() - 1);
         }
+    }
+
+    public HabitReminder getHabitReminder() {
+        return habitReminder;
+    }
+
+    public void setHabitReminder(HabitReminder habitReminder) {
+        this.habitReminder = habitReminder;
     }
 
     public void modifyTitle(String title){
@@ -138,7 +150,7 @@ public class Habit {
 
         public Habit getItemAt(Integer index) { return this.habitList.get(index); }
 
-        public void addItem(String title, int occurrence, int count, int period, String time_created, String holder_color) { this.habitList.add(new Habit(title, occurrence, count, period, time_created, holder_color)); }
+        public void addItem(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder reminder) { this.habitList.add(new Habit(title, occurrence, count, period, time_created, holder_color,reminder)); }
 
         public void removeItemAt(int position) { this.habitList.remove(position); }
 

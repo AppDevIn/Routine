@@ -1,7 +1,15 @@
 package com.mad.p03.np2020.routine;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.icu.text.DateFormat;
@@ -15,16 +23,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mad.p03.np2020.routine.Class.AlarmReceiver;
 import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.Class.HabitReminder;
 
+import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 
 import static java.lang.String.format;
@@ -33,6 +49,7 @@ import static java.lang.String.format;
 public class HabitActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitTracker";
+    private String channelId = "001";
     Habit.HabitList habitList;
     ImageButton add_habit;
     ImageButton habit_chart;
@@ -45,6 +62,9 @@ public class HabitActivity extends AppCompatActivity {
     private final static int[] color_buttonIDS = {R.id.lightcoral_btn, R.id.slightdesblue_btn, R.id.fadepurple_btn, R.id.cyangreen_btn};
     private final static int[] color_schemeIDS = {R.color.colorLightCoral, R.color.colorSlightDesBlue, R.color.colorFadePurple, R.color.colorCyanGreen};
     private final static String[] colorList = {"lightcoral", "slightdesblue", "fadepurple", "cyangreen"};
+    public static final String SHARED_PREFS = "sharedPrefs";
+    int minutes;
+    int hours;
 
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -55,6 +75,12 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
 
+//        initData();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelName = "HabitTracker";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            createNotificationChannel(channelId, channelName, importance);
+        }
 
         add_habit = findViewById(R.id.add_habit);
         habit_chart = findViewById(R.id.habit_chart);
@@ -68,6 +94,7 @@ public class HabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                final String[] custom_text = {""};
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
                 final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
@@ -78,6 +105,7 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                 final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                 final TextView period_text = dialogView.findViewById(R.id.period_txt);
+                final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
 
                 final int[] period = new int[1];
 
@@ -167,7 +195,10 @@ public class HabitActivity extends AppCompatActivity {
                         int occur = Integer.parseInt(habit_occur.getText().toString());
                         int cnt = Integer.parseInt(menu_count.getText().toString());
                         Date date = new Date();
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0]);
+                        int id = getData();
+                        String txt = custom_text[0].length() > 1 ? custom_text[0] : "Please remember to check in your habit!";
+                        setReminder(name,minutes,hours,id,txt);
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],new HabitReminder(name,id,minutes,hours,txt));
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -197,7 +228,74 @@ public class HabitActivity extends AppCompatActivity {
                         menu_count.setText(String.valueOf(count));
                     }
                 });
-                
+
+                habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: ");
+
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
+                        ViewGroup viewGroup = findViewById(android.R.id.content);
+                        final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_reminder_view, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+
+                        final ImageView close_btn = dialogView.findViewById(R.id.habit_reminder_view_close);
+                        final Switch reminder_switch = dialogView.findViewById(R.id.habit_reminder_view_switch);
+                        final TextView reminder_displayTime = dialogView.findViewById(R.id.habit_reminder_view_displaytime);
+                        final TimePicker timePicker = dialogView.findViewById(R.id.habit_reminder_view_timepicker);
+                        final TextView _custom_text = dialogView.findViewById(R.id.habit_reminder_view_customtext);
+                        final ImageView save_btn = dialogView.findViewById(R.id.habit_reminder_view_save);
+
+                        if (Build.VERSION.SDK_INT <= 23) {
+                            minutes = timePicker.getCurrentMinute(); // before api level 23
+                            hours = timePicker.getCurrentHour(); // before api level 23
+                        }else{
+                            minutes = timePicker.getMinute(); // after api level 23
+                            hours  = timePicker.getHour(); // after api level 23
+                        }
+
+                        reminder_displayTime.setText(format("%d:%d",hours,minutes));
+
+                        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                            @Override
+                            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+
+                                if (Build.VERSION.SDK_INT <= 23) {
+                                    minutes = timePicker.getCurrentMinute(); // before api level 23
+                                    hours = timePicker.getCurrentHour(); // before api level 23
+                                }else{
+                                    minutes = timePicker.getMinute(); // after api level 23
+                                    hours  = timePicker.getHour(); // after api level 23
+                                }
+                                reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                            }
+                        });
+
+                        save_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
+                                if (_custom_text != null){
+                                    custom_text[0] = _custom_text.getText().toString();
+                                }
+//                                int id = getData();
+//                                setReminder("hello",minutes,hours,id);
+                                Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        close_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        alertDialog.show();
+                    }
+                });
 
 
                         
@@ -337,6 +435,86 @@ public class HabitActivity extends AppCompatActivity {
                         final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                         final TextView period_text = dialogView.findViewById(R.id.period_txt);
+                        final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
+
+                        final HabitReminder habitReminder = habit.getHabitReminder();
+                        if (habitReminder != null){
+                            habit_reminder_indicate_text.setText((format("%d:%d",habitReminder.getHours(),habitReminder.getMinutes())));
+                        }
+
+                        habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d(TAG, "onClick: ");
+
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
+                                ViewGroup viewGroup = findViewById(android.R.id.content);
+                                final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_reminder_view, viewGroup, false);
+                                builder.setView(dialogView);
+                                final AlertDialog alertDialog = builder.create();
+
+                                final ImageView close_btn = dialogView.findViewById(R.id.habit_reminder_view_close);
+                                final Switch reminder_switch = dialogView.findViewById(R.id.habit_reminder_view_switch);
+                                final TextView reminder_displayTime = dialogView.findViewById(R.id.habit_reminder_view_displaytime);
+                                final TimePicker timePicker = dialogView.findViewById(R.id.habit_reminder_view_timepicker);
+                                final TextView _custom_text = dialogView.findViewById(R.id.habit_reminder_view_customtext);
+                                final ImageView save_btn = dialogView.findViewById(R.id.habit_reminder_view_save);
+
+
+                                if (habitReminder != null){
+                                    minutes = habitReminder.getMinutes();
+                                    hours = habitReminder.getHours();
+                                    _custom_text.setText(habitReminder.getCustom_text());
+                                    reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                                }else{
+                                    if (Build.VERSION.SDK_INT <= 23) {
+                                        minutes = timePicker.getCurrentMinute(); // before api level 23
+                                        hours = timePicker.getCurrentHour(); // before api level 23
+                                    }else{
+                                        minutes = timePicker.getMinute(); // after api level 23
+                                        hours  = timePicker.getHour(); // after api level 23
+                                    }
+                                    reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                                }
+
+
+                                timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                                    @Override
+                                    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+
+                                        if (Build.VERSION.SDK_INT <= 23) {
+                                            minutes = timePicker.getCurrentMinute(); // before api level 23
+                                            hours = timePicker.getCurrentHour(); // before api level 23
+                                        }else{
+                                            minutes = timePicker.getMinute(); // after api level 23
+                                            hours  = timePicker.getHour(); // after api level 23
+                                        }
+                                        reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                                    }
+                                });
+
+                                save_btn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
+                                        String txt = _custom_text.getText().toString();
+                                        habitReminder.setCustom_text(txt);
+                                        //to be added cancel the previous alarm
+                                        Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                close_btn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                alertDialog.show();
+                            }
+                        });
 
                         final int[] _period = new int[1];
 
@@ -506,6 +684,7 @@ public class HabitActivity extends AppCompatActivity {
                     }
                 });
 
+
                 alertDialog.show();
 
             }
@@ -515,11 +694,78 @@ public class HabitActivity extends AppCompatActivity {
     public Habit.HabitList getList() {
         habitList = new Habit.HabitList();
         Date date = new Date();
-        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral");
-        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen");
-        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple");
-        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue");
+        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral",null);
+        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen",null);
+        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null);
+        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null);
         return habitList;
+    }
+
+    public void setReminder(String name, int minutes, int hours,int id, String custom_txt){
+
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        intent.setAction("HabitTracker");
+        intent.putExtra("Name", name);
+        intent.putExtra("id",id);
+        intent.putExtra("custom_txt",custom_txt);
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int type = AlarmManager.RTC_WAKEUP;
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MINUTE,minutes);
+        c.set(Calendar.HOUR_OF_DAY,hours);
+        c.set(Calendar.SECOND,0);
+        Log.d(TAG, String.valueOf(c.getTime()));
+        long time = c.getTime().getTime();
+        if (Calendar.getInstance().getTimeInMillis() < c.getTimeInMillis()){
+            am.set(type,time, pi);
+            Log.d(TAG, "setReminder: "+ id);
+        }else{
+            Log.d(TAG, "You can only set a future reminder!");
+        }
+        //to be changed to inexactsetreminder(daily)
+
+
+
+    }
+
+    public void cancelAlarm(int id, String name){
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        intent.setAction("HabitTracker");
+        intent.putExtra("Name", name);
+        intent.putExtra("id",id);
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.cancel(pi);
+    }
+
+
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void createNotificationChannel(String channelId, String channelName, int importance) {
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(channel);
+
+    }
+
+    public void initData(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("alarm_id",0);
+        editor.apply();
+
+    }
+
+    public int getData(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int id = sharedPreferences.getInt("alarm_id",-1);
+        editor.putInt("alarm_id",++id);
+        editor.apply();
+        return id;
+
     }
 
 }
