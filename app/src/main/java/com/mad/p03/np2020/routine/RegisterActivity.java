@@ -3,6 +3,11 @@ package com.mad.p03.np2020.routine;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -31,6 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.database.UserDBHelper;
 
 import java.util.ArrayList;
@@ -468,8 +474,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 //Save data
 
                                 //Firebase
-                                SaveFirebaseTask saveFirebaseTask = new SaveFirebaseTask();
-                                saveFirebaseTask.execute();
+                                executeFirebaseUserUpload();
 
                                 //SQL
                                 //instantiate UserDb
@@ -552,31 +557,34 @@ public class RegisterActivity extends AppCompatActivity {
      *
      * It will be done in the background
      */
-    @SuppressLint("StaticFieldLeak")
-    private class SaveFirebaseTask extends AsyncTask<Void, Void, Void>{
+    private void executeFirebaseUserUpload(){
 
-        DatabaseReference mDatabase;
+        Log.d(TAG, "executeFirebaseUserUpload(): Preparing the upload ");
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.i(TAG, "onPreExecute(): Creating database reference");
-            //Getting a database reference to Users
-            mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mUser.getUID());
-        }
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
 
-        @Override
-        protected Void doInBackground(Void... voids) {
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseUserData = new Data.Builder()
+                .putString("ID", mUser.getUID())
+                .putString("Name", mUser.getName())
+                .putString("Email", mUser.getEmailAdd())
+                .putString("DOB", mUser.getDateOfBirth())
+                .build();
 
-            //Setting data into the user portion
-            mDatabase.child("Name").setValue(mUser.getName()); //Setting the name
-            mDatabase.child("Email").setValue(mUser.getEmailAdd()); //Setting the Email
-            mDatabase.child("DOB").setValue(mUser.getDateOfBirth()); //Setting the DOB
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(UploadDataWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseUserData)
+                .build();
 
-            Log.i(TAG, "doInBackground(): Name, Email and DOB are uploaded");
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+        Log.d(TAG, "executeFirebaseUserUpload(): Put in queue");
 
-            return null;
-        }
     }
 
 
