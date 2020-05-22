@@ -571,7 +571,7 @@ public class RegisterActivity extends AppCompatActivity {
             //Setting data into the user portion
             mDatabase.child("Name").setValue(mUser.getName()); //Setting the name
             mDatabase.child("Email").setValue(mUser.getEmailAdd()); //Setting the Email
-            mDatabase.child("DOB").setValue("08/10/2000"); //Setting the DOB
+            mDatabase.child("DOB").setValue(mUser.getDateOfBirth()); //Setting the DOB
 
             Log.i(TAG, "doInBackground(): Name, Email and DOB are uploaded");
 
