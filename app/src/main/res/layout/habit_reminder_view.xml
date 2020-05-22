@@ -70,7 +70,7 @@
                 android:id="@+id/habit_reminder_view_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:textOff="OFF"
                 android:textOn="ON"/>
 

@@ -95,6 +95,7 @@ public class HabitActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final String[] custom_text = {""};
+                final boolean[] reminder_flag = {false};
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
                 final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
@@ -195,10 +196,14 @@ public class HabitActivity extends AppCompatActivity {
                         int occur = Integer.parseInt(habit_occur.getText().toString());
                         int cnt = Integer.parseInt(menu_count.getText().toString());
                         Date date = new Date();
-                        int id = getData();
-                        String txt = custom_text[0].length() > 1 ? custom_text[0] : "Please remember to check in your habit!";
-                        setReminder(name,minutes,hours,id,txt);
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],new HabitReminder(name,id,minutes,hours,txt));
+                        HabitReminder hr = null;
+                        if (reminder_flag[0]){
+                            int id = getData();
+                            String txt = custom_text[0].length() > 1 ? custom_text[0] : "Please remember to check in your habit!";
+                            setReminder(name,minutes,hours,id,txt);
+                            hr = new HabitReminder(name,id,minutes,hours,txt);
+                        }
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr);
                         myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
@@ -275,13 +280,17 @@ public class HabitActivity extends AppCompatActivity {
                         save_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
-                                if (_custom_text != null){
-                                    custom_text[0] = _custom_text.getText().toString();
+                                if (reminder_switch.isChecked()){
+                                    habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
+                                    if (_custom_text != null){
+                                        custom_text[0] = _custom_text.getText().toString();
+                                    }
+                                    reminder_flag[0] = true;
+                                    Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    reminder_flag[0] = false;
                                 }
-//                                int id = getData();
-//                                setReminder("hello",minutes,hours,id);
-                                Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
+
                                 alertDialog.dismiss();
                             }
                         });
