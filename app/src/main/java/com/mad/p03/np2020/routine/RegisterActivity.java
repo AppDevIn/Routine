@@ -3,23 +3,24 @@ package com.mad.p03.np2020.routine;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.nfc.FormatException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,11 +30,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.database.UserDBHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -64,6 +64,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Create a User object
         mUser = new User();
+
+
+
 
     }
 
@@ -463,8 +466,15 @@ public class RegisterActivity extends AppCompatActivity {
                                 Log.i(TAG, "onComplete: The current user's email is " + mUser.getAuth().getEmail());
 
                                 //Save data
+
+                                //Firebase
                                 SaveFirebaseTask saveFirebaseTask = new SaveFirebaseTask();
                                 saveFirebaseTask.execute();
+
+                                //SQL
+                                //instantiate UserDb
+                                UserDBHelper mUserDBHelper = new UserDBHelper(RegisterActivity.this);
+                                mUserDBHelper.insertUser(mUser);
 
                                 //Move to another activity
                                 moveToHome();

@@ -21,6 +21,28 @@ import java.util.List;
 
 public class User {
 
+    //User table
+    public static final String TABLE_NAME = "user"; //Name of the table
+
+    //Column name in the user table
+    public static final String COLUMN_NAME_ID = "id";
+    public static final String COLUMN_NAME_NAME = "name";
+    public static final String COLUMN_NAME_EMAIL = "email";
+    public static final String COLUMN_NAME_PASSWORD = "password"; //The password will be encrypted
+
+    //The creation of the database
+    public static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COLUMN_NAME_NAME + " TEXT," +
+                    COLUMN_NAME_EMAIL + " TEXT," +
+                    COLUMN_NAME_PASSWORD + " TEXT)";
+
+    //Query to delete the table
+    public static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+
     FirebaseUser mAuth;
     private String mName;
     private String mUID;
@@ -149,6 +171,10 @@ public class User {
     }
 
     public String getPassword() {
+        return mPassword;
+    }
+
+    public String digestPassword() {
         return mPassword;
     }
 
