@@ -23,11 +23,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("HabitTracker")) {
             Bundle bundle = intent.getExtras();
             int id = bundle.getInt("id");
+            String txt = bundle.getString("custom_txt").length() > 1 ? bundle.getString("custom_txt"): "Please remember to check in your habit!";
             PendingIntent pendingIntent = PendingIntent.getActivity(context,id, new Intent(context, HabitActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
             Notification notify = new NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(android.R.drawable.arrow_up_float)
                     .setContentTitle("Habit Tracker")
-                    .setContentText(bundle.getString("Name") + "/" + bundle.getString("custom_txt"))
+                    .setContentText(bundle.getString("Name") + " : " + txt)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent).setNumber(1)
                     .setShowWhen(true)

@@ -109,6 +109,7 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
 
                 final int[] period = new int[1];
+                final boolean[] modified_reminder = {false};
 
                 for (final int i :period_buttonIDS){
                     final Button btn = dialogView.findViewById(i);
@@ -199,7 +200,7 @@ public class HabitActivity extends AppCompatActivity {
                         HabitReminder hr = null;
                         if (reminder_flag[0]){
                             int id = getData();
-                            String txt = custom_text[0].length() > 1 ? custom_text[0] : "Please remember to check in your habit!";
+                            String txt = custom_text[0];
                             setReminder(name,minutes,hours,id,txt);
                             hr = new HabitReminder(name,id,minutes,hours,txt);
                         }
@@ -237,7 +238,6 @@ public class HabitActivity extends AppCompatActivity {
                 habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "onClick: ");
 
                         final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                         ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -252,15 +252,30 @@ public class HabitActivity extends AppCompatActivity {
                         final TextView _custom_text = dialogView.findViewById(R.id.habit_reminder_view_customtext);
                         final ImageView save_btn = dialogView.findViewById(R.id.habit_reminder_view_save);
 
-                        if (Build.VERSION.SDK_INT <= 23) {
-                            minutes = timePicker.getCurrentMinute(); // before api level 23
-                            hours = timePicker.getCurrentHour(); // before api level 23
+                        if (reminder_flag[0]){
+                            Calendar c = Calendar.getInstance();
+                            c.set(Calendar.HOUR_OF_DAY,hours);
+                            c.set(Calendar.MINUTE, minutes);
+                            timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+                            timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
+                            reminder_switch.setChecked(true);
+                            reminder_displayTime.setText(format("%d:%d",hours,minutes));
                         }else{
-                            minutes = timePicker.getMinute(); // after api level 23
-                            hours  = timePicker.getHour(); // after api level 23
+                            if (Build.VERSION.SDK_INT <= 23) {
+                                minutes = timePicker.getCurrentMinute(); // before api level 23
+                                hours = timePicker.getCurrentHour(); // before api level 23
+                            }else{
+                                minutes = timePicker.getMinute(); // after api level 23
+                                hours  = timePicker.getHour(); // after api level 23
+                            }
+                            reminder_switch.setChecked(false);
+                            reminder_displayTime.setText(format("%d:%d",hours,minutes));
                         }
 
-                        reminder_displayTime.setText(format("%d:%d",hours,minutes));
+
+                        if (custom_text[0] != ""){
+                            _custom_text.setText(custom_text[0]);
+                        }
 
                         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
                             @Override
@@ -282,13 +297,15 @@ public class HabitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 if (reminder_switch.isChecked()){
                                     habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
-                                    if (_custom_text != null){
+                                    if (_custom_text.getText().toString() != ""){
                                         custom_text[0] = _custom_text.getText().toString();
                                     }
                                     reminder_flag[0] = true;
                                     Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
                                 }else{
                                     reminder_flag[0] = false;
+                                    habit_reminder_indicate_text.setText("NONE");
+                                    custom_text[0] = "";
                                 }
 
                                 alertDialog.dismiss();
@@ -440,7 +457,10 @@ public class HabitActivity extends AppCompatActivity {
                         builder.setView(dialogView);
                         final AlertDialog alertDialog = builder.create();
 
-//                        final TextView menu_count = dialogView.findViewById(R.id.menu_count);
+                        final boolean[] reminder_flag = {false};
+                        final String[] txt = {""};
+                        final boolean[] modified_reminder = {false};
+
                         final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                         final TextView period_text = dialogView.findViewById(R.id.period_txt);
@@ -449,6 +469,7 @@ public class HabitActivity extends AppCompatActivity {
                         final HabitReminder habitReminder = habit.getHabitReminder();
                         if (habitReminder != null){
                             habit_reminder_indicate_text.setText((format("%d:%d",habitReminder.getHours(),habitReminder.getMinutes())));
+                            reminder_flag[0] = true;
                         }
 
                         habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
@@ -471,10 +492,24 @@ public class HabitActivity extends AppCompatActivity {
 
 
                                 if (habitReminder != null){
-                                    minutes = habitReminder.getMinutes();
-                                    hours = habitReminder.getHours();
                                     _custom_text.setText(habitReminder.getCustom_text());
-                                    reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                                    reminder_switch.setChecked(true);
+                                    reminder_displayTime.setText(habit_reminder_indicate_text.getText().toString());
+                                    Calendar c = Calendar.getInstance();
+                                    c.set(Calendar.HOUR_OF_DAY,habitReminder.getHours());
+                                    c.set(Calendar.MINUTE, habitReminder.getMinutes());
+                                    timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+                                    timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
+
+                                }else if (modified_reminder[0] == true && reminder_flag[0]){
+                                        reminder_switch.setChecked(true);
+                                        _custom_text.setText(txt[0]);
+                                        reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                                    Calendar c = Calendar.getInstance();
+                                    c.set(Calendar.HOUR_OF_DAY,hours);
+                                    c.set(Calendar.MINUTE, minutes);
+                                    timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+                                    timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
                                 }else{
                                     if (Build.VERSION.SDK_INT <= 23) {
                                         minutes = timePicker.getCurrentMinute(); // before api level 23
@@ -483,6 +518,7 @@ public class HabitActivity extends AppCompatActivity {
                                         minutes = timePicker.getMinute(); // after api level 23
                                         hours  = timePicker.getHour(); // after api level 23
                                     }
+                                    reminder_switch.setChecked(false);
                                     reminder_displayTime.setText(format("%d:%d",hours,minutes));
                                 }
 
@@ -505,11 +541,20 @@ public class HabitActivity extends AppCompatActivity {
                                 save_btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
-                                        String txt = _custom_text.getText().toString();
-                                        habitReminder.setCustom_text(txt);
+                                        if (reminder_switch.isChecked()){
+                                            habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
+                                            txt[0] = _custom_text.getText().toString();
+                                            reminder_flag[0] = true;
+                                            modified_reminder[0] = true;
+                                        }else{
+                                            habit_reminder_indicate_text.setText("NONE");
+                                            reminder_flag[0] = false;
+                                            txt[0] = "";
+                                        }
+
+//                                        habitReminder.setCustom_text(txt);
                                         //to be added cancel the previous alarm
-                                        Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
                                         alertDialog.dismiss();
                                     }
                                 });
@@ -606,29 +651,6 @@ public class HabitActivity extends AppCompatActivity {
 
                         habit_name.setText(habit.getTitle());
                         habit_occur.setText(String.valueOf(habit.getOccurrence()));
-//                        menu_count.setText(String.valueOf(habit.getCount()));
-
-//                        ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
-//                        add_btn.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                int _count = Integer.parseInt(menu_count.getText().toString());
-//                                _count ++ ;
-//                                menu_count.setText(String.valueOf(_count));
-//                            }
-//                        });
-//
-//                        ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
-//                        minus_btn.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                int _count = Integer.parseInt(menu_count.getText().toString());
-//                                if (_count > 0){
-//                                    _count -- ;
-//                                }
-//                                menu_count.setText(String.valueOf(_count));
-//                            }
-//                        });
 
                         Button buttonClose = dialogView.findViewById(R.id.habit_close);
                         buttonClose.setOnClickListener(new View.OnClickListener() {
@@ -642,13 +664,33 @@ public class HabitActivity extends AppCompatActivity {
                         buttonOk.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                habit.modifyCount(Integer.parseInt(menu_count.getText().toString()));
                                 habit.modifyTitle(habit_name.getText().toString());
                                 habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
                                 habit.setPeriod(_period[0]);
                                 habit.setHolder_color(_color[0]);
-//                                cnt.setText(menu_count.getText().toString());
-//                                cnt2.setText(menu_count.getText().toString());
+                                if (reminder_flag[0]){
+                                    if (habit.getHabitReminder() == null){
+                                        int id = getData();
+                                        String _txt = txt[0];
+                                        habit.setHabitReminder(new HabitReminder(habit.getTitle(),id,minutes,hours,_txt));
+                                        setReminder(habit.getTitle(),minutes,hours,id,txt[0]);
+                                    }else{
+                                        int id = habit.getHabitReminder().getId();
+                                        // reuse the id assigned before to fire the alarm
+                                        String _txt = txt[0];
+                                        habit.setHabitReminder(new HabitReminder(habit.getTitle(),id,minutes,hours,_txt));
+                                        setReminder(habit.getTitle(),minutes,hours,id,txt[0]);
+                                    }
+                                }else{
+                                    if (habit.getHabitReminder() != null){
+                                        cancelReminder(habit.getTitle(),habit.getHabitReminder().getId(),habit.getHabitReminder().getCustom_text());
+                                    }
+                                    habit.setHabitReminder(null);
+                                    habit_reminder_indicate_text.setText("NONE");
+
+                                }
+
+
                                 title.setText(habit_name.getText().toString());
                                 occurrence.setText(String.valueOf(habit.getOccurrence()));
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
@@ -726,25 +768,30 @@ public class HabitActivity extends AppCompatActivity {
         c.set(Calendar.SECOND,0);
         Log.d(TAG, String.valueOf(c.getTime()));
         long time = c.getTime().getTime();
-        if (Calendar.getInstance().getTimeInMillis() < c.getTimeInMillis()){
-            am.set(type,time, pi);
-            Log.d(TAG, "setReminder: "+ id);
-        }else{
-            Log.d(TAG, "You can only set a future reminder!");
-        }
-        //to be changed to inexactsetreminder(daily)
+//        if (Calendar.getInstance().getTimeInMillis() < c.getTimeInMillis()){
+//            am.set(type,time, pi);
+//
+//        }else{
+//            Toast.makeText(this,"You can only set a future reminder!",Toast.LENGTH_SHORT).show();
+//            Log.d(TAG, "You can only set a future reminder!");
+//        }
+        Log.d(TAG, "setReminder: "+ id);
+        am.setRepeating(type,time,AlarmManager.INTERVAL_DAY,pi);
+
 
 
 
     }
 
-    public void cancelAlarm(int id, String name){
+    public void cancelReminder(String name,int id, String custom_txt){
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
         intent.setAction("HabitTracker");
         intent.putExtra("Name", name);
         intent.putExtra("id",id);
+        intent.putExtra("custom_txt",custom_txt);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Log.d(TAG, "cancelReminder: "+ id);
         am.cancel(pi);
     }
 
@@ -755,7 +802,6 @@ public class HabitActivity extends AppCompatActivity {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
-
     }
 
     public void initData(){
