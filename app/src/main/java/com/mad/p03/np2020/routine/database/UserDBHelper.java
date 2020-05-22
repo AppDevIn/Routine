@@ -50,6 +50,15 @@ public class UserDBHelper extends SQLiteOpenHelper {
         onUpgrade(db,oldVersion,newVersion);
     }
 
+    /**
+     * To insert the user which name, email and dob
+     * in the sqlite
+     *
+     * @param user passed to acces the name, email and dob
+     * @return the id in this case the row in belongs
+     */
+
+
     public long insertUser(User user){
 
         Log.d(TAG, "insertUser(): Preparing to insert the new user ");
@@ -78,6 +87,12 @@ public class UserDBHelper extends SQLiteOpenHelper {
         return id;
     }
 
+
+    /**
+     * Get the first user in the firebase
+     *
+     * @return the user the back with the name, email and dob
+     */
     public User getUser(){
         SQLiteDatabase db = this.getReadableDatabase();
 
