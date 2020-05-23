@@ -4,8 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.lifecycle.Observer;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,7 +36,10 @@ import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.background.UploadDataWorker;
+import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
+import com.mad.p03.np2020.routine.service.FirebaseListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +70,14 @@ public class Home extends AppCompatActivity {
         Log.d(TAG, "UI is being created");
 
         //TODO: Get from the intent
-        mUID = "KFubpeKB1dekGyxm05KghlijIZh1";
+        mUID = "V30jZctVgSPh00CVskSYiXNRezC2";
+
+        //Start firebase service to listen to incoming data
+        Intent i = new Intent(Home.this, FirebaseListener.class);
+        this.startService(i);
 
 
-        //TODO: Find view by ID
+        //Find view by ID
         mGridView = findViewById(R.id.section_grid_view);
         mImgAdd = findViewById(R.id.imgBtnTodo);
         mEditAddList = findViewById(R.id.txtAddList);
@@ -82,7 +99,7 @@ public class Home extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart: GUI is ready");
 
-//        //TODO: Initialize any value
+//        // Initialize any value
         mHomePageAdapter = new HomePageAdapter(this,R.layout.home_grid_view_items, mSectionList);
         mGridView.setAdapter(mHomePageAdapter);
 
@@ -106,7 +123,7 @@ public class Home extends AppCompatActivity {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //TODO: Logging the name of the list clicked
+                //Logging the name of the list clicked
                 Log.d(TAG, "onItemClick(): " + mSectionList.get(i).getName() + " has been clicked");
             }
         });
@@ -119,6 +136,7 @@ public class Home extends AppCompatActivity {
 
                 //Make the card view visible to the user
                 mCardViewPopUp.setVisibility(View.VISIBLE);
+                Log.d(TAG, "onClick(): Cardview is visible");
 
             }
         });
@@ -169,19 +187,70 @@ public class Home extends AppCompatActivity {
 
         //Add to List<Section>
         mSectionList.add(section);
+        Log.d(TAG, "updateCardUI(): Adding to the local list");
 
-        //TODO: Save to SQL
-        mSectionDBHelper.insertSection(section, mUID);
+        //Save to SQL
+        long id  = mSectionDBHelper.insertSection(section, mUID);
+        Log.d(TAG, "updateCardUI(): Added to SQL ");
 
-        //TODO: Save to firebase
+        //Save to firebase
+        executeFirebaseSectionUpload(section, id);
 
         //The card view will disappear
         mCardViewPopUp.setVisibility(View.INVISIBLE);
+        Log.d(TAG, "updateCardUI(): Card view is invisible");
 
         //Hide the soft keyboard
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert mgr != null;
         mgr.hideSoftInputFromWindow(mEditAddList.getWindowToken(), 0);
+    }
+
+    /**
+     * Upload the section info to firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     */
+    private void executeFirebaseSectionUpload(Section section, long ID){
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Preparing the upload");
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseUserData = new Data.Builder()
+                .putLong("ID", ID)
+                .putString("UID", mUID)
+                .putString("Name", section.getName())
+                .putInt("Color", section.getBackgroundColor())
+                .putString("Image", "NULL") //TODO: Change after to image
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(UploadSectionWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseUserData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(uploadTask.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        Log.d(TAG, "Section upload state: " + workInfo.getState());
+                    }
+                });
+
     }
 }
 
