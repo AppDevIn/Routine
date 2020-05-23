@@ -43,5 +43,6 @@
     <string name="continue_txt">Continue</string>
     <string name="ok">Ok</string>
     <string name="name">Name</string>
+    <string name="add">Add</string>
 
 </resources>

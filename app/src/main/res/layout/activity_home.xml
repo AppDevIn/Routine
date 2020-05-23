@@ -88,20 +88,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/btnAdd"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="16dp"
-                android:text="Button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <EditText
                 android:id="@+id/txtAddList"
                 android:layout_width="0dp"
@@ -119,39 +105,58 @@
                 app:layout_constraintBottom_toTopOf="@id/spinnerColor"
                 />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
+            <Spinner
+                android:id="@+id/spinnerColor"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
 
-                app:layout_constraintBottom_toTopOf="@id/btnAdd"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+
+
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtAddList">
-
-                <Spinner
-                    android:id="@+id/spinnerColor"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
-
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtAddList"
+                app:layout_constraintTop_toBottomOf="@id/txtAddList"
+                app:layout_constraintEnd_toStartOf="@id/spinnerImg"
 
 
-                    />
+                />
 
-                <Spinner
-                    android:id="@+id/spinner2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    tools:layout_editor_absoluteX="1dp"
-                    tools:layout_editor_absoluteY="88dp" />
-            </LinearLayout>
+            <Spinner
+                android:id="@+id/spinnerImg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/spinnerColor"
+                app:layout_constraintTop_toBottomOf="@id/txtAddList"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="88dp" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/add"
+
+                android:background="@color/colorPrimary"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
