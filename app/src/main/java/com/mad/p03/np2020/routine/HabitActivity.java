@@ -878,6 +878,8 @@ public class HabitActivity extends AppCompatActivity {
 
                                 if (_grp_name[0] != null){
                                     habit.setGroup(new HabitGroup(_grp_name[0]));
+                                }else{
+                                    habit.setGroup(null);
                                 }
                                 if (reminder_flag[0]){
                                     if (habit.getHabitReminder() == null){
