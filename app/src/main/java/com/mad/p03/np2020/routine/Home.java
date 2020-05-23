@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
@@ -13,6 +14,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -24,6 +26,7 @@ import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,60 +43,78 @@ public class Home extends AppCompatActivity {
     ImageButton mImgAdd;
     EditText mEditAddList;
     Spinner mSpinnerColor;
+    CardView mCardViewPopUp;
+    Button mBtnAdd;
+    List<Section> mSectionList;
+    SectionDBHelper mSectionDBHelper;
+    Integer[] mColors;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Log.d(TAG, "UI is being created");
 
         //TODO: Find view by ID
         mGridView = findViewById(R.id.section_grid_view);
         mImgAdd = findViewById(R.id.imgBtnTodo);
         mEditAddList = findViewById(R.id.txtAddList);
         mSpinnerColor = findViewById(R.id.spinnerColor);
+        mCardViewPopUp = findViewById(R.id.cardViewPopUp);
+        mBtnAdd = findViewById(R.id.btnAdd);
+
+        //Get all the section data from firebase
+        mSectionDBHelper = new SectionDBHelper(this);
+        mSectionList = mSectionDBHelper.getAllSections();
+        Log.d(TAG, "onCreate(): Data received from SQL");
+
+        //A list of possible colors to be user
+        mColors = new Integer[]{getResources().getColor(R.color.colorFocus), getResources().getColor(R.color.colorHistory), getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorPrimaryDark)};
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: GUI is ready");
 
-        //TODO: Initialize any value
-        mHomePageAdapter = new HomePageAdapter(this,R.layout.home_grid_view_items, hardCodedList());
+//        //TODO: Initialize any value
+        mHomePageAdapter = new HomePageAdapter(this,R.layout.home_grid_view_items, mSectionList);
         mGridView.setAdapter(mHomePageAdapter);
 
-        Integer[] colors = { getResources().getColor(R.color.colorFocus), getResources().getColor(R.color.colorHistory), getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorPrimaryDark)};
         //Declaring a custom adapter
-        mSpinnerColor.setAdapter(new MySpinnerApater( colors));
+        mSpinnerColor.setAdapter(new MySpinnerApater( mColors));
 
         //Set the cursor to the start
         mEditAddList.setSelection(0);
 
-
-
-
-
+        //Make sure the card view is not visible
+        mCardViewPopUp.setVisibility(View.INVISIBLE);
+        Log.d(TAG, "onStart(): Card view is set to invisible");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: GUI is in the Foreground and Interactive");
 
+        //Setting each item in the listener clickable
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Logging the name of the list clicked
-                Log.i("Home Activity", "onItemClick: "+hardCodedList().get(i).getName());
+                //TODO: Logging the name of the list clicked
+                Log.d(TAG, "onItemClick(): " + mSectionList.get(i).getName() + " has been clicked");
             }
         });
-        
+
+        //When the add button is clicked make the card view visible
         mImgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "onClick: Adding new list clicked");
+                Log.i(TAG, "onClick(): Adding new list clicked");
 
-                //Make the edit text visible for the use to type
-                mEditAddList.setVisibility(View.VISIBLE);
-
+                //Make the card view visible to the user
+                mCardViewPopUp.setVisibility(View.VISIBLE);
 
             }
         });
@@ -106,70 +127,57 @@ public class Home extends AppCompatActivity {
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-                    String listName = textView.getText().toString();
-                    Log.i(TAG, "onEditorAction: " + listName);
+                    Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
+                    updateCardUI(textView);
 
-                    addSection(listName);
-
-                    //The Textview disappear after entered is pressed
-                    mEditAddList.setVisibility(View.INVISIBLE);
-
-                    //Empty the edit text
-                    mEditAddList.setText("");
-
-                    //Hide the soft keyboard
-                    InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    assert mgr != null;
-                    mgr.hideSoftInputFromWindow(mEditAddList.getWindowToken(), 0);
-
-                    return true; // consume.
+                    return true;
                 }
 
                 return false;
             }
         });
 
-
-
+        //When the add button is clicked
+        mBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick(): Add button is pressed ");
+                updateCardUI(mEditAddList);
+            }
+        });
 
     }
 
+    /**
+     *
+     * To add the data into firebase and SQL
+     * Create a section object.
+     * Set the cardview invisible and hide the keyboard
+     *
+     * @param textView the is the edittext
+     */
+    private void updateCardUI(TextView textView){
+        String listName = textView.getText().toString();
+        Log.i(TAG, "onEditorAction: " + listName);
 
-    void addSection(String name){
+        //Create a Section Object
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()]);
 
-        Section section = new Section(name, new ArrayList<Task>(),"#CAF4F4");
+        //Add to List<Section>
+        mSectionList.add(section);
 
-        //Add new section object into the adapter
-        mHomePageAdapter.add(section);
+        //TODO: Save to SQL
+        mSectionDBHelper.insertSection(section);
 
-        //TODO: Add the object the user class
-    }
+        //TODO: Save to firebase
 
+        //The card view will disappear
+        mCardViewPopUp.setVisibility(View.INVISIBLE);
 
-
-
-    //Temp hard code for fake user data
-    List<Section> hardCodedList(){
-        List<Section> sectionList = new ArrayList<>();
-        List<Task> taskList = new ArrayList<>();
-
-        //TODO: Add in fake data
-        taskList.add(new Task("Kill myself"));
-        taskList.add(new Task("Kill myself"));
-        taskList.add(new Task("Kill myself"));
-        taskList.add(new Task("Kill myself"));
-        taskList.add(new Task("Kill myself"));
-        taskList.add(new Task("Kill myself"));
-
-
-        sectionList.add(new Section("MAD", taskList,"#CAF4F4"));
-        sectionList.add(new Section("Home", taskList,"#B8EFEF"));
-        sectionList.add(new Section("Web", taskList, "#FFEAAC"));
-        sectionList.add(new Section("School", taskList, "#FFC2B4"));
-
-
-        return sectionList;
-
+        //Hide the soft keyboard
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert mgr != null;
+        mgr.hideSoftInputFromWindow(mEditAddList.getWindowToken(), 0);
     }
 }
 

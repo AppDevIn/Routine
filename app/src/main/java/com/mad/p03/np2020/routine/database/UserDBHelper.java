@@ -16,7 +16,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
     //TODO: Declare the constant
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 1;
     private final String TAG = "UserDatebase";
 
 
@@ -57,8 +57,6 @@ public class UserDBHelper extends SQLiteOpenHelper {
      * @param user passed to acces the name, email and dob
      * @return the id in this case the row in belongs
      */
-
-
     public long insertUser(User user){
 
         Log.d(TAG, "insertUser(): Preparing to insert the new user ");
@@ -89,7 +87,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
 
     /**
-     * Get the first user in the firebase
+     * Get the first user in the SQL database
      *
      * @return the user the back with the name, email and dob
      */
