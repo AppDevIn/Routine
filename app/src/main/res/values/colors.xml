@@ -15,4 +15,5 @@
     <color name="colorFadePurple">#d488db</color>
     <color name="colorWhiteGrey">#dfdfdf</color>
     <color name="colorPureWhiteGrey">#f3f3f5</color>
+    <color name="colorUnsaturatedGrey">#f2f2f2</color>
 </resources>

@@ -37,8 +37,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.AlarmReceiver;
 import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.Class.HabitGroup;
+import com.mad.p03.np2020.routine.Class.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -50,11 +53,14 @@ public class HabitActivity extends AppCompatActivity {
     private static final String TAG = "HabitTracker";
     private String channelId = "001";
     Habit.HabitList habitList;
+    ArrayList<HabitGroup> habitGroup;
     ImageButton add_habit;
     ImageButton habit_chart;
     ImageButton habit_dashboard;
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
+    RecyclerView groupRecyclerView;
+    HabitGroupAdapter groupAdapter;
     private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
     private final static String[] period_textList = {"DAY", "WEEK", "MONTH", "YEAR"};
     private final static int[] period_countList = {1, 7, 30, 365};
@@ -106,6 +112,7 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                 final TextView period_text = dialogView.findViewById(R.id.period_txt);
                 final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
+                final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
 
                 final int[] period = new int[1];
 
@@ -231,6 +238,25 @@ public class HabitActivity extends AppCompatActivity {
                             count--;
                         }
                         menu_count.setText(String.valueOf(count));
+                    }
+                });
+                
+                group_indicate_text.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: group");
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
+                        LayoutInflater inflater = getLayoutInflater();
+                        View convertView = inflater.inflate(R.layout.habit_group, null);
+
+                        groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
+                        groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
+                        groupRecyclerView.setAdapter(groupAdapter);
+
+                        builder.setView(convertView);
+                        final AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 });
 
@@ -745,6 +771,15 @@ public class HabitActivity extends AppCompatActivity {
         habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null);
         habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null);
         return habitList;
+    }
+
+    public ArrayList<HabitGroup> getGroupList(){
+        habitGroup = new ArrayList<>();
+        habitGroup.add(new HabitGroup("Productivity"));
+        habitGroup.add(new HabitGroup("Fitness"));
+        habitGroup.add(new HabitGroup("Healthy"));
+
+        return habitGroup;
     }
 
     public void setReminder(String name, int minutes, int hours,int id, String custom_txt){
