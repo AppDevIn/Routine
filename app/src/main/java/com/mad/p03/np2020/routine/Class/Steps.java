@@ -1,6 +1,6 @@
 package com.mad.p03.np2020.routine.Class;
 
-class Steps{
+public class Steps{
 
     private String mName;
     private int mUID;
