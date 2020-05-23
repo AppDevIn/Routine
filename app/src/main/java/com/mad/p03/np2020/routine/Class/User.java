@@ -1,6 +1,6 @@
 package app.Class;
 
-import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.Class.FocusHolder;
 
 import java.sql.Date;
 import java.util.List;
@@ -15,7 +15,7 @@ class User {
     private List<app.Class.Section> mSectionList;
     private String mPPID;
     private List<app.Class.Label> mListLabel;
-    private List<Focus> mFocusList;
+    private List<FocusHolder> mFocusList;
 
 
     public User(String email, String password) {

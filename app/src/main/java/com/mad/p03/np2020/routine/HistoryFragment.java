@@ -17,15 +17,15 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.Class.FocusHolder;
 import com.mad.p03.np2020.routine.Class.FocusAdapter;
-import com.mad.p03.np2020.routine.Class.VerticalSpaceItemDecoration;
+import com.mad.p03.np2020.routine.Class.ItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class historyfocus extends Fragment {
+public class HistoryFragment extends Fragment {
 
     private static final String LIST_GET = "List Get";
 
@@ -37,14 +37,14 @@ public class historyfocus extends Fragment {
     private final String TAG = "Focus";
     private TextView completion;
 
-    private List<Focus> historyFocusList = new ArrayList<>();
+    private List<FocusHolder> historyFocusList = new ArrayList<>();
 
-    public historyfocus() {
+    public HistoryFragment() {
         // Required empty public constructor
     }
 
-    public static historyfocus newInstance(ArrayList<Focus> historicList) {
-        historyfocus fragment = new historyfocus();
+    public static HistoryFragment newInstance(ArrayList<FocusHolder> historicList) {
+        HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(LIST_GET, historicList);
         fragment.setArguments(args);
@@ -88,7 +88,7 @@ public class historyfocus extends Fragment {
         Drawable dividerDrawable = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false); //Declare layoutManager
 
-        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE, dividerDrawable)); //Add Custom Spacing
+        recyclerView.addItemDecoration(new ItemDecoration(VERTICAL_ITEM_SPACE, dividerDrawable)); //Add Custom Spacing
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(focusAdapter);
@@ -131,5 +131,6 @@ public class historyfocus extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction();
     }
+
 
 }
