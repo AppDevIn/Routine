@@ -80,7 +80,8 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
         Log.v(TAG,"onCreate");
 
-//        initData();
+        initData();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelName = "HabitTracker";
             int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -1028,8 +1029,10 @@ public class HabitActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("alarm_id",0);
-        editor.apply();
+        if (sharedPreferences.getInt("alarm_id",-1)<=0){
+            editor.putInt("alarm_id",0);
+            editor.apply();
+        }
 
     }
 
@@ -1037,7 +1040,9 @@ public class HabitActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         int id = sharedPreferences.getInt("alarm_id",-1);
-        editor.putInt("alarm_id",++id);
+        int _new = ++id;
+        editor.putInt("alarm_id", _new);
+        Log.d(TAG, "getData: " + _new);
         editor.apply();
         return id;
 
