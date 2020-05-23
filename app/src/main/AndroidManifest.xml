@@ -10,12 +10,12 @@
         android:supportsRtl="true"
         android:windowSoftInputMode="adjustPan"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home"></activity>
+        <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".HabitActivity" />
         <activity android:name=".FocusActivity" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Home"
             android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
