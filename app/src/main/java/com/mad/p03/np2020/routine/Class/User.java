@@ -33,7 +33,7 @@ public class User {
     //The creation of the database
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COLUMN_NAME_ID + " TEXT," +
                     COLUMN_NAME_NAME + " TEXT," +
                     COLUMN_NAME_EMAIL + " TEXT," +
                     COLUMN_NAME_PASSWORD + " TEXT)";

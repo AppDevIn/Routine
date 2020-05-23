@@ -48,13 +48,17 @@ public class Home extends AppCompatActivity {
     List<Section> mSectionList;
     SectionDBHelper mSectionDBHelper;
     Integer[] mColors;
-
+    String mUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.d(TAG, "UI is being created");
+
+        //TODO: Get from the intent
+        mUID = "KFubpeKB1dekGyxm05KghlijIZh1";
+
 
         //TODO: Find view by ID
         mGridView = findViewById(R.id.section_grid_view);
@@ -66,7 +70,7 @@ public class Home extends AppCompatActivity {
 
         //Get all the section data from firebase
         mSectionDBHelper = new SectionDBHelper(this);
-        mSectionList = mSectionDBHelper.getAllSections();
+        mSectionList = mSectionDBHelper.getAllSections(mUID);
         Log.d(TAG, "onCreate(): Data received from SQL");
 
         //A list of possible colors to be user
@@ -167,7 +171,7 @@ public class Home extends AppCompatActivity {
         mSectionList.add(section);
 
         //TODO: Save to SQL
-        mSectionDBHelper.insertSection(section);
+        mSectionDBHelper.insertSection(section, mUID);
 
         //TODO: Save to firebase
 

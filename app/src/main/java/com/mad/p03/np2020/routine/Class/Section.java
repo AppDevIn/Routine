@@ -27,8 +27,8 @@ public class Section {
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_COLOR + " INTEGER,"
                     + COLUMN_IMAGE + " TEXT,"
-                    + COLUMN_USERID + " INTEGER"
-                    + ")";
+                    + COLUMN_USERID + " INTEGER,"
+                    + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
     //Query to delete the table
     public static final String SQL_DELETE_ENTRIES =

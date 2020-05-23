@@ -16,7 +16,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
     //TODO: Declare the constant
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 4;
     private final String TAG = "UserDatebase";
 
 
@@ -67,6 +67,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
+        values.put(User.COLUMN_NAME_ID, user.getUID());
         values.put(User.COLUMN_NAME_NAME, user.getName());
         values.put(User.COLUMN_NAME_EMAIL, user.getEmailAdd());
         values.put(User.COLUMN_NAME_PASSWORD, user.getPassword());

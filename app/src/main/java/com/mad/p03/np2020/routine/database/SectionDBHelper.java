@@ -16,7 +16,7 @@ import java.util.List;
 public class SectionDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 2;
     private final String TAG = "SectionDatebase";
 
     public SectionDBHelper(Context context) {
@@ -55,7 +55,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
      * @param section passed to acces the name, color and image
      * @return the id in this case the row in belongs
      */
-    public long insertSection(Section section){
+    public long insertSection(Section section, String UID){
 
         Log.d(TAG, "insertUser(): Preparing to insert the new user ");
 
@@ -67,6 +67,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Section.COLUMN_NAME, section.getName());
         values.put(Section.COLUMN_COLOR, section.getBackgroundColor());
+        values.put(Section.COLUMN_USERID, UID);
 //        values.put(User.COLUMN_NAME_PASSWORD, user.getPassword());//TODO: The image
 
         // Insert the new row, returning the primary key value of the new row
@@ -113,34 +114,43 @@ public class SectionDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<Section> getAllSections(){
+    public List<Section> getAllSections(String UID){
 
         List<Section> sections = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME + " ORDER BY " +
-                Section.COLUMN_NAME + " DESC";
+
+        String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME + " WHERE " + Section.COLUMN_USERID + "='" + UID +"' ORDER BY " +
+                Section.COLUMN_NAME + " DESC;";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Section section = new Section();
-                section.setName(cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)));
-                section.setBackgroundColor(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)));
+        //Incase it fails
+        try{
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
-                Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Section section = new Section();
+                    section.setName(cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)));
+                    section.setBackgroundColor(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)));
 
-                sections.add(section);
-            } while (cursor.moveToNext());
+                    Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
+
+                    sections.add(section);
+                } while (cursor.moveToNext());
+            }
+
+        }catch (Exception e){
+            Log.e(TAG, "getAllSections: ",e);
         }
+
 
         // close db connection
         db.close();
 
-        ;
+
         // return notes list
         return sections;
     }
