@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/habit_view_upper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLightCoral"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/habit_view_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/habit_close" />
+
+        <TextView
+            android:id="@+id/habit_view_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.1"
+            android:text="STUDY"
+            android:textColor="@color/colorBlack"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:layout_toStartOf="@id/_today"-->
+<!--                app:srcCompat="?attr/homeAsUpIndicator" />-->
+
+            <TextView
+                android:id="@+id/_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/montserrat_regular"
+                android:letterSpacing="0.1"
+                android:text="TODAY"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_toEndOf="@id/_today"-->
+<!--                android:rotation="180"-->
+<!--                app:srcCompat="?attr/homeAsUpIndicator" />-->
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp">
+
+            <ImageButton
+                android:id="@+id/habit_view_reduce"
+                android:layout_width="22dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="70dp"
+                android:layout_toStartOf="@+id/habit_view_count"
+                android:scaleX="-1"
+                android:src="@drawable/habit_refresh" />
+
+
+            <TextView
+                android:id="@+id/habit_view_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/montserrat"
+                android:letterSpacing="0.1"
+                android:text="11"
+                android:textColor="@color/colorWhite"
+                android:textSize="60dp" />
+
+
+            <ImageButton
+                android:id="@+id/habit_view_add"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="70dp"
+                android:layout_toEndOf="@+id/habit_view_count"
+                android:src="@drawable/habit_add" />
+
+            <ImageButton
+                android:id="@+id/habit_view_modify"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/habit_view_add"
+                android:src="@drawable/habit_modify" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+        </View>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/colorGrey"
+        android:layout_below="@id/habit_view_upper"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/habit_period"
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:letterSpacing="0.1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="TODAY:"
+                android:textColor="@color/colorWhite"
+                android:layout_marginRight="4dp"/>
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:textColor="@color/colorWhite"
+                android:letterSpacing="0.1"
+                android:id="@+id/habitCount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="0" />
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:textColor="@color/colorWhite"
+                android:letterSpacing="0.1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:id="@+id/symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="/" />
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12dp"
+                android:textColor="@color/colorWhite"
+                android:letterSpacing="0.1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/habitOccurence"
+                android:text="10" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/habit_view_edit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/habit_modify" />
+
+        <ImageButton
+            android:id="@+id/habit_view_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/habit_delete" />
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

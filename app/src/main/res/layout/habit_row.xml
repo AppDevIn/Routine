@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/habit_row"
+    android:padding="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:descendantFocusability="blocksDescendants"
+    android:clickable="false"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:id="@+id/habit_menu_left"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:layout_weight="95"
+            android:layout_marginLeft="15dp">
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:id="@+id/habitTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
+                android:paddingTop="10dp"
+                android:text="TITLE"
+                android:textColor="@color/colorBlack" />
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/habit_period"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textSize="12dp"
+                    android:letterSpacing="0.1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginRight="4dp"/>
+
+                <TextView
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorWhite"
+                    android:letterSpacing="0.1"
+                    android:id="@+id/habitCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorWhite"
+                    android:letterSpacing="0.1"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:id="@+id/symbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="/" />
+
+                <TextView
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorWhite"
+                    android:letterSpacing="0.1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/habitOccurence" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:fontFamily="@font/montserrat_regular"
+                android:id="@+id/habitCount2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="22dp" />
+
+            <ImageButton
+                android:id="@+id/addCnt"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/habit_add" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

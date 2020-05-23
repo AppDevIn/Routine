@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+
+
+    <LinearLayout
+        android:id="@+id/first"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/habit_menu"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/habit_today"
+                android:text="CREATE"
+                android:letterSpacing="0.1"
+                android:textSize="20dp"
+                android:textColor="@color/colorBlack"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"/>
+
+            <View
+                android:id="@+id/habit_Vertical_divider"
+                android:layout_centerHorizontal="true"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"/>
+
+            <Button
+                android:id="@+id/habit_close"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@id/habit_Vertical_divider"
+                android:background="@drawable/habit_btn_background2"
+                android:fontFamily="@font/montserrat_regular"
+                android:letterSpacing="0.1"
+                android:src="@drawable/menu_addhabit"
+                android:text="CANCEL"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorWhite"
+                android:layout_toEndOf="@id/habit_close"
+                android:layout_marginStart="10dp"
+                android:id="@+id/create_habit"
+                android:text="SAVE"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:src="@drawable/menu_addhabit"
+                android:layout_centerVertical="true"
+                android:letterSpacing="0.1"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/second"
+        android:layout_below="@id/first"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
+       <TextView
+           android:layout_marginTop="30dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/colorBlack"
+           android:text="NAME YOUR HABIT:"
+           android:letterSpacing="0.1"/>
+
+        <EditText
+            android:maxLength="20"
+            android:inputType="text"
+            android:id="@+id/add_habit_name"
+            android:layout_marginTop="10dp"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:fontFamily="@font/montserrat"
+            android:background="@drawable/edit_text_background"
+            android:padding="20dp"
+            android:hint="Workout, Study, Do Yoga, etc."
+            android:maxLines="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/second"
+        android:id="@+id/third"
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="SET A GOAL PERIOD:"
+            android:letterSpacing="0.1"/>
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/daily_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="DAILY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/weekly_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="WEEKLY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/monthly_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="MONTHLY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:background="@drawable/habit_btn_background"
+                android:id="@+id/yearly_period"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="YEARLY"
+                android:fontFamily="@font/montserrat_regular"
+                android:textColor="@color/colorBlack" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/third"
+        android:id="@+id/fourth"
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="SET YOUR GOAL:"
+            android:letterSpacing="0.1"/>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:inputType="number"
+                android:padding="10dp"
+                android:id="@+id/habit_occurence"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:fontFamily="@font/montserrat"
+                android:background="@drawable/edit_text_background"
+                android:maxLines="1"
+                android:text="1"
+                android:hint="1" />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/montserrat"
+                android:letterSpacing="0.1"
+                android:text="PER"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_marginStart="7dp"
+                android:id="@+id/period_txt"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:letterSpacing="0.1"
+                android:text="DAY"
+                android:textColor="@color/colorBlack" />
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fifth"
+        android:layout_below="@id/fourth"
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="DEFAULT COUNT:"
+            android:letterSpacing="0.1"/>
+
+        <LinearLayout
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="@color/colorBlack"
+                android:id="@+id/menu_count"
+                android:layout_width="10dp"
+                android:layout_height="30dp"
+                android:textSize="20dp"
+                android:text="0"/>
+
+
+            <ImageButton
+                android:id="@+id/menu_minus_count"
+                android:layout_marginStart="30dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/habit_minus_count"
+                android:background="@drawable/edit_text_background"
+                />
+            <ImageButton
+                android:id="@+id/menu_add_count"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/habit_add"
+                android:background="@drawable/edit_text_background"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/fifth"
+        android:id="@+id/sixth"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="SELECT A COLOR:"
+            android:letterSpacing="0.1"/>
+
+        <LinearLayout
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/lightcoral_btn"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorLightCoral" />
+
+            <Button
+                android:id="@+id/slightdesblue_btn"
+                android:layout_marginStart="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorSlightDesBlue" />
+
+            <Button
+                android:id="@+id/fadepurple_btn"
+                android:layout_marginStart="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorFadePurple" />
+
+            <Button
+                android:id="@+id/cyangreen_btn"
+                android:layout_marginStart="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@color/colorCyanGreen" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="SET A REMINDER:"
+                android:letterSpacing="0.1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reminder_indicate_text"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorNCS_Blue"
+                    android:textSize="12dp"
+                    android:text="NONE"
+                    android:letterSpacing="0.1"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="GROUP:"
+                android:letterSpacing="0.1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/group_indicate_text"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorNCS_Blue"
+                    android:textSize="12dp"
+                    android:text="NONE"
+                    android:letterSpacing="0.1"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </TableLayout>
+    
+</ScrollView>
