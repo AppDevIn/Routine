@@ -10,8 +10,8 @@ import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.Label;
 import com.mad.p03.np2020.routine.Class.Section;
 
-import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.Class.FocusHolder;
 
 import java.text.DateFormat;
 import java.text.ParseException;

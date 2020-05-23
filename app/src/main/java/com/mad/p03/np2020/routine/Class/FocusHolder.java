@@ -5,20 +5,20 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class Focus implements Parcelable {
+public class FocusHolder implements Parcelable {
     private String mDateTime;
     private String mDuration;
     private String mTask;
     private String mCompletion;
 
-    public Focus(String mDate, String mDuration, String mTask, String mCompletion) {
+    public FocusHolder(String mDate, String mDuration, String mTask, String mCompletion) {
         this.mDateTime = mDate;
         this.mDuration = mDuration;
         this.mTask = mTask;
         this.mCompletion = mCompletion;
     }
 
-    public Focus(Focus value) {
+    public FocusHolder() {
     }
 
     public String getmDateTime() {
@@ -53,9 +53,15 @@ public class Focus implements Parcelable {
         this.mCompletion = mCompletion;
     }
 
-    public Focus() {
+    @Override
+    public String toString() {
+        return "Focus{" +
+                "mDateTime='" + mDateTime + '\'' +
+                ", mDuration='" + mDuration + '\'' +
+                ", mTask='" + mTask + '\'' +
+                ", mCompletion='" + mCompletion + '\'' +
+                '}';
     }
-
 
     @Override
     public int describeContents() {

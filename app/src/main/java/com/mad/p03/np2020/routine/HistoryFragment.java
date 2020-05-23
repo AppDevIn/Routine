@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,43 +17,36 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.Class.FocusHolder;
 import com.mad.p03.np2020.routine.Class.FocusAdapter;
-import com.mad.p03.np2020.routine.Class.VerticalSpaceItemDecoration;
+import com.mad.p03.np2020.routine.Class.ItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class historyfocus extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String LIST_GET = "List Get";
+public class HistoryFragment extends Fragment {
 
-    // TODO: Rename and change types of parameters
-    private String mText;
+    private static final String LIST_GET = "List Get";
 
     private ImageButton buttonFragment;
     private TextView textFragment;
     private OnFragmentInteractionListener mListener;
-    private static final int VERTICAL_ITEM_SPACE = 30;
+
+    private static final int VERTICAL_ITEM_SPACE = 30; //Spacing length
     private final String TAG = "Focus";
     private TextView completion;
 
-    //Recycler View
-    private RecyclerView recyclerView;
-    private FocusAdapter focusAdapter;
-    private List<Focus> historyfocusList = new ArrayList<>();
+    private List<FocusHolder> historyFocusList = new ArrayList<>();
 
-    public historyfocus() {
+    public HistoryFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static historyfocus newInstance(ArrayList<Focus> historyfocusList) {
-        historyfocus fragment = new historyfocus();
+    public static HistoryFragment newInstance(ArrayList<FocusHolder> historicList) {
+        HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(LIST_GET, historyfocusList);
+        args.putParcelableArrayList(LIST_GET, historicList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +55,7 @@ public class historyfocus extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            historyfocusList = getArguments().getParcelableArrayList(LIST_GET);
+            historyFocusList = getArguments().getParcelableArrayList(LIST_GET);
             Log.v(TAG, "Created fragment");
         }
 
@@ -88,22 +80,20 @@ public class historyfocus extends Fragment {
         completion = view.findViewById(R.id.NumberOfCompletion);
 
         //RecyclerView for display history
-        recyclerView = view.findViewById(R.id.recyclerHistory);
+        //Recycler View
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerHistory);
 
         //recycler adapter
-        focusAdapter = new FocusAdapter(historyfocusList, getActivity());
+        FocusAdapter focusAdapter = new FocusAdapter(historyFocusList, getActivity());
         Drawable dividerDrawable = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false); //Declare layoutManager
 
-        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE, dividerDrawable)); //Add Custom Spacing
+        recyclerView.addItemDecoration(new ItemDecoration(VERTICAL_ITEM_SPACE, dividerDrawable)); //Add Custom Spacing
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(focusAdapter);
 
-        completion.setText("You have completed\n" + historyfocusList.size() + " Task");
-
-        textFragment.setText("History");
-
+        initialisation();
         buttonFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,17 +103,24 @@ public class historyfocus extends Fragment {
         return view;
     }
 
+    public void initialisation() {
+        textFragment.setText("History");
+        updateTask();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
+    public void updateTask() {
+        completion.setText("You have completed\n" + historyFocusList.size() + " Task");
+    }
 
     @Override
     public void onDetach() {
@@ -134,5 +131,6 @@ public class historyfocus extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction();
     }
+
 
 }

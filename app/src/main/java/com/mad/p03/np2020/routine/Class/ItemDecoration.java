@@ -10,14 +10,15 @@ import android.view.View;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
+public class ItemDecoration extends RecyclerView.ItemDecoration {
     private int verticalSpaceHeight;
     private Drawable mDivider;
 
-    public VerticalSpaceItemDecoration(int verticalSpaceHeight, Drawable mDivider) {
+    public ItemDecoration(int verticalSpaceHeight, Drawable mDivider) {
         this.verticalSpaceHeight = verticalSpaceHeight;
         this.mDivider = mDivider;
     }
+
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                RecyclerView.State state) {
