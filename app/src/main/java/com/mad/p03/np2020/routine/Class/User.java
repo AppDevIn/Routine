@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.Label;
 import com.mad.p03.np2020.routine.Class.Section;
 
@@ -52,7 +51,7 @@ public class User {
     private List<Section> mSectionList;
     private String mPPID;
     private List<Label> mListLabel;
-    private List<Focus> mFocusList;
+    private List<FocusHolder> mFocusList;
 
     public User() {
     }
