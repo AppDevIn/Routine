@@ -23,12 +23,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("HabitTracker")) {
             Bundle bundle = intent.getExtras();
             int id = bundle.getInt("id");
-            String txt = bundle.getString("custom_txt").length() > 1 ? bundle.getString("custom_txt"): "Please remember to check in your habit!";
+            String txt = bundle.getString("custom_txt").length() > 1 ? bundle.getString("custom_txt"): "Reminder";
             PendingIntent pendingIntent = PendingIntent.getActivity(context,id, new Intent(context, HabitActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
             Notification notify = new NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(android.R.drawable.arrow_up_float)
                     .setContentTitle("Habit Tracker")
-                    .setContentText(bundle.getString("Name") + " : " + txt)
+                    .setContentText(capitalise(bundle.getString("Name")) + " : " + txt)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent).setNumber(1)
                     .setShowWhen(true)
@@ -39,5 +39,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             manager.notify(id, notify);
 
         }
+    }
+
+    public String capitalise(String text){
+        String txt = "";
+        String[] splited = text.split("\\s+");
+        for (String s: splited){
+            txt += s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase() + " ";
+        }
+        return txt;
     }
 }

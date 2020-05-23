@@ -76,7 +76,7 @@
         android:layout_below="@id/first"
         android:id="@+id/second"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="120dp"
         android:layout_marginStart="20dp"
         android:orientation="vertical">
 
@@ -104,15 +104,15 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_below="@id/second"
         android:id="@+id/third"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="100dp"
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
@@ -120,7 +120,7 @@
             android:letterSpacing="0.1"/>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -172,11 +172,10 @@
         android:id="@+id/fourth"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="90dp"
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
@@ -220,9 +219,6 @@
                 android:letterSpacing="0.1"
                 android:text="DAY"
                 android:textColor="@color/colorBlack" />
-
-
-
         </LinearLayout>
 
     </LinearLayout>
@@ -280,7 +276,7 @@
         android:layout_below="@id/fourth"
         android:id="@+id/fifth"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginStart="20dp"
         android:orientation="vertical">
 
@@ -363,6 +359,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </RelativeLayout>
