@@ -18,6 +18,7 @@ public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
         this.verticalSpaceHeight = verticalSpaceHeight;
         this.mDivider = mDivider;
     }
+
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                RecyclerView.State state) {

@@ -18,7 +18,7 @@ public class Focus implements Parcelable {
         this.mCompletion = mCompletion;
     }
 
-    public Focus(Focus value) {
+    public Focus() {
     }
 
     public String getmDateTime() {
@@ -53,9 +53,15 @@ public class Focus implements Parcelable {
         this.mCompletion = mCompletion;
     }
 
-    public Focus() {
+    @Override
+    public String toString() {
+        return "Focus{" +
+                "mDateTime='" + mDateTime + '\'' +
+                ", mDuration='" + mDuration + '\'' +
+                ", mTask='" + mTask + '\'' +
+                ", mCompletion='" + mCompletion + '\'' +
+                '}';
     }
-
 
     @Override
     public int describeContents() {
