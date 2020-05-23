@@ -42,4 +42,6 @@
     <string name="pwd_strong_error">Password must have 10, a, A and 8 characters</string>
     <string name="continue_txt">Continue</string>
     <string name="ok">Ok</string>
+    <string name="name">Name</string>
+
 </resources>
