@@ -58,7 +58,7 @@
             android:layout_width="115dp"
             android:layout_height="33dp"
             android:layout_weight="1"
-            android:text="Account"
+            android:text="@string/account"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
             android:layout_width="115dp"
             android:layout_height="33dp"
             android:layout_weight="1"
-            android:text="Notifications"
+            android:text="@string/notifications"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
             android:layout_width="115dp"
             android:layout_height="33dp"
             android:layout_weight="1"
-            android:text="General"
+            android:text="@string/general"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +94,72 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.621" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:text="Change Password"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.186" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="204dp"
+            android:layout_height="52dp"
+            android:background="@color/white"
+            android:text="Open System Settings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.473" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="136dp"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:text="About Routine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.713" />
+
+        <Button
+            android:id="@+id/button10"
+            android:layout_width="126dp"
+            android:layout_height="43dp"
+            android:background="@color/white"
+            android:text="Report a bug"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.846" />
+
+        <Button
+            android:id="@+id/button12"
+            android:layout_width="104dp"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:text="Log Out"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.984" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
