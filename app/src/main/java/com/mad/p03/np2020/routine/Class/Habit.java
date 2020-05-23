@@ -94,6 +94,14 @@ public class Habit {
         return holder_color;
     }
 
+    public HabitGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(HabitGroup group) {
+        this.group = group;
+    }
+
     public void calculateProgress(String Occurrence, int count){
         // TODO: Please upload any chnages to this class to the main branch`
     }

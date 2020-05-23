@@ -13,7 +13,7 @@ public class HabitGroupHolder extends RecyclerView.ViewHolder {
 
     public TextView grp_name;
 
-    public HabitGroupHolder(@NonNull View itemView, final HabitAdapter.OnItemClickListener listener) {
+    public HabitGroupHolder(@NonNull View itemView, final HabitGroupAdapter.OnItemClickListener listener) {
         super(itemView);
 
         this.grp_name = itemView.findViewById(R.id.habit_group_name);

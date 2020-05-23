@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine.Class;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.HabitAdapter;
 import com.mad.p03.np2020.routine.R;
 
 import java.util.ArrayList;
@@ -18,14 +16,14 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
 
     public ArrayList<HabitGroup> _habitGroupList;
     Context c;
-    private HabitAdapter.OnItemClickListener mListener;
+    private HabitGroupAdapter.OnItemClickListener mListener;
     static View view;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(HabitAdapter.OnItemClickListener listener){
+    public void setOnItemClickListener(HabitGroupAdapter.OnItemClickListener listener){
         this.mListener = listener;
     }
 

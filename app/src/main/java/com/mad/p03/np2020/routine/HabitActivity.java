@@ -101,6 +101,7 @@ public class HabitActivity extends AppCompatActivity {
 
                 final String[] custom_text = {""};
                 final boolean[] reminder_flag = {false};
+                final String[] _grp_name = {null};
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
                 final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
@@ -209,7 +210,11 @@ public class HabitActivity extends AppCompatActivity {
                             setReminder(name,minutes,hours,id,txt);
                             hr = new HabitReminder(name,id,minutes,hours,txt);
                         }
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,null);
+                        HabitGroup hg = null;
+                        if (_grp_name[0] != null){
+                            hg = new HabitGroup(_grp_name[0]);
+                        }
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
                         myAdapter.notifyDataSetChanged();
                         Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                         alertDialog.dismiss();
@@ -250,18 +255,50 @@ public class HabitActivity extends AppCompatActivity {
                         View convertView = inflater.inflate(R.layout.habit_group, null);
 
                         ImageView close = convertView.findViewById(R.id.habit_group_view_close);
-                        ImageView save = convertView.findViewById(R.id.habit_group_view_save);
+                        Button cancel = convertView.findViewById(R.id.habit_group_view_cancel);
                         Button create_grp = convertView.findViewById(R.id.habit_group_view_create_group);
+                        final TextView curr_grp = convertView.findViewById(R.id.current_grp);
 
+
+                        if (_grp_name[0] != null){
+                            curr_grp.setText(_grp_name[0]);
+                        }else{
+                            curr_grp.setText("None");
+                        }
 
 
                         groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
                         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
                         groupRecyclerView.setAdapter(groupAdapter);
-
                         builder.setView(convertView);
                         final AlertDialog alertDialog = builder.create();
+                        groupAdapter.setOnItemClickListener(new HabitGroupAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                HabitGroup grp = groupAdapter._habitGroupList.get(position);
+                                group_indicate_text.setText(grp.getGrp_name());
+                                _grp_name[0] = grp.getGrp_name();
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                _grp_name[0] = null;
+                                group_indicate_text.setText("NONE");
+                                alertDialog.dismiss();
+                            }
+                        });
+
 
                         create_grp.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -390,7 +427,7 @@ public class HabitActivity extends AppCompatActivity {
                 });
 
 
-                        
+
                 alertDialog.show();
 
             }
@@ -409,6 +446,9 @@ public class HabitActivity extends AppCompatActivity {
                 Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence()) + " " + habit.getPeriod()));
                 Log.d(TAG, habit.getTime_created());
                 Log.d(TAG, habit.getHolder_color());
+                if (habit.getGroup() != null){
+                    Log.d(TAG, habit.getGroup().getGrp_name());
+                }
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -526,11 +566,116 @@ public class HabitActivity extends AppCompatActivity {
                         final boolean[] reminder_flag = {false};
                         final String[] txt = {""};
                         final boolean[] modified_reminder = {false};
+                        final String[] _grp_name = {null};
+                        final boolean[] modified_grp = {false};
 
                         final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
                         final TextView period_text = dialogView.findViewById(R.id.period_txt);
                         final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
+                        final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
+
+                        final HabitGroup habitGroup = habit.getGroup();
+                        if (habitGroup != null ){
+                            group_indicate_text.setText(habitGroup.getGrp_name());
+                        }
+
+                        group_indicate_text.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d(TAG, "onClick: group");
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
+                                LayoutInflater inflater = getLayoutInflater();
+                                View convertView = inflater.inflate(R.layout.habit_group, null);
+
+                                ImageView close = convertView.findViewById(R.id.habit_group_view_close);
+                                Button cancel = convertView.findViewById(R.id.habit_group_view_cancel);
+                                Button create_grp = convertView.findViewById(R.id.habit_group_view_create_group);
+                                TextView curr_grp = convertView.findViewById(R.id.current_grp);
+
+                                final HabitGroup habitGroup = habit.getGroup();
+                                if (habitGroup != null && !modified_grp[0]){
+                                   curr_grp.setText(habitGroup.getGrp_name());
+                                }else if (modified_grp[0] && _grp_name[0] != null){
+                                    curr_grp.setText(_grp_name[0]);
+                                }else{
+                                    curr_grp.setText("None");
+                                }
+
+
+
+                                groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
+                                groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
+                                groupRecyclerView.setAdapter(groupAdapter);
+                                builder.setView(convertView);
+                                final AlertDialog alertDialog = builder.create();
+                                groupAdapter.setOnItemClickListener(new HabitGroupAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(int position) {
+                                        HabitGroup grp = groupAdapter._habitGroupList.get(position);
+                                        group_indicate_text.setText(grp.getGrp_name());
+                                        _grp_name[0] = grp.getGrp_name();
+                                        modified_grp[0] = true;
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                close.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                cancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        _grp_name[0] = null;
+                                        modified_grp[0] = false;
+                                        group_indicate_text.setText("NONE");
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+
+                                create_grp.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+                                        ViewGroup viewGroup = findViewById(android.R.id.content);
+                                        View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
+                                        builder.setView(dialogView);
+                                        final AlertDialog alertDialog = builder.create();
+
+                                        final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
+                                        final Button saveBtn = dialogView.findViewById(R.id.group_save);
+                                        final EditText name = dialogView.findViewById(R.id.creating_group_name);
+
+                                        cancelBtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+
+                                        saveBtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                String grp_name = name.getText().toString();
+                                                groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
+                                                groupAdapter.notifyDataSetChanged();
+                                                Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+
+                                        alertDialog.show();
+                                    }
+                                });
+                                alertDialog.show();
+                            }
+                        });
 
                         final HabitReminder habitReminder = habit.getHabitReminder();
                         if (habitReminder != null){
@@ -730,6 +875,10 @@ public class HabitActivity extends AppCompatActivity {
                                 habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
                                 habit.setPeriod(_period[0]);
                                 habit.setHolder_color(_color[0]);
+
+                                if (_grp_name[0] != null){
+                                    habit.setGroup(new HabitGroup(_grp_name[0]));
+                                }
                                 if (reminder_flag[0]){
                                     if (habit.getHabitReminder() == null){
                                         int id = getData();
