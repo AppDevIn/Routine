@@ -569,6 +569,7 @@ public class HabitActivity extends AppCompatActivity {
                         final boolean[] modified_reminder = {false};
                         final String[] _grp_name = {null};
                         final boolean[] modified_grp = {false};
+                        final boolean[] _cancel = {false};
 
                         final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
@@ -590,7 +591,7 @@ public class HabitActivity extends AppCompatActivity {
                                 View convertView = inflater.inflate(R.layout.habit_group, null);
 
                                 ImageView close = convertView.findViewById(R.id.habit_group_view_close);
-                                Button cancel = convertView.findViewById(R.id.habit_group_view_cancel);
+                                final Button cancel = convertView.findViewById(R.id.habit_group_view_cancel);
                                 Button create_grp = convertView.findViewById(R.id.habit_group_view_create_group);
                                 TextView curr_grp = convertView.findViewById(R.id.current_grp);
 
@@ -618,6 +619,7 @@ public class HabitActivity extends AppCompatActivity {
                                         group_indicate_text.setText(grp.getGrp_name());
                                         _grp_name[0] = grp.getGrp_name();
                                         modified_grp[0] = true;
+                                        _cancel[0] = false;
                                         alertDialog.dismiss();
                                     }
                                 });
@@ -633,8 +635,8 @@ public class HabitActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
                                         _grp_name[0] = null;
-                                        modified_grp[0] = false;
                                         group_indicate_text.setText("NONE");
+                                        _cancel[0] = true;
                                         alertDialog.dismiss();
                                     }
                                 });
@@ -877,11 +879,14 @@ public class HabitActivity extends AppCompatActivity {
                                 habit.setPeriod(_period[0]);
                                 habit.setHolder_color(_color[0]);
 
-                                if (_grp_name[0] != null){
+                                if (modified_grp[0] && _grp_name[0] != null){
+                                    Log.d(TAG, "modified grp ");
                                     habit.setGroup(new HabitGroup(_grp_name[0]));
-                                }else{
+                                }else if (_cancel[0] && habit.getGroup() != null){
+                                    Log.d(TAG, "cancel");
                                     habit.setGroup(null);
                                 }
+
                                 if (reminder_flag[0]){
                                     if (habit.getHabitReminder() == null){
                                         int id = getData();
