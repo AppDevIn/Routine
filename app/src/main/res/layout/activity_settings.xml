@@ -21,13 +21,13 @@
 
     <ImageView
         android:id="@+id/profilePicture"
-        android:layout_width="197dp"
-        android:layout_height="182dp"
+        android:layout_width="147dp"
+        android:layout_height="119dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089"
+        app:layout_constraintVertical_bias="0.029"
         app:srcCompat="@drawable/circle" />
 
     <Button
@@ -41,5 +41,59 @@
         app:layout_constraintTop_toBottomOf="@+id/profilePicture"
         app:layout_constraintVertical_bias="0.033"
         android:background="@color/yellow"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="327dp"
+        android:layout_height="498dp"
+        android:background="@drawable/white_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button4"
+        app:layout_constraintVertical_bias="0.448">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="115dp"
+            android:layout_height="33dp"
+            android:layout_weight="1"
+            android:text="Account"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.075"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.053" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="115dp"
+            android:layout_height="33dp"
+            android:layout_weight="1"
+            android:text="Notifications"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.075"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.354" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="115dp"
+            android:layout_height="33dp"
+            android:layout_weight="1"
+            android:text="General"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.075"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.621" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

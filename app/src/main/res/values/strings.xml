@@ -30,6 +30,9 @@
     <string name="registerDOB">What is your Date of Birth?</string>
     <string name="empty_text_error">This input is empty</string>
 
+    <string name="account"><b><u>Account</u></b></string>
+    <string name="notifications"><b><u>Notifications</u></b></string>
+    <string name="general"><b><u>General</u></b></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">History</string>
