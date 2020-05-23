@@ -78,10 +78,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     //Notification variables
     public static final String CHANNEL_1_ID = "channel1";
 
-    String title = "You have an ongoing Focus";
-    String message = "Come back now before your Sun becomes depressed!";
+    final String title = "You have an ongoing Focus";
+    final String message = "Come back now before your Sun becomes depressed!";
 
-    //Firebase Notification
+    //Firebase
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
 
@@ -551,7 +551,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
+                Log.e(TAG, "Failed to read value.", error.toException());
             }
         });
 
