@@ -13,6 +13,7 @@ public class Habit {
     private String time_created;
     private String holder_color;
     private HabitReminder habitReminder;
+    private HabitGroup group;
     private List<Integer> mCountList;
 
 
@@ -37,7 +38,7 @@ public class Habit {
     }
 
 
-    public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder) {
+    public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
         this.title = title;
         this.occurrence = occurrence;
         this.count = count;
@@ -45,6 +46,7 @@ public class Habit {
         this.time_created = time_created;
         this.holder_color = holder_color;
         this.habitReminder = habitReminder;
+        this.group = group;
     }
 
     public void addCount(){
@@ -150,7 +152,7 @@ public class Habit {
 
         public Habit getItemAt(Integer index) { return this.habitList.get(index); }
 
-        public void addItem(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder reminder) { this.habitList.add(new Habit(title, occurrence, count, period, time_created, holder_color,reminder)); }
+        public void addItem(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder reminder, HabitGroup group) { this.habitList.add(new Habit(title, occurrence, count, period, time_created, holder_color,reminder,group)); }
 
         public void removeItemAt(int position) { this.habitList.remove(position); }
 

@@ -209,7 +209,7 @@ public class HabitActivity extends AppCompatActivity {
                             setReminder(name,minutes,hours,id,txt);
                             hr = new HabitReminder(name,id,minutes,hours,txt);
                         }
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr);
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,null);
                         myAdapter.notifyDataSetChanged();
                         Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                         alertDialog.dismiss();
@@ -249,6 +249,12 @@ public class HabitActivity extends AppCompatActivity {
                         LayoutInflater inflater = getLayoutInflater();
                         View convertView = inflater.inflate(R.layout.habit_group, null);
 
+                        ImageView close = convertView.findViewById(R.id.habit_group_view_close);
+                        ImageView save = convertView.findViewById(R.id.habit_group_view_save);
+                        Button create_grp = convertView.findViewById(R.id.habit_group_view_create_group);
+
+
+
                         groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
                         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
@@ -256,6 +262,41 @@ public class HabitActivity extends AppCompatActivity {
 
                         builder.setView(convertView);
                         final AlertDialog alertDialog = builder.create();
+
+                        create_grp.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+                                ViewGroup viewGroup = findViewById(android.R.id.content);
+                                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
+                                builder.setView(dialogView);
+                                final AlertDialog alertDialog = builder.create();
+
+                                final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
+                                final Button saveBtn = dialogView.findViewById(R.id.group_save);
+                                final EditText name = dialogView.findViewById(R.id.creating_group_name);
+
+                                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                saveBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        String grp_name = name.getText().toString();
+                                        groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
+                                        groupAdapter.notifyDataSetChanged();
+                                        Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                alertDialog.show();
+                            }
+                        });
                         alertDialog.show();
                     }
                 });
@@ -766,10 +807,10 @@ public class HabitActivity extends AppCompatActivity {
     public Habit.HabitList getList() {
         habitList = new Habit.HabitList();
         Date date = new Date();
-        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral",null);
-        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen",null);
-        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null);
-        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null);
+        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral",null,null);
+        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen",null,null);
+        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null,null);
+        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null,null);
         return habitList;
     }
 

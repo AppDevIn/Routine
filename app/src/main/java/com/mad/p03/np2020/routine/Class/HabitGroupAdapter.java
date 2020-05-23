@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
 
-    ArrayList<HabitGroup> _habitGroupList;
+    public ArrayList<HabitGroup> _habitGroupList;
     Context c;
     private HabitAdapter.OnItemClickListener mListener;
     static View view;
@@ -45,7 +45,6 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
     @Override
     public void onBindViewHolder(@NonNull HabitGroupHolder holder, int position) {
         final HabitGroup group = _habitGroupList.get(position);
-        Log.d("debug", "onBindViewHolder: "+group.getGrp_name());
 
         holder.grp_name.setText(group.getGrp_name());
     }
