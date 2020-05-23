@@ -204,7 +204,7 @@ public class HabitActivity extends AppCompatActivity {
                         }
                         myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr);
                         myAdapter.notifyDataSetChanged();
-                        Toast.makeText(HabitActivity.this, format("Habit %s has been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                         alertDialog.dismiss();
                     }
                 });

@@ -28,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Notification notify = new NotificationCompat.Builder(context, channelId)
                     .setSmallIcon(android.R.drawable.arrow_up_float)
                     .setContentTitle("Habit Tracker")
-                    .setContentText(capitalise(bundle.getString("Name")) + " : " + txt)
+                    .setContentText(capitalise(bundle.getString("Name")) + ": " + txt)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent).setNumber(1)
                     .setShowWhen(true)

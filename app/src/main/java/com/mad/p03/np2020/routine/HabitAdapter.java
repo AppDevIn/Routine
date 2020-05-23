@@ -6,17 +6,15 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.Class.HabitHolder;
 
-public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
+public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
 
     final static String TAG = "HabitAdapter";
@@ -36,51 +34,18 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyHolder> {
     public void setOnItemClickListener(OnItemClickListener listener){
         this.mListener = listener;
     }
-
-    public static class MyHolder extends RecyclerView.ViewHolder {
-
-        public TextView mTitle,mCount,mCount2,mOccurrence, mPeriod;
-        public ImageButton addBtn;
-        public RelativeLayout habit_row;
-
-        public MyHolder(@NonNull View itemView, final OnItemClickListener listener) {
-            super(itemView);
-
-            this.mTitle = itemView.findViewById(R.id.habitTitle);
-            this.mCount = itemView.findViewById(R.id.habitCount);
-            this.mCount2 = itemView.findViewById(R.id.habitCount2);
-            this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
-            this.addBtn = itemView.findViewById(R.id.addCnt);
-            this.mPeriod = itemView.findViewById(R.id.habit_period);
-            this.habit_row = itemView.findViewById(R.id.habit_row);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener!=null){
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
-                        }
-                    }
-                }
-            });
-        }
-
-    }
-
     @NonNull
     @Override
-    public HabitAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HabitHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_row,null);
 
-        return new MyHolder(view, mListener);
+        return new HabitHolder(view, mListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull HabitHolder holder, final int position) {
         final Habit habit = _habitList.getItemAt(position);
         switch (habit.getHolder_color()){
             case ("cyangreen"):
