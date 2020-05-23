@@ -94,7 +94,7 @@
             app:layout_constraintVertical_bias="0.957" />
 
         <Button
-            android:id="@+id/stepAddButton2"
+            android:id="@+id/noteAddButton"
             android:layout_width="115dp"
             android:layout_height="44dp"
             android:text="+ Add Note"
@@ -106,7 +106,7 @@
             app:layout_constraintVertical_bias="0.957" />
 
         <Button
-            android:id="@+id/stepAddButton3"
+            android:id="@+id/focusButton"
             android:layout_width="115dp"
             android:layout_height="44dp"
             android:text="Focus"
