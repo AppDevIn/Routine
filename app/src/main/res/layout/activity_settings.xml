@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/yellow">
 
-
     <Button
         android:id="@+id/navbarButton"
         android:layout_width="56dp"
