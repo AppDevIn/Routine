@@ -6,6 +6,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Habit {
+
+    public static final String TABLE_NAME = "habits";
+
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_HABIT_TITLE = "title";
+    public static final String COLUMN_HABIT_OCCURRENCE = "occurrence";
+    public static final String COLUMN_HABIT_COUNT = "count";
+    public static final String COLUMN_HABIT_PERIOD = "period";
+    public static final String COLUMN_HABIT_TIMECREATED = "timeCreated";
+    public static final String COLUMN_HABIT_HOLDERCOLOR = "holderColor";
+    public static final String COLUMN_HABIT_REMINDER_ID = "reminderId";
+    public static final String COLUMN_HABIT_REMINDER_MINUTES = "reminderMinutes";
+    public static final String COLUMN_HABIT_REMINDER_HOURS = "reminderHours";
+    public static final String COLUMN_HABIT_REMINDER_MESSAGES = "reminderMessages";
+    public static final String COLUMN_HABIT_REMINDER_CUSTOMTEXT = "reminderCustomText";
+    public static final String COLUMN_HABIT_GROUP_NAME = "groupName";
+
+    public static final String CREATE_HABITS_TABLE =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COLUMN_HABIT_TITLE  + " TEXT," +
+                    COLUMN_HABIT_COUNT  + " INTEGER," +
+                    COLUMN_HABIT_PERIOD  + " INTEGER," +
+                    COLUMN_HABIT_OCCURRENCE  + " INTEGER," +
+                    COLUMN_HABIT_HOLDERCOLOR  + " TEXT," +
+                    COLUMN_HABIT_TIMECREATED + " TEXT," +
+                    COLUMN_HABIT_REMINDER_ID + " INTEGER," +
+                    COLUMN_HABIT_REMINDER_MINUTES + " INTEGER," +
+                    COLUMN_HABIT_REMINDER_HOURS + " INTEGER," +
+                    COLUMN_HABIT_REMINDER_MESSAGES + " TEXT," +
+                    COLUMN_HABIT_REMINDER_CUSTOMTEXT + " TEXT," +
+                    COLUMN_HABIT_GROUP_NAME  + " TEXT)";
+
+    public static final String DROP_HABITS_TABLE =
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
+
     private String title;
     private int occurrence;
     private int count;

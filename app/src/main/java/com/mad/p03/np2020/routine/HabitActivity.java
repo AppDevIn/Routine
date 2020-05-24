@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +41,7 @@ import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
+import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +73,7 @@ public class HabitActivity extends AppCompatActivity {
     int minutes;
     int hours;
 
+    HabitDBHelper dbHandler;
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -78,15 +81,20 @@ public class HabitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        dbHandler = new HabitDBHelper(this);
+
         Log.v(TAG,"onCreate");
 
         initData();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // if api > 28, create a notification channel
             String channelName = "HabitTracker";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             createNotificationChannel(channelId, channelName, importance);
         }
+
 
         add_habit = findViewById(R.id.add_habit);
         habit_chart = findViewById(R.id.habit_chart);
@@ -215,8 +223,11 @@ public class HabitActivity extends AppCompatActivity {
                         if (_grp_name[0] != null){
                             hg = new HabitGroup(_grp_name[0]);
                         }
+
                         myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
                         myAdapter.notifyDataSetChanged();
+                        dbHandler.insertHabit(new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg));
+
                         Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                         alertDialog.dismiss();
                     }
@@ -437,7 +448,7 @@ public class HabitActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new HabitAdapter(this, getList());
+        myAdapter = new HabitAdapter(this, dbHandler.getAllHabits());
         mRecyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(new HabitAdapter.OnItemClickListener() {
             @Override
