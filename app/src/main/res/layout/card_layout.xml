@@ -47,7 +47,7 @@
             android:inputType="text"/>
 
         <Button
-            android:id="@+id/schefuleButton"
+            android:id="@+id/scheduleButton"
             android:layout_width="31dp"
             android:layout_height="29dp"
             app:layout_constraintBottom_toBottomOf="parent"
