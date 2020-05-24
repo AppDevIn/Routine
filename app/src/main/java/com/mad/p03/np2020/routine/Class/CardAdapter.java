@@ -15,10 +15,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
         data = input;
     }
 
-
-    public CardAdapter onCreateViewHolder(ViewGroup parent, int viewType){
+    @Override
+    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-        return new CardAdapter(item);
+        return new CardViewHolder(item);
     }
 
     public void onBindViewHolder(CardViewHolder holder, int position){
