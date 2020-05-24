@@ -15,6 +15,7 @@ import com.mad.p03.np2020.routine.Class.FocusHolder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,23 @@ public class User {
     private List<Section> mSectionList;
     private String mPPID;
     private List<Label> mListLabel;
-    private List<FocusHolder> mFocusList;
+    private ArrayList<FocusHolder> mFocusList;
+
+    public ArrayList<FocusHolder> getmFocusList() {
+        return mFocusList;
+    }
+
+    public void setmFocusList(ArrayList<FocusHolder> mFocusList) {
+        this.mFocusList = mFocusList;
+    }
+
+    public void addFocusList(FocusHolder focusHolder){
+        this.mFocusList.add(focusHolder);
+    }
+
+    public void removeFocusList(FocusHolder focusHolder){
+        this.mFocusList.remove(focusHolder);
+    }
 
     public User() {
     }

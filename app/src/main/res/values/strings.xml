@@ -42,4 +42,11 @@
     <string name="pwd_strong_error">Password must have 10, a, A and 8 characters</string>
     <string name="continue_txt">Continue</string>
     <string name="ok">Ok</string>
+    <string name="FAIL_STATUS">Thanks for giving your best!</string>
+    <string name="SUCCESS_STATUS">Yayyyy! You have reach your goal!</string>
+    <string name="PROCESS_STATUS">While you are at it, Keep fighting!</string>
+    <string name="REST_STATUS">What are you focusing today?</string>
+    <string name="BUTTON_FAIL">Try Again</string>
+    <string name="BUTTON_RESTART">Restart</string>
+    <string name="BUTTON_START">Start</string>
 </resources>

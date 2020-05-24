@@ -13,9 +13,9 @@
         <activity android:name=".Home"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".HabitActivity" />
-        <activity android:name=".FocusActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".FocusActivity"
             android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

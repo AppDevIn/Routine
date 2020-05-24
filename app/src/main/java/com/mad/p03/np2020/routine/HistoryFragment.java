@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.mad.p03.np2020.routine.Class.FocusHolder;
 import com.mad.p03.np2020.routine.Class.FocusAdapter;
 import com.mad.p03.np2020.routine.Class.ItemDecoration;
+import com.mad.p03.np2020.routine.database.FocusDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +39,17 @@ public class HistoryFragment extends Fragment {
     private TextView completion;
 
     private List<FocusHolder> historyFocusList = new ArrayList<>();
+    private FocusDatabase focusDatabase;
 
     public HistoryFragment() {
         // Required empty public constructor
     }
 
-    public static HistoryFragment newInstance(ArrayList<FocusHolder> historicList) {
+    public static HistoryFragment newInstance(ArrayList<FocusHolder> historicList, FocusDatabase focusDatabase) {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(LIST_GET, historicList);
+        args.putParcelable("FocusDatabase", focusDatabase);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,10 +59,9 @@ public class HistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             historyFocusList = getArguments().getParcelableArrayList(LIST_GET);
+            focusDatabase = getArguments().getParcelable("FocusDatabase");
             Log.v(TAG, "Created fragment");
         }
-
-
     }
 
     public void sendBack() {
@@ -84,7 +86,7 @@ public class HistoryFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerHistory);
 
         //recycler adapter
-        FocusAdapter focusAdapter = new FocusAdapter(historyFocusList, getActivity());
+        FocusAdapter focusAdapter = new FocusAdapter(historyFocusList, getActivity(), focusDatabase);
         Drawable dividerDrawable = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false); //Declare layoutManager
 

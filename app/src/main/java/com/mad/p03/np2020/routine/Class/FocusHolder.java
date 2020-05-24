@@ -3,9 +3,12 @@ package com.mad.p03.np2020.routine.Class;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
+import androidx.annotation.NonNull;
 
 public class FocusHolder implements Parcelable {
+
+    private String sqlID;
+    private String fbID;
     private String mDateTime;
     private String mDuration;
     private String mTask;
@@ -18,8 +21,36 @@ public class FocusHolder implements Parcelable {
         this.mCompletion = mCompletion;
     }
 
+    public FocusHolder(String sqlID, String mDate, String mDuration, String mTask, String mCompletion) {
+        this.sqlID = sqlID;
+        this.mDateTime = mDate;
+        this.mDuration = mDuration;
+        this.mTask = mTask;
+        this.mCompletion = mCompletion;
+    }
+
     public FocusHolder() {
     }
+
+    protected FocusHolder(Parcel in) {
+        sqlID = in.readString();
+        mDateTime = in.readString();
+        mDuration = in.readString();
+        mTask = in.readString();
+        mCompletion = in.readString();
+    }
+
+    public static final Creator<FocusHolder> CREATOR = new Creator<FocusHolder>() {
+        @Override
+        public FocusHolder createFromParcel(Parcel in) {
+            return new FocusHolder(in);
+        }
+
+        @Override
+        public FocusHolder[] newArray(int size) {
+            return new FocusHolder[size];
+        }
+    };
 
     public String getmDateTime() {
         return mDateTime;
@@ -53,6 +84,23 @@ public class FocusHolder implements Parcelable {
         this.mCompletion = mCompletion;
     }
 
+    public String getSqlID() {
+        return sqlID;
+    }
+
+    public void setSqlID(String sqlID) {
+        this.sqlID = sqlID;
+    }
+
+    public String getFbID() {
+        return fbID;
+    }
+
+    public void setFbID(String fbID) {
+        this.fbID = fbID;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "Focus{" +
@@ -70,6 +118,10 @@ public class FocusHolder implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(sqlID);
+        dest.writeString(mDateTime);
+        dest.writeString(mDuration);
+        dest.writeString(mTask);
+        dest.writeString(mCompletion);
     }
 }

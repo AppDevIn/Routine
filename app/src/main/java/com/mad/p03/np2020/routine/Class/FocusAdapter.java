@@ -1,19 +1,22 @@
 package com.mad.p03.np2020.routine.Class;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.database.FocusDatabase;
 
 import java.util.List;
 
@@ -21,17 +24,20 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
     private List<FocusHolder> focusList; //List of focus
     private Context context; //Current context
+    private FocusDatabase focusDatabase;
+    private FocusHolder focusViewHolder;
 
-    public FocusAdapter(List<FocusHolder> focusList, Context context) {
+    public FocusAdapter(List<FocusHolder> focusList, Context context, FocusDatabase focusDatabase) {
         this.context = context;
         this.focusList = focusList;
+        this.focusDatabase = focusDatabase;
     }
 
     @NonNull
     @Override
     public FocusViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View historyView = LayoutInflater.from(context).inflate(R.layout.layout_itemfocus, parent, false);
-        return new FocusViewHolder(historyView, context, this);
+        return new FocusViewHolder(historyView, context, this, parent);
     }
 
     @Override
@@ -44,11 +50,14 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         } else {
             holder.iconComplete.setImageResource(R.drawable.ic_cross);
         }
+        this.focusViewHolder = focusList.get(position);
     }
 
     //Remove item
-    public void remove(int position) {
+    public void remove(int position, FocusHolder focusViewHolder) {
         focusList.remove(position);
+        focusDatabase.removeOneData(focusViewHolder);
+        deleteDataFirebase(focusViewHolder);
         this.notifyItemRemoved(position);
     }
 
@@ -58,5 +67,37 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         return focusList.size();
     }
 
+    public FocusHolder getItems() {
+        return focusViewHolder;
+    }
+
+
+    public void deleteDataFirebase(FocusHolder focusHolder) {
+        Log.i("Firebase", "Deleting Database entry");
+
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", user.getUID())
+                .putString("focusData", serializeToJson(focusHolder))
+                .putBoolean("deletion", true)
+                .build();
+
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(FocusWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    // Serialize a single object.
+    public String serializeToJson(FocusHolder myClass) {
+        Gson gson = new Gson();
+        return gson.toJson(myClass);
+    }
 
 }
