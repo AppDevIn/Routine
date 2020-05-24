@@ -36,10 +36,10 @@ import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.background.FirebaseSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
-import com.mad.p03.np2020.routine.service.FirebaseListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +72,9 @@ public class Home extends AppCompatActivity {
         //TODO: Get from the intent
         mUID = "V30jZctVgSPh00CVskSYiXNRezC2";
 
-        //Start firebase service to listen to incoming data
-        Intent i = new Intent(Home.this, FirebaseListener.class);
-        this.startService(i);
+
+        requestFirebaseSectionData(mUID);
+
 
 
         //Find view by ID
@@ -91,7 +91,7 @@ public class Home extends AppCompatActivity {
         Log.d(TAG, "onCreate(): Data received from SQL");
 
         //A list of possible colors to be user
-        mColors = new Integer[]{getResources().getColor(R.color.colorFocus), getResources().getColor(R.color.colorHistory), getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorPrimaryDark)};
+        mColors = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.ivory), getResources().getColor(R.color.turquoise)};
     }
 
     @Override
@@ -222,7 +222,7 @@ public class Home extends AppCompatActivity {
                 .build();
 
         //Adding data which will be received from the worker
-        @SuppressLint("RestrictedApi") Data firebaseUserData = new Data.Builder()
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putLong("ID", ID)
                 .putString("UID", mUID)
                 .putString("Name", section.getName())
@@ -234,11 +234,11 @@ public class Home extends AppCompatActivity {
         OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
                 Builder(UploadSectionWorker.class)
                 .setConstraints(constraints)
-                .setInputData(firebaseUserData)
+                .setInputData(firebaseSectionData)
                 .build();
 
         //Enqueue the request
-        WorkManager.getInstance().enqueue(uploadTask);
+        WorkManager.getInstance(this).enqueue(uploadTask);
 
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
@@ -251,6 +251,28 @@ public class Home extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    /**
+     * Start request to listen to the user data
+     *
+     * @param UID is used to get the User id in the database reference
+     */
+
+    private void requestFirebaseSectionData(String UID){
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseRequestData = new Data.Builder()
+                .putString("UID", UID)
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest compressionwork = new OneTimeWorkRequest
+                .Builder(FirebaseSectionWorker.class)
+                .setInputData(firebaseRequestData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance(this).enqueue(compressionwork);
     }
 }
 

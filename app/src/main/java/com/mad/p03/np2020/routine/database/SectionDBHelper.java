@@ -132,9 +132,10 @@ public class SectionDBHelper extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {
-                    Section section = new Section();
-                    section.setName(cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)));
-                    section.setBackgroundColor(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)));
+                    Section section = new Section(
+                            cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
+                            cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR))
+                    );
 
                     Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
 

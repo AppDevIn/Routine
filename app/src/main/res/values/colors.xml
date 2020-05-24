@@ -6,8 +6,17 @@
     <color name="colorFocus">#CAF4F4</color>
     <color name="homeBackground">#FCFFE9</color>
     <color name="black">#000000</color>
-    <color name="registerColor">#4ECDC4</color>
+    <color name="registerColor">#F3FBFF</color>
     <color name="colorHistory">#FCFFE9</color>
     <color name="ErrorColor">#EC6060</color>
     <color name="grey">#908989</color>
+
+<!--    Colors for the todolost-->
+    <color name="superiorityBlue">#6CA6C1</color>
+    <color name="rosyBrown">#BD9391</color>
+    <color name="mandarin">#EF7B45</color>
+    <color name="ivory">#FFFFF2</color>
+    <color name="turquoise">#41D3BD</color>
+
 </resources>
+

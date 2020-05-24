@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mad.p03.np2020.routine.Class.Section;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -29,10 +30,8 @@ public class UploadSectionWorker extends Worker {
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section").child(String.valueOf(id));
 
-        //Setting data into the user portion
-        mDatabase.child("Name").setValue(Name); //Setting the name
-        mDatabase.child("Color").setValue(Color); //Setting the Email
-        mDatabase.child("Image").setValue(Image); //Setting the DOB
+        //Setting value using objeect
+        mDatabase.setValue(new Section(Name, Color));
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 

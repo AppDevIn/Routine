@@ -2,12 +2,18 @@ package com.mad.p03.np2020.routine.Class;
 
 import android.graphics.Color;
 import android.text.PrecomputedText;
+import android.util.Log;
 
 import com.mad.p03.np2020.routine.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Section {
 
@@ -45,13 +51,42 @@ public class Section {
     private int mBackgroundColor;
 
 
-    public Section() {
+
+
+    public Section(String name, int color) {
+        this.mName = name;
+        this.mBackgroundColor = color;
 
     }
 
-    public Section(String name, int backgroundColor) {
-        this.mName = name;
-        this.mBackgroundColor = backgroundColor;
+
+    public static Section fromJSON(String json){
+
+
+        int color = 0;
+        String name = "";
+        String image = "";
+        try {
+            //Make the string to object
+            JSONObject jsonObject = new JSONObject(json);
+
+            //Get the values from the object
+            color = Integer.parseInt(jsonObject.getString("backgroundColor"));
+            name = jsonObject.getString("name");
+//            image = jsonObject.getString("Image");
+
+            //Return back the object
+            return new Section(name, color);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "onChildAdded: " + color);
+
+
+        return null;
+
 
     }
 
@@ -90,6 +125,6 @@ public class Section {
     @NonNull
     @Override
     public String toString() {
-        return "Name: " + getName() + "\tColor: " + getBackgroundColor();
+        return "Name: " + getName() + ",\tColor: " + getBackgroundColor(); //TODO: Add the images
     }
 }

@@ -24,6 +24,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -74,6 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+
     }
 
     @Override
@@ -86,6 +88,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         //change Background olor of button transparent
         mSubmit.setBackgroundColor(Color.TRANSPARENT);
+
+        //To set to Full screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     }
 
@@ -113,12 +118,16 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: Activity not in foreground");
+
+        //TODO: Put shared preference
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: The activity is no longer visible");
+
+        //TODO: Put shared preference
 
     }
 
@@ -582,7 +591,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .build();
 
         //Enqueue the request
-        WorkManager.getInstance().enqueue(uploadTask);
+        WorkManager.getInstance(this).enqueue(uploadTask);
         Log.d(TAG, "executeFirebaseUserUpload(): Put in queue");
 
     }
