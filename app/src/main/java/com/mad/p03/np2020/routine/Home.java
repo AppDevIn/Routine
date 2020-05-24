@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
+import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.background.FirebaseSectionWorker;
@@ -55,12 +56,12 @@ public class Home extends AppCompatActivity {
     HomePageAdapter mHomePageAdapter;
     ImageButton mImgAdd;
     EditText mEditAddList;
-    Spinner mSpinnerColor;
+    Spinner mSpinnerColor, mSpinnerBackground;
     CardView mCardViewPopUp;
     Button mBtnAdd;
     List<Section> mSectionList;
     SectionDBHelper mSectionDBHelper;
-    Integer[] mColors;
+    Integer[] mColors, mBackgrounds;
     String mUID;
 
     @Override
@@ -82,6 +83,7 @@ public class Home extends AppCompatActivity {
         mImgAdd = findViewById(R.id.imgBtnTodo);
         mEditAddList = findViewById(R.id.txtAddList);
         mSpinnerColor = findViewById(R.id.spinnerColor);
+        mSpinnerBackground = findViewById(R.id.spinnerImg);
         mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mBtnAdd = findViewById(R.id.btnAdd);
 
@@ -92,6 +94,9 @@ public class Home extends AppCompatActivity {
 
         //A list of possible colors to be user
         mColors = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.ivory), getResources().getColor(R.color.turquoise)};
+
+        //A list of possible background to be user
+        mBackgrounds = new Integer[] {R.drawable.amazon, R.drawable.android, R.drawable.laptop, R.drawable.code, R.drawable.bookmark};
     }
 
     @Override
@@ -99,12 +104,13 @@ public class Home extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart: GUI is ready");
 
-//        // Initialize any value
+        // Initialize any value
         mHomePageAdapter = new HomePageAdapter(this,R.layout.home_grid_view_items, mSectionList);
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
-        mSpinnerColor.setAdapter(new MySpinnerApater( mColors));
+        mSpinnerColor.setAdapter(new MySpinnerApater( mColors)); // For the color
+        mSpinnerBackground.setAdapter(new MySpinnerBackgroundAdapter(mBackgrounds)); //For the background
 
         //Set the cursor to the start
         mEditAddList.setSelection(0);
@@ -183,7 +189,7 @@ public class Home extends AppCompatActivity {
         Log.i(TAG, "onEditorAction: " + listName);
 
         //Create a Section Object
-        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], R.drawable.laptop);
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()]);
 
         //Add to List<Section>
         mSectionList.add(section);
@@ -251,6 +257,7 @@ public class Home extends AppCompatActivity {
                     }
                 });
 
+
     }
 
     /**
@@ -258,7 +265,6 @@ public class Home extends AppCompatActivity {
      *
      * @param UID is used to get the User id in the database reference
      */
-
     private void requestFirebaseSectionData(String UID){
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseRequestData = new Data.Builder()
