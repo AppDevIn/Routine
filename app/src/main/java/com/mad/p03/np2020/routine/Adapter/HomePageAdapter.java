@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,7 @@ public class HomePageAdapter extends ArrayAdapter {
         //Local variables
         TextView textView;
         ImageView background;
-
+        ImageView btnToDO;
 
 
         View v = convertView;
@@ -63,6 +64,7 @@ public class HomePageAdapter extends ArrayAdapter {
         //Initialize variables
         textView = v.findViewById(R.id.listName);
         background = v.findViewById(R.id.backgroud);
+        btnToDO = v.findViewById(R.id.todoIcon);
 
         //***************** Set values into view *****************//
 
@@ -81,6 +83,8 @@ public class HomePageAdapter extends ArrayAdapter {
         //Set the drawable
         background.setBackground(shape);
 
+        //Setting the image icon
+        btnToDO.setImageResource(mSectionList.get(position).getBmiIcon());
 
         return  v;
 

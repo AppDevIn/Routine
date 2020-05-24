@@ -33,8 +33,9 @@
 
     <ImageView
         android:id="@+id/todoIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/amazon"
 
         android:layout_marginTop="16dp"
         android:translationZ="100dp"
@@ -46,7 +47,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/backgroud"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        />
 
     <TextView
         android:id="@+id/listName"

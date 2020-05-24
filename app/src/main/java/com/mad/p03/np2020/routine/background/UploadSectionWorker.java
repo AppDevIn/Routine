@@ -23,7 +23,7 @@ public class UploadSectionWorker extends Worker {
         //Get the input and create the user object
         String Name =  getInputData().getString("Name");
         int Color = getInputData().getInt("Color", 0);
-        String Image = getInputData().getString("Image") ;
+        Integer Image = getInputData().getInt("Image", 0) ;
         String UID = getInputData().getString("UID") ;
         long id = getInputData().getLong("ID", 0) ;
 
@@ -31,7 +31,7 @@ public class UploadSectionWorker extends Worker {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section").child(String.valueOf(id));
 
         //Setting value using objeect
-        mDatabase.setValue(new Section(Name, Color));
+        mDatabase.setValue(new Section(Name, Color, Image));
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 

@@ -16,7 +16,7 @@ import java.util.List;
 public class SectionDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 3;
     private final String TAG = "SectionDatebase";
 
     public SectionDBHelper(Context context) {
@@ -68,7 +68,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         values.put(Section.COLUMN_NAME, section.getName());
         values.put(Section.COLUMN_COLOR, section.getBackgroundColor());
         values.put(Section.COLUMN_USERID, UID);
-//        values.put(User.COLUMN_NAME_PASSWORD, user.getPassword());//TODO: The image
+        values.put(Section.COLUMN_IMAGE, section.getBmiIcon());//TODO: The image
 
         // Insert the new row, returning the primary key value of the new row
         //If -1 means there is an error
@@ -103,7 +103,8 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         //Prepare a section object
         Section section = new Section(
                 cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
-                cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR))
+                cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE))
         );
 
         //Close the DB connection
@@ -134,7 +135,8 @@ public class SectionDBHelper extends SQLiteOpenHelper {
                 do {
                     Section section = new Section(
                             cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
-                            cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR))
+                            cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
+                            cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE))
                     );
 
                     Log.d(TAG, "getAllSections(): Reading data" + section.toString() );

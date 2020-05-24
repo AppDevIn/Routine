@@ -1,14 +1,20 @@
 package com.mad.p03.np2020.routine.Class;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.text.PrecomputedText;
+import android.util.Base64;
 import android.util.Log;
 
+import com.mad.p03.np2020.routine.Home;
 import com.mad.p03.np2020.routine.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -32,7 +38,7 @@ public class Section {
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_COLOR + " INTEGER,"
-                    + COLUMN_IMAGE + " TEXT,"
+                    + COLUMN_IMAGE + " INTERGER,"
                     + COLUMN_USERID + " INTEGER,"
                     + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
@@ -49,23 +55,26 @@ public class Section {
     private String mName;
     private List<Task> mTaskList;
     private int mBackgroundColor;
+    private int bmiIcon;
+    private Context mContext;
 
 
 
 
-    public Section(String name, int color) {
+
+    public Section( String name, int color, int iconResID) {
         this.mName = name;
         this.mBackgroundColor = color;
+        this.bmiIcon = iconResID;
 
     }
 
 
     public static Section fromJSON(String json){
 
-
         int color = 0;
         String name = "";
-        String image = "";
+        int image = 0;
         try {
             //Make the string to object
             JSONObject jsonObject = new JSONObject(json);
@@ -73,14 +82,15 @@ public class Section {
             //Get the values from the object
             color = Integer.parseInt(jsonObject.getString("backgroundColor"));
             name = jsonObject.getString("name");
-//            image = jsonObject.getString("Image");
+            image = Integer.parseInt(jsonObject.getString("bmiIcon"));
 
             //Return back the object
-            return new Section(name, color);
+            return new Section(name, color, image);
 
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e(TAG, "fromJSON: ", e);
         }
         Log.d(TAG, "onChildAdded: " + color);
 
@@ -90,6 +100,13 @@ public class Section {
 
     }
 
+    public int getBmiIcon() {
+        return bmiIcon;
+    }
+
+    public void setBmiIcon(int bmiIcon) {
+        this.bmiIcon = bmiIcon;
+    }
 
     public List<Task> getTaskList() {
         return mTaskList;
@@ -122,9 +139,14 @@ public class Section {
         mTaskList.remove(task);
     }
 
+
+
+
     @NonNull
     @Override
     public String toString() {
-        return "Name: " + getName() + ",\tColor: " + getBackgroundColor(); //TODO: Add the images
+        return "Name: " + getName() + ",\tColor: " + getBackgroundColor() + ",\tImage: " + getBmiIcon(); //TODO: Add the images
     }
+
+
 }

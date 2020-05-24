@@ -183,7 +183,7 @@ public class Home extends AppCompatActivity {
         Log.i(TAG, "onEditorAction: " + listName);
 
         //Create a Section Object
-        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()]);
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], R.drawable.laptop);
 
         //Add to List<Section>
         mSectionList.add(section);
@@ -227,7 +227,7 @@ public class Home extends AppCompatActivity {
                 .putString("UID", mUID)
                 .putString("Name", section.getName())
                 .putInt("Color", section.getBackgroundColor())
-                .putString("Image", "NULL") //TODO: Change after to image
+                .putInt("Image", section.getBmiIcon()) //TODO: Change after to image
                 .build();
 
         //Create the request
