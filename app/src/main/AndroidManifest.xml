@@ -11,8 +11,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Home"></activity>
         <activity android:name=".HabitActivity" />
-        <activity android:name=".CardActivity"/>
+        <activity android:name=".CardActivity"
+                android:exported="true"/>
         <activity android:name=".FocusActivity" />
+        <activity android:name=".Settings"
+                android:exported="true"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
