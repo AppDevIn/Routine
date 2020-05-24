@@ -51,9 +51,11 @@ public class FirebaseSectionWorker extends Worker {
     public Result doWork() {
         Log.d(TAG, "doWork(): Has started to run in the background");
 
+        String UID = getInputData().getString("UID");
+
 
         //Database reference
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child("V30jZctVgSPh00CVskSYiXNRezC2").child("section");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section");
 
 
         mDatabase.addChildEventListener(new ChildEventListener() {
