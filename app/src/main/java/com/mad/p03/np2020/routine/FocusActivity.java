@@ -452,7 +452,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
 
     //History Fragment
     public void openHistory() { //Open history tab
-        HistoryFragment fragmentFocus = HistoryFragment.newInstance(user.getmFocusList(), focusDatabase);
+        HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDatabase);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);

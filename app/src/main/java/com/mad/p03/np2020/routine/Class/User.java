@@ -2,6 +2,8 @@ package com.mad.p03.np2020.routine.Class;
 
 import android.annotation.SuppressLint;
 import android.nfc.FormatException;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class User {
+public class User implements Parcelable {
 
     //User table
     public static final String TABLE_NAME = "user"; //Name of the table
@@ -53,6 +55,28 @@ public class User {
     private String mPPID;
     private List<Label> mListLabel;
     private ArrayList<FocusHolder> mFocusList;
+
+    protected User(Parcel in) {
+        mAuth = in.readParcelable(FirebaseUser.class.getClassLoader());
+        mName = in.readString();
+        mUID = in.readString();
+        mEmailAddr = in.readString();
+        mPassword = in.readString();
+        mPPID = in.readString();
+        mFocusList = in.createTypedArrayList(FocusHolder.CREATOR);
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public ArrayList<FocusHolder> getmFocusList() {
         return mFocusList;
@@ -242,56 +266,19 @@ public class User {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    
-
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mAuth, flags);
+        dest.writeString(mName);
+        dest.writeString(mUID);
+        dest.writeString(mEmailAddr);
+        dest.writeString(mPassword);
+        dest.writeString(mPPID);
+        dest.writeTypedList(mFocusList);
+    }
 }

@@ -20,15 +20,18 @@ import android.widget.TextView;
 import com.mad.p03.np2020.routine.Class.FocusHolder;
 import com.mad.p03.np2020.routine.Class.FocusAdapter;
 import com.mad.p03.np2020.routine.Class.ItemDecoration;
+import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class HistoryFragment extends Fragment {
 
-    private static final String LIST_GET = "List Get";
+    private static final String USER_GET = "User Get";
+    private static final String FOCUS_DATABASE = "FocusDatabase";
 
     private ImageButton buttonFragment;
     private TextView textFragment;
@@ -38,18 +41,18 @@ public class HistoryFragment extends Fragment {
     private final String TAG = "Focus";
     private TextView completion;
 
-    private List<FocusHolder> historyFocusList = new ArrayList<>();
     private FocusDatabase focusDatabase;
+    private User user;
 
     public HistoryFragment() {
         // Required empty public constructor
     }
 
-    public static HistoryFragment newInstance(ArrayList<FocusHolder> historicList, FocusDatabase focusDatabase) {
+    public static HistoryFragment newInstance(User user, FocusDatabase focusDatabase) {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(LIST_GET, historicList);
-        args.putParcelable("FocusDatabase", focusDatabase);
+        args.putParcelable(USER_GET, user);
+        args.putParcelable(FOCUS_DATABASE, focusDatabase);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +61,7 @@ public class HistoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            historyFocusList = getArguments().getParcelableArrayList(LIST_GET);
+            user = getArguments().getParcelable(USER_GET);
             focusDatabase = getArguments().getParcelable("FocusDatabase");
             Log.v(TAG, "Created fragment");
         }
@@ -86,7 +89,7 @@ public class HistoryFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerHistory);
 
         //recycler adapter
-        FocusAdapter focusAdapter = new FocusAdapter(historyFocusList, getActivity(), focusDatabase);
+        FocusAdapter focusAdapter = new FocusAdapter(user, getActivity(), focusDatabase);
         Drawable dividerDrawable = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false); //Declare layoutManager
 
@@ -121,7 +124,7 @@ public class HistoryFragment extends Fragment {
     }
 
     public void updateTask() {
-        completion.setText("You have completed\n" + historyFocusList.size() + " Task");
+        completion.setText(String.format(Locale.getDefault(),"You have completed\n%d Task", user.getmFocusList().size()));
     }
 
     @Override

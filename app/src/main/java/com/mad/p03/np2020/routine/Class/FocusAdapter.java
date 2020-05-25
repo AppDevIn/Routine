@@ -26,11 +26,13 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     private Context context; //Current context
     private FocusDatabase focusDatabase;
     private FocusHolder focusViewHolder;
+    private User user;
 
-    public FocusAdapter(List<FocusHolder> focusList, Context context, FocusDatabase focusDatabase) {
+    public FocusAdapter(User user, Context context, FocusDatabase focusDatabase) {
         this.context = context;
-        this.focusList = focusList;
         this.focusDatabase = focusDatabase;
+        this.user = user;
+        this.focusList = user.getmFocusList();
     }
 
     @NonNull
@@ -91,7 +93,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
                         .setInputData(firebaseUserData)
                         .build();
 
-        WorkManager.getInstance(this).enqueue(mywork);
+        WorkManager.getInstance(context.getApplicationContext()).enqueue(mywork);
     }
 
     // Serialize a single object.
