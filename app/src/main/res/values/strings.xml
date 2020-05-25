@@ -49,4 +49,5 @@
     <string name="BUTTON_FAIL">Try Again</string>
     <string name="BUTTON_RESTART">Restart</string>
     <string name="BUTTON_START">Start</string>
+    <string name="login_title">Login</string>
 </resources>
