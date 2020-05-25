@@ -124,4 +124,67 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "getAllHabits: ");
         return habitList;
     }
+
+    public void updateCount(Habit habit){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query =
+                "UPDATE " + Habit.TABLE_NAME +
+                        " SET " + Habit.COLUMN_HABIT_COUNT +"=" + habit.getCount() +
+                        " WHERE " + Habit.COLUMN_ID + "=" + habit.getHabitID();
+
+        db.execSQL(query);
+        db.close();
+
+        Log.d(TAG, "addCount: ");
+
+    }
+
+    public void updateHabit(Habit habit){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String id_filter = Habit.COLUMN_ID + " = " +habit.getHabitID();
+        ContentValues values = new ContentValues();
+        values.put(Habit.COLUMN_HABIT_TITLE, habit.getTitle());
+        values.put(Habit.COLUMN_HABIT_OCCURRENCE, habit.getOccurrence());
+        values.put(Habit.COLUMN_HABIT_COUNT, habit.getCount());
+        values.put(Habit.COLUMN_HABIT_PERIOD, habit.getPeriod());
+        values.put(Habit.COLUMN_HABIT_HOLDERCOLOR, habit.getHolder_color());
+
+        HabitReminder reminder = habit.getHabitReminder();
+        if (reminder != null){
+            values.put(Habit.COLUMN_HABIT_REMINDER_ID, reminder.getId());
+            values.put(Habit.COLUMN_HABIT_REMINDER_MESSAGES, reminder.getMessage());
+            values.put(Habit.COLUMN_HABIT_REMINDER_HOURS, reminder.getHours());
+            values.put(Habit.COLUMN_HABIT_REMINDER_MINUTES, reminder.getMinutes());
+            values.put(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT, reminder.getCustom_text());
+        }else{
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_ID);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MESSAGES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_HOURS);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MINUTES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT);
+        }
+
+        HabitGroup group = habit.getGroup();
+        if (group != null){
+            values.put(Habit.COLUMN_HABIT_GROUP_NAME, group.getGrp_name());
+        }else{
+            values.putNull(Habit.COLUMN_HABIT_GROUP_NAME);
+        }
+
+        db.update(Habit.TABLE_NAME, values, id_filter, null);
+        db.close();
+        Log.d(TAG, "updateHabit: ");
+    }
+
+    public void deleteHabit(Habit habit){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String whereClause = Habit.COLUMN_ID + "=?";
+        String[] whereArgs = new String[] { String.valueOf(habit.getHabitID()) };
+        db.delete(Habit.TABLE_NAME, whereClause, whereArgs);
+        
+        db.close();
+        Log.d(TAG, "deleteHabit: ");
+    }
 }

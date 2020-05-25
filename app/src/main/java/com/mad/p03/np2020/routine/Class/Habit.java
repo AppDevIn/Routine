@@ -41,7 +41,7 @@ public class Habit {
 
     public static final String DROP_HABITS_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
-
+    
     private long habitID;
     private String title;
     private int occurrence;

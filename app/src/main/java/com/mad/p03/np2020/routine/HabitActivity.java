@@ -366,9 +366,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             public void onItemClick(final int position) {
                 final Habit habit = myAdapter._habitList.getItemAt(position);
 
+                Log.d(TAG, "onItemClick: "+position);
                 Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence()) + " " + habit.getPeriod()));
-                Log.d(TAG, habit.getTime_created());
-                Log.d(TAG, habit.getHolder_color());
+
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -410,6 +410,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         int _cnt = Integer.parseInt(cnt.getText().toString());
                         habit.modifyCount(_cnt);
                         myAdapter.notifyDataSetChanged();
+                        dbHandler.updateCount(habit);
                         alertDialog.dismiss();
                     }
                 });
@@ -738,6 +739,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
                                 habit_view_upper.setBackgroundResource(habit.returnColorID(habit.getHolder_color()));
 
+                                dbHandler.updateHabit(habit);
                                 myAdapter.notifyDataSetChanged();
                                 alertDialog.dismiss();
                             }
@@ -757,13 +759,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-//                                Log.d(TAG, "onClick: "+position);
-                                Log.v(TAG, format("%s deleted!",habitList.getItemAt(position).getTitle()));
-//                                Log.d(TAG, "onClick: "+myAdapter._habitList.size());
+                                Log.v(TAG, format("%s deleted!",myAdapter._habitList.getItemAt(position).getTitle()));
+                                dbHandler.deleteHabit(myAdapter._habitList.getItemAt(position));
                                 myAdapter._habitList.removeItemAt(position);
                                 myAdapter.notifyItemRemoved(position);
                                 myAdapter.notifyItemRangeChanged(position, myAdapter._habitList.size());
                                 myAdapter.notifyDataSetChanged();
+
+
                                 alertDialog.dismiss();
                             }
                         });
@@ -922,16 +925,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
-//    public Habit.HabitList getList() {
-//        habitList = new Habit.HabitList();
-//        Date date = new Date();
-//        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral",null,null);
-//        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen",null,null);
-//        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null,null);
-//        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null,null);
-//        return habitList;
-//    }
 
     public ArrayList<HabitGroup> getGroupList(){
         habitGroup = new ArrayList<>();

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitHolder;
+import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
@@ -22,6 +23,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     Habit.HabitList _habitList;
     private OnItemClickListener mListener;
     static View view;
+    HabitDBHelper dbHandler;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -30,7 +32,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     public HabitAdapter(Context c, Habit.HabitList habitList) {
         this.c = c;
         this._habitList = habitList;
+        dbHandler = new HabitDBHelper(c);
     }
+
     public void setOnItemClickListener(OnItemClickListener listener){
         this.mListener = listener;
     }
@@ -75,6 +79,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
             public void onClick(View v) {
                 habit.addCount();
                 notifyDataSetChanged();
+                dbHandler.updateCount(habit);
             }
         });
 
