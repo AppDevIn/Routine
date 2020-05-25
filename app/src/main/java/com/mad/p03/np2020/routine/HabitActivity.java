@@ -157,7 +157,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 group_indicate_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "onClick: group");
                         final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                         LayoutInflater inflater = getLayoutInflater();
                         View convertView = inflater.inflate(R.layout.habit_group, null);
@@ -336,12 +335,18 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                             hg = new HabitGroup(_grp_name[0]);
                         }
 
-                        Log.d(TAG, "onClick: "+hr);
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
-                        myAdapter.notifyDataSetChanged();
-                        dbHandler.insertHabit(new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg));
 
-                        Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
+                        Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
+                        long habitID = dbHandler.insertHabit(habit);
+                        if (habitID != -1){ //if habitID returned is legit
+                            habit.setHabitID(habitID); // attach the id to the habit
+                            myAdapter._habitList.addItem(habit);
+                            myAdapter.notifyDataSetChanged();
+
+                            Log.d(TAG, "onClick: "+habit.getHabitID());
+                            Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
+                        }
+
                         alertDialog.dismiss();
                     }
                 });
@@ -918,15 +923,15 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public Habit.HabitList getList() {
-        habitList = new Habit.HabitList();
-        Date date = new Date();
-        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral",null,null);
-        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen",null,null);
-        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null,null);
-        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null,null);
-        return habitList;
-    }
+//    public Habit.HabitList getList() {
+//        habitList = new Habit.HabitList();
+//        Date date = new Date();
+//        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral",null,null);
+//        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen",null,null);
+//        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null,null);
+//        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null,null);
+//        return habitList;
+//    }
 
     public ArrayList<HabitGroup> getGroupList(){
         habitGroup = new ArrayList<>();

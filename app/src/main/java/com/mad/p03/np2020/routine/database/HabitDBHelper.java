@@ -37,7 +37,7 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "Habit Database is being upgraded");
     }
 
-    public void insertHabit(Habit habit) {
+    public long insertHabit(Habit habit) {
 
         ContentValues values = new ContentValues();
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
@@ -72,9 +72,16 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.insert(Habit.TABLE_NAME, null, values);
+        long id =  db.insert(Habit.TABLE_NAME, null, values);
+        if (id == -1){
+            Log.d(TAG, "insertHabit: " + "Error");
+        }else{
+            Log.d(TAG, "insertHabit: " + "Successful");
+
+        }
         db.close();
-        Log.d(TAG, "insertHabit: ");
+
+        return id;
     }
 
     public Habit.HabitList getAllHabits() {
@@ -85,6 +92,7 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while(!res.isAfterLast()){
+            long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
             String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
             int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
             int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
@@ -109,7 +117,7 @@ public class HabitDBHelper extends SQLiteOpenHelper {
                 group = new HabitGroup(group_name);
             }
 
-            habitList.addItem(title, occurrence, count, period, time_created, holder_color, reminder, group);
+            habitList.addItem(new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group));;
             res.moveToNext();
         }
 

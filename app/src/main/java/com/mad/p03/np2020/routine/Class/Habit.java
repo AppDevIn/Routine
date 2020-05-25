@@ -42,6 +42,7 @@ public class Habit {
     public static final String DROP_HABITS_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
+    private long habitID;
     private String title;
     private int occurrence;
     private int count;
@@ -73,6 +74,17 @@ public class Habit {
         this.count = count;
     }
 
+    public Habit(long habitID, String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
+        this.habitID = habitID;
+        this.title = title;
+        this.occurrence = occurrence;
+        this.count = count;
+        this.period = period;
+        this.time_created = time_created;
+        this.holder_color = holder_color;
+        this.habitReminder = habitReminder;
+        this.group = group;
+    }
 
     public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
         this.title = title;
@@ -83,6 +95,14 @@ public class Habit {
         this.holder_color = holder_color;
         this.habitReminder = habitReminder;
         this.group = group;
+    }
+
+    public long getHabitID() {
+        return habitID;
+    }
+
+    public void setHabitID(long habitID) {
+        this.habitID = habitID;
     }
 
     public void addCount(){
@@ -196,7 +216,7 @@ public class Habit {
 
         public Habit getItemAt(Integer index) { return this.habitList.get(index); }
 
-        public void addItem(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder reminder, HabitGroup group) { this.habitList.add(new Habit(title, occurrence, count, period, time_created, holder_color,reminder,group)); }
+        public void addItem(Habit habit) { this.habitList.add(habit); }
 
         public void removeItemAt(int position) { this.habitList.remove(position); }
 
