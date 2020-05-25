@@ -9,7 +9,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
@@ -40,7 +39,6 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
     public void insertHabit(Habit habit) {
 
-
         ContentValues values = new ContentValues();
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
         values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
@@ -50,17 +48,26 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         values.put(Habit.COLUMN_HABIT_HOLDERCOLOR,habit.getHolder_color());
 
         HabitReminder reminder = habit.getHabitReminder();
+
         if(reminder !=  null){
             values.put(Habit.COLUMN_HABIT_REMINDER_ID,reminder.getId());
             values.put(Habit.COLUMN_HABIT_REMINDER_MESSAGES,reminder.getMessage());
             values.put(Habit.COLUMN_HABIT_REMINDER_MINUTES,reminder.getMinutes());
             values.put(Habit.COLUMN_HABIT_REMINDER_HOURS,reminder.getHours());
             values.put(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT,reminder.getCustom_text());
+        }else{
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_ID);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MESSAGES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MINUTES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_HOURS);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT);
         }
 
         HabitGroup group = habit.getGroup();
         if (group != null){
             values.put(Habit.COLUMN_HABIT_GROUP_NAME,habit.getGroup().getGrp_name());
+        }else{
+            values.putNull(Habit.COLUMN_HABIT_GROUP_NAME);
         }
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -72,7 +79,6 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
     public Habit.HabitList getAllHabits() {
         Habit.HabitList habitList = new Habit.HabitList();
-        Gson gson = new Gson();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from " +Habit.TABLE_NAME, null );
@@ -91,16 +97,22 @@ public class HabitDBHelper extends SQLiteOpenHelper {
             int reminder_minutes = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MINUTES));
             String reminder_message = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES));
             String reminder_customText = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT));
-            
-            HabitReminder reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
+
+            HabitReminder reminder = null;
+            if (reminder_message != null){ //check if habit reminder is null, if not set the object
+                reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
+            }
 
             String group_name = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_NAME));
-            
-            HabitGroup group = new HabitGroup(group_name);
-            
+            HabitGroup group = null;
+            if (group_name != null) {// check if habit group is null, if not set the object
+                group = new HabitGroup(group_name);
+            }
+
             habitList.addItem(title, occurrence, count, period, time_created, holder_color, reminder, group);
             res.moveToNext();
         }
+
         Log.d(TAG, "getAllHabits: ");
         return habitList;
     }

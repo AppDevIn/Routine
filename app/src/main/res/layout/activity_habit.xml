@@ -48,26 +48,15 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal" >
 
-        <ImageButton
-            android:id="@+id/habit_dashboard"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:src="@drawable/habit_dashboard" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/add_habit"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="50dp"
             android:src="@drawable/habit_add" />
 
-        <ImageButton
-            android:id="@+id/habit_chart"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:src="@drawable/habit_chart" />
+
 
     </LinearLayout>
 

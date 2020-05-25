@@ -50,19 +50,18 @@ import java.util.Date;
 import static java.lang.String.format;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class HabitActivity extends AppCompatActivity {
+public class HabitActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "HabitTracker";
     private String channelId = "001";
     Habit.HabitList habitList;
     ArrayList<HabitGroup> habitGroup;
-    ImageButton add_habit;
-    ImageButton habit_chart;
-    ImageButton habit_dashboard;
+
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
     RecyclerView groupRecyclerView;
     HabitGroupAdapter groupAdapter;
+
     private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
     private final static String[] period_textList = {"DAY", "WEEK", "MONTH", "YEAR"};
     private final static int[] period_countList = {1, 7, 30, 365};
@@ -74,36 +73,34 @@ public class HabitActivity extends AppCompatActivity {
     int hours;
 
     HabitDBHelper dbHandler;
-
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+    // add habit
+//    private TextView menu_count,habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text ;
+//    private ImageView add_btn, minus_btn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit);
+        // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dbHandler = new HabitDBHelper(this);
+        dbHandler = new HabitDBHelper(this); // initialise the HabitDBHelper
 
         Log.v(TAG,"onCreate");
 
-        initData();
+        initData(); // initialise the shared preferences if it is not done so
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // if api > 28, create a notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // if api > 28, create a notification channel named "HabitTracker"
             String channelName = "HabitTracker";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             createNotificationChannel(channelId, channelName, importance);
         }
 
 
-        add_habit = findViewById(R.id.add_habit);
-        habit_chart = findViewById(R.id.habit_chart);
-        habit_dashboard = findViewById(R.id.habit_dashboard);
-
-        add_habit.setBackgroundColor(Color.TRANSPARENT);
-        habit_chart.setBackgroundColor(Color.TRANSPARENT);
-        habit_dashboard.setBackgroundColor(Color.TRANSPARENT);
-
+        ImageView add_habit = findViewById(R.id.add_habit);
         add_habit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +108,7 @@ public class HabitActivity extends AppCompatActivity {
                 final String[] custom_text = {""};
                 final boolean[] reminder_flag = {false};
                 final String[] _grp_name = {null};
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
                 final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
@@ -123,126 +121,24 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView period_text = dialogView.findViewById(R.id.period_txt);
                 final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
                 final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
+                final ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
+                final ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
 
                 final int[] period = new int[1];
-
-                for (final int i :period_buttonIDS){
-                    final Button btn = dialogView.findViewById(i);
-                    btn.setBackgroundColor(Color.TRANSPARENT);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = btn.getId();
-
-                            for (int i = 0; i < 4; i++){
-                                Button _btn = dialogView.findViewById(period_buttonIDS[i]);
-                                if (id == period_buttonIDS[i]){
-                                    _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
-                                    period_text.setText(period_textList[i]);
-                                    period[0] = period_countList[i];
-                                }else {
-                                    _btn.setBackgroundColor(Color.TRANSPARENT);
-                                }
-
-                            }
-                        }
-                    });
-                }
-                period[0] = 1;
-                dialogView.findViewById(R.id.daily_period).setBackgroundColor(Color.parseColor("#dfdfdf"));
-
+                populatePeriodBtn(dialogView, period, period_text);
+                habit_add_initialise_periodSection(dialogView,period);
 
                 final String[] color = new String[1];
-                final Button lightcoral_btn = dialogView.findViewById(R.id.lightcoral_btn);
-                final Button slightdesblue_btn = dialogView.findViewById(R.id.slightdesblue_btn);
-                final Button fadepurple_btn = dialogView.findViewById(R.id.fadepurple_btn);
-                final Button cyangreen_btn = dialogView.findViewById(R.id.cyangreen_btn);
+                populateColorBtn(dialogView,color);
+                habit_add_initialise_colorSection(dialogView,color);
 
-                GradientDrawable drawable = new GradientDrawable();
-                drawable.setShape(GradientDrawable.RECTANGLE);
-                drawable.setStroke(5, Color.BLACK);
-                drawable.setColor(getResources().getColor(R.color.colorLightCoral));
-                lightcoral_btn.setBackground(drawable);
-                color[0] = "lightcoral";
-
-                for (final int i :color_buttonIDS){
-                    final Button btn = dialogView.findViewById(i);
-
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = btn.getId();
-
-                            for (int i = 0; i < 4; i++){
-                                Button _btn = dialogView.findViewById(color_buttonIDS[i]);
-                                if (id == color_buttonIDS[i]){
-                                    GradientDrawable drawable = new GradientDrawable();
-                                    drawable.setShape(GradientDrawable.RECTANGLE);
-                                    drawable.setStroke(5, Color.BLACK);
-                                    drawable.setColor(getResources().getColor(color_schemeIDS[i]));
-                                    _btn.setBackground(drawable);
-                                    color[0] = colorList[i];
-                                }else {
-                                    _btn.setBackgroundResource(color_schemeIDS[i]);
-                                }
-                            }
-                        }
-                    });
-                }
-
-
-                Button buttonClose = dialogView.findViewById(R.id.habit_close);
-                buttonClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                Button buttonOk = dialogView.findViewById(R.id.create_habit);
-                buttonOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = habit_name.getText().toString();
-                        if (name.equalsIgnoreCase("")){
-                            habit_name.setError("Please enter habit name");
-                            return;
-                        }
-
-                        int occur = Integer.parseInt(habit_occur.getText().toString());
-                        int cnt = Integer.parseInt(menu_count.getText().toString());
-                        Date date = new Date();
-                        HabitReminder hr = null;
-                        if (reminder_flag[0]){
-                            int id = getData();
-                            String txt = custom_text[0];
-                            setReminder(name,minutes,hours,id,txt);
-                            hr = new HabitReminder(name,id,minutes,hours,txt);
-                        }
-                        HabitGroup hg = null;
-                        if (_grp_name[0] != null){
-                            hg = new HabitGroup(_grp_name[0]);
-                        }
-
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
-                        myAdapter.notifyDataSetChanged();
-                        dbHandler.insertHabit(new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg));
-
-                        Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
-                        alertDialog.dismiss();
-                    }
-                });
-
-                ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
-                ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
 
                 add_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String cnt = menu_count.getText().toString();
                         int count = Integer.parseInt(cnt);
-                        count++;
-                        menu_count.setText(String.valueOf(count));
+                        menu_count.setText(String.valueOf(count++));
                     }
                 });
 
@@ -257,7 +153,7 @@ public class HabitActivity extends AppCompatActivity {
                         menu_count.setText(String.valueOf(count));
                     }
                 });
-                
+
                 group_indicate_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -312,40 +208,9 @@ public class HabitActivity extends AppCompatActivity {
                         });
 
 
-                        create_grp.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
-                                ViewGroup viewGroup = findViewById(android.R.id.content);
-                                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
-                                builder.setView(dialogView);
-                                final AlertDialog alertDialog = builder.create();
+                        create_grp.setOnClickListener(this);
 
-                                final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
-                                final Button saveBtn = dialogView.findViewById(R.id.group_save);
-                                final EditText name = dialogView.findViewById(R.id.creating_group_name);
 
-                                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        alertDialog.dismiss();
-                                    }
-                                });
-
-                                saveBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        String grp_name = name.getText().toString();
-                                        groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
-                                        groupAdapter.notifyDataSetChanged();
-                                        Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
-                                        alertDialog.dismiss();
-                                    }
-                                });
-
-                                alertDialog.show();
-                            }
-                        });
                         alertDialog.show();
                     }
                 });
@@ -438,7 +303,48 @@ public class HabitActivity extends AppCompatActivity {
                     }
                 });
 
+                Button buttonClose = dialogView.findViewById(R.id.habit_close);
+                buttonClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
 
+                Button buttonOk = dialogView.findViewById(R.id.create_habit);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = habit_name.getText().toString();
+                        if (name.equalsIgnoreCase("")){
+                            habit_name.setError("Please enter habit name");
+                            return;
+                        }
+
+                        int occur = Integer.parseInt(habit_occur.getText().toString());
+                        int cnt = Integer.parseInt(menu_count.getText().toString());
+                        Date date = new Date();
+                        HabitReminder hr = null;
+                        if (reminder_flag[0]){
+                            int id = getData();
+                            String txt = custom_text[0];
+                            setReminder(name,minutes,hours,id,txt);
+                            hr = new HabitReminder(name,id,minutes,hours,txt);
+                        }
+                        HabitGroup hg = null;
+                        if (_grp_name[0] != null){
+                            hg = new HabitGroup(_grp_name[0]);
+                        }
+
+                        Log.d(TAG, "onClick: "+hr);
+                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
+                        myAdapter.notifyDataSetChanged();
+                        dbHandler.insertHabit(new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg));
+
+                        Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }
+                });
 
                 alertDialog.show();
 
@@ -458,9 +364,6 @@ public class HabitActivity extends AppCompatActivity {
                 Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence()) + " " + habit.getPeriod()));
                 Log.d(TAG, habit.getTime_created());
                 Log.d(TAG, habit.getHolder_color());
-                if (habit.getGroup() != null){
-                    Log.d(TAG, habit.getGroup().getGrp_name());
-                }
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -588,9 +491,26 @@ public class HabitActivity extends AppCompatActivity {
                         final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
                         final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
 
+
+                        final int[] _period = new int[1];
+                        populatePeriodBtn(dialogView, _period, period_text);
+                        habit_edit_initialise_periodSection(dialogView, habit, _period, period_text);
+
+
+                        final String[] _color = new String[1];
+                        populateColorBtn(dialogView, _color);
+                        habit_edit_initialise_colorSection(dialogView, habit, _color);
+
+
+                        habit_name.setText(habit.getTitle());
+                        habit_occur.setText(String.valueOf(habit.getOccurrence()));
+
                         final HabitGroup habitGroup = habit.getGroup();
+
                         if (habitGroup != null ){
                             group_indicate_text.setText(habitGroup.getGrp_name());
+                        }else{
+                            group_indicate_text.setText("NONE");
                         }
 
                         group_indicate_text.setOnClickListener(new View.OnClickListener() {
@@ -653,40 +573,8 @@ public class HabitActivity extends AppCompatActivity {
                                 });
 
 
-                                create_grp.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
-                                        ViewGroup viewGroup = findViewById(android.R.id.content);
-                                        View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
-                                        builder.setView(dialogView);
-                                        final AlertDialog alertDialog = builder.create();
+                                create_grp.setOnClickListener(this);
 
-                                        final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
-                                        final Button saveBtn = dialogView.findViewById(R.id.group_save);
-                                        final EditText name = dialogView.findViewById(R.id.creating_group_name);
-
-                                        cancelBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                alertDialog.dismiss();
-                                            }
-                                        });
-
-                                        saveBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                String grp_name = name.getText().toString();
-                                                groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
-                                                groupAdapter.notifyDataSetChanged();
-                                                Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
-                                                alertDialog.dismiss();
-                                            }
-                                        });
-
-                                        alertDialog.show();
-                                    }
-                                });
                                 alertDialog.show();
                             }
                         });
@@ -791,87 +679,6 @@ public class HabitActivity extends AppCompatActivity {
                             }
                         });
 
-                        final int[] _period = new int[1];
-
-                        for (final int i :period_buttonIDS){
-                            final Button btn = dialogView.findViewById(i);
-                            btn.setBackgroundColor(Color.TRANSPARENT);
-                            btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = btn.getId();
-
-                                    for (int i = 0; i < 4; i++){
-                                        Button _btn = dialogView.findViewById(period_buttonIDS[i]);
-                                        if (id == period_buttonIDS[i]){
-                                            _btn.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
-                                            period_text.setText(period_textList[i]);
-                                            _period[0] = period_countList[i];
-                                        }else {
-                                            _btn.setBackgroundColor(Color.TRANSPARENT);
-                                        }
-
-                                    }
-                                }
-                            });
-                        }
-
-                        for(int i = 0; i < 4; i++){
-                            if (period_countList[i] == habit.getPeriod()){
-                                _period[0] = period_countList[i];
-                                period_text.setText(period_textList[i]);
-                                dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
-                                break;
-                            }
-                        }
-
-
-                        final String[] _color = new String[1];
-                        final Button lightcoral_btn = dialogView.findViewById(R.id.lightcoral_btn);
-                        final Button slightdesblue_btn = dialogView.findViewById(R.id.slightdesblue_btn);
-                        final Button fadepurple_btn = dialogView.findViewById(R.id.fadepurple_btn);
-                        final Button cyangreen_btn = dialogView.findViewById(R.id.cyangreen_btn);
-
-                        for(int i = 0; i < 4; i++){
-                            if (colorList[i].equals(habit.getHolder_color())){
-                                _color[0] = colorList[i];
-                                GradientDrawable drawable = new GradientDrawable();
-                                drawable.setShape(GradientDrawable.RECTANGLE);
-                                drawable.setStroke(5, Color.BLACK);
-                                drawable.setColor(getResources().getColor(color_schemeIDS[i]));
-                                dialogView.findViewById(color_buttonIDS[i]).setBackground(drawable);
-                                break;
-                            }
-                        }
-
-
-                        for (final int i :color_buttonIDS){
-                            final Button btn = dialogView.findViewById(i);
-
-                            btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = btn.getId();
-
-                                    for (int i = 0; i < 4; i++){
-                                        Button _btn = dialogView.findViewById(color_buttonIDS[i]);
-                                        if (id == color_buttonIDS[i]){
-                                            GradientDrawable drawable = new GradientDrawable();
-                                            drawable.setShape(GradientDrawable.RECTANGLE);
-                                            drawable.setStroke(5, Color.BLACK);
-                                            drawable.setColor(getResources().getColor(color_schemeIDS[i]));
-                                            _btn.setBackground(drawable);
-                                            _color[0] = colorList[i];
-                                        }else
-                                            _btn.setBackgroundResource(color_schemeIDS[i]);
-                                        }
-                                    }
-                                });
-                            }
-
-
-                        habit_name.setText(habit.getTitle());
-                        habit_occur.setText(String.valueOf(habit.getOccurrence()));
 
                         Button buttonClose = dialogView.findViewById(R.id.habit_close);
                         buttonClose.setOnClickListener(new View.OnClickListener() {
@@ -945,10 +752,12 @@ public class HabitActivity extends AppCompatActivity {
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+//                                Log.d(TAG, "onClick: "+position);
                                 Log.v(TAG, format("%s deleted!",habitList.getItemAt(position).getTitle()));
+//                                Log.d(TAG, "onClick: "+myAdapter._habitList.size());
                                 myAdapter._habitList.removeItemAt(position);
                                 myAdapter.notifyItemRemoved(position);
-                                myAdapter.notifyItemRangeChanged(position, habitList.size());
+                                myAdapter.notifyItemRangeChanged(position, myAdapter._habitList.size());
                                 myAdapter.notifyDataSetChanged();
                                 alertDialog.dismiss();
                             }
@@ -971,6 +780,143 @@ public class HabitActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.habit_group_view_create_group:
+                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+
+                final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
+                final Button saveBtn = dialogView.findViewById(R.id.group_save);
+                final EditText name = dialogView.findViewById(R.id.creating_group_name);
+
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String grp_name = name.getText().toString();
+                        groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
+                        groupAdapter.notifyDataSetChanged();
+                        Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
+
+        }
+    }
+
+    public void populatePeriodBtn(final View dialogView, final int[] period, final TextView period_text ){
+         // set listener on buttons to change the color based on the user's option in period section
+        for (final int i :period_buttonIDS){
+            final Button btn = dialogView.findViewById(i);
+            btn.setBackgroundColor(Color.TRANSPARENT);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = btn.getId();
+
+                    for (int i = 0; i < 4; i++){
+                        Button _btn = dialogView.findViewById(period_buttonIDS[i]);
+                        if (id == period_buttonIDS[i]){
+                            _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
+                            period_text.setText(period_textList[i]);
+                            period[0] = period_countList[i];
+                        }else {
+                            _btn.setBackgroundColor(Color.TRANSPARENT);
+                        }
+
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void populateColorBtn(final View dialogView, final String[] color){
+        // set listener on buttons to change the color based on the user's option in color section
+        for (final int i :color_buttonIDS){
+            final Button btn = dialogView.findViewById(i);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = btn.getId();
+
+                    for (int i = 0; i < 4; i++){
+                        Button _btn = dialogView.findViewById(color_buttonIDS[i]);
+                        if (id == color_buttonIDS[i]){
+                            GradientDrawable drawable = new GradientDrawable();
+                            drawable.setShape(GradientDrawable.RECTANGLE);
+                            drawable.setStroke(5, Color.BLACK);
+                            drawable.setColor(getResources().getColor(color_schemeIDS[i]));
+                            _btn.setBackground(drawable);
+                            color[0] = colorList[i];
+                        }else {
+                            _btn.setBackgroundResource(color_schemeIDS[i]);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void habit_add_initialise_colorSection(final View dialogView, final String[] color){
+        // initialise the color button at color section since nothing is chosen at first
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setStroke(5, Color.BLACK);
+        drawable.setColor(getResources().getColor(R.color.colorLightCoral));
+        dialogView.findViewById(R.id.lightcoral_btn).setBackground(drawable);
+        color[0] = "lightcoral";
+    }
+
+    public void habit_add_initialise_periodSection(final View dialogView, final int[] period){
+        // initialise the color of btn of "daily" button at period section since nothing is chosen at first
+        period[0] = 1;
+        dialogView.findViewById(R.id.daily_period).setBackgroundColor(Color.parseColor("#dfdfdf"));
+    }
+
+    public void habit_edit_initialise_colorSection(View dialogView, final Habit habit, final String[] _color){
+        for(int i = 0; i < 4; i++){
+            if (colorList[i].equals(habit.getHolder_color())){
+                _color[0] = colorList[i];
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setShape(GradientDrawable.RECTANGLE);
+                drawable.setStroke(5, Color.BLACK);
+                drawable.setColor(getResources().getColor(color_schemeIDS[i]));
+                dialogView.findViewById(color_buttonIDS[i]).setBackground(drawable);
+                break;
+            }
+        }
+
+    }
+
+    public void habit_edit_initialise_periodSection(View dialogView, final Habit habit, final int[] _period, final TextView period_text){
+        for(int i = 0; i < 4; i++){
+            if (period_countList[i] == habit.getPeriod()){
+                _period[0] = period_countList[i];
+                period_text.setText(period_textList[i]);
+                dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
+                break;
+            }
+        }
+    }
+
 
     public Habit.HabitList getList() {
         habitList = new Habit.HabitList();
