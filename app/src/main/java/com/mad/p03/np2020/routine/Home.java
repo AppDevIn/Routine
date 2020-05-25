@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -32,11 +33,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.background.FirebaseSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
@@ -71,7 +80,7 @@ public class Home extends AppCompatActivity {
         Log.d(TAG, "UI is being created");
 
         //TODO: Get from the intent
-        mUID = "V30jZctVgSPh00CVskSYiXNRezC2";
+        mUID = "pXIeuenKaGWjEU5ruEQ6ahiS8FK2";
 
 
         requestFirebaseSectionData(mUID);
@@ -97,6 +106,11 @@ public class Home extends AppCompatActivity {
 
         //A list of possible background to be user
         mBackgrounds = new Integer[] {R.drawable.amazon, R.drawable.android, R.drawable.laptop, R.drawable.code, R.drawable.bookmark};
+
+
+        //TODO: Remove this
+        tempLogin();
+
     }
 
     @Override
@@ -280,5 +294,58 @@ public class Home extends AppCompatActivity {
         //Enqueue the request
         WorkManager.getInstance(this).enqueue(compressionwork);
     }
+
+
+
+
+
+
+    //TODO: Recorrect this portion
+    private void retrieveFCMToken(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "getInstanceId failed", task.getException());
+                    return;
+                }
+
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+
+                // Log and toast
+//                String msg = getString(R.string.msg_token_fmt, token);
+//                Log.d(TAG, msg);
+                sendRegistrationToServer(token);
+                Toast.makeText(Home.this, token, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendRegistrationToServer(String token) {
+        // TODO: Implement this method to send token to your app server.
+
+        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        reference.child("messagingToken").setValue(token);
+    }
+
+    private void tempLogin(){
+       final FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        auth.signInWithEmailAndPassword("routine@gmail.com", "JqHp@2020")
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = auth.getCurrentUser();
+                        Log.i(TAG, "onComplete: "+user.getUid());
+                        retrieveFCMToken();
+                    }
+                });
+    }
+
 }
 
