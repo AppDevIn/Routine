@@ -93,7 +93,7 @@ public class Home extends AppCompatActivity {
         Log.d(TAG, "onCreate(): Data received from SQL");
 
         //A list of possible colors to be user
-        mColors = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.ivory), getResources().getColor(R.color.turquoise)};
+        mColors = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.green_yellow), getResources().getColor(R.color.turquoise)};
 
         //A list of possible background to be user
         mBackgrounds = new Integer[] {R.drawable.amazon, R.drawable.android, R.drawable.laptop, R.drawable.code, R.drawable.bookmark};

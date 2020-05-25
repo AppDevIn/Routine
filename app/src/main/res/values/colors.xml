@@ -11,11 +11,11 @@
     <color name="ErrorColor">#EC6060</color>
     <color name="grey">#908989</color>
 
-<!--    Colors for the todolost-->
+<!--    Colors for the ToDoList-->
     <color name="superiorityBlue">#6CA6C1</color>
     <color name="rosyBrown">#BD9391</color>
     <color name="mandarin">#EF7B45</color>
-    <color name="gree_yellow">#F7EF99</color>
+    <color name="green_yellow">#F7EF99</color>
     <color name="turquoise">#41D3BD</color>
 
 </resources>
