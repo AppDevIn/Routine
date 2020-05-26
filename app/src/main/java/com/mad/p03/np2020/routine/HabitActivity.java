@@ -42,6 +42,7 @@ import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
+import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,7 +56,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "HabitTracker";
     private String channelId = "001";
     Habit.HabitList habitList;
-    ArrayList<HabitGroup> habitGroup;
+    ArrayList<HabitGroup> habitGroup_reference;
 
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
@@ -72,7 +73,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     int minutes;
     int hours;
 
-    HabitDBHelper dbHandler;
+    HabitDBHelper habit_dbHandler;
+    HabitGroupDBHelper group_dbhandler;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     // add habit
@@ -87,8 +89,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dbHandler = new HabitDBHelper(this); // initialise the HabitDBHelper
+        habit_dbHandler = new HabitDBHelper(this); // initialise the HabitDBHelper
+        group_dbhandler = new HabitGroupDBHelper(this); // initialise the HabitGroupDBHelper
 
+        habitGroup_reference = group_dbhandler.getAllGroups();
         Log.v(TAG,"onCreate");
 
         initData(); // initialise the shared preferences if it is not done so
@@ -176,7 +180,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
                         groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
                         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
+                        groupAdapter= new HabitGroupAdapter(habitGroup_reference,getApplicationContext());
                         groupRecyclerView.setAdapter(groupAdapter);
                         builder.setView(convertView);
                         final AlertDialog alertDialog = builder.create();
@@ -207,7 +211,47 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         });
 
 
-                        create_grp.setOnClickListener(this);
+                        create_grp.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+                                ViewGroup viewGroup = findViewById(android.R.id.content);
+                                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
+                                builder.setView(dialogView);
+                                final AlertDialog alertDialog = builder.create();
+
+                                final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
+                                final Button saveBtn = dialogView.findViewById(R.id.group_save);
+                                final EditText name = dialogView.findViewById(R.id.creating_group_name);
+
+                                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                saveBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        String grp_name = name.getText().toString();
+                                        HabitGroup grp = new HabitGroup(grp_name);
+                                        long grp_id = group_dbhandler.insertGroup(grp);
+
+                                        if (grp_id != -1){
+                                            grp.setGrp_id(grp_id);
+                                            groupAdapter._habitGroupList.add(grp);
+                                            groupAdapter.notifyDataSetChanged();
+                                            Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                alertDialog.show();
+                            }
+                        });
 
 
                         alertDialog.show();
@@ -337,7 +381,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
                         Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
-                        long habitID = dbHandler.insertHabit(habit);
+                        long habitID = habit_dbHandler.insertHabit(habit);
                         if (habitID != -1){ //if habitID returned is legit
                             habit.setHabitID(habitID); // attach the id to the habit
                             myAdapter._habitList.addItem(habit);
@@ -359,7 +403,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new HabitAdapter(this, dbHandler.getAllHabits());
+        myAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits());
         mRecyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(new HabitAdapter.OnItemClickListener() {
             @Override
@@ -410,7 +454,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         int _cnt = Integer.parseInt(cnt.getText().toString());
                         habit.modifyCount(_cnt);
                         myAdapter.notifyDataSetChanged();
-                        dbHandler.updateCount(habit);
+                        habit_dbHandler.updateCount(habit);
                         alertDialog.dismiss();
                     }
                 });
@@ -522,7 +566,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         group_indicate_text.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Log.d(TAG, "onClick: group");
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                                 LayoutInflater inflater = getLayoutInflater();
                                 View convertView = inflater.inflate(R.layout.habit_group, null);
@@ -545,7 +588,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
                                 groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
                                 groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                                groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
+                                groupAdapter= new HabitGroupAdapter(habitGroup_reference, getApplicationContext());
                                 groupRecyclerView.setAdapter(groupAdapter);
                                 builder.setView(convertView);
                                 final AlertDialog alertDialog = builder.create();
@@ -579,7 +622,47 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                 });
 
 
-                                create_grp.setOnClickListener(this);
+                                create_grp.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+                                        ViewGroup viewGroup = findViewById(android.R.id.content);
+                                        View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
+                                        builder.setView(dialogView);
+                                        final AlertDialog alertDialog = builder.create();
+
+                                        final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
+                                        final Button saveBtn = dialogView.findViewById(R.id.group_save);
+                                        final EditText name = dialogView.findViewById(R.id.creating_group_name);
+
+                                        cancelBtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+
+                                        saveBtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                String grp_name = name.getText().toString();
+                                                HabitGroup grp = new HabitGroup(grp_name);
+                                                long grp_id = group_dbhandler.insertGroup(grp);
+
+                                                if (grp_id != -1){
+                                                    grp.setGrp_id(grp_id);
+                                                    groupAdapter._habitGroupList.add(grp);
+                                                    groupAdapter.notifyDataSetChanged();
+                                                    Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+
+                                        alertDialog.show();
+                                    }
+                                });
 
                                 alertDialog.show();
                             }
@@ -739,7 +822,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
                                 habit_view_upper.setBackgroundResource(habit.returnColorID(habit.getHolder_color()));
 
-                                dbHandler.updateHabit(habit);
+                                habit_dbHandler.updateHabit(habit);
                                 myAdapter.notifyDataSetChanged();
                                 alertDialog.dismiss();
                             }
@@ -760,7 +843,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.v(TAG, format("%s deleted!",myAdapter._habitList.getItemAt(position).getTitle()));
-                                dbHandler.deleteHabit(myAdapter._habitList.getItemAt(position));
+                                habit_dbHandler.deleteHabit(myAdapter._habitList.getItemAt(position));
                                 myAdapter._habitList.removeItemAt(position);
                                 myAdapter.notifyItemRemoved(position);
                                 myAdapter.notifyItemRangeChanged(position, myAdapter._habitList.size());
@@ -792,37 +875,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v){
+        Log.d(TAG, "onClick: "+v.getId());
         switch (v.getId()){
             case R.id.habit_group_view_create_group:
-                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
-                ViewGroup viewGroup = findViewById(android.R.id.content);
-                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false);
-                builder.setView(dialogView);
-                final AlertDialog alertDialog = builder.create();
 
-                final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
-                final Button saveBtn = dialogView.findViewById(R.id.group_save);
-                final EditText name = dialogView.findViewById(R.id.creating_group_name);
-
-                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                saveBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String grp_name = name.getText().toString();
-                        groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
-                        groupAdapter.notifyDataSetChanged();
-                        Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
-                        alertDialog.dismiss();
-                    }
-                });
-
-                alertDialog.show();
+                break;
 
         }
     }
@@ -926,14 +983,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public ArrayList<HabitGroup> getGroupList(){
-        habitGroup = new ArrayList<>();
-        habitGroup.add(new HabitGroup("Productivity"));
-        habitGroup.add(new HabitGroup("Fitness"));
-        habitGroup.add(new HabitGroup("Healthy"));
-
-        return habitGroup;
-    }
+//    public ArrayList<HabitGroup> getGroupList(){
+//        habitGroup = new ArrayList<>();
+//        habitGroup.add(new HabitGroup("Productivity"));
+//        habitGroup.add(new HabitGroup("Fitness"));
+//        habitGroup.add(new HabitGroup("Healthy"));
+//
+//        return habitGroup;
+//    }
 
     public void setReminder(String name, int minutes, int hours,int id, String custom_txt){
 

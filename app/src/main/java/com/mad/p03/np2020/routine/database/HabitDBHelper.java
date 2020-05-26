@@ -37,6 +37,10 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "Habit Database is being upgraded");
     }
 
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.setVersion(oldVersion);
+    }
+
     public long insertHabit(Habit habit) {
 
         ContentValues values = new ContentValues();
