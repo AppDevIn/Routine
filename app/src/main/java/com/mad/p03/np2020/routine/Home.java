@@ -6,6 +6,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -62,7 +64,7 @@ public class Home extends AppCompatActivity {
 
 
     //Declare member variables
-    GridView mGridView;
+    RecyclerView mGridView;
     HomePageAdapter mHomePageAdapter;
     ImageButton mImgAdd;
     EditText mEditAddList;
@@ -122,8 +124,14 @@ public class Home extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart: GUI is ready");
 
+
+        //Recycler view setup
+        mGridView.setLayoutManager(new GridLayoutManager(Home.this,2)); //Setting the layout manager with the column of 2
+        mGridView.addItemDecoration(new DividerItemDecoration(10));
+
+
         // Initialize any value
-        mHomePageAdapter = new HomePageAdapter(this,R.layout.home_grid_view_items, mSectionList);
+        mHomePageAdapter = new HomePageAdapter( mSectionList);
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
@@ -142,15 +150,6 @@ public class Home extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: GUI is in the Foreground and Interactive");
-
-        //Setting each item in the listener clickable
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Logging the name of the list clicked
-                Log.d(TAG, "onItemClick(): " + mSectionList.get(i).getName() + " has been clicked");
-            }
-        });
 
         //When the add button is clicked make the card view visible
         mImgAdd.setOnClickListener(new View.OnClickListener() {
@@ -199,13 +198,17 @@ public class Home extends AppCompatActivity {
         //Add to the list
         SectionDBHelper.setMyDatabaseListener(new MyDatabaseListener() {
             @Override
-            public void onSectionAdd(Section section) {
+            public void onSectionAdd(final Section section) {
                 Log.d(TAG, "A new section has been added: " + section.toString());
 
-                //Add to List<Section>
-                mSectionList.add(section);
-                mHomePageAdapter.notifyDataSetChanged();
-                Log.d(TAG, "updateCardUI(): Adding to the local list");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Add to List<Section>
+                        mHomePageAdapter.addItem(section);
+                    }
+                });
+
             }
         });
 

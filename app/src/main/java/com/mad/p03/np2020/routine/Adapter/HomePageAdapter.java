@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,50 +27,39 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
-public class HomePageAdapter extends ArrayAdapter {
+public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
+
+    private final String TAG = "HomeAdapter";
 
     List<Section> mSectionList = new ArrayList<>();
 
-    public HomePageAdapter(Context context, int textViewResourceId, List objects) {
-        super(context, textViewResourceId, objects);
 
-        mSectionList = objects;
+    public HomePageAdapter(List<Section> sectionList) {
+        mSectionList = sectionList;
 
-    }
+        Log.d(TAG, "Total items: " + mSectionList.size());
 
-
-    @Override
-    public int getCount() {
-        return super.getCount();
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public MyHomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        //Local variables
-        TextView textView;
-        ImageView background;
-        ImageView btnToDO;
+        //Inflate the layout
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_grid_view_items, parent, false);
 
+        return new MyHomeViewHolder(view);
+    }
 
-        View v = convertView;
-
-        //Creating a new layout
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        v = inflater.inflate(R.layout.home_grid_view_items, null);
-
-        //Initialize variables
-        textView = v.findViewById(R.id.listName);
-        background = v.findViewById(R.id.backgroud);
-        btnToDO = v.findViewById(R.id.todoIcon);
-
+    @Override
+    public void onBindViewHolder(@NonNull MyHomeViewHolder holder, int position) {
         //***************** Set values into view *****************//
 
         //For the TextView
-        textView.setText(mSectionList.get(position).getName());
+        holder.mTextViewListName.setText(mSectionList.get(position).getName());
 
         //For background
 
@@ -81,12 +71,34 @@ public class HomePageAdapter extends ArrayAdapter {
 
 
         //Set the drawable
-        background.setBackground(shape);
+        holder.mImgBackGround.setBackground(shape);
 
         //Setting the image icon
-        btnToDO.setImageResource(mSectionList.get(position).getBmiIcon());
+        holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());
+    }
 
-        return  v;
+    @Override
+    public int getItemCount() {
+        return mSectionList.size();
+    }
+
+    public void addItem(Section section){
+        mSectionList.add(section);
+
+        //Informing the adapter and view of the new item
+        notifyItemInserted(mSectionList.size());
+        Log.d(TAG, "New TODO added, " + section.toString());
+    }
+
+    public void removeItem(int position){
+        Log.d(TAG, "Removing " + mSectionList.get(position));
+
+        mSectionList.remove(position);
+
+        //Informing the adapter and view after removing
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mSectionList.size());
 
     }
 }
+
