@@ -15,6 +15,9 @@ import java.util.List;
 
 public class SectionDBHelper extends SQLiteOpenHelper {
 
+    //Listener
+    private static MyDatabaseListener mMyDatabaseListener;
+
     static final String DATABASE_NAME = "MyRoutine.db";
     static final int DATABASE_VERSION = 3;
     private final String TAG = "SectionDatebase";
@@ -48,11 +51,17 @@ public class SectionDBHelper extends SQLiteOpenHelper {
     }
 
 
+    // Assign the listener implementing events interface that will receive the events
+    public static void  setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
+        mMyDatabaseListener = myDatabaseListener;
+    }
+
     /**
      * To insert the section which is color, image and the name of the section
      * in the sqlite
      *
      * @param section passed to acces the name, color and image
+     * @param UID passed to be put it as the foreign key
      * @return the id in this case the row in belongs
      */
     public long insertSection(Section section, String UID){
@@ -79,6 +88,8 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         } else{
             Log.d(TAG, "insertSection(): Data inserted");
         }
+        if (mMyDatabaseListener != null)
+            mMyDatabaseListener.onSectionAdd(section);
 
         return id;
     }
@@ -101,11 +112,9 @@ public class SectionDBHelper extends SQLiteOpenHelper {
             cursor.moveToFirst(); //Only getting the first value
 
         //Prepare a section object
-        Section section = new Section(
-                cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
-                cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE))
-        );
+        Section section = Section.fromCursor(cursor);
+        Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
+
 
         //Close the DB connection
         db.close();
@@ -114,6 +123,16 @@ public class SectionDBHelper extends SQLiteOpenHelper {
 
     }
 
+
+    /**
+     *
+     * This function will query all the Section associated with
+     * UID and retrieve it. With the raw data it will be
+     * converted to sections.
+     *
+     * @param UID The user Unique Identification
+     * @return A list of section data from SQL
+     */
 
     public List<Section> getAllSections(String UID){
 
@@ -126,27 +145,18 @@ public class SectionDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //Incase it fails
-        try{
-            Cursor cursor = db.rawQuery(selectQuery, null);
 
-            // looping through all rows and adding to list
-            if (cursor.moveToFirst()) {
-                do {
-                    Section section = new Section(
-                            cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
-                            cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
-                            cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE))
-                    );
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
-                    Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Section section = Section.fromCursor(cursor);
 
-                    sections.add(section);
-                } while (cursor.moveToNext());
-            }
+                Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
 
-        }catch (Exception e){
-            Log.e(TAG, "getAllSections: ",e);
+                sections.add(section);
+            } while (cursor.moveToNext());
         }
 
 
@@ -158,4 +168,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         return sections;
     }
 
+
 }
+
+

@@ -49,6 +49,7 @@ import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
+import com.mad.p03.np2020.routine.database.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class Home extends AppCompatActivity {
     User mUser;
 
 
-    Home(User user){
+    void Home(User user){
         mUser = user;
     }
 
@@ -192,6 +193,24 @@ public class Home extends AppCompatActivity {
             }
         });
 
+
+        //Listen to the database update
+        //When new section add to database it will be
+        //Add to the list
+        SectionDBHelper.setMyDatabaseListener(new MyDatabaseListener() {
+            @Override
+            public void onSectionAdd(Section section) {
+                Log.d(TAG, "A new section has been added: " + section.toString());
+
+                //Add to List<Section>
+                mSectionList.add(section);
+                mHomePageAdapter.notifyDataSetChanged();
+                Log.d(TAG, "updateCardUI(): Adding to the local list");
+            }
+        });
+
+
+
     }
 
     /**
@@ -207,10 +226,6 @@ public class Home extends AppCompatActivity {
 
         //Create a Section Object for the user input
         Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()]);
-
-        //Add to List<Section>
-        mSectionList.add(section);
-        Log.d(TAG, "updateCardUI(): Adding to the local list");
 
         //Save to SQL
         long id  = mSectionDBHelper.insertSection(section, mUID);
@@ -243,6 +258,9 @@ public class Home extends AppCompatActivity {
      * when internet connectivity is present
      *
      * It will be done in the background
+     *
+     * @param section is object that will be uploaded to firebase
+     * @param ID is a the id of row in the SQL database
      */
     private void executeFirebaseSectionUpload(Section section, long ID){
 

@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Class;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -98,6 +99,15 @@ public class Section {
         return null;
 
 
+    }
+
+    public static Section fromCursor(Cursor cursor){
+
+        return new Section(
+                cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
+                cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE))
+        );
     }
 
     public int getBmiIcon() {
