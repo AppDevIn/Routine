@@ -16,6 +16,7 @@ public class MyHomeViewHolder extends RecyclerView.ViewHolder {
     public TextView mTextViewListName;
     public ImageView mImgBackGround;
     public ImageView mimgIcon;
+    public  View mView;
 
 
     public MyHomeViewHolder(@NonNull View v) {
@@ -24,6 +25,7 @@ public class MyHomeViewHolder extends RecyclerView.ViewHolder {
         mTextViewListName = v.findViewById(R.id.listName);
         mImgBackGround = v.findViewById(R.id.backgroud);
         mimgIcon = v.findViewById(R.id.todoIcon);
+        mView = v;
 
     }
 }

@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
 
@@ -35,10 +37,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
     private final String TAG = "HomeAdapter";
 
     List<Section> mSectionList = new ArrayList<>();
+    Context mContext;
 
 
-    public HomePageAdapter(List<Section> sectionList) {
+
+    public HomePageAdapter(Context context,List<Section> sectionList) {
         mSectionList = sectionList;
+        this.mContext = context;
 
         Log.d(TAG, "Total items: " + mSectionList.size());
 
@@ -55,7 +60,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHomeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHomeViewHolder holder, final int position) {
         //***************** Set values into view *****************//
 
         //For the TextView
@@ -75,6 +80,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
 
         //Setting the image icon
         holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
+            }
+        });
     }
 
     @Override
