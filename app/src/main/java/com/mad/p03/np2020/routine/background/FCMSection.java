@@ -26,7 +26,8 @@ public class FCMSection extends FirebaseMessagingService {
 
     /**
      *
-     * Send to the user as messaging token and save it there
+     * Send to the user the messaging token and save it there
+     * When the the messaging token is re-created 
      *
      * @param token The new token.
      */
@@ -48,13 +49,6 @@ public class FCMSection extends FirebaseMessagingService {
         Section section = Section.fromJSON(remoteMessage.getData().toString());
         Log.d(TAG, "onMessageReceived(): Section info: " + section.toString());
 
-
-    }
-
-    private void initFCM(){
-        String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "initFCM: token: " + token);
-        sendRegistrationToServer(token);
 
     }
 

@@ -46,7 +46,7 @@ import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.background.FirebaseSectionWorker;
+import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
@@ -72,6 +72,12 @@ public class Home extends AppCompatActivity {
     SectionDBHelper mSectionDBHelper;
     Integer[] mColors, mBackgrounds;
     String mUID;
+    User mUser;
+
+
+    Home(User user){
+        mUser = user;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +87,7 @@ public class Home extends AppCompatActivity {
 
         //TODO: Get from the intent
         mUID = "pXIeuenKaGWjEU5ruEQ6ahiS8FK2";
-
-
-        requestFirebaseSectionData(mUID);
-
+//        mUID = mUser.getUID();
 
 
         //Find view by ID
@@ -161,6 +164,7 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        //Checks for the enter action from the keyboard
         mEditAddList.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
@@ -194,7 +198,6 @@ public class Home extends AppCompatActivity {
      *
      * To add the data into firebase and SQL
      * Create a section object.
-     * Set the cardview invisible and hide the keyboard
      *
      * @param textView the is the edittext
      */
@@ -202,7 +205,7 @@ public class Home extends AppCompatActivity {
         String listName = textView.getText().toString();
         Log.i(TAG, "onEditorAction: " + listName);
 
-        //Create a Section Object
+        //Create a Section Object for the user input
         Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()]);
 
         //Add to List<Section>
@@ -216,6 +219,15 @@ public class Home extends AppCompatActivity {
         //Save to firebase
         executeFirebaseSectionUpload(section, id);
 
+        //Function that make the cardview invisible and hide keyboard
+        updateCard();
+    }
+
+    /**
+     *  Set the cardview invisible and hide the keyboard
+     *
+     */
+    void updateCard(){
         //The card view will disappear
         mCardViewPopUp.setVisibility(View.INVISIBLE);
         Log.d(TAG, "updateCardUI(): Card view is invisible");
@@ -273,31 +285,6 @@ public class Home extends AppCompatActivity {
 
 
     }
-
-    /**
-     * Start request to listen to the user data
-     *
-     * @param UID is used to get the User id in the database reference
-     */
-    private void requestFirebaseSectionData(String UID){
-        //Adding data which will be received from the worker
-        @SuppressLint("RestrictedApi") Data firebaseRequestData = new Data.Builder()
-                .putString("UID", UID)
-                .build();
-
-        //Create the request
-        OneTimeWorkRequest compressionwork = new OneTimeWorkRequest
-                .Builder(FirebaseSectionWorker.class)
-                .setInputData(firebaseRequestData)
-                .build();
-
-        //Enqueue the request
-        WorkManager.getInstance(this).enqueue(compressionwork);
-    }
-
-
-
-
 
 
     //TODO: Recorrect this portion
