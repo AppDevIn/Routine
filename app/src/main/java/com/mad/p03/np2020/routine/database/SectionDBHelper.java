@@ -112,6 +112,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
             cursor.moveToFirst(); //Only getting the first value
 
         //Prepare a section object
+        assert cursor != null;
         Section section = Section.fromCursor(cursor);
         Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
 
@@ -166,6 +167,16 @@ public class SectionDBHelper extends SQLiteOpenHelper {
 
         // return notes list
         return sections;
+    }
+
+
+    public Boolean hasID(long id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Get the data from sqllite
+        Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where id="+id+"", null );
+
+        return cursor.moveToFirst();
     }
 
 

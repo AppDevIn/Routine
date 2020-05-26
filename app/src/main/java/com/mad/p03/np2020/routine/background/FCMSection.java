@@ -12,6 +12,8 @@ import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 
 public class FCMSection extends FirebaseMessagingService {
@@ -50,10 +52,18 @@ public class FCMSection extends FirebaseMessagingService {
         Section section = Section.fromJSON(remoteMessage.getData().toString());
         Log.d(TAG, "onMessageReceived(): Section info: " + section.toString());
 
+
+        long id = Integer.parseInt(Objects.requireNonNull(remoteMessage.getData().get("id")));
+
         //Save to SQL
+        //Check if the Data already exist
         SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
-        sectionDBHelper.insertSection(section, "pXIeuenKaGWjEU5ruEQ6ahiS8FK2");
-        Log.d(TAG, "Added to new Firebase data to Section ");
+        Log.d(TAG, "onMessageReceived: " + sectionDBHelper.hasID(id));
+        if(!sectionDBHelper.hasID(id)){
+            sectionDBHelper.insertSection(section, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            Log.d(TAG, "Added to new Firebase data to Section ");
+        }
+
 
 
     }
