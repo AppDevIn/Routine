@@ -120,23 +120,29 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cardRecyclerView"
-        android:layout_width="411dp"
-        android:layout_height="547dp"
+    <ListView
+        android:layout_width="414dp"
+        android:layout_height="147dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_section"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.005" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="388dp"
-        android:layout_height="289dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="11dp"
-        tools:layout_editor_absoluteY="253dp" />
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="412dp"
+        android:layout_height="399dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:minLines="7"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/_dynamic"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
