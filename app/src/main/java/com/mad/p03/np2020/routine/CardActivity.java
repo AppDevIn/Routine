@@ -31,7 +31,6 @@ public class CardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_layout);
 
-        cardRecycler = findViewById(R.id.cardRecyclerView);
         stepAddButton = findViewById(R.id.stepAddButton);
 
     }
