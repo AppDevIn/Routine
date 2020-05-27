@@ -52,7 +52,6 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         } else {
             holder.iconComplete.setImageResource(R.drawable.ic_cross);
         }
-        this.focusViewHolder = focusList.get(position);
     }
 
     //Remove item
@@ -69,8 +68,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         return focusList.size();
     }
 
-    public FocusHolder getItems() {
-        return focusViewHolder;
+    public FocusHolder getItems(int position) {
+        return focusList.get(position);
     }
 
 

@@ -19,9 +19,8 @@ import com.mad.p03.np2020.routine.database.FocusDatabase;
 public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     ImageView iconComplete;
     TextView Task, date, duration;
-    FocusAdapter adapter;
-    private Context mContext;
-    ViewGroup parent;
+    private FocusAdapter adapter;
+    private ViewGroup parent;
 
     public FocusViewHolder(@NonNull View itemView, Context context, FocusAdapter adapter, ViewGroup parent) {
         super(itemView);
@@ -30,7 +29,6 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
         date = itemView.findViewById(R.id.dateView);
         duration = itemView.findViewById(R.id.duration);
 
-        this.mContext = context;
         this.adapter = adapter;
         this.parent = parent;
 
@@ -39,7 +37,7 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public void onClick(View v) { //If item on click
-        showAlertDialogButtonClicked(this.getLayoutPosition(), adapter.getItems());
+        showAlertDialogButtonClicked(this.getLayoutPosition(), adapter.getItems(getLayoutPosition()));
         Log.v("item", "Item on click");
     }
 

@@ -57,7 +57,7 @@ import java.util.Locale;
 
 import static java.lang.String.*;
 
-public class FocusActivity extends AppCompatActivity implements View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
 
     SQLiteDatabase myLocalDatabase;
 
@@ -153,6 +153,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         secup.setOnTouchListener(this);
         mindown.setOnTouchListener(this);
 
+        taskInput.setOnFocusChangeListener(this);
+
         mface.startAnimation(translateAnimation);
     }
 
@@ -190,7 +192,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
             case "EnterTask": //Enter Task view where user can enter its view
                 ShowKeyboard();
                 taskInput.setText("");
-                taskSubmit.setVisibility(View.VISIBLE);
                 break;
             case "Reset": //Reset view where the view will become its initiate state
                 textDisplay.setText(R.string.REST_STATUS);
@@ -345,6 +346,17 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
                 BUTTON_STATE = "Running";
                 taskSubmit.setVisibility(View.INVISIBLE);
                 focusTime();
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.taskInput:
+                if (!hasFocus) {
+                    HideKeyboard();
+                }
                 break;
         }
     }
@@ -606,21 +618,34 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     //Soft Keyboard methods
     private void ShowKeyboard() {
         taskInput.setVisibility(View.VISIBLE);
-        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        final InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        taskSubmit.setVisibility(View.VISIBLE);
         assert mgr != null;
-        mgr.showSoftInput(taskInput, InputMethodManager.SHOW_IMPLICIT);
+        taskInput.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                taskInput.requestFocus();
+                mgr.showSoftInput(taskInput, 0);
+            }
+        }, 100);        Log.i(TAG,"Show Keyboard");
+
     }
 
     private void HideKeyboard() {
         taskInput.setVisibility(View.INVISIBLE);
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        taskSubmit.setVisibility(View.INVISIBLE);
         assert mgr != null;
         mgr.hideSoftInputFromWindow(taskInput.getWindowToken(), 0);
+        Log.i(TAG,"Hide Keyboard");
     }
 
     // Serialize a single object.
     public String serializeToJson(FocusHolder myClass) {
         Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
         return gson.toJson(myClass);
     }
 }
