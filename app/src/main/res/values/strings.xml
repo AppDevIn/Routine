@@ -33,11 +33,18 @@
     <string name="account"><b><u>Account</u></b></string>
     <string name="notifications"><b><u>Notifications</u></b></string>
     <string name="general"><b><u>General</u></b></string>
+    <string name="StepAdd">Steps</string>
+    <string name="NotesAdd">Notes</string>
+    <string name="FocusButton">Focus</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">History</string>
+    <string name="history">History</string>
     <string name="startTimer">Start</string>
     <string name="StopTimer">Give Up</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logo_description">Routine Logo</string>
     <string name="dateFormat">DD/MM/YYYY</string>
     <string name="back">Back</string>
