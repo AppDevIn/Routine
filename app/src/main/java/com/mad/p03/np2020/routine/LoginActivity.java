@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.mad.p03.np2020.routine.Class.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener{
 
@@ -34,6 +38,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     FirebaseAuth mAuth;
     String email, password;
     TextView txtError;
+    CheckBox checkBox;
+
+    public static final String SHARED_PREFS = "sharedPrefs";
+    private String sUser, sPassword;
+    public static final String Username = "username";
+    public static final String Password = "password";
+    public static final String SWITCH1 = "switch1";
+    private boolean switchOnOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_login = findViewById(R.id.buttonLogin);
         btn_register = findViewById(R.id.buttonRegister);
         txtError = findViewById(R.id.txtError);
+        checkBox = findViewById(R.id.rememberMe);
+
 
         et_Email.setOnClickListener(this);
         et_Password.setOnClickListener(this);
@@ -59,6 +73,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         et_Email.setOnKeyListener(this);
         et_Password.setOnKeyListener(this);
+        checkBox.setOnKeyListener(this);
+        loadData();
+        updateViews();
     }
 
     public void onStart() {
@@ -120,10 +137,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if(checkBox.isChecked()) {
+                                saveData();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             txtError.setVisibility(View.VISIBLE);
+                            if(checkBox.isChecked()) {
+                                saveData();
+                            }
                         }
 
                     }
@@ -155,5 +178,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
         }
         return true;
+    }
+
+
+    //This method is used to remember user details
+    public void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Username, et_Email.getText().toString());
+        editor.putString(Password, et_Password.getText().toString());
+        editor.putBoolean(SWITCH1, checkBox.isChecked());
+        editor.apply();
+        Log.v(TAG, "Data saved");
+    }
+
+    //This method is used to load the details that is stored
+    public void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        sUser = sharedPreferences.getString(Username, "");
+        sPassword = sharedPreferences.getString(Password, "");
+        switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
+    }
+    public void updateViews() {
+        et_Email.setText(sUser);
+        et_Password.setText(sPassword);
+        checkBox.setChecked(switchOnOff);
     }
 }
