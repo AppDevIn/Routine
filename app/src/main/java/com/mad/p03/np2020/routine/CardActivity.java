@@ -1,6 +1,9 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Paint;
@@ -27,13 +30,44 @@ public class CardActivity extends AppCompatActivity {
     Button stepAddButton;
     Button notesFragment;
     Button stepFragment;
+    boolean stepStatus = false;
+    boolean noteStatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_layout);
 
-        stepAddButton = findViewById(R.id.stepAddButton);
+        stepFragment = findViewById(R.id.stepFragment);
+        notesFragment = findViewById(R.id.notesFragment);
+
+        stepFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                if (!stepStatus){
+                    StepsFragment stepFrag = new StepsFragment();
+                    fragmentTransaction.add(R.id.fragment_container, stepFrag);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
+
+        notesFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                if (!noteStatus){
+                    NotesFragment noteFrag = new NotesFragment();
+                    fragmentTransaction.add(R.id.fragment_container, noteFrag);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
 
     }
 }
