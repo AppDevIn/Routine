@@ -105,7 +105,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "getUser: Querying data");
 
 
-        //Get the data from sqllite
+        //Get the data from sqlite
         Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where id="+id+"", null );
 
         if (cursor != null)
@@ -142,7 +142,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         // Select All Query
 
         String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME + " WHERE " + Section.COLUMN_USERID + "='" + UID +"' ORDER BY " +
-                Section.COLUMN_NAME + " DESC;";
+                Section.COLUMN_ID + " DESC;";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -173,7 +173,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
     public Boolean hasID(long id){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        //Get the data from sqllite
+        //Get the data from sqlite
         Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where id="+id+"", null );
 
         return cursor.moveToFirst();

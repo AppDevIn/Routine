@@ -22,10 +22,7 @@ public class FCMSection extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         sendRegistrationToServer(token);
-
     }
-
-
 
     /**
      *

@@ -10,7 +10,7 @@
     <Button
         android:id="@+id/button"
         android:layout_width="32dp"
-
+        android:visibility="invisible"
         android:layout_height="32dp"
         android:background="@drawable/cancel"
         android:backgroundTint="@color/chineseRed"
