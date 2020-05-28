@@ -2,13 +2,26 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="544dp"
     tools:context=".NotesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:padding="20dp">
+
+        <EditText
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:minLines="7"
+            android:hint="@string/NotesHint"
+            android:gravity="top|left"
+            android:cursorVisible="true"
+            android:scrollbars="vertical"
+            android:background="#50c5c5c5"/>
+
+    </RelativeLayout>
 
 </FrameLayout>
