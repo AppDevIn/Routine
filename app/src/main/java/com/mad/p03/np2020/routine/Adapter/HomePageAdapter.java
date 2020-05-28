@@ -1,12 +1,15 @@
 package com.mad.p03.np2020.routine.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,11 +96,9 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
             @Override
             public boolean onLongClick(View view) {
                 Log.d(TAG, "onLongClick(): " + position + " has been longed");
-                Log.d(TAG, "onLongClick(): Delete is created");
-
-
                 Log.d(TAG, "onLongClick(): Alert dialog triggered");
-                
+
+                confirmDelete(position);
 
                 return false;
             }
@@ -126,6 +127,65 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mSectionList.size());
 
+    }
+
+    //Give back the current array list
+    public List<Section> getSectionList() {
+        return mSectionList;
+    }
+
+    public String getSectionName(int position){
+        return mSectionList.get(position).getName();
+    }
+
+
+
+
+    /*************** HELPER FUNCTIONS ***************************/
+    private void confirmDelete(final int position){
+        Log.d(TAG, "Deletion prompt is building");
+
+        //Create a alert builder
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        //Inflate the custom layout
+        View dialogLayout = LayoutInflater.from(mContext).inflate(R.layout.alert_dialog_cfm_delete, null);
+
+        //Set the message in the view
+        TextView txtMessage = dialogLayout.findViewById(R.id.txtMessage);// Find id in the custom dialog
+        //Setting the message using HTML format so I can have a bold and normal text
+        txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete<br/>"+ "<b>" + getSectionName(position) + "?</b></div>"));
+
+        //Set trash in image view
+        ImageView imgTrash = dialogLayout.findViewById(R.id.imgTrash); //Find the image view in the custom dialog
+        imgTrash.setImageResource(android.R.drawable.ic_menu_delete); //Set the image from the android library delete
+
+
+        builder.setTitle(R.string.delete); //Set the title of the dialog
+
+        //Set a positive button: Yes
+        //Method should remove the  item
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, getSectionName(position) + "task is going to be deleted");
+                removeItem(position); //Remove item from the data in adapter
+            }
+        });
+
+        //Set negative button: No
+        //Method should close the dialog
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, getSectionName(position) + " task not getting deleted");
+            }
+        });
+
+        builder.setCancelable(false); //To prevent user from existing when clicking outside of the dialog
+        builder.setView(dialogLayout);//Set the custom view
+        builder.show();//Show the view to the user
+        Log.d(TAG, "Deletion prompt is shown");
     }
 }
 
