@@ -85,7 +85,7 @@
             android:id="@+id/stepAddButton"
             android:layout_width="115dp"
             android:layout_height="44dp"
-            android:text="+ Add Step"
+            android:text="@string/StepAdd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.016"
@@ -94,10 +94,10 @@
             app:layout_constraintVertical_bias="0.957" />
 
         <Button
-            android:id="@+id/noteAddButton"
+            android:id="@+id/notesFragment"
             android:layout_width="115dp"
             android:layout_height="44dp"
-            android:text="+ Add Note"
+            android:text="@string/NotesAdd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
@@ -109,7 +109,7 @@
             android:id="@+id/focusButton"
             android:layout_width="115dp"
             android:layout_height="44dp"
-            android:text="Focus"
+            android:text="@string/FocusButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.986"
@@ -120,29 +120,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ListView
-        android:layout_width="414dp"
-        android:layout_height="147dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="374dp"
+        android:layout_height="513dp"
+        android:padding="10dp"
+        android:id="@+id/fragment_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_section"
-        app:layout_constraintVertical_bias="0.005" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="412dp"
-        android:layout_height="399dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:minLines="7"
-        android:text="Name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_dynamic"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.529" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

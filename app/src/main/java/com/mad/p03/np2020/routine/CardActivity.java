@@ -25,6 +25,8 @@ public class CardActivity extends AppCompatActivity {
     ArrayList<Steps> StepItem = new ArrayList<>();
     RecyclerView cardRecycler;
     Button stepAddButton;
+    Button notesFragment;
+    Button stepFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
