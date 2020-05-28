@@ -87,6 +87,21 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
                 Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
             }
         });
+
+        //Set a long listener
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d(TAG, "onLongClick(): " + position + " has been longed");
+                Log.d(TAG, "onLongClick(): Delete is created");
+
+
+                Log.d(TAG, "onLongClick(): Alert dialog triggered");
+                
+
+                return false;
+            }
+        });
     }
 
     @Override
