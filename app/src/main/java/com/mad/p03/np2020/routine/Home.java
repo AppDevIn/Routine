@@ -225,7 +225,7 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
     }
 
     @Override
-    public void onSectionDelete(int position) {
+    public void onSectionDelete(long position) {
 
     }
 
