@@ -6,4 +6,5 @@ import com.mad.p03.np2020.routine.Class.Section;
 public interface MyDatabaseListener {
 
     public void onSectionAdd(Section section);
+    public void onSectionDelete(long position);
 }

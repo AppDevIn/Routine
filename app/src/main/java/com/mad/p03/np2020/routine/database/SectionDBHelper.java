@@ -182,6 +182,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
                 Section.COLUMN_ID + " = ?", //The condition
                 new String[]{String.valueOf(ID)} // The args will be replaced by ?
                 );
+        mMyDatabaseListener.onSectionDelete(ID);
         db.close();
     }
 

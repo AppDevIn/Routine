@@ -224,6 +224,11 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
         });
     }
 
+    @Override
+    public void onSectionDelete(int position) {
+
+    }
+
     /********************** Section Helper **********************/
     @Override
     public void onSectionClick(int position) {
