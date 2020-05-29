@@ -77,13 +77,13 @@ public class Section {
         this.bmiIcon = iconResID;
 
     }
-//
-//    public Section(String name, int color, int iconResID, long ID) {
-//        this.mName = name;
-//        this.mBackgroundColor = color;
-//        this.bmiIcon = iconResID;
-//        this.ID = ID;
-//    }
+
+    public Section(String name, int color, int iconResID, long ID) {
+        this.mName = name;
+        this.mBackgroundColor = color;
+        this.bmiIcon = iconResID;
+        this.ID = ID;
+    }
 
 
 
@@ -119,14 +119,12 @@ public class Section {
 
     public static Section fromCursor(Cursor cursor){
 
-        Section section = new Section(
+        return new Section(
                 cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
                 cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE))
+                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE)),
+                cursor.getLong(cursor.getColumnIndexOrThrow(Section.COLUMN_ID))
         );
-
-        section.setID(cursor.getLong(cursor.getColumnIndexOrThrow(Section.COLUMN_ID)));
-        return section;
     }
 
     public int getBmiIcon() {
@@ -205,7 +203,7 @@ public class Section {
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
 
-
+        
 //        WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(deleteTask.getId())
 //                .observe(Home.this, new Observer<WorkInfo>() {
 //                    @Override
