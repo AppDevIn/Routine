@@ -85,7 +85,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     EditText mEditAddList;
     Spinner mSpinnerColor, mSpinnerBackground;
     CardView mCardViewPopUp;
-    Button mBtnAdd;
+    Button mBtnAdd, mBtnCancel;
     List<Section> mSectionList;
     SectionDBHelper mSectionDBHelper;
     Integer[] mColors, mBackgrounds;
@@ -116,6 +116,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mSpinnerBackground = findViewById(R.id.spinnerImg);
         mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mBtnAdd = findViewById(R.id.btnAdd);
+        mBtnCancel = findViewById(R.id.btnCancel);
 
         //Get all the section data from firebase
         mSectionDBHelper = new SectionDBHelper(this);
@@ -212,6 +213,15 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             public void onClick(View view) {
                 Log.d(TAG, "onClick(): Add button is pressed ");
                 addSection(mEditAddList);
+            }
+        });
+
+
+        //If the cancel button is pressed
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateCard();
             }
         });
 
