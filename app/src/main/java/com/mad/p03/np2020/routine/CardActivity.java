@@ -49,7 +49,7 @@ public class CardActivity extends AppCompatActivity {
 
                 if (!stepStatus){
                     StepsFragment stepFrag = new StepsFragment();
-                    fragmentTransaction.add(R.id.fragment_container, stepFrag);
+                    fragmentTransaction.add(R.id.fragmentContainer, stepFrag);
                     fragmentTransaction.commit();
                 }
             }
@@ -63,7 +63,7 @@ public class CardActivity extends AppCompatActivity {
 
                 if (!noteStatus){
                     NotesFragment noteFrag = new NotesFragment();
-                    fragmentTransaction.add(R.id.fragment_container, noteFrag);
+                    fragmentTransaction.add(R.id.fragmentContainer, noteFrag);
                     fragmentTransaction.commit();
                 }
             }
