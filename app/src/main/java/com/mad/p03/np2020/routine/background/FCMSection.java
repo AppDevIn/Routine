@@ -47,14 +47,11 @@ public class FCMSection extends FirebaseMessagingService {
 
 
 
-        switch (remoteMessage.getData().get("for")){
+        switch (Objects.requireNonNull(remoteMessage.getData().get("for"))){
             case "SectionAdd": addSQL(remoteMessage); break;
             case "SectionDelete": delete(remoteMessage) ;break;
 
         }
-
-
-
 
     }
 

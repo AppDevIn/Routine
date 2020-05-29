@@ -65,7 +65,7 @@ import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Home extends AppCompatActivity implements OnSectionListener {
+public class Home extends AppCompatActivity implements OnSectionListener, MyDatabaseListener {
 
     //Declare Constants
     final String TAG = "Home Activity";
@@ -200,28 +200,29 @@ public class Home extends AppCompatActivity implements OnSectionListener {
             }
         });
 
-
-        //Listen to the database update
-        //When new section add to database it will be
-        //Add to the list
-        SectionDBHelper.setMyDatabaseListener(new MyDatabaseListener() {
-            @Override
-            public void onSectionAdd(final Section section) {
-                Log.d(TAG, "A new section has been added: " + section.toString());
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Add to List<Section>
-                        mHomePageAdapter.addItem(section);
-                    }
-                });
-
-            }
-        });
-
     }
 
+
+
+    /**
+     *
+     * Triggered to add to the current adapter list
+     * when it is added to the sql
+     *
+     * @param section given from the SQL when triggered
+     */
+    @Override
+    public void onSectionAdd(final Section section) {
+        Log.d(TAG, "A new section has been added: " + section.toString());
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //Add to List<Section>
+                mHomePageAdapter.addItem(section);
+            }
+        });
+    }
 
     /********************** Section Helper **********************/
     @Override

@@ -110,16 +110,22 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         return mSectionList.size();
     }
 
-    //Give back the current array list
-    public List<Section> getSectionList() {
-        return mSectionList;
-    }
-    //Give back the current array list
+    /**
+     * To be able give back the section for the list in the adapter
+     *
+     * @param position
+     * @return give back the section for the position
+     */
     public Section getSection(int position) {
         return mSectionList.get(position);
     }
 
 
+    /**
+     * Adding the section to
+     * the list
+     * @param section the section that will be added
+     */
     public void addItem(Section section){
         mSectionList.add(section);
 
@@ -128,6 +134,10 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         Log.d(TAG, "New TODO added, " + section.toString());
     }
 
+    /**
+     * The place to delete the item in the list
+     * @param position The position from the data will be removed from
+     */
     public void removeItem(int position){
         Log.d(TAG, "Removing " + mSectionList.get(position));
 
