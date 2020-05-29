@@ -59,7 +59,7 @@ public class FCMSection extends FirebaseMessagingService {
         Section section = Section.fromJSON(remoteMessage.getData().toString());
         Log.d(TAG, "onMessageReceived(): Section info: " + section.toString());
 
-        long id = Integer.parseInt(Objects.requireNonNull(remoteMessage.getData().get("id")));
+        String id = remoteMessage.getData().get("id");
 
         //Save to SQL
         //Check if the Data already exist
@@ -73,7 +73,7 @@ public class FCMSection extends FirebaseMessagingService {
 
 
     private void delete(RemoteMessage remoteMessage){
-        long id = Integer.parseInt(Objects.requireNonNull(remoteMessage.getData().get("id")));
+        String id = remoteMessage.getData().get("id");
 
         SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
 

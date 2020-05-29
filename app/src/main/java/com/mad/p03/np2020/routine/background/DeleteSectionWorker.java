@@ -24,8 +24,8 @@ public class DeleteSectionWorker extends Worker {
     @Override
     public Result doWork() {
 
-        final long ID = getInputData().getLong("ID", 0);
-        String UID = getInputData().getString("UID") ;
+        final String ID = getInputData().getString("ID");
+        final String UID = getInputData().getString("UID") ;
 
         Log.d("HomeDelete", "doWork: " + UID);
 

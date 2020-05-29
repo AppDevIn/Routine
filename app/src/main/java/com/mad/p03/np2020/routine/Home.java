@@ -200,6 +200,8 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
             }
         });
 
+        SectionDBHelper.setMyDatabaseListener(this);
+
     }
 
 
@@ -225,7 +227,17 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
     }
 
     @Override
-    public void onSectionDelete(long position) {
+    public void onSectionDelete(String ID) {
+        //Remove item from the data in adapter/local list
+
+
+        for (int position = 0; position < mSectionList.size(); position++) {
+
+            if(mSectionList.get(position).getID().equals(ID)){
+                mHomePageAdapter.removeItem(position);
+                break;
+            }
+        }
 
     }
 
@@ -260,11 +272,11 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
         Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()]);
 
         //Save to SQL
-        long id  = section.addSection(this, mUID);
-        Log.d(TAG, "updateCardUI(): Added to SQL ");
+        String id  = section.addSection(this, mUID);
+        Log.d(TAG, "updateCardUI(): Added to SQL, this ID is " + id);
 
         //Save to firebase
-        section.executeFirebaseSectionUpload(mUID, id, this);
+        section.executeFirebaseSectionUpload(mUID, section.getID(), this);
 
         //Function that make the cardview invisible and hide keyboard
         updateCard();
@@ -323,8 +335,7 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
                 //Remove from SQL
                 section.deleteSection(Home.this);
 
-                //Remove item from the data in adapter/local list
-                mHomePageAdapter.removeItem(position);
+
             }
         });
 

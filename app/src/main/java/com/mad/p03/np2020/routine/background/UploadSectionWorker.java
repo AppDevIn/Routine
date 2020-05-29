@@ -25,7 +25,7 @@ public class UploadSectionWorker extends Worker {
         int Color = getInputData().getInt("Color", 0);
         Integer Image = getInputData().getInt("Image", 0) ;
         String UID = getInputData().getString("UID") ;
-        long id = getInputData().getLong("ID", 0) ;
+        String id = getInputData().getString("ID") ;
 
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section").child(String.valueOf(id));

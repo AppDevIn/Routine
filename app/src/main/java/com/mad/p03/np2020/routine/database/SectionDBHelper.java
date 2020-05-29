@@ -12,6 +12,7 @@ import com.mad.p03.np2020.routine.Class.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SectionDBHelper extends SQLiteOpenHelper {
 
@@ -19,7 +20,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
     private static MyDatabaseListener mMyDatabaseListener;
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 3;
+    static final int DATABASE_VERSION = 5;
     private final String TAG = "SectionDatebase";
 
     public SectionDBHelper(Context context) {
@@ -64,7 +65,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
      * @param UID passed to be put it as the foreign key
      * @return the id in this case the row in belongs
      */
-    public long insertSection(Section section, String UID){
+    public String insertSection(Section section, String UID){
 
         Log.d(TAG, "insertUser(): Preparing to insert the new user ");
 
@@ -74,6 +75,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
+        values.put(Section.COLUMN_SECTION_ID, section.getID());
         values.put(Section.COLUMN_NAME, section.getName());
         values.put(Section.COLUMN_COLOR, section.getBackgroundColor());
         values.put(Section.COLUMN_USERID, UID);
@@ -91,7 +93,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         if (mMyDatabaseListener != null)
             mMyDatabaseListener.onSectionAdd(section);
 
-        return id;
+        return String.valueOf(id);
     }
 
     /**
@@ -175,23 +177,23 @@ public class SectionDBHelper extends SQLiteOpenHelper {
      *
      * @param ID it is from section object
      */
-    public void delete(long ID){
+    public void delete(String ID){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(
                 Section.TABLE_NAME,  // The table to delete from
-                Section.COLUMN_ID + " = ?", //The condition
-                new String[]{String.valueOf(ID)} // The args will be replaced by ?
+                Section.COLUMN_SECTION_ID + " = ?", //The condition
+                new String[]{ID} // The args will be replaced by ?
                 );
         mMyDatabaseListener.onSectionDelete(ID);
         db.close();
     }
 
 
-    public Boolean hasID(long id){
+    public Boolean hasID(String id){
         SQLiteDatabase db = this.getReadableDatabase();
 
         //Get the data from sqlite
-        Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where id="+id+"", null );
+        Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where "+ Section.COLUMN_SECTION_ID +"='"+id+"'", null );
 
         return cursor.moveToFirst();
     }

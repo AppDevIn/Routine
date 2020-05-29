@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
@@ -41,6 +42,7 @@ public class Section {
     public static final String TABLE_NAME = "section";
 
     public static final String COLUMN_ID = "id";
+    public static final String COLUMN_SECTION_ID = "SectionID";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_USERID = "userId";
     public static final String COLUMN_COLOR = "COLOR";
@@ -50,9 +52,10 @@ public class Section {
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_SECTION_ID + " TEXT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_COLOR + " INTEGER,"
-                    + COLUMN_IMAGE + " INTERGER,"
+                    + COLUMN_IMAGE + " INTEGER,"
                     + COLUMN_USERID + " INTEGER,"
                     + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
@@ -70,8 +73,7 @@ public class Section {
     private List<Task> mTaskList;
     private int mBackgroundColor;
     private int bmiIcon;
-    private Context mContext;
-    private long ID;
+    private String ID;
 
 
 
@@ -80,10 +82,11 @@ public class Section {
         this.mName = name;
         this.mBackgroundColor = color;
         this.bmiIcon = iconResID;
+        setID(UUID.randomUUID().toString());
 
     }
 
-    public Section(String name, int color, int iconResID, long ID) {
+    public Section(String name, int color, int iconResID, String ID) {
         this.mName = name;
         this.mBackgroundColor = color;
         this.bmiIcon = iconResID;
@@ -97,7 +100,7 @@ public class Section {
         int color = 0;
         String name = "";
         int image = 0;
-        long id = 0;
+        String id = "";
         try {
             //Make the string to object
             JSONObject jsonObject = new JSONObject(json);
@@ -106,7 +109,7 @@ public class Section {
             color = Integer.parseInt(jsonObject.getString("backgroundColor"));
             name = jsonObject.getString("name");
             image = Integer.parseInt(jsonObject.getString("bmiIcon"));
-            id = Integer.parseInt(jsonObject.getString("id"));
+            id = jsonObject.getString("id");
 
             //Return back the object
             return new Section(name, color, image, id);
@@ -130,7 +133,7 @@ public class Section {
                 cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
                 cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE)),
-                cursor.getLong(cursor.getColumnIndexOrThrow(Section.COLUMN_ID))
+                cursor.getString(cursor.getColumnIndexOrThrow(Section.COLUMN_SECTION_ID))
         );
     }
 
@@ -162,11 +165,11 @@ public class Section {
         mBackgroundColor = backgroundColor;
     }
 
-    public long getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(long ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -188,7 +191,7 @@ public class Section {
         sectionDBHelper.delete(getID());
     }
 
-    public long addSection(Context context, String UID){
+    public String addSection(Context context, String UID){
 
         SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
 
@@ -206,7 +209,7 @@ public class Section {
      * @param ID To get the used in database as the key for firebase
      * @param owner to be used to observe my upload
      */
-    public void executeFirebaseSectionUpload(String UID,long ID, LifecycleOwner owner){
+    public void executeFirebaseSectionUpload(String UID,String ID, LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Preparing the upload");
 
@@ -217,7 +220,7 @@ public class Section {
 
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
-                .putLong("ID", ID)
+                .putString("ID", ID)
                 .putString("UID", UID)
                 .putString("Name", getName())
                 .putInt("Color", getBackgroundColor())
@@ -267,7 +270,7 @@ public class Section {
 
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
-                .putLong("ID", ID)
+                .putString("ID", ID)
                 .putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .build();
 
@@ -284,7 +287,7 @@ public class Section {
         Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
 
 
-        WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(deleteTask.getId())
+        WorkManager.getInstance().getWorkInfoByIdLiveData(deleteTask.getId())
                 .observe(owner, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
