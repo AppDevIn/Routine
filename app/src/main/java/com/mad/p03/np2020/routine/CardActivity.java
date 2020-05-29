@@ -68,6 +68,5 @@ public class CardActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 }
