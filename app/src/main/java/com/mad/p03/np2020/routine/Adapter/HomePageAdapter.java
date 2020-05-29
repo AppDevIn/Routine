@@ -56,11 +56,15 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
     List<Section> mSectionList = new ArrayList<>();
     Context mContext;
 
+    //Listener
+    OnSectionListener mOnSectionListener;
 
 
-    public HomePageAdapter(Context context,List<Section> sectionList) {
+
+    public HomePageAdapter(Context context,List<Section> sectionList, OnSectionListener onSectionListener) {
         mSectionList = sectionList;
         this.mContext = context;
+        this.mOnSectionListener = onSectionListener;
 
         Log.d(TAG, "Total items: " + mSectionList.size());
 
@@ -73,7 +77,8 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         //Inflate the layout
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_grid_view_items, parent, false);
 
-        return new MyHomeViewHolder(view);
+
+        return new MyHomeViewHolder(view, mOnSectionListener);
     }
 
     @Override
@@ -98,25 +103,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         //Setting the image icon
         holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
-            }
-        });
-
-        //Set a long listener
-        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Log.d(TAG, "onLongClick(): " + position + " has been longed");
-                Log.d(TAG, "onLongClick(): Alert dialog triggered");
-
-                confirmDelete(position);
-
-                return false;
-            }
-        });
     }
 
     @Override
@@ -128,14 +114,10 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
     public List<Section> getSectionList() {
         return mSectionList;
     }
-
-    public String getSectionName(int position){
-        return mSectionList.get(position).getName();
+    //Give back the current array list
+    public Section getSection(int position) {
+        return mSectionList.get(position);
     }
-
-
-
-    /*************** HELPER FUNCTIONS ***************************/
 
 
     public void addItem(Section section){
@@ -158,60 +140,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
     }
 
 
-    private void confirmDelete(final int position){
-        Log.d(TAG, "Deletion prompt is building");
-
-        //Create a alert builder
-        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-
-        //Inflate the custom layout
-        View dialogLayout = LayoutInflater.from(mContext).inflate(R.layout.alert_dialog_cfm_delete, null);
-
-        //Set the message in the view
-        TextView txtMessage = dialogLayout.findViewById(R.id.txtMessage);// Find id in the custom dialog
-        //Setting the message using HTML format so I can have a bold and normal text
-        txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete<br/>"+ "<b>" + getSectionName(position) + "?</b></div>"));
-
-        //Set trash in image view
-        ImageView imgTrash = dialogLayout.findViewById(R.id.imgTrash); //Find the image view in the custom dialog
-        imgTrash.setImageResource(android.R.drawable.ic_menu_delete); //Set the image from the android library delete
-
-
-        builder.setTitle(R.string.delete); //Set the title of the dialog
-
-        //Set a positive button: Yes
-        //Method should remove the  item
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, getSectionName(position) + " task is going to be deleted");
-
-                //Remove from firebase
-                mSectionList.get(position).executeFirebaseSectionDelete();
-
-                //Remove from SQL
-                SectionDBHelper sectionDBHelper = new SectionDBHelper(mContext);
-                sectionDBHelper.delete(mSectionList.get(position).getID());
-
-                //Remove item from the data in adapter/local list
-                removeItem(position);
-            }
-        });
-
-        //Set negative button: No
-        //Method should close the dialog
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, getSectionName(position) + " task not getting deleted");
-            }
-        });
-
-        builder.setCancelable(false); //To prevent user from existing when clicking outside of the dialog
-        builder.setView(dialogLayout);//Set the custom view
-        builder.show();//Show the view to the user
-        Log.d(TAG, "Deletion prompt is shown");
-    }
 
 
 

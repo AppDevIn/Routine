@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Home;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
+import com.mad.p03.np2020.routine.background.UploadSectionWorker;
+import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,10 +24,13 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -170,15 +175,88 @@ public class Section {
         mTaskList.add(task);
 
     }
-    
+
     public void rmTask(Task task){
         // TODO: Please upload any chnages to this class to the main branch`
         mTaskList.remove(task);
     }
 
 
+    public void deleteSection(Context context){
 
-    public void executeFirebaseSectionDelete(){
+        SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
+        sectionDBHelper.delete(getID());
+    }
+
+    public long addSection(Context context, String UID){
+
+        SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
+
+        return sectionDBHelper.insertSection(this, UID);
+    }
+
+
+    /**
+     * Upload the section info to firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param UID Used to associate the section with the user
+     * @param ID To get the used in database as the key for firebase
+     * @param owner to be used to observe my upload
+     */
+    public void executeFirebaseSectionUpload(String UID,long ID, LifecycleOwner owner){
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Preparing the upload");
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                .putLong("ID", ID)
+                .putString("UID", UID)
+                .putString("Name", getName())
+                .putInt("Color", getBackgroundColor())
+                .putInt("Image", getBmiIcon()) //TODO: Change after to image
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(UploadSectionWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseSectionData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
+                .observe(owner, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        Log.d(TAG, "Section upload state: " + workInfo.getState());
+                    }
+                });
+
+    }
+
+    /**
+     * Delete the section from firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner to be used to observe my upload
+     */
+
+    public void executeFirebaseSectionDelete(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseSectionDelete(): Preparing to delete, on ID: " + ID);
 
@@ -205,14 +283,14 @@ public class Section {
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
 
-        
-//        WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(deleteTask.getId())
-//                .observe(Home.this, new Observer<WorkInfo>() {
-//                    @Override
-//                    public void onChanged(WorkInfo workInfo) {
-//                        Log.d(TAG, "Section upload state: " + workInfo.getState());
-//                    }
-//                });
+
+        WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(deleteTask.getId())
+                .observe(owner, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        Log.d(TAG, "Section Delete state: " + workInfo.getState());
+                    }
+                });
 
 
     }

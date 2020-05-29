@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,11 +18,15 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +54,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
+import com.mad.p03.np2020.routine.Adapter.OnSectionListener;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.UploadDataWorker;
@@ -58,7 +65,7 @@ import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements OnSectionListener {
 
     //Declare Constants
     final String TAG = "Home Activity";
@@ -132,7 +139,7 @@ public class Home extends AppCompatActivity {
 
 
         // Initialize any value
-        mHomePageAdapter = new HomePageAdapter(this,mSectionList);
+        mHomePageAdapter = new HomePageAdapter(this,mSectionList, this);
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
@@ -175,7 +182,7 @@ public class Home extends AppCompatActivity {
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
                     Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
-                    updateCardUI(textView);
+                    addSection(textView);
 
                     return true;
                 }
@@ -189,7 +196,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick(): Add button is pressed ");
-                updateCardUI(mEditAddList);
+                addSection(mEditAddList);
             }
         });
 
@@ -213,32 +220,45 @@ public class Home extends AppCompatActivity {
             }
         });
 
+    }
 
 
+    /********************** Section Helper **********************/
+    @Override
+    public void onSectionClick(int position) {
+        Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
+    }
 
+    @Override
+    public void onSectionLongClick(int position) {
+        Log.d(TAG, "onLongClick(): " + position + " has been longed");
+        Log.d(TAG, "onLongClick(): Alert dialog triggered");
+
+        //Show a dialog to confirm the delete
+        confirmDelete(position);
 
     }
 
     /**
      *
-     * To add the data into firebase and SQL
+     * To add the data into firebase and SQL from the card
      * Create a section object.
      *
      * @param textView the is the edittext
      */
-    private void updateCardUI(TextView textView){
+    private void addSection(TextView textView){
         String listName = textView.getText().toString();
-        Log.i(TAG, "onEditorAction: " + listName);
+        Log.i(TAG, "adding confirmed for " + listName);
 
         //Create a Section Object for the user input
         Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()]);
 
         //Save to SQL
-        long id  = mSectionDBHelper.insertSection(section, mUID);
+        long id  = section.addSection(this, mUID);
         Log.d(TAG, "updateCardUI(): Added to SQL ");
 
         //Save to firebase
-        executeFirebaseSectionUpload(section, id);
+        section.executeFirebaseSectionUpload(mUID, id, this);
 
         //Function that make the cardview invisible and hide keyboard
         updateCard();
@@ -259,55 +279,65 @@ public class Home extends AppCompatActivity {
         mgr.hideSoftInputFromWindow(mEditAddList.getWindowToken(), 0);
     }
 
-    /**
-     * Upload the section info to firebase
-     * when internet connectivity is present
-     *
-     * It will be done in the background
-     *
-     * @param section is object that will be uploaded to firebase
-     * @param ID is a the id of row in the SQL database
-     */
-    private void executeFirebaseSectionUpload(Section section, long ID){
-
-        Log.d(TAG, "executeFirebaseSectionUpload(): Preparing the upload");
-
-        //Setting condition
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        //Adding data which will be received from the worker
-        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
-                .putLong("ID", ID)
-                .putString("UID", mUID)
-                .putString("Name", section.getName())
-                .putInt("Color", section.getBackgroundColor())
-                .putInt("Image", section.getBmiIcon()) //TODO: Change after to image
-                .build();
-
-        //Create the request
-        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
-                Builder(UploadSectionWorker.class)
-                .setConstraints(constraints)
-                .setInputData(firebaseSectionData)
-                .build();
-
-        //Enqueue the request
-        WorkManager.getInstance(this).enqueue(uploadTask);
 
 
-        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
+    private void confirmDelete(final int position){
+        Log.d(TAG, "Deletion prompt is building");
+        
+        final Section section = mHomePageAdapter.getSection(position);
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(uploadTask.getId())
-                .observe(this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        Log.d(TAG, "Section upload state: " + workInfo.getState());
-                    }
-                });
+        //Create a alert builder
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        //Inflate the custom layout
+        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.alert_dialog_cfm_delete, null);
+
+        //Set the message in the view
+        TextView txtMessage = dialogLayout.findViewById(R.id.txtMessage);// Find id in the custom dialog
+        //Setting the message using HTML format so I can have a bold and normal text
+        txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete<br/>"+ "<b>" + section.getName() + "?</b></div>"));
+
+        //Set trash in image view
+        ImageView imgTrash = dialogLayout.findViewById(R.id.imgTrash); //Find the image view in the custom dialog
+        imgTrash.setImageResource(android.R.drawable.ic_menu_delete); //Set the image from the android library delete
+
+
+        builder.setTitle(R.string.delete); //Set the title of the dialog
+
+        //Set a positive button: Yes
+        //Method should remove the  item
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, section.getName() + " task is going to be deleted");
+
+                //Remove from firebase
+                mSectionList.get(position).executeFirebaseSectionDelete(Home.this);
+
+                //Remove from SQL
+                section.deleteSection(Home.this);
+
+                //Remove item from the data in adapter/local list
+                mHomePageAdapter.removeItem(position);
+            }
+        });
+
+        //Set negative button: No
+        //Method should close the dialog
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, section.getName() + " task not getting deleted");
+            }
+        });
+
+        builder.setCancelable(false); //To prevent user from existing when clicking outside of the dialog
+        builder.setView(dialogLayout);//Set the custom view
+        builder.show();//Show the view to the user
+        Log.d(TAG, "Deletion prompt is shown");
     }
+
+
 
 
     //TODO: Recorrect this portion
@@ -356,6 +386,7 @@ public class Home extends AppCompatActivity {
                     }
                 });
     }
+
 
 }
 
