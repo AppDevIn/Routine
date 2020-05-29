@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Class;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,8 +10,10 @@ import android.text.PrecomputedText;
 import android.util.Base64;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Home;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +22,11 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -168,12 +176,52 @@ public class Section {
 
 
 
+    public void executeFirebaseSectionDelete(){
+
+        Log.d(TAG, "executeFirebaseSectionDelete(): Preparing to delete, on ID: " + ID);
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                .putLong("ID", ID)
+                .putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest deleteTask = new OneTimeWorkRequest.
+                Builder(DeleteSectionWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseSectionData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(deleteTask);
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
+
+        
+//        WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(deleteTask.getId())
+//                .observe(Home.this, new Observer<WorkInfo>() {
+//                    @Override
+//                    public void onChanged(WorkInfo workInfo) {
+//                        Log.d(TAG, "Section upload state: " + workInfo.getState());
+//                    }
+//                });
+
+
+    }
 
     @NonNull
     @Override
     public String toString() {
         return "Name: " + getName() + ",\tColor: " + getBackgroundColor() + ",\tImage: " + getBmiIcon(); //TODO: Add the images
     }
+
+
 
 
 }

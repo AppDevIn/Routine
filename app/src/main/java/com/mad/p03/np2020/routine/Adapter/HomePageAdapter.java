@@ -187,7 +187,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
                 Log.d(TAG, getSectionName(position) + " task is going to be deleted");
 
                 //Remove from firebase
-                executeFirebaseSectionDelete(mSectionList.get(position).getID());
+                mSectionList.get(position).executeFirebaseSectionDelete();
 
                 //Remove from SQL
                 SectionDBHelper sectionDBHelper = new SectionDBHelper(mContext);
@@ -215,43 +215,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
 
 
 
-    private void executeFirebaseSectionDelete(long ID){
 
-        Log.d(TAG, "executeFirebaseSectionDelete(): Preparing to delete, on ID: " + ID);
-
-        //Setting condition
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        //Adding data which will be received from the worker
-        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
-                .putLong("ID", ID)
-                .putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .build();
-
-        //Create the request
-        OneTimeWorkRequest deleteTask = new OneTimeWorkRequest.
-                Builder(DeleteSectionWorker.class)
-                .setConstraints(constraints)
-                .setInputData(firebaseSectionData)
-                .build();
-
-        //Enqueue the request
-        WorkManager.getInstance(mContext).enqueue(deleteTask);
-
-        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
-
-//        WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(deleteTask.getId())
-//                .observe(Home.this, new Observer<WorkInfo>() {
-//                    @Override
-//                    public void onChanged(WorkInfo workInfo) {
-//                        Log.d(TAG, "Section upload state: " + workInfo.getState());
-//                    }
-//                });
-
-
-    }
 
 }
 

@@ -46,9 +46,21 @@ public class FCMSection extends FirebaseMessagingService {
         Log.d(TAG, "Date: " + remoteMessage.getData());
 
 
+
+        switch (remoteMessage.getData().get("for")){
+            case "SectionAdd": addSQL(remoteMessage); break;
+            case "SectionDelete": delete(remoteMessage) ;break;
+
+        }
+
+
+
+
+    }
+
+    private void addSQL(RemoteMessage remoteMessage){
         Section section = Section.fromJSON(remoteMessage.getData().toString());
         Log.d(TAG, "onMessageReceived(): Section info: " + section.toString());
-
 
         long id = Integer.parseInt(Objects.requireNonNull(remoteMessage.getData().get("id")));
 
@@ -60,9 +72,21 @@ public class FCMSection extends FirebaseMessagingService {
             sectionDBHelper.insertSection(section, FirebaseAuth.getInstance().getCurrentUser().getUid());
             Log.d(TAG, "Added to new Firebase data to Section ");
         }
-
-
-
     }
+
+
+    private void delete(RemoteMessage remoteMessage){
+        long id = Integer.parseInt(Objects.requireNonNull(remoteMessage.getData().get("id")));
+
+        SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
+
+        if(sectionDBHelper.hasID(id)){
+            sectionDBHelper.delete(id);
+            Log.d(TAG, "delete: " + id + " Has been deleted");
+        }
+    }
+
+
+
 
 }
