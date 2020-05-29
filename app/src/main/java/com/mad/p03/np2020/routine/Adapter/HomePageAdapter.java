@@ -117,6 +117,9 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
          mSectionList.remove(fromPosition);
          mSectionList.add(toPosition, fromSection);
          notifyItemMoved(fromPosition, toPosition);
+
+
+        Log.d(TAG, "onItemMove(): From: " + fromPosition + " To: " + toPosition);
     }
 
     @Override

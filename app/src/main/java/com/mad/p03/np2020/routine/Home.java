@@ -134,6 +134,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         tempLogin();
         getMessagingToken();
 
+        //To set to Full screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
     }
 
     @Override
