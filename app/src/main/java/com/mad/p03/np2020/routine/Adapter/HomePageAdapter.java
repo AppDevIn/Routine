@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,10 +21,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.HabitActivity;
+import com.mad.p03.np2020.routine.Home;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
+import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
+import com.mad.p03.np2020.routine.background.UploadSectionWorker;
+import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +38,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
 
@@ -110,6 +124,20 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         return mSectionList.size();
     }
 
+    //Give back the current array list
+    public List<Section> getSectionList() {
+        return mSectionList;
+    }
+
+    public String getSectionName(int position){
+        return mSectionList.get(position).getName();
+    }
+
+
+
+    /*************** HELPER FUNCTIONS ***************************/
+
+
     public void addItem(Section section){
         mSectionList.add(section);
 
@@ -129,19 +157,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
 
     }
 
-    //Give back the current array list
-    public List<Section> getSectionList() {
-        return mSectionList;
-    }
 
-    public String getSectionName(int position){
-        return mSectionList.get(position).getName();
-    }
-
-
-
-
-    /*************** HELPER FUNCTIONS ***************************/
     private void confirmDelete(final int position){
         Log.d(TAG, "Deletion prompt is building");
 
@@ -168,8 +184,17 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, getSectionName(position) + "task is going to be deleted");
-                removeItem(position); //Remove item from the data in adapter
+                Log.d(TAG, getSectionName(position) + " task is going to be deleted");
+
+                //Remove from firebase
+                executeFirebaseSectionDelete(mSectionList.get(position).getID());
+
+                //Remove from SQL
+                SectionDBHelper sectionDBHelper = new SectionDBHelper(mContext);
+                sectionDBHelper.delete(mSectionList.get(position).getID());
+
+                //Remove item from the data in adapter/local list
+                removeItem(position);
             }
         });
 
@@ -187,5 +212,46 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         builder.show();//Show the view to the user
         Log.d(TAG, "Deletion prompt is shown");
     }
+
+
+
+    private void executeFirebaseSectionDelete(long ID){
+
+        Log.d(TAG, "executeFirebaseSectionDelete(): Preparing to delete, on ID: " + ID);
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                .putLong("ID", ID)
+                .putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest deleteTask = new OneTimeWorkRequest.
+                Builder(DeleteSectionWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseSectionData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance(mContext).enqueue(deleteTask);
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
+
+//        WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(deleteTask.getId())
+//                .observe(Home.this, new Observer<WorkInfo>() {
+//                    @Override
+//                    public void onChanged(WorkInfo workInfo) {
+//                        Log.d(TAG, "Section upload state: " + workInfo.getState());
+//                    }
+//                });
+
+
+    }
+
 }
 

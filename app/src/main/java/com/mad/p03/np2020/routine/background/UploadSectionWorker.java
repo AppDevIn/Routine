@@ -30,7 +30,7 @@ public class UploadSectionWorker extends Worker {
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section").child(String.valueOf(id));
 
-        //Setting value using objeect
+        //Setting value using object
         mDatabase.setValue(new Section(Name, Color, Image));
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");

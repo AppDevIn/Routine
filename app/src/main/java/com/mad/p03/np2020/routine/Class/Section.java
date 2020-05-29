@@ -52,23 +52,31 @@ public class Section {
     //Declaring Constant
 
 
-    //Declaring memebr variable
+    //Declaring member variable
     private String mName;
     private List<Task> mTaskList;
     private int mBackgroundColor;
     private int bmiIcon;
     private Context mContext;
+    private long ID;
 
 
 
 
-
-    public Section( String name, int color, int iconResID) {
+    public Section(String name, int color, int iconResID) {
         this.mName = name;
         this.mBackgroundColor = color;
         this.bmiIcon = iconResID;
 
     }
+
+    public Section(String name, int color, int iconResID, long ID) {
+        this.mName = name;
+        this.mBackgroundColor = color;
+        this.bmiIcon = iconResID;
+        this.ID = ID;
+    }
+
 
 
     public static Section fromJSON(String json){
@@ -106,7 +114,8 @@ public class Section {
         return new Section(
                 cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
                 cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE))
+                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE)),
+                cursor.getLong(cursor.getColumnIndexOrThrow(Section.COLUMN_ID))
         );
     }
 
@@ -136,6 +145,14 @@ public class Section {
 
     public void setBackgroundColor(int backgroundColor) {
         mBackgroundColor = backgroundColor;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
     public void addTask(Task task){

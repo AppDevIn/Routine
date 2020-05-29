@@ -169,6 +169,22 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         return sections;
     }
 
+    /**
+     * To delete the data in SQL
+     * from the ID fin parameter
+     *
+     * @param ID it is from section object
+     */
+    public void delete(long ID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(
+                Section.TABLE_NAME,  // The table to delete from
+                Section.COLUMN_ID + " = ?", //The condition
+                new String[]{String.valueOf(ID)} // The args will be replaced by ?
+                );
+        db.close();
+    }
+
 
     public Boolean hasID(long id){
         SQLiteDatabase db = this.getReadableDatabase();
