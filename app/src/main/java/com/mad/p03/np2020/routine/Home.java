@@ -238,8 +238,15 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
 
         for (int position = 0; position < mSectionList.size(); position++) {
 
+
             if(mSectionList.get(position).getID().equals(ID)){
-                mHomePageAdapter.removeItem(position);
+                final int finalPosition = position;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mHomePageAdapter.removeItem(finalPosition);
+                    }
+                });
                 break;
             }
         }
