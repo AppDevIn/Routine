@@ -92,6 +92,7 @@ public class Section {
         int color = 0;
         String name = "";
         int image = 0;
+        long id = 0;
         try {
             //Make the string to object
             JSONObject jsonObject = new JSONObject(json);
@@ -100,9 +101,10 @@ public class Section {
             color = Integer.parseInt(jsonObject.getString("backgroundColor"));
             name = jsonObject.getString("name");
             image = Integer.parseInt(jsonObject.getString("bmiIcon"));
+            id = Integer.parseInt(jsonObject.getString("id"));
 
             //Return back the object
-            return new Section(name, color, image);
+            return new Section(name, color, image, id);
 
 
         } catch (JSONException e) {
@@ -218,7 +220,7 @@ public class Section {
     @NonNull
     @Override
     public String toString() {
-        return "Name: " + getName() + ",\tColor: " + getBackgroundColor() + ",\tImage: " + getBmiIcon(); //TODO: Add the images
+        return "Name: " + getName() + ",\tColor: " + getBackgroundColor() + ",\tImage: " + getBmiIcon() + " id: " + getID(); //TODO: Add the images
     }
 
 
