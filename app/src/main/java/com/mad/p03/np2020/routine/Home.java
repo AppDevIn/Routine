@@ -8,6 +8,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -56,6 +57,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
+import com.mad.p03.np2020.routine.Adapter.ItemTouchHelperAdapter;
+import com.mad.p03.np2020.routine.Adapter.MyItemTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
 import com.mad.p03.np2020.routine.Adapter.OnSectionListener;
@@ -69,7 +72,7 @@ import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Home extends AppCompatActivity implements OnSectionListener, MyDatabaseListener {
+public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     //Declare Constants
     final String TAG = "Home Activity";
@@ -144,7 +147,7 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
 
 
         // Initialize any value
-        mHomePageAdapter = new HomePageAdapter(this,mSectionList, this);
+        mHomePageAdapter = new HomePageAdapter(mSectionList, this);
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
@@ -153,6 +156,13 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
 
         //Set the cursor to the start
         mEditAddList.setSelection(0);
+
+        //Setting up touchhelper
+        ItemTouchHelper.Callback callback = new MyItemTouchHelper(mHomePageAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        mHomePageAdapter.setTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(mGridView);
+
 
         //Make sure the card view is not visible
         mCardViewPopUp.setVisibility(View.INVISIBLE);
@@ -253,22 +263,6 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
 
     }
 
-    /********************** Section Helper **********************/
-    @Override
-    public void onSectionClick(int position) {
-        Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
-    }
-
-    @Override
-    public void onSectionLongClick(int position) {
-        Log.d(TAG, "onLongClick(): " + position + " has been longed");
-        Log.d(TAG, "onLongClick(): Alert dialog triggered");
-
-        //Show a dialog to confirm the delete
-        confirmDelete(position);
-
-    }
-
     /**
      *
      * To add the data into firebase and SQL from the card
@@ -294,6 +288,8 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
         updateCard();
     }
 
+
+
     /**
      *  Set the cardview invisible and hide the keyboard
      *
@@ -307,63 +303,6 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert mgr != null;
         mgr.hideSoftInputFromWindow(mEditAddList.getWindowToken(), 0);
-    }
-
-
-
-    private void confirmDelete(final int position){
-        Log.d(TAG, "Deletion prompt is building");
-        
-        final Section section = mHomePageAdapter.getSection(position);
-
-        //Create a alert builder
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        //Inflate the custom layout
-        View dialogLayout = LayoutInflater.from(this).inflate(R.layout.alert_dialog_cfm_delete, null);
-
-        //Set the message in the view
-        TextView txtMessage = dialogLayout.findViewById(R.id.txtMessage);// Find id in the custom dialog
-        //Setting the message using HTML format so I can have a bold and normal text
-        txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete<br/>"+ "<b>" + section.getName() + "?</b></div>"));
-
-        //Set trash in image view
-        ImageView imgTrash = dialogLayout.findViewById(R.id.imgTrash); //Find the image view in the custom dialog
-        imgTrash.setImageResource(android.R.drawable.ic_menu_delete); //Set the image from the android library delete
-
-
-        builder.setTitle(R.string.delete); //Set the title of the dialog
-
-        //Set a positive button: Yes
-        //Method should remove the  item
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, section.getName() + " task is going to be deleted");
-
-                //Remove from firebase
-                mSectionList.get(position).executeFirebaseSectionDelete(Home.this);
-
-                //Remove from SQL
-                section.deleteSection(Home.this);
-
-
-            }
-        });
-
-        //Set negative button: No
-        //Method should close the dialog
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, section.getName() + " task not getting deleted");
-            }
-        });
-
-        builder.setCancelable(false); //To prevent user from existing when clicking outside of the dialog
-        builder.setView(dialogLayout);//Set the custom view
-        builder.show();//Show the view to the user
-        Log.d(TAG, "Deletion prompt is shown");
     }
 
 

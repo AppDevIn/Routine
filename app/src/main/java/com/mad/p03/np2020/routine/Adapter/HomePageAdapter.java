@@ -40,6 +40,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.work.Constraints;
@@ -49,22 +50,22 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
+public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements ItemTouchHelperAdapter, OnSectionListener{
 
     private final String TAG = "HomeAdapter";
 
     List<Section> mSectionList = new ArrayList<>();
     Context mContext;
+    LifecycleOwner mOwner;
 
     //Listener
-    OnSectionListener mOnSectionListener;
+    private ItemTouchHelper mItemTouchHelper;
 
 
 
-    public HomePageAdapter(Context context,List<Section> sectionList, OnSectionListener onSectionListener) {
+    public HomePageAdapter(List<Section> sectionList, LifecycleOwner owner) {
         mSectionList = sectionList;
-        this.mContext = context;
-        this.mOnSectionListener = onSectionListener;
+        this.mOwner = owner;
 
         Log.d(TAG, "Total items: " + mSectionList.size());
 
@@ -76,9 +77,9 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
 
         //Inflate the layout
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_grid_view_items, parent, false);
+        mContext = view.getContext();
 
-
-        return new MyHomeViewHolder(view, mOnSectionListener);
+        return new MyHomeViewHolder(view, this, mItemTouchHelper);
     }
 
     @Override
@@ -109,6 +110,32 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
     public int getItemCount() {
         return mSectionList.size();
     }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+         Section fromSection = mSectionList.get(fromPosition);
+         mSectionList.remove(fromPosition);
+         mSectionList.add(toPosition, fromSection);
+         notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemSwiped(int position) {
+        Log.d(TAG, "onItemSwiped: " + position);
+
+        confirmDelete(position);
+    }
+
+
+    @Override
+    public void onSectionClick(int position) {
+        Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
+    }
+
+    public void setTouchHelper(ItemTouchHelper itemTouchHelper){
+        this.mItemTouchHelper = itemTouchHelper;
+    }
+
 
     /**
      * To be able give back the section for the list in the adapter
@@ -148,6 +175,65 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> {
         notifyItemRangeChanged(position, mSectionList.size());
 
     }
+
+
+
+    private void confirmDelete(final int position){
+        Log.d(TAG, "Deletion prompt is building");
+
+        final Section section = getSection(position);
+
+        //Create a alert builder
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        //Inflate the custom layout
+        View dialogLayout = LayoutInflater.from(mContext).inflate(R.layout.alert_dialog_cfm_delete, null);
+
+        //Set the message in the view
+        TextView txtMessage = dialogLayout.findViewById(R.id.txtMessage);// Find id in the custom dialog
+        //Setting the message using HTML format so I can have a bold and normal text
+        txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete<br/>"+ "<b>" + section.getName() + "?</b></div>"));
+
+        //Set trash in image view
+        ImageView imgTrash = dialogLayout.findViewById(R.id.imgTrash); //Find the image view in the custom dialog
+        imgTrash.setImageResource(android.R.drawable.ic_menu_delete); //Set the image from the android library delete
+
+
+        builder.setTitle(R.string.delete); //Set the title of the dialog
+
+        //Set a positive button: Yes
+        //Method should remove the  item
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, section.getName() + " task is going to be deleted");
+
+                //Remove from firebase
+                mSectionList.get(position).executeFirebaseSectionDelete(mOwner);
+
+                //Remove from SQL
+                section.deleteSection(mContext);
+
+
+            }
+        });
+
+        //Set negative button: No
+        //Method should close the dialog
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, section.getName() + " task not getting deleted");
+                notifyDataSetChanged();
+            }
+        });
+
+        builder.setCancelable(false); //To prevent user from existing when clicking outside of the dialog
+        builder.setView(dialogLayout);//Set the custom view
+        builder.show();//Show the view to the user
+        Log.d(TAG, "Deletion prompt is shown");
+    }
+
 
 
 
