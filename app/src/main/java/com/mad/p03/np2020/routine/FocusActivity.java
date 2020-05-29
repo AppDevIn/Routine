@@ -44,13 +44,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.FocusHolder;
-import com.mad.p03.np2020.routine.Class.FocusWorker;
+import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 import com.mad.p03.np2020.routine.Class.User;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;

@@ -13,14 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.database.FocusDatabase;
 
 public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    ImageView iconComplete;
-    TextView Task, date, duration;
-    private FocusAdapter adapter;
-    private ViewGroup parent;
+    public ImageView iconComplete;
+    public TextView Task, date, duration;
+    public FocusAdapter adapter;
+    public ViewGroup parent;
 
     public FocusViewHolder(@NonNull View itemView, Context context, FocusAdapter adapter, ViewGroup parent) {
         super(itemView);

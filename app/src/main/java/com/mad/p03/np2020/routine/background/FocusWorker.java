@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Class;
+package com.mad.p03.np2020.routine.background;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.Class.FocusHolder;
 
 public class FocusWorker extends Worker {
 

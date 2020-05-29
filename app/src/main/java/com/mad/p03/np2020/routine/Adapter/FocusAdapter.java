@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Class;
+package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +15,10 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.Class.FocusHolder;
+import com.mad.p03.np2020.routine.Class.FocusViewHolder;
+import com.mad.p03.np2020.routine.background.FocusWorker;
+import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 
