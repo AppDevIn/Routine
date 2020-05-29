@@ -24,6 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.mad.p03.np2020.routine.Class.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener{
 
@@ -120,6 +121,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            Intent intent = new Intent(LoginActivity.this, Home.class);
+
+                            //TODO: Get the user
+
+                            //TODO: Please delete this once you created the object
+                            User user1 = new User();
+                            user1.setUID("aRbjnh0WpNe8gGga1PkDfOiJLH03");
+
+
+                            intent.putExtra("user", user1);
+                            startActivity(intent);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

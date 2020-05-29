@@ -93,9 +93,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     User mUser;
 
 
-    void Home(User user){
-        mUser = user;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +101,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         setContentView(R.layout.activity_home);
         Log.d(TAG, "UI is being created");
 
-        //TODO: Get from the intent
-        mUID = "aRbjnh0WpNe8gGga1PkDfOiJLH03";
-//        mUID = mUser.getUID();
+        //TODO: Get user from the intent
+        mUser = getIntent().getParcelableExtra("user");
+
+        mUID = mUser.getUID();
+
 
 
         //Find view by ID
