@@ -47,10 +47,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
@@ -97,7 +101,7 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
         Log.d(TAG, "UI is being created");
 
         //TODO: Get from the intent
-        mUID = "pXIeuenKaGWjEU5ruEQ6ahiS8FK2";
+        mUID = "aRbjnh0WpNe8gGga1PkDfOiJLH03";
 //        mUID = mUser.getUID();
 
 
@@ -124,6 +128,7 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
 
         //TODO: Remove this
         tempLogin();
+        getMessagingToken();
 
     }
 
@@ -357,35 +362,33 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
 
 
 
-    //TODO: Recorrect this portion
-    private void retrieveFCMToken(){
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+    private void getMessagingToken(){
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(mUID).child("messagingToken").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                if (!task.isSuccessful()) {
-                    Log.w(TAG, "getInstanceId failed", task.getException());
-                    return;
-                }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final String key = (String) dataSnapshot.getValue();
+                Log.d(TAG, "getMessagingToken: " + key);
 
-                // Get new Instance ID token
-                String token = task.getResult().getToken();
+                FirebaseMessaging.getInstance().subscribeToTopic(mUID)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                
+                                if (!task.isSuccessful()) {
+                                    Log.d(TAG, "onComplete: Done Running");
+                                }
 
-                // Log and toast
-//                String msg = getString(R.string.msg_token_fmt, token);
-//                Log.d(TAG, msg);
-                sendRegistrationToServer(token);
-                Toast.makeText(Home.this, token, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Home.this, key, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
-    }
-
-    private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
-
-        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        reference.child("messagingToken").setValue(token);
     }
 
     private void tempLogin(){
@@ -399,7 +402,7 @@ public class Home extends AppCompatActivity implements OnSectionListener, MyData
                         Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = auth.getCurrentUser();
                         Log.i(TAG, "onComplete: "+user.getUid());
-                        retrieveFCMToken();
+//                        retrieveFCMToken();
                     }
                 });
     }
