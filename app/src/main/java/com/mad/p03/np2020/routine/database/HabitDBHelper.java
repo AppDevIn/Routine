@@ -78,9 +78,9 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
         long id =  db.insert(Habit.TABLE_NAME, null, values);
         if (id == -1){
-            Log.d(TAG, "insertHabit: " + "Error");
+            Log.d(TAG, "Habit: insertHabit: " + "Error");
         }else{
-            Log.d(TAG, "insertHabit: " + "Successful");
+            Log.d(TAG, "Habit: insertHabit: " + "Successful");
 
         }
         db.close();
@@ -125,7 +125,7 @@ public class HabitDBHelper extends SQLiteOpenHelper {
             res.moveToNext();
         }
 
-        Log.d(TAG, "getAllHabits: ");
+        Log.d(TAG, "Habit: getAllHabits: ");
         return habitList;
     }
 
@@ -139,7 +139,7 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         db.close();
 
-        Log.d(TAG, "addCount: ");
+        Log.d(TAG, "Habit: updateCount");
 
     }
 
@@ -178,7 +178,7 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
         db.update(Habit.TABLE_NAME, values, id_filter, null);
         db.close();
-        Log.d(TAG, "updateHabit: ");
+        Log.d(TAG, "Habit: updateHabit: ");
     }
 
     public void deleteHabit(Habit habit){
@@ -189,6 +189,6 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         db.delete(Habit.TABLE_NAME, whereClause, whereArgs);
         
         db.close();
-        Log.d(TAG, "deleteHabit: ");
+        Log.d(TAG, "Habit: deleteHabit: ");
     }
 }
