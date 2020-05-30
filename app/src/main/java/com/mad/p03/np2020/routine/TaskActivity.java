@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 public class TaskActivity extends AppCompatActivity {
 
-    private final String TAG = "TASK";
+    private final String TAG = "Task";
 
     //Member variables
     RecyclerView mRecyclerView;

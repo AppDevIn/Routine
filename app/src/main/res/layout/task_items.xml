@@ -16,27 +16,76 @@
         android:padding="15dp"
         >
 
-        <CheckBox
-            android:id="@+id/checkbox"
+        <ViewSwitcher
+
+            android:id="@+id/viewswitcher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            >
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
 
-            android:buttonTint="@color/black"
-            />
+                android:buttonTint="@color/black"
+                />
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
 
-        <TextView
-            android:id="@+id/txtListName"
+                android:background="@drawable/baseline_add_circle_outline_black_18dp"
+
+                 />
+
+
+
+        </ViewSwitcher>
+
+
+        <ViewSwitcher
+
+            android:id="@+id/viewswitcherTaskName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="9"
+            >
 
-            android:fontFamily="@font/montserrat_regular"
-            android:textSize="20sp"
-            android:textColor="@color/black"
+            <TextView
+                android:id="@+id/txtListName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            android:text="@string/holder" />
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="20sp"
+                android:textColor="@color/black"
 
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+                android:text="@string/holder" />
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:ems="10"
+                android:inputType="textPersonName"
+
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+
+                android:background="@null"
+
+                 />
+
+
+        </ViewSwitcher>
+
+
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
