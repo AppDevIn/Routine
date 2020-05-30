@@ -78,12 +78,7 @@ public class CardActivity extends AppCompatActivity {
             }
         });
 
-        stepAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addItemToList(v);
-            }
-        });
+
     }
 
     public void addItemToList(View view){
