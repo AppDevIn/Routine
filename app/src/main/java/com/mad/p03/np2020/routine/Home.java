@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,11 +82,12 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     //Declare member variables
     RecyclerView mGridView;
     HomePageAdapter mHomePageAdapter;
-    ImageButton mImgAdd;
+
     EditText mEditAddList;
     Spinner mSpinnerColor, mSpinnerBackground;
     CardView mCardViewPopUp;
     Button mBtnAdd, mBtnCancel;
+    FloatingActionButton mImgAdd;
     List<Section> mSectionList;
     SectionDBHelper mSectionDBHelper;
     Integer[] mColors, mBackgrounds;
@@ -103,8 +105,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //TODO: Get user from the intent
         mUser = getIntent().getParcelableExtra("user");
+//        mUID = mUser.getUID();
 
-        mUID = mUser.getUID();
+        mUID = "aRbjnh0WpNe8gGga1PkDfOiJLH03";
 
 
 
@@ -117,6 +120,8 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mBtnAdd = findViewById(R.id.btnAdd);
         mBtnCancel = findViewById(R.id.btnCancel);
+
+
 
         //Get all the section data from firebase
         mSectionDBHelper = new SectionDBHelper(this);
@@ -131,7 +136,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
         //TODO: Remove this
-        tempLogin();
         getMessagingToken();
 
         //To set to Full screen
@@ -147,7 +151,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //Recycler view setup
         mGridView.setLayoutManager(new GridLayoutManager(Home.this,2)); //Setting the layout manager with the column of 2
-        mGridView.addItemDecoration(new DividerItemDecoration(10));
+        mGridView.addItemDecoration(new DividerItemDecoration(25));
 
 
         // Initialize any value
@@ -348,22 +352,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
             }
         });
-    }
-
-    private void tempLogin(){
-       final FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        auth.signInWithEmailAndPassword("routine@gmail.com", "JqHp@2020")
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success");
-                        FirebaseUser user = auth.getCurrentUser();
-                        Log.i(TAG, "onComplete: "+user.getUid());
-//                        retrieveFCMToken();
-                    }
-                });
     }
 
 

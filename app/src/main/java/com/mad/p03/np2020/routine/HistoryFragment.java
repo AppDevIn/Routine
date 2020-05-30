@@ -17,14 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.mad.p03.np2020.routine.Class.FocusHolder;
 import com.mad.p03.np2020.routine.Class.FocusAdapter;
 import com.mad.p03.np2020.routine.Class.ItemDecoration;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 

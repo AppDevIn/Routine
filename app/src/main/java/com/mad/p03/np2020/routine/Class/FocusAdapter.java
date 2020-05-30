@@ -15,7 +15,11 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.Class.FocusHolder;
+import com.mad.p03.np2020.routine.Class.FocusWorker;
+import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.Class.FocusViewHolder;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 
 import java.util.List;
