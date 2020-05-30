@@ -172,6 +172,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //Make sure the card view is not visible
         mCardViewPopUp.setVisibility(View.INVISIBLE);
         Log.d(TAG, "onStart(): Card view is set to invisible");
+
+
+        mImgAdd.setImageResource(R.drawable.ic_add_black_24dp);
     }
 
     @Override
