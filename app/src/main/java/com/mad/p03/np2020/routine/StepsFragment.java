@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class StepsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
+    final String TAG = "StepFragment";
     private String mParam1;
     private String mParam2;
     ArrayAdapter<String> arrayAdapter;
@@ -62,6 +64,8 @@ public class StepsFragment extends Fragment {
             stepAddButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.v(TAG, "Step added!");
+                    stepAddButton.setText("LOL");
                     addItemToList(v);
                 }
             });
