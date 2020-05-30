@@ -135,9 +135,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mBackgrounds = new Integer[] {R.drawable.amazon, R.drawable.android, R.drawable.laptop, R.drawable.code, R.drawable.bookmark};
 
 
-        //TODO: Remove this
-        getMessagingToken();
-
         //To set to Full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -325,34 +322,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
 
-    private void getMessagingToken(){
-
-        FirebaseDatabase.getInstance().getReference().child("users").child(mUID).child("messagingToken").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final String key = (String) dataSnapshot.getValue();
-                Log.d(TAG, "getMessagingToken: " + key);
-
-                FirebaseMessaging.getInstance().subscribeToTopic(mUID)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                
-                                if (!task.isSuccessful()) {
-                                    Log.d(TAG, "onComplete: Done Running");
-                                }
-
-                                Toast.makeText(Home.this, key, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 }
