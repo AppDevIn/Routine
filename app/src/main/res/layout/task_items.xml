@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="3dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
     >
 
@@ -13,22 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:padding="15dp"
         >
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/checkbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:drawable/checkbox_on_background"
+
+
+            android:buttonTint="@color/black"
             />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/txtListName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:padding="10dp"
+
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+
             android:text="@string/holder" />
 
     </LinearLayout>

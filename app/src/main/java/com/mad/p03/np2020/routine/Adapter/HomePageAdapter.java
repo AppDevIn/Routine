@@ -23,9 +23,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.Home;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.TaskActivity;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
@@ -133,6 +135,11 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
     @Override
     public void onSectionClick(int position) {
         Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
+
+        //Move to new intent
+        Intent intent = new Intent(mContext, TaskActivity.class);
+        intent.putExtra("section", mSectionList.get(position));
+        mContext.startActivity(intent);
     }
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper){

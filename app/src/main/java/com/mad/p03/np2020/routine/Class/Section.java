@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.text.PrecomputedText;
 import android.util.Base64;
 import android.util.Log;
@@ -21,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +39,7 @@ import androidx.work.WorkManager;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class Section {
+public class Section implements Serializable {
 
     //Declare the constants of the database
     public static final String TABLE_NAME = "section";
@@ -70,7 +73,7 @@ public class Section {
 
     //Declaring member variable
     private String mName;
-    private List<Task> mTaskList;
+    private List<Task> mTaskList = new ArrayList<>();
     private int mBackgroundColor;
     private int bmiIcon;
     private String ID;
@@ -141,10 +144,6 @@ public class Section {
         return bmiIcon;
     }
 
-    public void setBmiIcon(int bmiIcon) {
-        this.bmiIcon = bmiIcon;
-    }
-
     public List<Task> getTaskList() {
         return mTaskList;
     }
@@ -159,10 +158,6 @@ public class Section {
 
     public void setName(String name) {
         mName = name;
-    }
-
-    public void setBackgroundColor(int backgroundColor) {
-        mBackgroundColor = backgroundColor;
     }
 
     public String getID() {
