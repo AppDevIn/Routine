@@ -28,7 +28,7 @@ public class CardActivity extends AppCompatActivity {
     ArrayList<Steps> StepItem = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
     List<String> stepList;
-    RecyclerView cardRecycler;
+    ListView listView;
     EditText stepName;
     Button stepAddButton;
     Button notesFragment;
@@ -45,9 +45,10 @@ public class CardActivity extends AppCompatActivity {
         stepAddButton = findViewById(R.id.addStep);
         stepFragment = findViewById(R.id.stepFragment);
         notesFragment = findViewById(R.id.notesFragment);
+        listView = findViewById(R.id.listView);
 
         stepList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.)
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_view_layout, stepList);
 
         stepFragment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,9 +77,16 @@ public class CardActivity extends AppCompatActivity {
                 }
             }
         });
+
+        stepAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addItemToList(v);
+            }
+        });
     }
 
-    public void addItemTiList(View view){
+    public void addItemToList(View view){
         stepList.add(stepName.getText().toString());
         arrayAdapter.notifyDataSetChanged();
 
