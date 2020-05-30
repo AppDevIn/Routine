@@ -26,10 +26,7 @@ public class CardActivity extends AppCompatActivity {
     final String TAG = "Card Layout";
     ArrayList<String> data = new ArrayList<>();
     ArrayList<Steps> StepItem = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
-    List<String> stepList;
-    ListView listView;
-    EditText stepName;
+
     Button stepAddButton;
     Button notesFragment;
     Button stepFragment;
@@ -41,14 +38,10 @@ public class CardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_layout);
 
-        stepName = findViewById(R.id.stepInput);
         stepAddButton = findViewById(R.id.addStep);
         stepFragment = findViewById(R.id.stepFragment);
         notesFragment = findViewById(R.id.notesFragment);
-        listView = findViewById(R.id.listView);
 
-        stepList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.list_view_layout, stepList);
 
         stepFragment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,10 +74,4 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
-    public void addItemToList(View view){
-        stepList.add(stepName.getText().toString());
-        arrayAdapter.notifyDataSetChanged();
-
-        stepName.setText("");
-    }
 }
