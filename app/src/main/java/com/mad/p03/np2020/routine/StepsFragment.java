@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 
 public class StepsFragment extends Fragment {
@@ -66,14 +67,13 @@ public class StepsFragment extends Fragment {
                 public void onClick(View v) {
                     Log.v(TAG, "Step added!");
                     stepAddButton.setText("LOL");
-                    addItemToList(v);
                 }
             });
 
         }
     }
 
-    public void addItemToList(View view){
+    public void addItemToList(LayoutInflater inflater){
         stepList.add(stepName.getText().toString());
         arrayAdapter.notifyDataSetChanged();
 
