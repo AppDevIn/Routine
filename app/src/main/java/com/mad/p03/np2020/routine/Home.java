@@ -195,32 +195,29 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     }
 
 
-
     /**
      *
      * Triggered to add to the current adapter list
      * when it is added to the sql
      *
-     * @param section given from the SQL when triggered
+     * @param object given from the SQL when triggered
+     *               for this the object is section
      */
     @Override
-    public void onSectionAdd(final Section section) {
-        Log.d(TAG, "A new section has been added: " + section.toString());
+    public void onDataAdd(final Object object) {
+        Log.d(TAG, "A new section has been added: " + object.toString());
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //Add to List<Section>
-                mHomePageAdapter.addItem(section);
+                mHomePageAdapter.addItem((Section) object);
             }
         });
     }
 
     @Override
-    public void onSectionDelete(String ID) {
-        //Remove item from the data in adapter/local list
-
-
+    public void onDataDelete(String ID) {
         for (int position = 0; position < mSectionList.size(); position++) {
 
 
@@ -235,8 +232,43 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
                 break;
             }
         }
-
     }
+
+
+//    @Override
+//    public void onSectionAdd(final Section section) {
+//        Log.d(TAG, "A new section has been added: " + section.toString());
+//
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //Add to List<Section>
+//                mHomePageAdapter.addItem(section);
+//            }
+//        });
+//    }
+
+//    @Override
+//    public void onSectionDelete(String ID) {
+//        //Remove item from the data in adapter/local list
+//
+//
+//        for (int position = 0; position < mSectionList.size(); position++) {
+//
+//
+//            if(mSectionList.get(position).getID().equals(ID)){
+//                final int finalPosition = position;
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mHomePageAdapter.removeItem(finalPosition);
+//                    }
+//                });
+//                break;
+//            }
+//        }
+//
+//    }
 
     /**
      *

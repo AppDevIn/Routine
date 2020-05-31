@@ -91,7 +91,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
             Log.d(TAG, "insertSection(): Data inserted");
         }
         if (mMyDatabaseListener != null)
-            mMyDatabaseListener.onSectionAdd(section);
+            mMyDatabaseListener.onDataAdd(section);
 
         return String.valueOf(id);
     }
@@ -184,7 +184,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
                 Section.COLUMN_SECTION_ID + " = ?", //The condition
                 new String[]{ID} // The args will be replaced by ?
                 );
-        mMyDatabaseListener.onSectionDelete(ID);
+        mMyDatabaseListener.onDataDelete(ID);
         db.close();
     }
 

@@ -21,8 +21,16 @@ public class TaskDBHelper extends SQLiteOpenHelper {
     static final int DATABASE_VERSION = 5;
     private final String TAG = "Task Database";
 
+    //Listener
+    private static MyDatabaseListener mMyDatabaseListener;
+
     public TaskDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    // Assign the listener implementing events interface that will receive the events
+    public static void setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
+        mMyDatabaseListener = myDatabaseListener;
     }
 
     @Override
@@ -77,6 +85,8 @@ public class TaskDBHelper extends SQLiteOpenHelper {
             Log.d(TAG, "insertTask(): Data inserted");
         }
 
+        if (mMyDatabaseListener != null)
+            mMyDatabaseListener.onDataAdd(task);
 
         return String.valueOf(id);
     }
@@ -128,6 +138,8 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         );
 
         Log.d(TAG, "delete(): Removed from database");
+
+        mMyDatabaseListener.onDataDelete(ID);
 
         db.close();
     }

@@ -15,6 +15,8 @@ import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder;
+import com.mad.p03.np2020.routine.database.MyDatabaseListener;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter, TextView.OnEditorActionListener {
+public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter, TextView.OnEditorActionListener, MyDatabaseListener {
 
     private final String TAG = "TaskAaapter";
 
@@ -89,6 +91,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         holder.mEdTask.setOnEditorActionListener(this);
 
 
+        TaskDBHelper.setMyDatabaseListener(this);
 
     }
 
@@ -135,6 +138,41 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         //TODO: Move to the card layout
     }
 
+    /**
+     *
+     * Triggered to add to the current adapter list
+     * when it is added to the sql
+     *
+     * @param object given from the SQL when triggered
+     *               for this the object is task
+     */
+    @Override
+    public void onDataAdd(Object object) {
+
+        Task task = (Task) object;
+
+        Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + task );
+
+        //Adding into the local list
+        mTaskList.add(task);
+    }
+
+    @Override
+    public void onDataDelete(String ID) {
+
+        Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
+
+        for (int position = 0; position < mTaskList.size(); position++) {
+
+            if(mTaskList.get(position).getTaskID().equals(ID)){
+
+                //Remove the list
+                mTaskList.remove(position);
+                break;
+            }
+        }
+    }
+
     @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
 
@@ -173,9 +211,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      */
     public void addItem(Task task){
 
-        //Add to the list
-        mTaskList.add(task);
-
         //Add to the SQLite
         task.addTask(mContext,mSection.getID());
 
@@ -184,7 +219,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //Informing the adapter and view of the new item
         notifyItemInserted(mTaskList.size());
-        Log.d(TAG, "New TODO added, " + task.toString());
+        Log.d(TAG, "New Task added, " + task.toString());
     }
 
     /**
@@ -201,10 +236,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //Delete from SQL
         task.deleteTask(mContext);
-
-        //Remove the list
-        mTaskList.remove(task);
-
 
 
         //Informing the adapter and view after removing
