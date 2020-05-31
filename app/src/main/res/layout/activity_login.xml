@@ -25,34 +25,22 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
-            android:layout_width="381dp"
-            android:layout_height="315dp"
+            android:layout_width="383dp"
+            android:layout_height="327dp"
             android:layout_marginTop="292dp"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
             app:cardCornerRadius="10dp"
             app:cardElevation="4dp"
             app:cardPreventCornerOverlap="false"
             app:contentPadding="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
             app:layout_constraintTop_toTopOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/txtError"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Invalid Email or Password"
-                    android:visibility="invisible"
-                    android:textColor="@color/ErrorColor"
-                    android:textSize="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_height="327dp">
 
                 <TextView
                     android:id="@+id/textView3"
@@ -100,6 +88,20 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/txtError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Invalid Email or Password"
+                    android:textColor="@color/ErrorColor"
+                    android:textSize="10dp"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,13 +120,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
-                    android:inputType="textPassword"
                     android:layout_marginEnd="23dp"
+                    android:inputType="textWebPassword"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                 </EditText>
+
+                <TextView
+                    android:id="@+id/errorEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="128dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Email cannot be empty"
+                    android:textColor="@color/ErrorColor"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/editEmail"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                </TextView>
 
                 <TextView
                     android:id="@+id/textView5"
@@ -142,15 +158,42 @@
                     android:id="@+id/editEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="23dp"
+                    android:inputType="textEmailAddress"
                     android:maxLines="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView4">
 
                 </EditText>
+
+                <TextView
+                    android:id="@+id/errorPwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="128dp"
+                    android:layout_marginTop="38dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Password cannot be empty"
+                    android:textColor="@color/ErrorColor"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editEmail">
+
+                </TextView>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/rememberMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="52dp"
+                    android:text="@string/remember_me"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/editPassword">
+
+                </com.google.android.material.checkbox.MaterialCheckBox>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
