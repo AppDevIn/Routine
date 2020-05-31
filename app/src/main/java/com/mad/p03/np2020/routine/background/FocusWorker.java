@@ -8,6 +8,7 @@ import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -16,8 +17,9 @@ import com.mad.p03.np2020.routine.Class.Focus;
 
 public class FocusWorker extends Worker {
 
-    DatabaseReference mDatabase;
-    Focus focusData;
+    private DatabaseReference mDatabase;
+    private Focus focusData;
+    private Task<Void> result;
 
     public FocusWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -38,23 +40,34 @@ public class FocusWorker extends Worker {
         //Referencing Data
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
 
-        String bool = (REFERENCE_STATUS) ? deleteToFirebase() : writeToFirebase();
+        if ((REFERENCE_STATUS)) {
+            deleteToFirebase();
+        } else {
+            writeToFirebase();
+        }
 
-        Log.i("Firebase status: ", bool);
         return ListenableWorker.Result.success();
     }
 
-    private String writeToFirebase() {
+    private void writeToFirebase() {
         //Write Data to firebase
         Log.i("Focus", "Focus Data being uploaded");
-        Task<Void> result = mDatabase.child("FocusData").child(focusData.getFbID()).setValue(focusData);
-        return result.getResult().toString();
+        mDatabase.child("FocusData").child(focusData.getFbID()).setValue(focusData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                result = mDatabase.child("FocusData").child(focusData.getFbID()).setValue(focusData);
+            }
+        });;
     }
 
-    private String deleteToFirebase() {
+    private void deleteToFirebase() {
         Log.i("Focus", "Focus Data being deleted with the uid of " + focusData.getFbID());
-        Task<Void> result = mDatabase.child("FocusData").child(focusData.getFbID()).removeValue();
-        return result.getResult().toString();
+        mDatabase.child("FocusData").child(focusData.getFbID()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                result = mDatabase.child("FocusData").child(focusData.getFbID()).removeValue();
+            }
+        });
     }
 
     // Deserialize to single object.

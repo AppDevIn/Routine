@@ -121,12 +121,26 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="23dp"
-                    android:inputType="textPassword"
+                    android:inputType="textWebPassword"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                 </EditText>
+
+                <TextView
+                    android:id="@+id/errorEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="128dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Email cannot be empty"
+                    android:textColor="@color/ErrorColor"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/editEmail"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                </TextView>
 
                 <TextView
                     android:id="@+id/textView5"
@@ -153,6 +167,21 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView4">
 
                 </EditText>
+
+                <TextView
+                    android:id="@+id/errorPwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="128dp"
+                    android:layout_marginTop="38dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Password cannot be empty"
+                    android:textColor="@color/ErrorColor"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editEmail">
+
+                </TextView>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/rememberMe"

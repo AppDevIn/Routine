@@ -127,7 +127,6 @@ public class User implements Parcelable {
                     focusDatabase.addData(focus);
                 }
                 setmFocusList(focusDatabase.getAllData());
-
             }
 
             @Override
@@ -143,6 +142,14 @@ public class User implements Parcelable {
     User(String name, String password) {
         this.mName = name;
         this.mPassword = password;
+    }
+
+    public User(String UID, String name, String password, Date dob, String Email) {
+        this.mUID = UID;
+        this.mName = name;
+        this.mPassword = password;
+        this.mDateOfBirth = dob;
+        this.mEmailAddr = Email;
     }
 
     public User(String name, String password, String emailAddr) {
