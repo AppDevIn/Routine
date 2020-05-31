@@ -27,6 +27,7 @@ public class UploadSectionWorker extends Worker {
         String UID = getInputData().getString("UID") ;
         String id = getInputData().getString("ID") ;
 
+
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section").child(String.valueOf(id));
 

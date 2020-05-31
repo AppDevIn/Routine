@@ -7,16 +7,29 @@ import android.util.Log;
 import android.widget.CheckBox;
 
 import com.mad.p03.np2020.routine.Class.Label;
+import com.mad.p03.np2020.routine.background.UploadSectionWorker;
+import com.mad.p03.np2020.routine.background.UploadTaskWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Task {
 
@@ -57,6 +70,8 @@ public class Task {
     //Query to delete the table
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    private final String TAG = "Task Class";
 
     public Task(String name) {
 
@@ -147,6 +162,46 @@ public class Task {
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
         taskDBHelper.delete(getTaskID());
     }
+
+    public void executeFirebaseUpload(LifecycleOwner owner){
+
+        Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                .putString(Task.COLUMN_NAME, getName())
+                .putString(Task.COLUMN_TASK_ID, getTaskID())
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(UploadTaskWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseSectionData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+
+
+        Log.d(TAG, "executeFirebaseUpload(): Put in queue");
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
+                .observe(owner, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        Log.d(TAG, "Section upload state: " + workInfo.getState());
+                    }
+                });
+
+    }
+
 
     @NonNull
     @Override

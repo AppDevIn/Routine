@@ -54,7 +54,7 @@ public class TaskActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTaskAdapter = new TaskAdapter(mSection);
+        mTaskAdapter = new TaskAdapter(mSection, this);
         mRecyclerView.setAdapter(mTaskAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

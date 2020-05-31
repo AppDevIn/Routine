@@ -20,6 +20,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +37,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     //Listener
     private ItemTouchHelper mItemTouchHelper;
 
+    LifecycleOwner mOwner;
 
-    public TaskAdapter(Section section) {
+
+    public TaskAdapter(Section section, LifecycleOwner owner) {
         this.mSection = section;
+
+        this.mOwner = owner;
 
         //Add into the list
         mTaskList = section.getTaskList();
@@ -105,8 +110,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     @Override
     public void onItemSwiped(int position) {
         Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
-
-
+        
         //Delete from the local list
         removeTask(position);
 
@@ -175,7 +179,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         //Add to the SQLite
         task.addTask(mContext,mSection.getID());
 
-        //TODO: Delete from firebase
+        //Add from firebase
+        task.executeFirebaseUpload(mOwner);
 
         //Informing the adapter and view of the new item
         notifyItemInserted(mTaskList.size());
@@ -197,7 +202,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         //Delete from SQL
         task.deleteTask(mContext);
 
-        //TODO: Add to the firebase
+        //TODO: Delete from firebase
 
         //Informing the adapter and view after removing
         notifyItemRemoved(position);
