@@ -5,6 +5,8 @@ import com.mad.p03.np2020.routine.Class.Label;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 public class Task {
 
     private String mName;
@@ -83,4 +85,9 @@ public class Task {
         // TODO: Please upload any chnages to this class to the main branch`
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "Task name: " + getName();
+    }
 }

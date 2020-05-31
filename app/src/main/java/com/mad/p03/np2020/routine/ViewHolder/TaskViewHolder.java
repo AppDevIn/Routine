@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -23,6 +24,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnTo
     public CheckBox mCheckBox;
     public ViewSwitcher mViewSwitcher, mViewSwitcherTaskName;
     public Button mBtnAdd;
+    public EditText mEdTask;
 
     ItemTouchHelper mItemTouchHelper;
     GestureDetector mGestureDetector;
@@ -31,11 +33,13 @@ public class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnTo
     public TaskViewHolder(@NonNull View itemView, ItemTouchHelper itemTouchHelper, TaskTouchHelperAdapter taskTouchHelperAdapter) {
         super(itemView);
 
+        //Find the id
         mListName = itemView.findViewById(R.id.txtListName);
         mCheckBox = itemView.findViewById(R.id.checkbox);
         mViewSwitcher = itemView.findViewById(R.id.viewswitcher);
         mBtnAdd = itemView.findViewById(R.id.btnAdd);
         mViewSwitcherTaskName = itemView.findViewById(R.id.viewswitcherTaskName);
+        mEdTask = itemView.findViewById(R.id.edTask);
 
         this.mItemTouchHelper = itemTouchHelper;
 

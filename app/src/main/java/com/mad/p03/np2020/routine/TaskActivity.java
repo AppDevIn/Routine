@@ -84,4 +84,10 @@ public class TaskActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "GUI in the foreground and interactive");
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: " + mSection.getTaskList());
+    }
 }

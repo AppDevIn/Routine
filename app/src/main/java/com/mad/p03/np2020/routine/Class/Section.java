@@ -168,18 +168,6 @@ public class Section implements Serializable {
         this.ID = ID;
     }
 
-    public void addTask(Task task){
-        // TODO: Please upload any chnages to this class to the main branch`
-        mTaskList.add(task);
-
-    }
-
-    public void rmTask(Task task){
-        // TODO: Please upload any chnages to this class to the main branch`
-        mTaskList.remove(task);
-    }
-
-
     public void deleteSection(Context context){
 
         SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
