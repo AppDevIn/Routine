@@ -61,6 +61,7 @@ public class User implements Parcelable {
     private List<Label> mListLabel = new ArrayList<>();
     private ArrayList<Focus> mFocusList = new ArrayList<>();
     private FocusDatabase focusDatabase;
+    private ArrayList<Habit> mHabitList = new ArrayList<>();
 
     protected User(Parcel in) {
         mAuth = in.readParcelable(FirebaseUser.class.getClassLoader());

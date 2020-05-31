@@ -25,6 +25,7 @@ public class Habit {
     public static final String COLUMN_USERID = "userId";
 
 
+
     public static final String CREATE_HABITS_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -39,8 +40,9 @@ public class Habit {
                     COLUMN_HABIT_REMINDER_HOURS + " INTEGER," +
                     COLUMN_HABIT_REMINDER_MESSAGES + " TEXT," +
                     COLUMN_HABIT_REMINDER_CUSTOMTEXT + " TEXT," +
-                    COLUMN_HABIT_GROUP_NAME  + " TEXT,";
-//                    + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
+                    COLUMN_HABIT_GROUP_NAME  + " TEXT," +
+                    COLUMN_USERID + " INTEGER,"
+                    + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
 
 
@@ -48,6 +50,7 @@ public class Habit {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
     
     private long habitID;
+    private String fbID;
     private String title;
     private int occurrence;
     private int count;
@@ -61,6 +64,14 @@ public class Habit {
 
     public String getTitle() {
         return title.toUpperCase().trim();
+    }
+
+    public String getFbID() {
+        return fbID;
+    }
+
+    public void setFbID(String fbID) {
+        this.fbID = fbID;
     }
 
     public int getOccurrence() {

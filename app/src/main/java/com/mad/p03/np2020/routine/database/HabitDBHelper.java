@@ -41,10 +41,12 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         db.setVersion(oldVersion);
     }
 
-    public long insertHabit(Habit habit) {
+    public long insertHabit(Habit habit, String UID) {
 
         ContentValues values = new ContentValues();
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
+        values.put(Habit.COLUMN_USERID,UID);
+        Log.d(TAG, "insertHabit: "+UID);
         values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
         values.put(Habit.COLUMN_HABIT_COUNT,habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD,habit.getPeriod());
@@ -88,11 +90,12 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public Habit.HabitList getAllHabits() {
+    public Habit.HabitList getAllHabits(String UID) {
         Habit.HabitList habitList = new Habit.HabitList();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " +Habit.TABLE_NAME, null );
+        Log.d(TAG, "getAllHabits: "+UID);
+        Cursor res =  db.rawQuery( "select * from " +Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_USERID + " =?", new String[]{UID} );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -121,7 +124,8 @@ public class HabitDBHelper extends SQLiteOpenHelper {
                 group = new HabitGroup(group_name);
             }
 
-            habitList.addItem(new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group));;
+            Habit habit = new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
+            habitList.addItem(habit);;
             res.moveToNext();
         }
 

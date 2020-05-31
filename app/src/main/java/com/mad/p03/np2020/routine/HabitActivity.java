@@ -36,12 +36,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
+import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.AlarmReceiver;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
-import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
+import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
@@ -82,6 +85,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 //    private TextView menu_count,habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text ;
 //    private ImageView add_btn, minus_btn;
 
+    //Firebase
+    private DatabaseReference mDatabase;
+
+    //User
+    private User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +105,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         Log.v(TAG,"onCreate");
 
         initData(); // initialise the shared preferences if it is not done so
+
+        FirebaseDatabase();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // if api > 28, create a notification channel named "HabitTracker"
             String channelName = "HabitTracker";
@@ -388,11 +398,15 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
                         Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
-                        long habitID = habit_dbHandler.insertHabit(habit);
+
+                        long habitID = habit_dbHandler.insertHabit(habit, user.getUID());
                         if (habitID != -1){ //if habitID returned is legit
                             habit.setHabitID(habitID); // attach the id to the habit
                             myAdapter._habitList.addItem(habit);
                             myAdapter.notifyDataSetChanged();
+                            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID()).child("habit").child(String.valueOf(habit.getHabitID()));
+                            mDatabase.setValue(habit);
+
 
                             Log.d(TAG, "onClick: "+habit.getHabitID());
                             Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
@@ -410,7 +424,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits());
+        myAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(user.getUID()));
         mRecyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(new HabitAdapter.OnItemClickListener() {
             @Override
@@ -885,7 +899,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
                                 }
 
-
                                 title.setText(habit_name.getText().toString());
                                 occurrence.setText(String.valueOf(habit.getOccurrence()));
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
@@ -894,6 +907,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                 if (affected_row > 0){
                                     habit_dbHandler.updateHabit(habit);
                                     myAdapter.notifyDataSetChanged();
+                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID()).child("habit").child(String.valueOf(habit.getHabitID()));
+                                    mDatabase.setValue(habit);
                                     Log.d(TAG, "HabitEdit/Affeceted rows: "+ affected_row);
                                 }
 
@@ -915,13 +930,21 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.v(TAG, format("%s deleted!",myAdapter._habitList.getItemAt(position).getTitle()));
-                                habit_dbHandler.deleteHabit(myAdapter._habitList.getItemAt(position));
+                                Habit deleted_habit = myAdapter._habitList.getItemAt(position);
+                                Log.v(TAG, format("%s deleted!",deleted_habit.getTitle()));
+
+                                if (deleted_habit.getHabitReminder() != null){
+                                    // cancel the reminder if existed
+                                    cancelReminder(deleted_habit.getTitle(),deleted_habit.getHabitReminder().getId(),deleted_habit.getHabitReminder().getCustom_text());
+                                }
+
+                                habit_dbHandler.deleteHabit(deleted_habit);
                                 myAdapter._habitList.removeItemAt(position);
                                 myAdapter.notifyItemRemoved(position);
                                 myAdapter.notifyItemRangeChanged(position, myAdapter._habitList.size());
                                 myAdapter.notifyDataSetChanged();
 
+                                FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID()).child("habit").child(String.valueOf(habit.getHabitID())).removeValue();
 
                                 alertDialog.dismiss();
                             }
@@ -1134,5 +1157,15 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         return id;
 
     }
+
+    //Firebase
+    private void FirebaseDatabase() { //Firebase Reference
+        user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
+        Log.i(TAG, "Getting firebase for User ID " + user.getUID());
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        Log.i(TAG, "checks for myRef: " + mDatabase);
+    }
+
+
 
 }
