@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String Username = "username";
     public static final String Password = "password";
     public static final String SWITCH1 = "switch1";
+    public User user;
     private boolean switchOnOff;
 
     @Override
@@ -140,6 +141,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if(checkBox.isChecked()) {
                                 saveData();
                             }
+                            Intent intent = new Intent();
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
