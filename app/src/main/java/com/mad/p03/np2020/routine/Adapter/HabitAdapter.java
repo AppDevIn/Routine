@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,7 +12,8 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Class.HabitHolder;
+import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
@@ -20,7 +21,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
     final static String TAG = "HabitAdapter";
     Context c;
-    Habit.HabitList _habitList;
+    public Habit.HabitList _habitList;
     private OnItemClickListener mListener;
     static View view;
     HabitDBHelper dbHandler;

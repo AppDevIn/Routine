@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Class;
+package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder;
 
 import java.util.ArrayList;
 

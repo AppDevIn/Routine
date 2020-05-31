@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Class;
+package com.mad.p03.np2020.routine.ViewHolder;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.HabitAdapter;
+import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.R;
 
 public class HabitGroupHolder extends RecyclerView.ViewHolder {

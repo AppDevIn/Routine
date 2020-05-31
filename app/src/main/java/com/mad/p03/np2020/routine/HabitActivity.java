@@ -36,10 +36,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Class.AlarmReceiver;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
-import com.mad.p03.np2020.routine.Class.HabitGroupAdapter;
+import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
