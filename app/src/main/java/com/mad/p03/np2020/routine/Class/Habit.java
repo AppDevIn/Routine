@@ -22,6 +22,8 @@ public class Habit {
     public static final String COLUMN_HABIT_REMINDER_MESSAGES = "reminderMessages";
     public static final String COLUMN_HABIT_REMINDER_CUSTOMTEXT = "reminderCustomText";
     public static final String COLUMN_HABIT_GROUP_NAME = "groupName";
+    public static final String COLUMN_USERID = "userId";
+
 
     public static final String CREATE_HABITS_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
@@ -37,7 +39,10 @@ public class Habit {
                     COLUMN_HABIT_REMINDER_HOURS + " INTEGER," +
                     COLUMN_HABIT_REMINDER_MESSAGES + " TEXT," +
                     COLUMN_HABIT_REMINDER_CUSTOMTEXT + " TEXT," +
-                    COLUMN_HABIT_GROUP_NAME  + " TEXT)";
+                    COLUMN_HABIT_GROUP_NAME  + " TEXT,";
+//                    + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
+
+
 
     public static final String DROP_HABITS_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
