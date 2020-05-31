@@ -7,8 +7,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,7 +26,7 @@ import com.mad.p03.np2020.routine.Class.Task;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TaskActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
     private final String TAG = "Task";
 
@@ -31,6 +36,7 @@ public class TaskActivity extends AppCompatActivity {
     Section mSection;
     ConstraintLayout mConstraintLayout;
     TextView mTxtListName;
+    EditText mEdTask;
 
 
     @Override
@@ -62,6 +68,20 @@ public class TaskActivity extends AppCompatActivity {
         //Find the id
         mTxtListName = findViewById(R.id.edSectioName);
         mConstraintLayout = findViewById(R.id.taskLayout);
+        mEdTask = findViewById(R.id.edTask);
+
+
+        //Set to listen for the editor
+        //To see the typing and when enter is clicked than add the details
+        mEdTask.setOnEditorActionListener(this);
+
+
+        mEdTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showKeyboard(view);
+            }
+        });
 
 
 
@@ -94,5 +114,41 @@ public class TaskActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+
+        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                actionId == EditorInfo.IME_ACTION_DONE ||
+                event.getAction() == KeyEvent.ACTION_DOWN &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+            Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
+
+            //Create a task object
+            Task task = new Task(textView.getText().toString(), mSection.getID());
+
+            //Add this object to the list
+            mTaskAdapter.addItem(task);
+
+            //scroll to the last item of the recyclerview
+            mRecyclerView.smoothScrollToPosition(mSection.getTaskList().size());
+
+
+            Log.d(TAG, "onEditorAction: ");
+
+            return true;
+        }
+        return false;
+    }
+
+
+    //Soft Keyboard methods
+    private void showKeyboard(View view) {
+        Log.i(TAG, "Show soft keyboard");
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert mgr != null;
+        mgr.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 }

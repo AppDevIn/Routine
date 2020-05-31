@@ -37,14 +37,73 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
 
-        android:padding="10dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         android:layout_marginTop="10dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="10dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/cdAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edSectioName" />
+        app:layout_constraintTop_toBottomOf="@+id/edSectioName">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cdAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            >
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+
+                    android:layout_marginEnd="15dp"
+
+                    android:background="@drawable/baseline_add_circle_outline_black_18dp"
+
+                    />
+
+                <EditText
+                    android:id="@+id/edTask"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="9"
+
+                    android:hint="@string/addMessage"
+
+                    android:ems="10"
+                    android:inputType="textPersonName"
+
+                    android:fontFamily="@font/montserrat_regular"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+
+                    android:background="@null"
+
+                    />
+
+
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,74 +16,33 @@
         android:padding="15dp"
         >
 
-        <ViewSwitcher
 
-            android:id="@+id/viewswitcher"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            >
 
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_marginEnd="15dp"
 
                 android:buttonTint="@color/black"
                 />
-            <Button
-                android:id="@+id/btnAdd"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-
-                android:background="@drawable/baseline_add_circle_outline_black_18dp"
-
-                 />
 
 
 
-        </ViewSwitcher>
 
-
-        <ViewSwitcher
-
-            android:id="@+id/viewswitcherTaskName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            >
 
             <TextView
                 android:id="@+id/txtListName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="9"
 
                 android:fontFamily="@font/montserrat_regular"
                 android:textSize="20sp"
                 android:textColor="@color/black"
 
                 android:text="@string/holder" />
-
-            <EditText
-                android:id="@+id/edTask"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:ems="10"
-                android:inputType="textPersonName"
-
-                android:fontFamily="@font/montserrat_regular"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-
-                android:background="@null"
-
-                 />
-
-
-        </ViewSwitcher>
-
 
 
 

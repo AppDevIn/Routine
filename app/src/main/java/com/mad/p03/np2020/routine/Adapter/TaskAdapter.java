@@ -26,7 +26,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter, TextView.OnEditorActionListener, MyDatabaseListener {
+public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter, MyDatabaseListener {
 
     private final String TAG = "TaskAaapter";
 
@@ -75,21 +75,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         mTaskViewHolder = holder;
 
-        //Change to the add icon for the last position
-        if(position == mTaskList.size()) {
-            //Move the next view in the switcher which is a button
-            mTaskViewHolder.mViewSwitcher.showNext();
 
-            //Set the task to add task
-            mTaskViewHolder.mListName.setText(R.string.addMessage);
-        }else {
-            holder.mListName.setText(mTaskList.get(position).getName());
-        }
-
-
-        //To see the typing and when enter is clicked than add the details
-        holder.mEdTask.setOnEditorActionListener(this);
-
+        holder.mListName.setText(mTaskList.get(position).getName());
 
         TaskDBHelper.setMyDatabaseListener(this);
 
@@ -97,7 +84,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
     @Override
     public int getItemCount() {
-        return mTaskList.size() + 1;
+        return mTaskList.size();
     }
 
     @Override
@@ -123,17 +110,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     public void onItemClicked(int position) {
         Log.d(TAG, "onClick(): You have clicked on " + position + " task");
 
-        //When clicked you able to add the task
-        if(position == mTaskList.size()){
-
-            Log.d(TAG, "onClick(): User is clicking on the add button in task ");
-
-            //Change to the edit text
-            mTaskViewHolder.mViewSwitcherTaskName.showNext();
-
-            //Show the keyboard
-            showKeyboard(mTaskViewHolder.mEdTask);
-        }
 
         //TODO: Move to the card layout
     }
@@ -180,36 +156,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         }
     }
 
-    @Override
-    public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-
-        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                actionId == EditorInfo.IME_ACTION_DONE ||
-                event.getAction() == KeyEvent.ACTION_DOWN &&
-                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-
-            Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
-
-            //Create a task object
-            Task task = new Task(textView.getText().toString(), mSection.getID());
-
-            //Add this object to the list
-            addItem(task);
-
-            //Change the design of the task
-            mTaskViewHolder.mViewSwitcher.showNext();
-            mTaskViewHolder.mViewSwitcherTaskName.showNext();
-
-            mTaskViewHolder.mListName.setText(mTaskViewHolder.mEdTask.getText().toString());
-
-
-            Log.d(TAG, "onEditorAction: ");
-
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * Adding the task to
@@ -249,12 +195,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     }
 
 
-    //Soft Keyboard methods
-    private void showKeyboard(View view) {
-        Log.i(TAG, "Show soft keyboard");
-        InputMethodManager mgr = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert mgr != null;
-        mgr.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-    }
+
 
 }
