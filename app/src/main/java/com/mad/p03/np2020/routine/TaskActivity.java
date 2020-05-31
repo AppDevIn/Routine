@@ -22,11 +22,13 @@ import com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.database.MyDatabaseListener;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
+public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener {
 
     private final String TAG = "Task";
 
@@ -84,6 +86,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         });
 
 
+        TaskDBHelper.setMyDatabaseListener(this);
 
     }
 
@@ -130,10 +133,11 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             Task task = new Task(textView.getText().toString(), mSection.getID());
 
             //Add this object to the list
-            mTaskAdapter.addItem(task);
+            mTaskAdapter.addItem(task, this);
 
-            //scroll to the last item of the recyclerview
-            mRecyclerView.smoothScrollToPosition(mSection.getTaskList().size());
+
+            //Hide and scroll the last task
+            showNewEntry();
 
 
             Log.d(TAG, "onEditorAction: ");
@@ -141,6 +145,58 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public void onDataAdd(Object object) {
+
+        Task task = (Task) object;
+
+        Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + task );
+
+        //Adding into the local list
+        mSection.getTaskList().add(task);
+
+        //Informing the adapter and view of the new item
+        mTaskAdapter.notifyItemInserted(mSection.getTaskList().size());
+    }
+
+    @Override
+    public void onDataDelete(String ID) {
+
+        Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
+
+        for (int position = 0; position < mSection.getTaskList().size(); position++) {
+
+            if(mSection.getTaskList().get(position).getTaskID().equals(ID)){
+
+                //Remove the list
+                mSection.getTaskList().remove(position);
+
+                //Informing the adapter and view after removing
+                mTaskAdapter.notifyItemRemoved(position);
+                mTaskAdapter.notifyItemRangeChanged(position, mSection.getTaskList().size());
+                break;
+            }
+        }
+    }
+
+
+    /**
+     * Upon calling this method, the keyboard will retract
+     * and the recyclerview will scroll to the last item
+     */
+    private void showNewEntry(){
+        //scroll to the last item of the recyclerview
+        mRecyclerView.smoothScrollToPosition(mSection.getTaskList().size());
+
+        //auto hide keyboard after entry
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mRecyclerView.getWindowToken(), 0);
+
+        //Clear the text from the view
+        mEdTask.setText("");
     }
 
 

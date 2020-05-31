@@ -139,7 +139,8 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
         Log.d(TAG, "delete(): Removed from database");
 
-        mMyDatabaseListener.onDataDelete(ID);
+        if (mMyDatabaseListener != null)
+            mMyDatabaseListener.onDataDelete(ID);
 
         db.close();
     }

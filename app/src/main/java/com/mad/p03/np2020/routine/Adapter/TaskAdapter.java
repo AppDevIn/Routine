@@ -26,7 +26,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter, MyDatabaseListener {
+public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter {
 
     private final String TAG = "TaskAaapter";
 
@@ -78,7 +78,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         holder.mListName.setText(mTaskList.get(position).getName());
 
-        TaskDBHelper.setMyDatabaseListener(this);
+
 
     }
 
@@ -122,39 +122,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      * @param object given from the SQL when triggered
      *               for this the object is task
      */
-    @Override
-    public void onDataAdd(Object object) {
-
-        Task task = (Task) object;
-
-        Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + task );
-
-        //Adding into the local list
-        mTaskList.add(task);
-
-        //Informing the adapter and view of the new item
-        notifyItemInserted(mTaskList.size());
-    }
-
-    @Override
-    public void onDataDelete(String ID) {
-
-        Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
-
-        for (int position = 0; position < mTaskList.size(); position++) {
-
-            if(mTaskList.get(position).getTaskID().equals(ID)){
-
-                //Remove the list
-                mTaskList.remove(position);
-
-                //Informing the adapter and view after removing
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mTaskList.size());
-                break;
-            }
-        }
-    }
 
 
     /**
@@ -162,10 +129,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      * the list
      * @param task task that will be added to list
      */
-    public void addItem(Task task){
+    public void addItem(Task task, Context context){
 
         //Add to the SQLite
-        task.addTask(mContext);
+        task.addTask(context);
 
         //Add from firebase
         task.executeFirebaseUpload(mOwner);
