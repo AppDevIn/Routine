@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +41,8 @@ import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
+import com.mad.p03.np2020.routine.database.HabitDBHelper;
+import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,19 +51,18 @@ import java.util.Date;
 import static java.lang.String.format;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class HabitActivity extends AppCompatActivity {
+public class HabitActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "HabitTracker";
     private String channelId = "001";
     Habit.HabitList habitList;
-    ArrayList<HabitGroup> habitGroup;
-    ImageButton add_habit;
-    ImageButton habit_chart;
-    ImageButton habit_dashboard;
+    ArrayList<HabitGroup> habitGroup_reference;
+
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
     RecyclerView groupRecyclerView;
     HabitGroupAdapter groupAdapter;
+
     private final static int [] period_buttonIDS = {R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
     private final static String[] period_textList = {"DAY", "WEEK", "MONTH", "YEAR"};
     private final static int[] period_countList = {1, 7, 30, 365};
@@ -71,38 +73,42 @@ public class HabitActivity extends AppCompatActivity {
     int minutes;
     int hours;
 
-
+    HabitDBHelper habit_dbHandler;
+    HabitGroupDBHelper group_dbhandler;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+    // add habit
+//    private TextView menu_count,habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text ;
+//    private ImageView add_btn, minus_btn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit);
+        // set the layout in full screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        habit_dbHandler = new HabitDBHelper(this); // initialise the HabitDBHelper
+        group_dbhandler = new HabitGroupDBHelper(this); // initialise the HabitGroupDBHelper
+
+        habitGroup_reference = group_dbhandler.getAllGroups();
         Log.v(TAG,"onCreate");
 
-        initData();
+        initData(); // initialise the shared preferences if it is not done so
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // if api > 28, create a notification channel named "HabitTracker"
             String channelName = "HabitTracker";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             createNotificationChannel(channelId, channelName, importance);
         }
 
-        add_habit = findViewById(R.id.add_habit);
-        habit_chart = findViewById(R.id.habit_chart);
-        habit_dashboard = findViewById(R.id.habit_dashboard);
 
-        add_habit.setBackgroundColor(Color.TRANSPARENT);
-        habit_chart.setBackgroundColor(Color.TRANSPARENT);
-        habit_dashboard.setBackgroundColor(Color.TRANSPARENT);
-
+        ImageView add_habit = findViewById(R.id.add_habit);
         add_habit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final String[] custom_text = {""};
-                final boolean[] reminder_flag = {false};
-                final String[] _grp_name = {null};
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
                 final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false);
@@ -115,115 +121,17 @@ public class HabitActivity extends AppCompatActivity {
                 final TextView period_text = dialogView.findViewById(R.id.period_txt);
                 final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
                 final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
+                final ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
+                final ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
 
                 final int[] period = new int[1];
-
-                for (final int i :period_buttonIDS){
-                    final Button btn = dialogView.findViewById(i);
-                    btn.setBackgroundColor(Color.TRANSPARENT);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = btn.getId();
-
-                            for (int i = 0; i < 4; i++){
-                                Button _btn = dialogView.findViewById(period_buttonIDS[i]);
-                                if (id == period_buttonIDS[i]){
-                                    _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
-                                    period_text.setText(period_textList[i]);
-                                    period[0] = period_countList[i];
-                                }else {
-                                    _btn.setBackgroundColor(Color.TRANSPARENT);
-                                }
-
-                            }
-                        }
-                    });
-                }
-                period[0] = 1;
-                dialogView.findViewById(R.id.daily_period).setBackgroundColor(Color.parseColor("#dfdfdf"));
-
+                populatePeriodBtn(dialogView, period, period_text);
+                habit_add_initialise_periodSection(dialogView,period);
 
                 final String[] color = new String[1];
-                final Button lightcoral_btn = dialogView.findViewById(R.id.lightcoral_btn);
-                final Button slightdesblue_btn = dialogView.findViewById(R.id.slightdesblue_btn);
-                final Button fadepurple_btn = dialogView.findViewById(R.id.fadepurple_btn);
-                final Button cyangreen_btn = dialogView.findViewById(R.id.cyangreen_btn);
+                populateColorBtn(dialogView,color);
+                habit_add_initialise_colorSection(dialogView,color);
 
-                GradientDrawable drawable = new GradientDrawable();
-                drawable.setShape(GradientDrawable.RECTANGLE);
-                drawable.setStroke(5, Color.BLACK);
-                drawable.setColor(getResources().getColor(R.color.colorLightCoral));
-                lightcoral_btn.setBackground(drawable);
-                color[0] = "lightcoral";
-
-                for (final int i :color_buttonIDS){
-                    final Button btn = dialogView.findViewById(i);
-
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = btn.getId();
-
-                            for (int i = 0; i < 4; i++){
-                                Button _btn = dialogView.findViewById(color_buttonIDS[i]);
-                                if (id == color_buttonIDS[i]){
-                                    GradientDrawable drawable = new GradientDrawable();
-                                    drawable.setShape(GradientDrawable.RECTANGLE);
-                                    drawable.setStroke(5, Color.BLACK);
-                                    drawable.setColor(getResources().getColor(color_schemeIDS[i]));
-                                    _btn.setBackground(drawable);
-                                    color[0] = colorList[i];
-                                }else {
-                                    _btn.setBackgroundResource(color_schemeIDS[i]);
-                                }
-                            }
-                        }
-                    });
-                }
-
-
-                Button buttonClose = dialogView.findViewById(R.id.habit_close);
-                buttonClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                Button buttonOk = dialogView.findViewById(R.id.create_habit);
-                buttonOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = habit_name.getText().toString();
-                        if (name.equalsIgnoreCase("")){
-                            habit_name.setError("Please enter habit name");
-                            return;
-                        }
-
-                        int occur = Integer.parseInt(habit_occur.getText().toString());
-                        int cnt = Integer.parseInt(menu_count.getText().toString());
-                        Date date = new Date();
-                        HabitReminder hr = null;
-                        if (reminder_flag[0]){
-                            int id = getData();
-                            String txt = custom_text[0];
-                            setReminder(name,minutes,hours,id,txt);
-                            hr = new HabitReminder(name,id,minutes,hours,txt);
-                        }
-                        HabitGroup hg = null;
-                        if (_grp_name[0] != null){
-                            hg = new HabitGroup(_grp_name[0]);
-                        }
-                        myAdapter._habitList.addItem(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
-                        myAdapter.notifyDataSetChanged();
-                        Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
-                        alertDialog.dismiss();
-                    }
-                });
-
-                ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
-                ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
 
                 add_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -246,11 +154,11 @@ public class HabitActivity extends AppCompatActivity {
                         menu_count.setText(String.valueOf(count));
                     }
                 });
-                
+
+                final String[] _grp_name = {null};
                 group_indicate_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "onClick: group");
                         final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                         LayoutInflater inflater = getLayoutInflater();
                         View convertView = inflater.inflate(R.layout.habit_group, null);
@@ -270,7 +178,7 @@ public class HabitActivity extends AppCompatActivity {
 
                         groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
                         groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
+                        groupAdapter= new HabitGroupAdapter(habitGroup_reference,getApplicationContext());
                         groupRecyclerView.setAdapter(groupAdapter);
                         builder.setView(convertView);
                         final AlertDialog alertDialog = builder.create();
@@ -325,9 +233,16 @@ public class HabitActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
                                         String grp_name = name.getText().toString();
-                                        groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
-                                        groupAdapter.notifyDataSetChanged();
-                                        Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                        HabitGroup grp = new HabitGroup(grp_name);
+                                        long grp_id = group_dbhandler.insertGroup(grp);
+
+                                        if (grp_id != -1){
+                                            grp.setGrp_id(grp_id);
+                                            groupAdapter._habitGroupList.add(grp);
+                                            groupAdapter.notifyDataSetChanged();
+                                            Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                        }
+
                                         alertDialog.dismiss();
                                     }
                                 });
@@ -335,10 +250,16 @@ public class HabitActivity extends AppCompatActivity {
                                 alertDialog.show();
                             }
                         });
+
+
                         alertDialog.show();
                     }
                 });
 
+                final int[] chosen_hours = new int[1];
+                final int[] chosen_minutes = new int[1];
+                final String[] custom_text = {""};
+                final boolean[] reminder_flag = {false};
                 habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -358,12 +279,12 @@ public class HabitActivity extends AppCompatActivity {
 
                         if (reminder_flag[0]){
                             Calendar c = Calendar.getInstance();
-                            c.set(Calendar.HOUR_OF_DAY,hours);
-                            c.set(Calendar.MINUTE, minutes);
+                            c.set(Calendar.HOUR_OF_DAY, chosen_hours[0]);
+                            c.set(Calendar.MINUTE, chosen_minutes[0]);
                             timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
                             timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
                             reminder_switch.setChecked(true);
-                            reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                            reminder_displayTime.setText(format("%d:%d",chosen_hours[0],chosen_minutes[0]));
                         }else{
                             if (Build.VERSION.SDK_INT <= 23) {
                                 minutes = timePicker.getCurrentMinute(); // before api level 23
@@ -405,6 +326,8 @@ public class HabitActivity extends AppCompatActivity {
                                         custom_text[0] = _custom_text.getText().toString();
                                     }
                                     reminder_flag[0] = true;
+                                    chosen_hours[0] = hours;
+                                    chosen_minutes[0] = minutes;
 //                                    Toast.makeText(getApplicationContext(),"The reminder settings has been saved.", Toast.LENGTH_SHORT).show();
                                 }else{
                                     reminder_flag[0] = false;
@@ -427,7 +350,56 @@ public class HabitActivity extends AppCompatActivity {
                     }
                 });
 
+                Button buttonClose = dialogView.findViewById(R.id.habit_close);
+                buttonClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
 
+                Button buttonOk = dialogView.findViewById(R.id.create_habit);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = habit_name.getText().toString();
+                        if (name.equalsIgnoreCase("")){
+                            habit_name.setError("Please enter habit name");
+                            return;
+                        }
+
+                        int occur = Integer.parseInt(habit_occur.getText().toString());
+                        int cnt = Integer.parseInt(menu_count.getText().toString());
+
+                        Date date = new Date();
+                        HabitReminder hr = null;
+                        if (reminder_flag[0]){
+                            int id = getUniqueHabitReminderID();
+                            String txt = custom_text[0];
+                            setReminder(name, chosen_minutes[0], chosen_hours[0], id, txt);
+                            hr = new HabitReminder(name, id, chosen_minutes[0], chosen_hours[0], txt);
+                        }
+
+                        HabitGroup hg = null;
+                        if (_grp_name[0] != null){
+                            hg = new HabitGroup(_grp_name[0]);
+                        }
+
+
+                        Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
+                        long habitID = habit_dbHandler.insertHabit(habit);
+                        if (habitID != -1){ //if habitID returned is legit
+                            habit.setHabitID(habitID); // attach the id to the habit
+                            myAdapter._habitList.addItem(habit);
+                            myAdapter.notifyDataSetChanged();
+
+                            Log.d(TAG, "onClick: "+habit.getHabitID());
+                            Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
+                        }
+
+                        alertDialog.dismiss();
+                    }
+                });
 
                 alertDialog.show();
 
@@ -437,19 +409,14 @@ public class HabitActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new HabitAdapter(this, getList());
+        myAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits());
         mRecyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(new HabitAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final int position) {
                 final Habit habit = myAdapter._habitList.getItemAt(position);
 
-                Log.d(TAG, format(habit.getTitle() + " "+ habit.getCount() + "/" + (habit.getOccurrence()) + " " + habit.getPeriod()));
-                Log.d(TAG, habit.getTime_created());
-                Log.d(TAG, habit.getHolder_color());
-                if (habit.getGroup() != null){
-                    Log.d(TAG, habit.getGroup().getGrp_name());
-                }
+                Log.d(TAG, "onItemClick: "+ position + " " + habit.getTitle());
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -488,9 +455,6 @@ public class HabitActivity extends AppCompatActivity {
                 closeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int _cnt = Integer.parseInt(cnt.getText().toString());
-                        habit.modifyCount(_cnt);
-                        myAdapter.notifyDataSetChanged();
                         alertDialog.dismiss();
                     }
                 });
@@ -499,8 +463,10 @@ public class HabitActivity extends AppCompatActivity {
                 addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d(TAG, "Habit: Add Count");
                         habit.addCount();
                         myAdapter.notifyDataSetChanged();
+                        habit_dbHandler.updateCount(habit);
                         cnt.setText(String.valueOf(habit.getCount()));
                         cnt2.setText(String.valueOf(habit.getCount()));
                     }
@@ -509,8 +475,10 @@ public class HabitActivity extends AppCompatActivity {
                 reduceBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d(TAG, "Habit: Minus Count");
                         habit.minusCount();
                         myAdapter.notifyDataSetChanged();
+                        habit_dbHandler.updateCount(habit);
                         cnt.setText(String.valueOf(habit.getCount()));
                         cnt2.setText(String.valueOf(habit.getCount()));
                     }
@@ -544,9 +512,11 @@ public class HabitActivity extends AppCompatActivity {
                         saveBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                Log.d(TAG, "Habit: Modify Count");
                                 int dialogCnt = Integer.parseInt(dialog_cnt.getText().toString());
                                 habit.modifyCount(dialogCnt);
                                 myAdapter.notifyDataSetChanged();
+                                habit_dbHandler.updateCount(habit);
                                 cnt.setText(String.valueOf(habit.getCount()));
                                 cnt2.setText(String.valueOf(habit.getCount()));
                                 alertDialog.dismiss();
@@ -564,12 +534,6 @@ public class HabitActivity extends AppCompatActivity {
                         builder.setView(dialogView);
                         final AlertDialog alertDialog = builder.create();
 
-                        final boolean[] reminder_flag = {false};
-                        final String[] txt = {""};
-                        final boolean[] modified_reminder = {false};
-                        final String[] _grp_name = {null};
-                        final boolean[] modified_grp = {false};
-                        final boolean[] _cancel = {false};
 
                         final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
                         final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
@@ -577,15 +541,34 @@ public class HabitActivity extends AppCompatActivity {
                         final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
                         final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
 
+
+                        final int[] _period = new int[1];
+                        populatePeriodBtn(dialogView, _period, period_text);
+                        habit_edit_initialise_periodSection(dialogView, habit, _period, period_text);
+
+
+                        final String[] _color = new String[1];
+                        populateColorBtn(dialogView, _color);
+                        habit_edit_initialise_colorSection(dialogView, habit, _color);
+
+                        habit_name.setText(habit.getTitle());
+                        habit_occur.setText(String.valueOf(habit.getOccurrence()));
+
+                        // Modified group part
                         final HabitGroup habitGroup = habit.getGroup();
+
                         if (habitGroup != null ){
                             group_indicate_text.setText(habitGroup.getGrp_name());
+                        }else{
+                            group_indicate_text.setText("NONE");
                         }
 
+                        final String[] _grp_name = {null};
+                        final boolean[] modified_grp = {false};
+                        final boolean[] _cancel = {false};
                         group_indicate_text.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Log.d(TAG, "onClick: group");
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog);
                                 LayoutInflater inflater = getLayoutInflater();
                                 View convertView = inflater.inflate(R.layout.habit_group, null);
@@ -608,7 +591,7 @@ public class HabitActivity extends AppCompatActivity {
 
                                 groupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
                                 groupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                                groupAdapter= new HabitGroupAdapter(getGroupList(),getApplicationContext());
+                                groupAdapter= new HabitGroupAdapter(habitGroup_reference, getApplicationContext());
                                 groupRecyclerView.setAdapter(groupAdapter);
                                 builder.setView(convertView);
                                 final AlertDialog alertDialog = builder.create();
@@ -666,9 +649,16 @@ public class HabitActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(View v) {
                                                 String grp_name = name.getText().toString();
-                                                groupAdapter._habitGroupList.add(new HabitGroup(grp_name));
-                                                groupAdapter.notifyDataSetChanged();
-                                                Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                                HabitGroup grp = new HabitGroup(grp_name);
+                                                long grp_id = group_dbhandler.insertGroup(grp);
+
+                                                if (grp_id != -1){
+                                                    grp.setGrp_id(grp_id);
+                                                    groupAdapter._habitGroupList.add(grp);
+                                                    groupAdapter.notifyDataSetChanged();
+                                                    Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+                                                }
+
                                                 alertDialog.dismiss();
                                             }
                                         });
@@ -676,14 +666,22 @@ public class HabitActivity extends AppCompatActivity {
                                         alertDialog.show();
                                     }
                                 });
+
                                 alertDialog.show();
                             }
                         });
 
+                        // Edit reminder
                         final HabitReminder habitReminder = habit.getHabitReminder();
+                        final boolean[] reminder_flag = {false};
+                        final String[] txt = {""};
+                        final boolean[] modified_reminder = {false};
                         if (habitReminder != null){
                             habit_reminder_indicate_text.setText((format("%d:%d",habitReminder.getHours(),habitReminder.getMinutes())));
                             reminder_flag[0] = true;
+                            minutes = habitReminder.getMinutes();
+                            hours = habitReminder.getHours();
+                            txt[0] = habitReminder.getCustom_text();
                         }
 
                         habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
@@ -704,26 +702,7 @@ public class HabitActivity extends AppCompatActivity {
                                 final ImageView save_btn = dialogView.findViewById(R.id.habit_reminder_view_save);
 
 
-                                if (habitReminder != null){
-                                    _custom_text.setText(habitReminder.getCustom_text());
-                                    reminder_switch.setChecked(true);
-                                    reminder_displayTime.setText(habit_reminder_indicate_text.getText().toString());
-                                    Calendar c = Calendar.getInstance();
-                                    c.set(Calendar.HOUR_OF_DAY,habitReminder.getHours());
-                                    c.set(Calendar.MINUTE, habitReminder.getMinutes());
-                                    timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
-                                    timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
-
-                                }else if (modified_reminder[0] == true && reminder_flag[0]){
-                                    reminder_switch.setChecked(true);
-                                    _custom_text.setText(txt[0]);
-                                    reminder_displayTime.setText(format("%d:%d",hours,minutes));
-                                    Calendar c = Calendar.getInstance();
-                                    c.set(Calendar.HOUR_OF_DAY,hours);
-                                    c.set(Calendar.MINUTE, minutes);
-                                    timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
-                                    timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
-                                }else{
+                                if (!reminder_flag[0]){
                                     if (Build.VERSION.SDK_INT <= 23) {
                                         minutes = timePicker.getCurrentMinute(); // before api level 23
                                         hours = timePicker.getCurrentHour(); // before api level 23
@@ -733,6 +712,25 @@ public class HabitActivity extends AppCompatActivity {
                                     }
                                     reminder_switch.setChecked(false);
                                     reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                                }else if (habitReminder != null && !modified_reminder[0]){
+                                    _custom_text.setText(habitReminder.getCustom_text());
+                                    reminder_switch.setChecked(true);
+                                    reminder_displayTime.setText(habit_reminder_indicate_text.getText().toString());
+                                    Calendar c = Calendar.getInstance();
+                                    c.set(Calendar.HOUR_OF_DAY,habitReminder.getHours());
+                                    c.set(Calendar.MINUTE, habitReminder.getMinutes());
+                                    timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+                                    timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
+
+                                }else if (modified_reminder[0] && reminder_flag[0]){
+                                    reminder_switch.setChecked(true);
+                                    _custom_text.setText(txt[0]);
+                                    reminder_displayTime.setText(format("%d:%d",hours,minutes));
+                                    Calendar c = Calendar.getInstance();
+                                    c.set(Calendar.HOUR_OF_DAY,hours);
+                                    c.set(Calendar.MINUTE, minutes);
+                                    timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+                                    timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
                                 }
 
 
@@ -780,87 +778,6 @@ public class HabitActivity extends AppCompatActivity {
                             }
                         });
 
-                        final int[] _period = new int[1];
-
-                        for (final int i :period_buttonIDS){
-                            final Button btn = dialogView.findViewById(i);
-                            btn.setBackgroundColor(Color.TRANSPARENT);
-                            btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = btn.getId();
-
-                                    for (int i = 0; i < 4; i++){
-                                        Button _btn = dialogView.findViewById(period_buttonIDS[i]);
-                                        if (id == period_buttonIDS[i]){
-                                            _btn.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
-                                            period_text.setText(period_textList[i]);
-                                            _period[0] = period_countList[i];
-                                        }else {
-                                            _btn.setBackgroundColor(Color.TRANSPARENT);
-                                        }
-
-                                    }
-                                }
-                            });
-                        }
-
-                        for(int i = 0; i < 4; i++){
-                            if (period_countList[i] == habit.getPeriod()){
-                                _period[0] = period_countList[i];
-                                period_text.setText(period_textList[i]);
-                                dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
-                                break;
-                            }
-                        }
-
-
-                        final String[] _color = new String[1];
-                        final Button lightcoral_btn = dialogView.findViewById(R.id.lightcoral_btn);
-                        final Button slightdesblue_btn = dialogView.findViewById(R.id.slightdesblue_btn);
-                        final Button fadepurple_btn = dialogView.findViewById(R.id.fadepurple_btn);
-                        final Button cyangreen_btn = dialogView.findViewById(R.id.cyangreen_btn);
-
-                        for(int i = 0; i < 4; i++){
-                            if (colorList[i].equals(habit.getHolder_color())){
-                                _color[0] = colorList[i];
-                                GradientDrawable drawable = new GradientDrawable();
-                                drawable.setShape(GradientDrawable.RECTANGLE);
-                                drawable.setStroke(5, Color.BLACK);
-                                drawable.setColor(getResources().getColor(color_schemeIDS[i]));
-                                dialogView.findViewById(color_buttonIDS[i]).setBackground(drawable);
-                                break;
-                            }
-                        }
-
-
-                        for (final int i :color_buttonIDS){
-                            final Button btn = dialogView.findViewById(i);
-
-                            btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = btn.getId();
-
-                                    for (int i = 0; i < 4; i++){
-                                        Button _btn = dialogView.findViewById(color_buttonIDS[i]);
-                                        if (id == color_buttonIDS[i]){
-                                            GradientDrawable drawable = new GradientDrawable();
-                                            drawable.setShape(GradientDrawable.RECTANGLE);
-                                            drawable.setStroke(5, Color.BLACK);
-                                            drawable.setColor(getResources().getColor(color_schemeIDS[i]));
-                                            _btn.setBackground(drawable);
-                                            _color[0] = colorList[i];
-                                        }else
-                                            _btn.setBackgroundResource(color_schemeIDS[i]);
-                                        }
-                                    }
-                                });
-                            }
-
-
-                        habit_name.setText(habit.getTitle());
-                        habit_occur.setText(String.valueOf(habit.getOccurrence()));
 
                         Button buttonClose = dialogView.findViewById(R.id.habit_close);
                         buttonClose.setOnClickListener(new View.OnClickListener() {
@@ -874,35 +791,93 @@ public class HabitActivity extends AppCompatActivity {
                         buttonOk.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                habit.modifyTitle(habit_name.getText().toString());
-                                habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
-                                habit.setPeriod(_period[0]);
-                                habit.setHolder_color(_color[0]);
+                                int affected_row = 0;
 
-                                if (modified_grp[0] && _grp_name[0] != null){
-                                    Log.d(TAG, "modified grp ");
-                                    habit.setGroup(new HabitGroup(_grp_name[0]));
-                                }else if (_cancel[0] && habit.getGroup() != null){
-                                    Log.d(TAG, "cancel");
-                                    habit.setGroup(null);
+                                HabitReminder check_reminder = habit.getHabitReminder();
+
+                                if (!habit.getTitle().equals(habit_name.getText().toString())){
+                                    Log.d(TAG, "HabitReminder: Update habit title");
+                                    habit.modifyTitle(habit_name.getText().toString());
+                                    affected_row++;
+                                    modified_reminder[0] = true; // to trigger changes to alarm
                                 }
 
+                                if (habit.getOccurrence() != Integer.parseInt(habit_occur.getText().toString())){
+                                    Log.d(TAG, "HabitReminder: Update habit occurrence");
+                                    habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString()));
+                                    affected_row++;
+                                }
+
+                                if (habit.getPeriod() != _period[0]){
+                                    Log.d(TAG, "HabitReminder: Update habit period");
+                                    habit.setPeriod(_period[0]);
+                                    affected_row++;
+                                }
+
+                                if (!habit.getHolder_color().equals(_color[0])){
+                                    Log.d(TAG, "HabitReminder: Update habit holder color");
+                                    habit.setHolder_color(_color[0]);
+                                    affected_row++;
+                                }
+
+
+                                if (modified_grp[0] && _grp_name[0] != null){
+                                    Log.d(TAG, "HabitGroup: Modified group ");
+                                    habit.setGroup(new HabitGroup(_grp_name[0]));
+                                    affected_row++;
+                                }else if (_cancel[0] && habit.getGroup() != null){
+                                    Log.d(TAG, "HabitGroup: Removed group");
+                                    habit.setGroup(null);
+                                    affected_row++;
+                                }
+
+
                                 if (reminder_flag[0]){
-                                    if (habit.getHabitReminder() == null){
-                                        int id = getData();
-                                        String _txt = txt[0];
+                                    String _txt = txt[0];
+                                    if (check_reminder == null){
+                                        Log.d(TAG, "HabitReminder: Set a new alarm");
+                                        int id = getUniqueHabitReminderID(); // assign a new id to habit reminder
+
                                         habit.setHabitReminder(new HabitReminder(habit.getTitle(),id,minutes,hours,_txt));
                                         setReminder(habit.getTitle(),minutes,hours,id,txt[0]);
+                                        affected_row++;
                                     }else{
-                                        int id = habit.getHabitReminder().getId();
-                                        // reuse the id assigned before to fire the alarm
-                                        String _txt = txt[0];
-                                        habit.setHabitReminder(new HabitReminder(habit.getTitle(),id,minutes,hours,_txt));
-                                        setReminder(habit.getTitle(),minutes,hours,id,txt[0]);
+                                        if (modified_reminder[0]){
+
+                                            Log.d(TAG, "HabitReminder: Update an existing alarm");
+                                            // cancel the previous alarm
+                                            cancelReminder(habit.getTitle(),habit.getHabitReminder().getId(),habit.getHabitReminder().getCustom_text());
+
+                                            if (!_txt.equals(check_reminder.getCustom_text())){
+                                                Log.d(TAG, "HabitReminder: Update custom text");
+                                                check_reminder.setCustom_text(_txt);
+                                                affected_row++;
+                                            }
+
+                                            if (check_reminder.getMinutes() != minutes || check_reminder.getHours()!= hours){
+
+                                                if (check_reminder.getMinutes() != minutes){
+                                                    Log.d(TAG, "HabitReminder: Update minutes");
+                                                    check_reminder.setMinutes(minutes);
+                                                    affected_row++;
+                                                }
+
+                                                if (check_reminder.getHours() != hours){
+                                                    Log.d(TAG, "HabitReminder: Update hours");
+                                                    check_reminder.setHours(hours);
+                                                    affected_row++;
+                                                }
+                                            }
+
+                                            setReminder(habit.getTitle(),check_reminder.getMinutes(),check_reminder.getHours(),check_reminder.getId(),check_reminder.getCustom_text());
+
+                                        }
                                     }
                                 }else{
+                                    Log.d(TAG, "HabitReminder: Cancel HabitReminder");
                                     if (habit.getHabitReminder() != null){
                                         cancelReminder(habit.getTitle(),habit.getHabitReminder().getId(),habit.getHabitReminder().getCustom_text());
+                                        affected_row++;
                                     }
                                     habit.setHabitReminder(null);
                                     habit_reminder_indicate_text.setText("NONE");
@@ -915,7 +890,12 @@ public class HabitActivity extends AppCompatActivity {
                                 period.setText(habit.returnPeriodText(habit.getPeriod()));
                                 habit_view_upper.setBackgroundResource(habit.returnColorID(habit.getHolder_color()));
 
-                                myAdapter.notifyDataSetChanged();
+                                if (affected_row > 0){
+                                    habit_dbHandler.updateHabit(habit);
+                                    myAdapter.notifyDataSetChanged();
+                                    Log.d(TAG, "HabitEdit/Affeceted rows: "+ affected_row);
+                                }
+
                                 alertDialog.dismiss();
                             }
                         });
@@ -934,11 +914,14 @@ public class HabitActivity extends AppCompatActivity {
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.v(TAG, format("%s deleted!",habitList.getItemAt(position).getTitle()));
+                                Log.v(TAG, format("%s deleted!",myAdapter._habitList.getItemAt(position).getTitle()));
+                                habit_dbHandler.deleteHabit(myAdapter._habitList.getItemAt(position));
                                 myAdapter._habitList.removeItemAt(position);
                                 myAdapter.notifyItemRemoved(position);
-                                myAdapter.notifyItemRangeChanged(position, habitList.size());
+                                myAdapter.notifyItemRangeChanged(position, myAdapter._habitList.size());
                                 myAdapter.notifyDataSetChanged();
+
+
                                 alertDialog.dismiss();
                             }
                         });
@@ -961,32 +944,124 @@ public class HabitActivity extends AppCompatActivity {
         });
     }
 
-    public Habit.HabitList getList() {
-        habitList = new Habit.HabitList();
-        Date date = new Date();
-        habitList.addItem("Drink water", 20, 0,1, dateFormat.format(date),"lightcoral",null,null);
-        habitList.addItem("Exercise", 7,0 ,7,dateFormat.format(date),"cyangreen",null,null);
-        habitList.addItem("Revision", 2, 0,365,dateFormat.format(date),"fadepurple",null,null);
-        habitList.addItem("Eating snack", 2, 0,30, dateFormat.format(date),"slightdesblue",null,null);
-        return habitList;
+
+    @Override
+    public void onClick(View v){
+        Log.d(TAG, "onClick: "+v.getId());
+        switch (v.getId()){
+            case R.id.habit_group_view_create_group:
+
+                break;
+
+        }
     }
 
-    public ArrayList<HabitGroup> getGroupList(){
-        habitGroup = new ArrayList<>();
-        habitGroup.add(new HabitGroup("Productivity"));
-        habitGroup.add(new HabitGroup("Fitness"));
-        habitGroup.add(new HabitGroup("Healthy"));
+    public void populatePeriodBtn(final View dialogView, final int[] period, final TextView period_text ){
+         // set listener on buttons to change the color based on the user's option in period section
+        for (final int i :period_buttonIDS){
+            final Button btn = dialogView.findViewById(i);
+            btn.setBackgroundColor(Color.TRANSPARENT);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = btn.getId();
 
-        return habitGroup;
+                    for (int i = 0; i < 4; i++){
+                        Button _btn = dialogView.findViewById(period_buttonIDS[i]);
+                        if (id == period_buttonIDS[i]){
+                            _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
+                            period_text.setText(period_textList[i]);
+                            period[0] = period_countList[i];
+                        }else {
+                            _btn.setBackgroundColor(Color.TRANSPARENT);
+                        }
+
+                    }
+                }
+            });
+        }
+
     }
 
-    public void setReminder(String name, int minutes, int hours,int id, String custom_txt){
+    public void populateColorBtn(final View dialogView, final String[] color){
+        // set listener on buttons to change the color based on the user's option in color section
+        for (final int i :color_buttonIDS){
+            final Button btn = dialogView.findViewById(i);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = btn.getId();
+
+                    for (int i = 0; i < 4; i++){
+                        Button _btn = dialogView.findViewById(color_buttonIDS[i]);
+                        if (id == color_buttonIDS[i]){
+                            GradientDrawable drawable = new GradientDrawable();
+                            drawable.setShape(GradientDrawable.RECTANGLE);
+                            drawable.setStroke(5, Color.BLACK);
+                            drawable.setColor(getResources().getColor(color_schemeIDS[i]));
+                            _btn.setBackground(drawable);
+                            color[0] = colorList[i];
+                        }else {
+                            _btn.setBackgroundResource(color_schemeIDS[i]);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void habit_add_initialise_colorSection(final View dialogView, final String[] color){
+        // initialise the color button at color section since nothing is chosen at first
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setStroke(5, Color.BLACK);
+        drawable.setColor(getResources().getColor(R.color.colorLightCoral));
+        dialogView.findViewById(R.id.lightcoral_btn).setBackground(drawable);
+        color[0] = "lightcoral";
+    }
+
+    public void habit_add_initialise_periodSection(final View dialogView, final int[] period){
+        // initialise the color of btn of "daily" button at period section since nothing is chosen at first
+        period[0] = 1;
+        dialogView.findViewById(R.id.daily_period).setBackgroundColor(Color.parseColor("#dfdfdf"));
+    }
+
+    public void habit_edit_initialise_colorSection(View dialogView, final Habit habit, final String[] _color){
+        for(int i = 0; i < 4; i++){
+            if (colorList[i].equals(habit.getHolder_color())){
+                _color[0] = colorList[i];
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setShape(GradientDrawable.RECTANGLE);
+                drawable.setStroke(5, Color.BLACK);
+                drawable.setColor(getResources().getColor(color_schemeIDS[i]));
+                dialogView.findViewById(color_buttonIDS[i]).setBackground(drawable);
+                break;
+            }
+        }
+
+    }
+
+    public void habit_edit_initialise_periodSection(View dialogView, final Habit habit, final int[] _period, final TextView period_text){
+        for(int i = 0; i < 4; i++){
+            if (period_countList[i] == habit.getPeriod()){
+                _period[0] = period_countList[i];
+                period_text.setText(period_textList[i]);
+                dialogView.findViewById(period_buttonIDS[i]).setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
+                break;
+            }
+        }
+    }
+
+
+    public void setReminder(String name, int minutes, int hours, int id, String custom_txt){
 
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
         intent.setAction("HabitTracker");
         intent.putExtra("Name", name);
-        intent.putExtra("id",id);
-        intent.putExtra("custom_txt",custom_txt);
+        intent.putExtra("id", id);
+        intent.putExtra("custom_txt", custom_txt);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         int type = AlarmManager.RTC_WAKEUP;
@@ -994,11 +1069,16 @@ public class HabitActivity extends AppCompatActivity {
         c.set(Calendar.MINUTE,minutes);
         c.set(Calendar.HOUR_OF_DAY,hours);
         c.set(Calendar.SECOND,0);
-        Log.d(TAG, String.valueOf(c.getTime()));
+
+        if (System.currentTimeMillis() > c.getTimeInMillis()){
+            // increment one day to prevent setting for past alarm
+            c.add(Calendar.DATE, 1);
+        }
+
         long time = c.getTime().getTime();
 
-        Log.d(TAG, "setReminder: "+ id);
-        am.setRepeating(type,time,AlarmManager.INTERVAL_DAY,pi);
+        Log.d(TAG, "setReminder for ID "+ id + " at " + c.getTime());
+        am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
     }
 
     public void cancelReminder(String name,int id, String custom_txt){
@@ -1009,7 +1089,8 @@ public class HabitActivity extends AppCompatActivity {
         intent.putExtra("custom_txt",custom_txt);
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Log.d(TAG, "cancelReminder: "+ id);
+
+        Log.d(TAG, "cancelReminder for ID "+ id);
         am.cancel(pi);
     }
 
@@ -1041,13 +1122,13 @@ public class HabitActivity extends AppCompatActivity {
 
     }
 
-    public int getData(){
+    public int getUniqueHabitReminderID(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         int id = sharedPreferences.getInt("alarm_id",-1);
         int _new = ++id;
         editor.putInt("alarm_id", _new);
-        Log.d(TAG, "getData: " + _new);
+        Log.d(TAG, "getUniqueHabitReminderID: " + _new);
         editor.apply();
         return id;
 

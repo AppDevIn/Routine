@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 
 import com.mad.p03.np2020.routine.HabitActivity;
+import com.mad.p03.np2020.routine.R;
 
 import java.util.Calendar;
 
@@ -26,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             String txt = bundle.getString("custom_txt").length() > 1 ? bundle.getString("custom_txt"): "Reminder";
             PendingIntent pendingIntent = PendingIntent.getActivity(context,id, new Intent(context, HabitActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
             Notification notify = new NotificationCompat.Builder(context, channelId)
-                    .setSmallIcon(android.R.drawable.arrow_up_float)
+                    .setSmallIcon(R.drawable.logo)
                     .setContentTitle("Habit Tracker")
                     .setContentText(capitalise(bundle.getString("Name")) + ": " + txt)
                     .setAutoCancel(true)
