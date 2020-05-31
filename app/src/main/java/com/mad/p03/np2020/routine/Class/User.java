@@ -94,6 +94,7 @@ public class User implements Parcelable {
         this.mFocusList.remove(focusHolder);
     }
     private List<Label> mListLabel;
+    private List<Label> mListLabel;
     private List<Focus> mFocusList;
 
     public User() {

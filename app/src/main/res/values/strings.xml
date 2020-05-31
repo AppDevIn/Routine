@@ -23,6 +23,17 @@
     <string name="start">Start</string>
     <string name="side_navigation_drawer">Side Navigation drawer</string>
     <string name="modify">+ Modify</string>
+    <string name="account"><b><u>Account</u></b></string>
+    <string name="notifications"><b><u>Notifications</u></b></string>
+    <string name="general"><b><u>General</u></b></string>
+    <string name="StepAdd">Steps</string>
+    <string name="NotesAdd">Notes</string>
+    <string name="FocusButton">Focus</string>
+    <string name="NotesHint">Type Here</string>
+    <string name="Add">Add</string>
+    <string name="EnterStep">Enter Step Name</string>
+
+    <string name="modify">+ Modify</string>
     <string name="next">Next</string>
     <string name="registerName">What is your name?</string>
     <string name="registerEmail">What is your email?</string>
@@ -45,6 +56,9 @@
     <string name="history">History</string>
     <string name="startTimer">Start</string>
     <string name="StopTimer">Give Up</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
