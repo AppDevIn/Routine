@@ -37,6 +37,7 @@ public class UploadDataWorker extends Worker {
         mDatabase.child("Name").setValue(Name); //Setting the name
         mDatabase.child("Email").setValue(Email); //Setting the Email
         mDatabase.child("DOB").setValue(DOB); //Setting the DOB
+        mDatabase.child("messagingToken").setValue(UID); //Adding message token
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 
