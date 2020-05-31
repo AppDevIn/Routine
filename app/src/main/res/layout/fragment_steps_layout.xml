@@ -6,11 +6,13 @@
     tools:context=".StepsFragment">
 
     <EditText
+        android:inputType="text"
         android:layout_width="269dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:hint="Enter Step name"
+        android:hint="@string/EnterStep"
+        android:autofillHints="@string/EnterStep"
         android:id="@+id/stepInput"/>
 
     <Button
@@ -22,7 +24,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="10dp"
-        android:onClick="addItemToList"
         android:text="@string/Add"
         />
 
