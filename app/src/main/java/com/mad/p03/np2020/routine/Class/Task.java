@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.CheckBox;
 
 import com.mad.p03.np2020.routine.Class.Label;
+import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.text.ParseException;
@@ -66,7 +67,7 @@ public class Task {
     public Task(String name, String taskID) {
 
         this.mName = name;
-        setTaskID(UUID.randomUUID().toString());
+        this.mTaskID = taskID;
     }
 
 
@@ -139,6 +140,12 @@ public class Task {
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
 
         taskDBHelper.insertTask(this, sectionID);
+    }
+
+    public void deleteTask(Context context){
+
+        TaskDBHelper taskDBHelper = new TaskDBHelper(context);
+        taskDBHelper.delete(getTaskID());
     }
 
     @NonNull

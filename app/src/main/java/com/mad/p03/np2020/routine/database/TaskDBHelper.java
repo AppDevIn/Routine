@@ -116,4 +116,20 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         return taskList;
     }
 
+    public void delete(String ID){
+
+        Log.d(TAG, "delete(): Will be deleting ID " + ID );
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(
+                Task.TABLE_NAME,  // The table to delete from
+                Task.COLUMN_TASK_ID + " = ?", //The condition
+                new String[]{ID} // The args will be replaced by ?
+        );
+
+        Log.d(TAG, "delete(): Removed from database");
+
+        db.close();
+    }
+
 }

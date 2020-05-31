@@ -106,12 +106,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     public void onItemSwiped(int position) {
         Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
 
+        //Delete from SQL
+        mTaskList.get(position).deleteTask(mContext);
+
         //Delete from the local list
         removeTask(position);
 
+
         //TODO: Delete from firebase
 
-        //TODO: Delete from SQL
     }
 
     @Override
