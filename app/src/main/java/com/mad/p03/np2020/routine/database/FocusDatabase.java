@@ -11,9 +11,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.Class.FocusHolder;
+import com.mad.p03.np2020.routine.Class.Focus;
 
-import java.sql.SQLInput;
 import java.util.ArrayList;
 
 public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
@@ -44,7 +43,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
 
     }
 
-    public boolean addData(FocusHolder focus) {
+    public boolean addData(Focus focus) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -59,7 +58,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
         else return true;
     }
 
-    public boolean removeOneData(FocusHolder focus){
+    public boolean removeOneData(Focus focus){
         // Find database that match the row data. If it found, delete and return true
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -75,9 +74,16 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
         }
     }
 
+    public void deleteAll()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(FOCUS_TABLE,null,null);
+        db.close();
+    }
 
-    public ArrayList<FocusHolder> getAllData() {
-        ArrayList<FocusHolder> returnList = new ArrayList<>();
+
+    public ArrayList<Focus> getAllData() {
+        ArrayList<Focus> returnList = new ArrayList<>();
 
         String queryString = "Select * FROM " + FOCUS_TABLE;
 
@@ -94,7 +100,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
                 String taskDuration = cursor.getString(4);
                 String taskCompletion = cursor.getInt(5) == 1 ? "True" : "False";
 
-                FocusHolder newFocus = new FocusHolder(uid, taskDate, taskDuration, taskName, taskCompletion);
+                Focus newFocus = new Focus(fbId, uid, taskDate, taskDuration, taskName, taskCompletion);
                 returnList.add(newFocus);
 
             } while (cursor.moveToNext());

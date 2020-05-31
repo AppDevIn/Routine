@@ -43,11 +43,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.FocusHolder;
+import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 import com.mad.p03.np2020.routine.Class.User;
 
+import java.io.File;
+import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -92,7 +94,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     final String message = "Come back now before your Sun becomes depressed!";
 
     //Firebase
-    private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
 
     //User
@@ -100,6 +101,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     //Local Database
     FocusDatabase focusDatabase;
+    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +110,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
-        FrameLayout fragmentContainer = findViewById(R.id.fragment_container);
         initialization(); //Process of data
 
         //ImageButton
@@ -157,29 +158,41 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     //Add to local data from firebase to local database
-    private void initDatabase(List<FocusHolder> focusList) {
-        for (FocusHolder item : focusList) {
+    private void initDatabase(List<Focus> focusList) {
+        for (Focus item : focusList) {
             focusDatabase.addData(item);
         }
     }
 
-    private void addLocalDatabase(FocusHolder focus) {
+    private void addLocalDatabase(Focus focus) {
         focusDatabase.addData(focus);
     }
 
     private void initialization() {
+        File dbFile = this.getDatabasePath("focus.db");
+        Log.v(TAG, "Current Directory: " + dbFile.getAbsolutePath());
         //How this initialization will work
         //The data will be pulled from the local database and update to the firebase if user is already signed in
+        if(dbFile.exists()){
+            Log.v(TAG, "Database Exist");
+            focusDatabase = new FocusDatabase(FocusActivity.this);
+            user.setmFocusList(focusDatabase.getAllData());
+            FirebaseDatabase();
 
-        focusDatabase = new FocusDatabase(FocusActivity.this);
+        }else{
+            Log.v(TAG, "Database does not exist");
+            focusDatabase = new FocusDatabase(FocusActivity.this);
+            FirebaseDatabase();
+            user.readFocusFirebase(this);
+        }
+
         tmins = 0;
         tsecs = 0;
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        FirebaseDatabase();
+
 
         //Add it to LocalDatabase List
-        user.setmFocusList(focusDatabase.getAllData());
         Log.v(TAG, "Local database: " + focusDatabase.getAllData().toString());
     }
 
@@ -213,7 +226,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 BUTTON_STATE = "Reset";
                 mCompletion = "True";
                 String dateSuccess = new SimpleDateFormat("ddMMyyyy, HH:mm:ss", Locale.getDefault()).format(new Date());
-                FocusHolder focusViewHolder = new FocusHolder(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
+                Focus focusViewHolder = new Focus(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
                 focusViewHolder.setFbID(dateSuccess);
                 writeToDatabase(focusViewHolder);
                 break;
@@ -225,18 +238,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 BUTTON_STATE = "Reset";
                 mCompletion = "False";
                 String dateFail = new SimpleDateFormat("ddMMyyyy, HH:mm:ss", Locale.getDefault()).format(new Date());
-                FocusHolder focusHolder = new FocusHolder(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
-                focusHolder.setFbID(dateFail);
-                writeToDatabase(focusHolder);
+                Focus focus = new Focus(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
+                focus.setFbID(dateFail);
+                writeToDatabase(focus);
                 break;
         }
     }
 
     //Local Database
-    private void writeToDatabase(FocusHolder focusHolder) {
-        focusDatabase.addData(focusHolder); //Add to database
-        user.addFocusList(focusHolder); //Adding it to list
-        writeDataFirebase(focusHolder);
+    private void writeToDatabase(Focus focus) {
+        focusDatabase.addData(focus); //Add to database
+        user.addFocusList(focus); //Adding it to list
+        writeDataFirebase(focus);
     }
 
     //Used for update button sequencing (timer)
@@ -468,6 +481,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+
     }
 
     @Override
@@ -567,32 +581,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private void FirebaseDatabase() { //Firebase Reference
         user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
-        mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(user.getUID() + "/FocusData");
-    }
-
-    // To read from the database
-    private void readFirebase() {
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    FocusHolder focus = singleSnapshot.getValue(FocusHolder.class);
-                    user.addFocusList(focus);
-                    Log.v(TAG, "Adding each list");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
+        myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        Log.i(TAG, "checks for myRef: " + myRef);
     }
 
     //Writing to google firebase
-    private void writeDataFirebase(FocusHolder focusHolder) {
+    private void writeDataFirebase(Focus focus) {
         Log.i(TAG, "Uploading to Database");
 
         Constraints myConstraints = new Constraints.Builder()
@@ -601,7 +595,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         Data firebaseUserData = new Data.Builder()
                 .putString("ID", user.getUID())
-                .putString("focusData", serializeToJson(focusHolder))
+                .putString("focusData", serializeToJson(focus))
                 .putBoolean("deletion", false)
                 .build();
         OneTimeWorkRequest mywork =
@@ -612,7 +606,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         WorkManager.getInstance(this).enqueue(mywork);
     }
-
     //Soft Keyboard methods
     private void ShowKeyboard() {
         taskInput.setVisibility(View.VISIBLE);
@@ -641,7 +634,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     // Serialize a single object.
-    public String serializeToJson(FocusHolder myClass) {
+    public String serializeToJson(Focus myClass) {
         Gson gson = new Gson();
         Log.i(TAG,"Object serialize");
         return gson.toJson(myClass);

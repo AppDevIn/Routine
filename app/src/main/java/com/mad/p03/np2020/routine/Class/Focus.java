@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class FocusHolder implements Parcelable {
+public class Focus implements Parcelable {
 
     private String sqlID;
     private String fbID;
@@ -14,14 +14,14 @@ public class FocusHolder implements Parcelable {
     private String mTask;
     private String mCompletion;
 
-    public FocusHolder(String mDate, String mDuration, String mTask, String mCompletion) {
+    public Focus(String mDate, String mDuration, String mTask, String mCompletion) {
         this.mDateTime = mDate;
         this.mDuration = mDuration;
         this.mTask = mTask;
         this.mCompletion = mCompletion;
     }
 
-    public FocusHolder(String sqlID, String mDate, String mDuration, String mTask, String mCompletion) {
+    public Focus(String sqlID, String mDate, String mDuration, String mTask, String mCompletion) {
         this.sqlID = sqlID;
         this.mDateTime = mDate;
         this.mDuration = mDuration;
@@ -29,10 +29,19 @@ public class FocusHolder implements Parcelable {
         this.mCompletion = mCompletion;
     }
 
-    public FocusHolder() {
+    public Focus(String fbID, String sqlID, String mDate, String mDuration, String mTask, String mCompletion) {
+        this.fbID = fbID;
+        this.sqlID = sqlID;
+        this.mDateTime = mDate;
+        this.mDuration = mDuration;
+        this.mTask = mTask;
+        this.mCompletion = mCompletion;
     }
 
-    protected FocusHolder(Parcel in) {
+    public Focus() {
+    }
+
+    protected Focus(Parcel in) {
         sqlID = in.readString();
         mDateTime = in.readString();
         mDuration = in.readString();
@@ -40,15 +49,15 @@ public class FocusHolder implements Parcelable {
         mCompletion = in.readString();
     }
 
-    public static final Creator<FocusHolder> CREATOR = new Creator<FocusHolder>() {
+    public static final Creator<Focus> CREATOR = new Creator<Focus>() {
         @Override
-        public FocusHolder createFromParcel(Parcel in) {
-            return new FocusHolder(in);
+        public Focus createFromParcel(Parcel in) {
+            return new Focus(in);
         }
 
         @Override
-        public FocusHolder[] newArray(int size) {
-            return new FocusHolder[size];
+        public Focus[] newArray(int size) {
+            return new Focus[size];
         }
     };
 

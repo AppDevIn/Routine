@@ -42,7 +42,7 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
     }
 
     //Show custom alert dialog builder
-    public void showAlertDialogButtonClicked(final int position, final FocusHolder focusHolder) {
+    public void showAlertDialogButtonClicked(final int position, final Focus focus) {
         final String task = Task.getText().toString();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
@@ -62,7 +62,7 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Log.v("AlertDialog", "Delete Item " + task);
-                adapter.remove(position, focusHolder);
+                adapter.remove(position, focus);
             }
         });
 

@@ -14,8 +14,13 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.FocusHolder;
+import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.FocusViewHolder;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.Class.User;
@@ -26,17 +31,20 @@ import java.util.List;
 
 public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
-    private List<FocusHolder> focusList; //List of focus
+    private List<Focus> focusList; //List of focus
     private Context context; //Current context
     private FocusDatabase focusDatabase;
-    private FocusHolder focusViewHolder;
+    private Focus focusViewHolder;
     private User user;
+    private String TAG = "FocusAdapter";
 
     public FocusAdapter(User user, Context context, FocusDatabase focusDatabase) {
         this.context = context;
         this.focusDatabase = focusDatabase;
         this.user = user;
         this.focusList = user.getmFocusList();
+        user.readFocusFirebase(context);
+        eventListener();
     }
 
     @NonNull
@@ -59,11 +67,33 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     }
 
     //Remove item
-    public void remove(int position, FocusHolder focusViewHolder) {
+    public void remove(int position, Focus focusViewHolder) {
         focusList.remove(position);
         focusDatabase.removeOneData(focusViewHolder);
         deleteDataFirebase(focusViewHolder);
         this.notifyItemRemoved(position);
+    }
+
+    public void notifiyItemChange(){
+        focusList = user.getmFocusList();
+        this.notifyDataSetChanged();
+        Log.v(TAG, "Data is changed from other server");
+    }
+
+    //Trace Firebase Listener
+    private void eventListener(){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notifiyItemChange();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     //get item count
@@ -72,12 +102,12 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         return focusList.size();
     }
 
-    public FocusHolder getItems(int position) {
+    public Focus getItems(int position) {
         return focusList.get(position);
     }
 
 
-    public void deleteDataFirebase(FocusHolder focusHolder) {
+    public void deleteDataFirebase(Focus focus) {
         Log.i("Firebase", "Deleting Database entry");
 
         Constraints myConstraints = new Constraints.Builder()
@@ -86,7 +116,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
         Data firebaseUserData = new Data.Builder()
                 .putString("ID", user.getUID())
-                .putString("focusData", serializeToJson(focusHolder))
+                .putString("focusData", serializeToJson(focus))
                 .putBoolean("deletion", true)
                 .build();
 
@@ -100,7 +130,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     }
 
     // Serialize a single object.
-    public String serializeToJson(FocusHolder myClass) {
+    public String serializeToJson(Focus myClass) {
         Gson gson = new Gson();
         return gson.toJson(myClass);
     }

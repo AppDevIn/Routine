@@ -12,12 +12,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.FocusHolder;
+import com.mad.p03.np2020.routine.Class.Focus;
 
 public class FocusWorker extends Worker {
 
     DatabaseReference mDatabase;
-    FocusHolder focusData;
+    Focus focusData;
 
     public FocusWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -58,8 +58,8 @@ public class FocusWorker extends Worker {
     }
 
     // Deserialize to single object.
-    private FocusHolder deserializeFromJson(String jsonString) {
+    private Focus deserializeFromJson(String jsonString) {
         Gson gson = new Gson();
-        return gson.fromJson(jsonString, FocusHolder.class);
+        return gson.fromJson(jsonString, Focus.class);
     }
 }
