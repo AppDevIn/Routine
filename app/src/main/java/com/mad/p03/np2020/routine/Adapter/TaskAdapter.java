@@ -106,14 +106,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     public void onItemSwiped(int position) {
         Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
 
-        //Delete from SQL
-        mTaskList.get(position).deleteTask(mContext);
 
         //Delete from the local list
         removeTask(position);
-
-
-        //TODO: Delete from firebase
 
     }
 
@@ -152,11 +147,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
             //Add this object to the list
             addItem(task);
 
-            //Add to the SQLite
-            task.addTask(mContext,mSection.getID());
-
-            //TODO: Add the firebase
-
             //Change the design of the task
             mTaskViewHolder.mViewSwitcher.showNext();
             mTaskViewHolder.mViewSwitcherTaskName.showNext();
@@ -178,7 +168,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      * @param task task that will be added to list
      */
     public void addItem(Task task){
+
+        //Add to the list
         mTaskList.add(task);
+
+        //Add to the SQLite
+        task.addTask(mContext,mSection.getID());
+
+        //TODO: Delete from firebase
 
         //Informing the adapter and view of the new item
         notifyItemInserted(mTaskList.size());
@@ -192,7 +189,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     public void removeTask(int position){
         Log.d(TAG, "Removing " + mTaskList.get(position));
 
-        mTaskList.remove(position);
+        Task task = mTaskList.get(position);
+
+        //Remove the list
+        mTaskList.remove(task);
+
+        //Delete from SQL
+        task.deleteTask(mContext);
+
+        //TODO: Add to the firebase
 
         //Informing the adapter and view after removing
         notifyItemRemoved(position);
