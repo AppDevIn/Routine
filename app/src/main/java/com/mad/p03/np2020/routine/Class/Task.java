@@ -166,7 +166,7 @@ public class Task {
         taskDBHelper.delete(getTaskID());
     }
 
-    public void executeFirebaseUpload(LifecycleOwner owner){
+    public void executeFirebaseUpload(LifecycleOwner owner, String sectionID){
 
         Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
 
@@ -179,6 +179,7 @@ public class Task {
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString(Task.COLUMN_NAME, getName())
+                .putString(Section.COLUMN_SECTION_ID, sectionID)
                 .putString(Task.COLUMN_TASK_ID, getTaskID())
                 .build();
 
@@ -205,7 +206,7 @@ public class Task {
 
     }
 
-    public void executeFirebaseDelete(LifecycleOwner owner){
+    public void executeFirebaseDelete(LifecycleOwner owner, String sectionID){
 
         Log.d(TAG, "executeFirebaseDelete(): Preparing to delete, on ID: " + getTaskID());
 
@@ -217,6 +218,7 @@ public class Task {
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString("ID", getTaskID())
+                .putString(Section.COLUMN_SECTION_ID, sectionID)
                 .build();
 
         //Create the request

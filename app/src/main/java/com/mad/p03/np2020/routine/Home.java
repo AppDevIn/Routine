@@ -235,40 +235,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     }
 
 
-//    @Override
-//    public void onSectionAdd(final Section section) {
-//        Log.d(TAG, "A new section has been added: " + section.toString());
-//
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                //Add to List<Section>
-//                mHomePageAdapter.addItem(section);
-//            }
-//        });
-//    }
-
-//    @Override
-//    public void onSectionDelete(String ID) {
-//        //Remove item from the data in adapter/local list
-//
-//
-//        for (int position = 0; position < mSectionList.size(); position++) {
-//
-//
-//            if(mSectionList.get(position).getID().equals(ID)){
-//                final int finalPosition = position;
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mHomePageAdapter.removeItem(finalPosition);
-//                    }
-//                });
-//                break;
-//            }
-//        }
-//
-//    }
 
     /**
      *

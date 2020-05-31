@@ -215,7 +215,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         task.addTask(mContext,mSection.getID());
 
         //Add from firebase
-        task.executeFirebaseUpload(mOwner);
+        task.executeFirebaseUpload(mOwner, mSection.getID());
 
         //Informing the adapter and view of the new item
         notifyItemInserted(mTaskList.size());
@@ -232,7 +232,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         Task task = mTaskList.get(position);
 
         //Delete from firebase
-        task.executeFirebaseDelete(mOwner);
+        task.executeFirebaseDelete(mOwner, mSection.getID());
 
         //Delete from SQL
         task.deleteTask(mContext);

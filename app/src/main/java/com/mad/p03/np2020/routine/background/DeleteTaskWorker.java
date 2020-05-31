@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mad.p03.np2020.routine.Class.Section;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -21,10 +22,11 @@ public class DeleteTaskWorker extends Worker {
     public Result doWork() {
         final String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String ID = getInputData().getString("ID") ;
+        String sectionID =  getInputData().getString(Section.COLUMN_SECTION_ID);
 
         Log.d("TaskDelete", "doWork: " + ID);
 
-        FirebaseDatabase.getInstance().getReference().child("task").child(UID).child(ID).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("task").child(UID).child(sectionID).child(ID).removeValue();
 
 
         return Result.success();
