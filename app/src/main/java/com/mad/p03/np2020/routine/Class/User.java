@@ -87,9 +87,11 @@ public class User implements Parcelable {
     public User() {
     }
 
-    User(String name, String password) {
+    public User(String UID, String name, String mPassword ,String mEmailAddr) {
+        this.mUID = UID;
         this.mName = name;
-        this.mPassword = password;
+        this.mPassword = mPassword;
+        this.mEmailAddr = mEmailAddr;
     }
 
     public User(String name, String password, String emailAddr) {

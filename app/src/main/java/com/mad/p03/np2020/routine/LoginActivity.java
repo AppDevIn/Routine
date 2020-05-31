@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 import com.mad.p03.np2020.routine.Class.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener{
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String SWITCH1 = "switch1";
     public User user;
     private boolean switchOnOff;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,12 +172,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.editEmail:
                 if (keyCode==KeyEvent.KEYCODE_ENTER) {
+
+                    //Used to trace on click outside of editText
                     Log.i(TAG,"Enter is clicked");
                     HideKeyboard(et_Email);
                     break;
                 }
             case R.id.editPassword:
                 if (keyCode==KeyEvent.KEYCODE_ENTER) {
+
+                    //Used to trace on click outside of editText
                     Log.i(TAG,"Enter is clicked");
                     HideKeyboard(et_Password);
                     break;
@@ -203,6 +209,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         sPassword = sharedPreferences.getString(Password, "");
         switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
+
+    //This method is used to update the detail that is stored
     public void updateViews() {
         et_Email.setText(sUser);
         et_Password.setText(sPassword);

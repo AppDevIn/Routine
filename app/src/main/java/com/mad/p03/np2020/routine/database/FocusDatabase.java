@@ -44,6 +44,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
     }
 
     public boolean addData(Focus focus) {
+        //This is called to add Data to existing Database
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -76,6 +77,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
 
     public void deleteAll()
     {
+        //This is called to destroy SQLite Database
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(FOCUS_TABLE,null,null);
         db.close();
@@ -83,6 +85,8 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
 
 
     public ArrayList<Focus> getAllData() {
+
+        //This is called to get all Data existing in the firebase database
         ArrayList<Focus> returnList = new ArrayList<>();
 
         String queryString = "Select * FROM " + FOCUS_TABLE;
