@@ -60,8 +60,7 @@ public class User implements Parcelable {
     private String mPPID;
     private List<Label> mListLabel = new ArrayList<>();
     private ArrayList<Focus> mFocusList = new ArrayList<>();
-    private DatabaseReference myRef;
-    FocusDatabase focusDatabase;
+    private FocusDatabase focusDatabase;
 
     protected User(Parcel in) {
         mAuth = in.readParcelable(FirebaseUser.class.getClassLoader());
@@ -84,58 +83,6 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
-
-    public ArrayList<Focus> getmFocusList() {
-        return mFocusList;
-    }
-
-    public void setmFocusList(ArrayList<Focus> mFocusList) {
-        this.mFocusList = mFocusList;
-    }
-
-    public void addFocusList(Focus focus){
-        this.mFocusList.add(focus);
-    }
-
-    public void clearFocusList(){
-        setmFocusList(new ArrayList<Focus>());
-    }
-
-    public void removeFocusList(Focus focus){
-        this.mFocusList.remove(focus);
-    }
-
-    public void readFocusFirebase(Context context){
-        myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        focusDatabase = new FocusDatabase(context);
-
-        //Clear all data since there is a change to the database so it can be updated
-
-        myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                focusDatabase.deleteAll();
-                clearFocusList();
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    Focus focus = new Focus();
-                    focus.setFbID((String) singleSnapshot.child("fbID").getValue());
-                    focus.setmCompletion((String) singleSnapshot.child("mCompletion").getValue());
-                    focus.setmDateTime((String) singleSnapshot.child("mDateTime").getValue());
-                    focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
-                    focus.setmTask((String) singleSnapshot.child("mTask").getValue());
-                    addFocusList(focus);
-                    focusDatabase.addData(focus);
-                }
-                setmFocusList(focusDatabase.getAllData());
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
 
     public User() {
     }
@@ -313,6 +260,59 @@ public class User implements Parcelable {
     public int describeContents() {
         return 0;
     }
+
+    public ArrayList<Focus> getmFocusList() {
+        return mFocusList;
+    }
+
+    public void setmFocusList(ArrayList<Focus> mFocusList) {
+        this.mFocusList = mFocusList;
+    }
+
+    public void addFocusList(Focus focus){
+        this.mFocusList.add(focus);
+    }
+
+    public void clearFocusList(){
+        setmFocusList(new ArrayList<Focus>());
+    }
+
+    public void removeFocusList(Focus focus){
+        this.mFocusList.remove(focus);
+    }
+
+    public void readFocusFirebase(Context context){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
+        focusDatabase = new FocusDatabase(context);
+
+        //Clear all data since there is a change to the database so it can be updated
+
+        myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                focusDatabase.deleteAll();
+                clearFocusList();
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    Focus focus = new Focus();
+                    focus.setFbID((String) singleSnapshot.child("fbID").getValue());
+                    focus.setmCompletion((String) singleSnapshot.child("mCompletion").getValue());
+                    focus.setmDateTime((String) singleSnapshot.child("mDateTime").getValue());
+                    focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
+                    focus.setmTask((String) singleSnapshot.child("mTask").getValue());
+                    addFocusList(focus);
+                    focusDatabase.addData(focus);
+                }
+                setmFocusList(focusDatabase.getAllData());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
