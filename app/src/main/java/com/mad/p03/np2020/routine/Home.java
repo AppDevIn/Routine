@@ -1,76 +1,34 @@
 package com.mad.p03.np2020.routine;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-import androidx.work.Worker;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
-import com.mad.p03.np2020.routine.Adapter.ItemTouchHelperAdapter;
-import com.mad.p03.np2020.routine.Adapter.MyItemTouchHelper;
+import com.mad.p03.np2020.routine.Adapter.HomePageAdapterHome;
+import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
-import com.mad.p03.np2020.routine.Adapter.OnSectionListener;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
-import com.mad.p03.np2020.routine.background.UploadDataWorker;
-import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.database.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity implements MyDatabaseListener {
@@ -81,7 +39,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     //Declare member variables
     RecyclerView mGridView;
-    HomePageAdapter mHomePageAdapter;
+    HomePageAdapterHome mHomePageAdapter;
 
     EditText mEditAddList;
     Spinner mSpinnerColor, mSpinnerBackground;
@@ -123,7 +81,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
 
-        //Get all the section data from firebase
+        //Get all the section data from SQL
         mSectionDBHelper = new SectionDBHelper(this);
         mSectionList = mSectionDBHelper.getAllSections(mUID);
         Log.d(TAG, "onCreate(): Data received from SQL");
@@ -152,7 +110,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
         // Initialize any value
-        mHomePageAdapter = new HomePageAdapter(mSectionList, this);
+        mHomePageAdapter = new HomePageAdapterHome(mSectionList, this);
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
@@ -163,7 +121,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mEditAddList.setSelection(0);
 
         //Setting up touchhelper
-        ItemTouchHelper.Callback callback = new MyItemTouchHelper(mHomePageAdapter);
+        ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         mHomePageAdapter.setTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mGridView);

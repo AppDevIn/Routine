@@ -1,26 +1,21 @@
 package com.mad.p03.np2020.routine.Adapter;
 
-import android.view.MotionEvent;
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyItemTouchHelper extends ItemTouchHelper.Callback{
+public class MyTaskTouchHelper extends ItemTouchHelper.Callback {
 
-    private final ItemTouchHelperAdapter mAdapter;
+    private final TaskTouchHelperAdapter mTaskTouchHelperAdapter;
 
-    public MyItemTouchHelper(ItemTouchHelperAdapter adapter) {
-        mAdapter = adapter;
+    public MyTaskTouchHelper(TaskTouchHelperAdapter taskTouchHelperAdapter) {
+        mTaskTouchHelperAdapter = taskTouchHelperAdapter;
     }
-
-
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -44,26 +39,20 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-        int swipeFlags = ItemTouchHelper.END;
-
-        //When the item is in the left side
-        if(viewHolder.getAdapterPosition()%2 == 0)
-             swipeFlags = ItemTouchHelper.START;
+        final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+        final int swipeFlags = ItemTouchHelper.END;
 
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-        return true;
+        mTaskTouchHelperAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        return false;
     }
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        mAdapter.onItemSwiped(viewHolder.getAdapterPosition());
+        mTaskTouchHelperAdapter.onItemSwiped(viewHolder.getAdapterPosition());
     }
-
-
 }

@@ -1,58 +1,32 @@
 package com.mad.p03.np2020.routine.Adapter;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.Task;
-import com.mad.p03.np2020.routine.HabitActivity;
-import com.mad.p03.np2020.routine.Home;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.TaskActivity;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
-import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
-import com.mad.p03.np2020.routine.background.UploadSectionWorker;
-import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 
-public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements ItemTouchHelperAdapter, OnSectionListener{
+public class HomePageAdapterHome extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter, OnSectionListener{
 
     private final String TAG = "HomeAdapter";
 
@@ -65,7 +39,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
 
 
-    public HomePageAdapter(List<Section> sectionList, LifecycleOwner owner) {
+    public HomePageAdapterHome(List<Section> sectionList, LifecycleOwner owner) {
         mSectionList = sectionList;
         this.mOwner = owner;
 
@@ -126,7 +100,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
     @Override
     public void onItemSwiped(int position) {
-        Log.d(TAG, "onItemSwiped: " + position);
+        Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
 
         confirmDelete(position);
     }

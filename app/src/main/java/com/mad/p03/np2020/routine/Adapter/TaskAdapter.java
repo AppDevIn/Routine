@@ -13,20 +13,27 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter {
 
     private final String TAG = "TaskAaapter";
 
     //Member variables
     List<Task> mTaskList;
 
+    //Listener
+    private ItemTouchHelper mItemTouchHelper;
+
 
     public TaskAdapter(List<Task> taskList) {
         this.mTaskList = taskList;
     }
 
+    public void setMyTaskTouchHelper(ItemTouchHelper itemTouchHelper) {
+        this.mItemTouchHelper = itemTouchHelper;
+    }
 
     @NonNull
     @Override
@@ -34,7 +41,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_items, parent, false);
 
-        return new TaskViewHolder(view);
+        return new TaskViewHolder(view, mItemTouchHelper, this);
     }
 
     @Override
@@ -65,5 +72,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     @Override
     public int getItemCount() {
         return 10;
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Log.d(TAG, "onItemMove(): From: " + fromPosition + " To: " + toPosition);
+    }
+
+    @Override
+    public void onItemSwiped(int position) {
+        Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        Log.d(TAG, "onClick(): You have clicked on " + "{Number}" + " task");
     }
 }

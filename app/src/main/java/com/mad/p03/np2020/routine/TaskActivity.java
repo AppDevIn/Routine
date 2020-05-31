@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
+import com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
@@ -66,6 +69,13 @@ public class TaskActivity extends AppCompatActivity {
 
         mTxtListName.setText(mSection.getName());
         mConstraintLayout.setBackgroundColor(mSection.getBackgroundColor());
+
+
+        //Setting up touchhelper
+        ItemTouchHelper.Callback callback = new MyTaskTouchHelper(mTaskAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
     }
 
