@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.CheckBox;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Class.Label;
+import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
+import com.mad.p03.np2020.routine.background.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadTaskWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
@@ -196,9 +199,47 @@ public class Task {
                 .observe(owner, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
-                        Log.d(TAG, "Section upload state: " + workInfo.getState());
+                        Log.d(TAG, "Task upload state: " + workInfo.getState());
                     }
                 });
+
+    }
+
+    public void executeFirebaseDelete(LifecycleOwner owner){
+
+        Log.d(TAG, "executeFirebaseDelete(): Preparing to delete, on ID: " + getTaskID());
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                .putString("ID", getTaskID())
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest deleteTask = new OneTimeWorkRequest.
+                Builder(DeleteTaskWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseSectionData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(deleteTask);
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
+
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(deleteTask.getId())
+                .observe(owner, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        Log.d(TAG, "Task Delete state: " + workInfo.getState());
+                    }
+                });
+
 
     }
 
