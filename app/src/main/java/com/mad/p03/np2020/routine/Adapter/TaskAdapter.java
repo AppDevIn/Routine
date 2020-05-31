@@ -28,16 +28,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     private final String TAG = "TaskAaapter";
 
     //Member variables
-    List<Task> mTaskList;
+    Section mSection;
     Context mContext;
     TaskViewHolder mTaskViewHolder;
+    List<Task> mTaskList;
 
     //Listener
     private ItemTouchHelper mItemTouchHelper;
 
 
-    public TaskAdapter(List<Task> taskList) {
-        this.mTaskList = taskList;
+    public TaskAdapter(Section section) {
+        this.mSection = section;
+
+        //Add into the list
+        mTaskList = section.getTaskList();
     }
 
     public void setMyTaskTouchHelper(ItemTouchHelper itemTouchHelper) {
@@ -143,6 +147,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
             //Add this object to the list
             addItem(task);
+
+            //Add to the SQLite
+            task.addTask(mContext,mSection.getID());
+
+            //TODO: Add the firebase
 
             //Change the design of the task
             mTaskViewHolder.mViewSwitcher.showNext();

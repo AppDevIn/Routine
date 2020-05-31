@@ -50,7 +50,7 @@ public class TaskActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTaskAdapter = new TaskAdapter(mSection.getTaskList());
+        mTaskAdapter = new TaskAdapter(mSection);
         mRecyclerView.setAdapter(mTaskAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -89,5 +89,6 @@ public class TaskActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: " + mSection.getTaskList());
+
     }
 }
