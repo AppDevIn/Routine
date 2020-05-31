@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 public class TaskDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 5;
+    static final int DATABASE_VERSION = 6;
     private final String TAG = "Task Database";
 
     //Listener
@@ -59,7 +59,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
     public String insertTask(Task task, String sectionID){
 
-        Log.d(TAG, "insertUser(): Preparing to insert the new user ");
+        Log.d(TAG, "insertTask(): Preparing to insert the new user ");
 
         //Add values into the database
         // Gets the data repository in write mode
@@ -142,6 +142,15 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         mMyDatabaseListener.onDataDelete(ID);
 
         db.close();
+    }
+
+    public Boolean hasID(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Get the data from sqlite
+        Cursor cursor =  db.rawQuery( "select * from " + Task.TABLE_NAME+ " where "+ Task.COLUMN_TASK_ID +"='"+id+"'", null );
+
+        return cursor.moveToFirst();
     }
 
 }

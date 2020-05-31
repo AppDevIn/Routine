@@ -15,6 +15,9 @@ import com.mad.p03.np2020.routine.background.UploadTaskWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,13 +35,13 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
+
 
 public class Task {
 
     private String mName;
     private String mTaskID;
-    private int mUID;
+    private String mSectionID;
     private boolean checked;
     private Date remindDate;
     private Date dueDate;
@@ -46,6 +49,8 @@ public class Task {
     private String mLabels;
     private List<Steps> mSteps;
     private List<Label> mLabelList;
+
+    private final static String TAG = "Task Model";
 
     //Declare the constants of the database
     public static final String TABLE_NAME = "task";
@@ -74,17 +79,22 @@ public class Task {
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    private final String TAG = "Task Class";
 
-    public Task(String name) {
+    public Task() {
+    }
+
+    public Task(String name, String sectionID) {
 
         this.mName = name;
+        this.mSectionID = sectionID;
+
         setTaskID(UUID.randomUUID().toString());
     }
 
-    public Task(String name, String taskID) {
+    public Task(String name,String sectionID, String taskID) {
 
         this.mName = name;
+        this.mSectionID = sectionID;
         this.mTaskID = taskID;
     }
 
@@ -92,12 +102,44 @@ public class Task {
     public static Task fromCursor(Cursor cursor){
 
         return new Task(
-                cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME)),
-                cursor.getString(cursor.getColumnIndex(Task.COLUMN_TASK_ID))
+                cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_SECTION_ID)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_TASK_ID))
+
         );
     }
 
+    public static Task fromJSON(String json){
 
+        String name = "";
+        String id = "";
+        String sectionID = "";
+
+        try {
+            //Make the string to object
+            JSONObject jsonObject = new JSONObject(json);
+
+            //Get the values from the object
+
+            name = jsonObject.getString("name");
+            id = jsonObject.getString("id");
+            sectionID = jsonObject.getString("id");
+
+            //Return back the object
+            return new Task(name, sectionID, id);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "fromJSON: ", e);
+        }
+
+
+
+        return null;
+
+
+    }
 
 
     public String getName() {
@@ -144,6 +186,14 @@ public class Task {
         mTaskID = taskID;
     }
 
+    public String getSectionID() {
+        return mSectionID;
+    }
+
+    public void setSectionID(String sectionID) {
+        mSectionID = sectionID;
+    }
+
     public Date stringToDate(String date){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
         try {
@@ -154,10 +204,10 @@ public class Task {
         }
     }
 
-    public void addTask(Context context, String sectionID){
+    public void addTask(Context context){
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
 
-        taskDBHelper.insertTask(this, sectionID);
+        taskDBHelper.insertTask(this, getSectionID());
     }
 
     public void deleteTask(Context context){
@@ -166,7 +216,7 @@ public class Task {
         taskDBHelper.delete(getTaskID());
     }
 
-    public void executeFirebaseUpload(LifecycleOwner owner, String sectionID){
+    public void executeFirebaseUpload(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
 
@@ -179,7 +229,7 @@ public class Task {
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString(Task.COLUMN_NAME, getName())
-                .putString(Section.COLUMN_SECTION_ID, sectionID)
+                .putString(Section.COLUMN_SECTION_ID, getSectionID())
                 .putString(Task.COLUMN_TASK_ID, getTaskID())
                 .build();
 
@@ -206,7 +256,7 @@ public class Task {
 
     }
 
-    public void executeFirebaseDelete(LifecycleOwner owner, String sectionID){
+    public void executeFirebaseDelete(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseDelete(): Preparing to delete, on ID: " + getTaskID());
 
@@ -218,7 +268,7 @@ public class Task {
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString("ID", getTaskID())
-                .putString(Section.COLUMN_SECTION_ID, sectionID)
+                .putString(Section.COLUMN_SECTION_ID, getSectionID())
                 .build();
 
         //Create the request

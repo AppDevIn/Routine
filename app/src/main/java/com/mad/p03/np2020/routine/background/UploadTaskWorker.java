@@ -31,7 +31,7 @@ public class UploadTaskWorker extends Worker {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("task").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(sectionID).child(String.valueOf(ID));
 
         //Setting value using object
-        mDatabase.setValue(new Task(Name));
+        mDatabase.setValue(new Task(Name, sectionID));
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 

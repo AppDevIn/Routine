@@ -71,7 +71,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     @Override
     public void onBindViewHolder(@NonNull final TaskViewHolder holder, int position) {
 
-
+        Log.d(TAG, "onBindViewHolder: Running");
 
         mTaskViewHolder = holder;
 
@@ -155,6 +155,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //Adding into the local list
         mTaskList.add(task);
+
+        //Informing the adapter and view of the new item
+        notifyItemInserted(mTaskList.size());
     }
 
     @Override
@@ -168,6 +171,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
                 //Remove the list
                 mTaskList.remove(position);
+
+                //Informing the adapter and view after removing
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mTaskList.size());
                 break;
             }
         }
@@ -184,7 +191,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
             Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
 
             //Create a task object
-            Task task = new Task(textView.getText().toString());
+            Task task = new Task(textView.getText().toString(), mSection.getID());
 
             //Add this object to the list
             addItem(task);
@@ -212,13 +219,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     public void addItem(Task task){
 
         //Add to the SQLite
-        task.addTask(mContext,mSection.getID());
+        task.addTask(mContext);
 
         //Add from firebase
-        task.executeFirebaseUpload(mOwner, mSection.getID());
+        task.executeFirebaseUpload(mOwner);
 
-        //Informing the adapter and view of the new item
-        notifyItemInserted(mTaskList.size());
+
         Log.d(TAG, "New Task added, " + task.toString());
     }
 
@@ -232,15 +238,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         Task task = mTaskList.get(position);
 
         //Delete from firebase
-        task.executeFirebaseDelete(mOwner, mSection.getID());
+        task.executeFirebaseDelete(mOwner);
 
         //Delete from SQL
         task.deleteTask(mContext);
 
 
-        //Informing the adapter and view after removing
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mTaskList.size());
+
 
     }
 

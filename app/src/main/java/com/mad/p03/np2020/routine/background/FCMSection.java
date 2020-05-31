@@ -9,8 +9,10 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.util.Objects;
 
@@ -48,14 +50,16 @@ public class FCMSection extends FirebaseMessagingService {
 
 
         switch (Objects.requireNonNull(remoteMessage.getData().get("for"))){
-            case "SectionAdd": addSQL(remoteMessage); break;
-            case "SectionDelete": delete(remoteMessage) ;break;
+            case "SectionAdd": addSectionSQL(remoteMessage); break;
+            case "SectionDelete": deleteSectionSQL(remoteMessage); ;break;
+            case "TaskAdd": addTaskSQL(remoteMessage); ;break;
+            case "TaskDelete": deleteTaskSQL(remoteMessage); ;break;
 
         }
 
     }
 
-    private void addSQL(RemoteMessage remoteMessage){
+    private void addSectionSQL(RemoteMessage remoteMessage){
         Section section = Section.fromJSON(remoteMessage.getData().toString());
         Log.d(TAG, "onMessageReceived(): Section info: " + section.toString());
 
@@ -72,7 +76,7 @@ public class FCMSection extends FirebaseMessagingService {
     }
 
 
-    private void delete(RemoteMessage remoteMessage){
+    private void deleteSectionSQL(RemoteMessage remoteMessage){
         String id = remoteMessage.getData().get("id");
 
         SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
@@ -80,6 +84,36 @@ public class FCMSection extends FirebaseMessagingService {
         if(sectionDBHelper.hasID(id)){
             sectionDBHelper.delete(id);
             Log.d(TAG, "delete: " + id + " Has been deleted");
+        }
+    }
+
+
+    private void addTaskSQL(RemoteMessage remoteMessage){
+        Task task =  Task.fromJSON(remoteMessage.getData().toString());
+        Log.d(TAG, "onMessageReceived(): Section info: " + task.toString());
+
+        String id = remoteMessage.getData().get("id");
+        String sectionID = remoteMessage.getData().get("sectionID");
+
+        //Save to SQL
+        //Check if the Data already exist
+        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+        Log.d(TAG, "onMessageReceived: " + taskDBHelper.hasID(id));
+        if(!taskDBHelper.hasID(id)){
+            taskDBHelper.insertTask(task, sectionID);
+            Log.d(TAG, "Task from firebase added to SQL");
+        }
+    }
+
+
+    private void deleteTaskSQL(RemoteMessage remoteMessage){
+        String id = remoteMessage.getData().get("id");
+
+        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+
+        if(taskDBHelper.hasID(id)){
+            taskDBHelper.delete(id);
+            Log.d(TAG, "Task ID " + id + " , has been deleted");
         }
     }
 

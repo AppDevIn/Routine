@@ -122,7 +122,7 @@ public class Section implements Serializable {
             e.printStackTrace();
             Log.e(TAG, "fromJSON: ", e);
         }
-        Log.d(TAG, "onChildAdded: " + color);
+
 
 
         return null;
