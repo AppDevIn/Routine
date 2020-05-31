@@ -42,6 +42,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //Add into the list
         mTaskList = section.getTaskList();
+        Log.d(TAG, "TaskAdapter: " + section.getTaskList());
     }
 
     public void setMyTaskTouchHelper(ItemTouchHelper itemTouchHelper) {

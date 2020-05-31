@@ -17,6 +17,7 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,7 +87,6 @@ public class Section implements Serializable {
         this.mBackgroundColor = color;
         this.bmiIcon = iconResID;
         setID(UUID.randomUUID().toString());
-
     }
 
     public Section(String name, int color, int iconResID, String ID) {
@@ -144,9 +144,19 @@ public class Section implements Serializable {
         return bmiIcon;
     }
 
+
+    public void getTaskDatabase(Context context) {
+
+        TaskDBHelper taskDBHelper = new TaskDBHelper(context);
+
+        this.mTaskList = taskDBHelper.getAllTask(getID());
+    }
+
     public List<Task> getTaskList() {
+
         return mTaskList;
     }
+
 
     public String getName() {
         return mName;

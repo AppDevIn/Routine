@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.Class;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import android.widget.CheckBox;
 
@@ -61,6 +62,23 @@ public class Task {
         this.mName = name;
         setTaskID(UUID.randomUUID().toString());
     }
+
+    public Task(String name, String taskID) {
+
+        this.mName = name;
+        setTaskID(UUID.randomUUID().toString());
+    }
+
+
+    public static Task fromCursor(Cursor cursor){
+
+        return new Task(
+                cursor.getString(cursor.getColumnIndex(Task.COLUMN_NAME)),
+                cursor.getString(cursor.getColumnIndex(Task.COLUMN_TASK_ID))
+        );
+    }
+
+
 
 
     public String getName() {

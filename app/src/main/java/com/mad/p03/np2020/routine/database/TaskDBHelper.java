@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -9,12 +10,15 @@ import android.util.Log;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.Nullable;
 
 public class TaskDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 5;
     private final String TAG = "Task Database";
 
     public TaskDBHelper(@Nullable Context context) {
@@ -75,6 +79,41 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
 
         return String.valueOf(id);
+    }
+
+    public List<Task> getAllTask(String sectionID){
+
+        List<Task> taskList = new ArrayList<>();
+
+        // Select All Query
+
+        String selectQuery = "SELECT  * FROM " + Task.TABLE_NAME + " WHERE " + Task.COLUMN_SECTION_ID + "='" + sectionID +"' ORDER BY " +
+                Task.COLUMN_TASK_ID + " DESC;";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Task task = Task.fromCursor(cursor);
+
+                Log.d(TAG, "getAllTask(): Reading data " + task.toString());
+
+                taskList.add(task);
+            } while (cursor.moveToNext());
+        }
+
+
+        // close db connection
+        db.close();
+
+        Log.d(TAG, "getAllTask(): The number of task are " + taskList.size());
+        
+        // return notes list
+        return taskList;
     }
 
 }

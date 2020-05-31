@@ -40,9 +40,13 @@ public class TaskActivity extends AppCompatActivity {
         Log.d(TAG, "Creating GUI");
 
 
+
         //Get the Section Object
         mSection = (Section) getIntent().getSerializableExtra("section");
         Log.d(TAG, "onCreate(): " + mSection.toString());
+
+        //Find all the date from SQLite
+        mSection.getTaskDatabase(this);
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -58,6 +62,7 @@ public class TaskActivity extends AppCompatActivity {
         //Find the id
         mTxtListName = findViewById(R.id.edSectioName);
         mConstraintLayout = findViewById(R.id.taskLayout);
+
 
 
     }
@@ -88,7 +93,6 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop: " + mSection.getTaskList());
 
     }
 }
