@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
@@ -25,15 +27,18 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     private OnItemClickListener mListener;
     static View view;
     HabitDBHelper dbHandler;
+    HabitActivity act;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public HabitAdapter(Context c, Habit.HabitList habitList) {
         this.c = c;
         this._habitList = habitList;
         dbHandler = new HabitDBHelper(c);
+        act =  new HabitActivity();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -70,6 +75,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
                 break;
         }
 
+
         holder.mTitle.setText(habit.getTitle());
         holder.mCount.setText(String.valueOf(habit.getCount()));
         holder.mCount2.setText(String.valueOf(habit.getCount()));
@@ -81,6 +87,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
                 habit.addCount();
                 notifyDataSetChanged();
                 dbHandler.updateCount(habit);
+                Log.d(TAG, "onClick: "+act.user.getUID());
+
             }
         });
 

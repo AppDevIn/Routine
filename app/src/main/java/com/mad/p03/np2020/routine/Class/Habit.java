@@ -25,7 +25,6 @@ public class Habit {
     public static final String COLUMN_USERID = "userId";
 
 
-
     public static final String CREATE_HABITS_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -50,7 +49,6 @@ public class Habit {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
     
     private long habitID;
-    private String fbID;
     private String title;
     private int occurrence;
     private int count;
@@ -61,17 +59,17 @@ public class Habit {
     private HabitGroup group;
     private List<Integer> mCountList;
 
+    public Habit() {
+
+    }
+
 
     public String getTitle() {
         return title.toUpperCase().trim();
     }
 
-    public String getFbID() {
-        return fbID;
-    }
-
-    public void setFbID(String fbID) {
-        this.fbID = fbID;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getOccurrence() {

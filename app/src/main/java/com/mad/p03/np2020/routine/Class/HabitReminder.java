@@ -17,6 +17,10 @@ public class HabitReminder {
         this.custom_text = custom_text;
     }
 
+    public HabitReminder() {
+
+    }
+
     public String getCustom_text() {
         return custom_text;
     }
