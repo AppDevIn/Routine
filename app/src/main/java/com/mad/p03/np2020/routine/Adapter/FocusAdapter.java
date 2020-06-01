@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Focus;
-import com.mad.p03.np2020.routine.Class.FocusViewHolder;
+import com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.R;
@@ -102,11 +102,12 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         return focusList.size();
     }
 
+    //get item from position
     public Focus getItems(int position) {
         return focusList.get(position);
     }
 
-
+    //Delete Date from firebase
     public void deleteDataFirebase(Focus focus) {
         Log.i("Firebase", "Deleting Database entry");
 

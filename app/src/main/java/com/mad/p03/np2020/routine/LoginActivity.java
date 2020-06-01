@@ -48,17 +48,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText et_Email, et_Password;
     Button btn_register;
     Button btn_login;
-    String TAG = "LOGIN_ACITVITY";
     FirebaseAuth mAuth;
     String email, password;
     TextView txtError;
     CheckBox checkBox;
 
+    String TAG = "LOGIN_ACITVITY";
+
     public static final String SHARED_PREFS = "sharedPrefs";
     private String sUser, sPassword;
+
     public static final String Username = "username";
     public static final String Password = "password";
     public static final String SWITCH1 = "switch1";
+
     private boolean switchOnOff;
     private DatabaseReference myRef;
     private UserDatabase userDatabase;
@@ -161,12 +164,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    //Soft Keyboard methods
-    private void ShowKeyboard(EditText taskInput) {
-        Log.i(TAG, "Show soft keyboard");
-        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert mgr != null;
-        mgr.showSoftInput(taskInput, InputMethodManager.SHOW_IMPLICIT);
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        Log.i(TAG, event.toString());
+        switch (v.getId()) {
+            case R.id.editEmail:
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    Log.i(TAG, "Enter is clicked");
+                    HideKeyboard(et_Email);
+                    break;
+                }
+            case R.id.editPassword:
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    Log.i(TAG, "Enter is clicked");
+                    HideKeyboard(et_Password);
+                    break;
+                }
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    return true;
+                }
+        }
+        return false;
     }
 
     private void firebaseAuthWithGoogle(String email, String password) {
@@ -226,7 +244,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //Check login
     private void CheckLoggedIn() throws ParseException {
         mAuth = FirebaseAuth.getInstance();
-
         if (mAuth.getCurrentUser() != null) {
             User user;
             user = userDatabase.getUserDetail();
@@ -235,37 +252,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
             finish();
         }
-    }
-
-
-    private void HideKeyboard(EditText taskInput) {
-        Log.i(TAG, "Hide soft keyboard");
-        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert mgr != null;
-        mgr.hideSoftInputFromWindow(taskInput.getWindowToken(), 0);
-    }
-
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        Log.i(TAG, event.toString());
-        switch (v.getId()) {
-            case R.id.editEmail:
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    Log.i(TAG, "Enter is clicked");
-                    HideKeyboard(et_Email);
-                    break;
-                }
-            case R.id.editPassword:
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    Log.i(TAG, "Enter is clicked");
-                    HideKeyboard(et_Password);
-                    break;
-                }
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    return true;
-                }
-        }
-        return false;
     }
 
     //This method is used to remember user details
@@ -287,9 +273,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
 
+    //Update views if user clicks remember me
     public void updateViews() {
         et_Email.setText(sUser);
         et_Password.setText(sPassword);
         checkBox.setChecked(switchOnOff);
+    }
+
+
+    //Hide keyboard methods
+    private void HideKeyboard(EditText taskInput) {
+        Log.i(TAG, "Hide soft keyboard");
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert mgr != null;
+        mgr.hideSoftInputFromWindow(taskInput.getWindowToken(), 0);
+    }
+
+
+    //Soft Keyboard methods
+    private void ShowKeyboard(EditText taskInput) {
+        Log.i(TAG, "Show soft keyboard");
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert mgr != null;
+        mgr.showSoftInput(taskInput, InputMethodManager.SHOW_IMPLICIT);
     }
 }

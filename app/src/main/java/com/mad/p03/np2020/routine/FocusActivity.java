@@ -157,17 +157,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         mface.startAnimation(translateAnimation);
     }
 
-    //Add to local data from firebase to local database
-    private void initDatabase(List<Focus> focusList) {
-        for (Focus item : focusList) {
-            focusDatabase.addData(item);
-        }
-    }
-
-    private void addLocalDatabase(Focus focus) {
-        focusDatabase.addData(focus);
-    }
-
     private void initialization() {
         File dbFile = this.getDatabasePath("focus.db");
         Log.v(TAG, "Current Directory: " + dbFile.getAbsolutePath());
