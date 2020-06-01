@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,8 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapterHome;
 import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
@@ -96,12 +101,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //To set to Full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: GUI is ready");
 
 
         //Recycler view setup
@@ -125,6 +124,29 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         mHomePageAdapter.setTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mGridView);
+
+
+        //Subscribing to the topic to listen to
+        FirebaseMessaging.getInstance().subscribeToTopic(mUID)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (!task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: Done Running");
+                        }
+
+                        Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: GUI is ready");
 
 
         //Make sure the card view is not visible
