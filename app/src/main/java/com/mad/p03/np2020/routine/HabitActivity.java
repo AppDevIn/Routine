@@ -35,9 +35,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Class.AlarmReceiver;
@@ -45,6 +50,7 @@ import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
 import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
@@ -54,13 +60,14 @@ import java.util.Date;
 
 import static java.lang.String.format;
 
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class HabitActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "HabitTracker";
     private String channelId = "001";
-    Habit.HabitList habitList;
     ArrayList<HabitGroup> habitGroup_reference;
+
 
     RecyclerView mRecyclerView;
     HabitAdapter myAdapter;
@@ -80,6 +87,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     HabitDBHelper habit_dbHandler;
     HabitGroupDBHelper group_dbhandler;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
 
     // add habit
 //    private TextView menu_count,habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text ;
@@ -106,7 +114,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         initData(); // initialise the shared preferences if it is not done so
 
-        FirebaseDatabase();
+        initFirebase(); // initalise the database
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // if api > 28, create a notification channel named "HabitTracker"
             String channelName = "HabitTracker";
@@ -167,6 +175,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 });
 
                 final String[] _grp_name = {null};
+                final long[] _grp_id = new long[1];
                 group_indicate_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -199,6 +208,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                 HabitGroup grp = groupAdapter._habitGroupList.get(position);
                                 group_indicate_text.setText(grp.getGrp_name());
                                 _grp_name[0] = grp.getGrp_name();
+                                _grp_id[0] = grp.getGrp_id();
                                 alertDialog.dismiss();
                             }
                         });
@@ -214,6 +224,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void onClick(View v) {
                                 _grp_name[0] = null;
+                                _grp_id[0] = -1;
                                 group_indicate_text.setText("NONE");
                                 alertDialog.dismiss();
                             }
@@ -393,7 +404,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
                         HabitGroup hg = null;
                         if (_grp_name[0] != null){
-                            hg = new HabitGroup(_grp_name[0]);
+                            hg = new HabitGroup(_grp_id[0], _grp_name[0]);
                         }
 
 
@@ -404,9 +415,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                             habit.setHabitID(habitID); // attach the id to the habit
                             myAdapter._habitList.addItem(habit);
                             myAdapter.notifyDataSetChanged();
-                            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID()).child("habit").child(String.valueOf(habit.getHabitID()));
-                            mDatabase.setValue(habit);
-
+                            writeFirebase(habit, user.getUID(), false);
 
                             Log.d(TAG, "onClick: "+habit.getHabitID());
                             Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
@@ -579,6 +588,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         }
 
                         final String[] _grp_name = {null};
+                        final long[] _grp_id = new long[1];
                         final boolean[] modified_grp = {false};
                         final boolean[] _cancel = {false};
                         group_indicate_text.setOnClickListener(new View.OnClickListener() {
@@ -616,6 +626,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                         HabitGroup grp = groupAdapter._habitGroupList.get(position);
                                         group_indicate_text.setText(grp.getGrp_name());
                                         _grp_name[0] = grp.getGrp_name();
+                                        _grp_id[0] = grp.getGrp_id();
                                         modified_grp[0] = true;
                                         _cancel[0] = false;
                                         alertDialog.dismiss();
@@ -633,6 +644,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                     @Override
                                     public void onClick(View v) {
                                         _grp_name[0] = null;
+                                        _grp_id[0] = -1;
                                         group_indicate_text.setText("NONE");
                                         _cancel[0] = true;
                                         alertDialog.dismiss();
@@ -838,7 +850,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
                                 if (modified_grp[0] && _grp_name[0] != null){
                                     Log.d(TAG, "HabitGroup: Modified group ");
-                                    habit.setGroup(new HabitGroup(_grp_name[0]));
+                                    habit.setGroup(new HabitGroup(_grp_id[0],_grp_name[0]));
                                     affected_row++;
                                 }else if (_cancel[0] && habit.getGroup() != null){
                                     Log.d(TAG, "HabitGroup: Removed group");
@@ -907,8 +919,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                 if (affected_row > 0){
                                     habit_dbHandler.updateHabit(habit);
                                     myAdapter.notifyDataSetChanged();
-                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID()).child("habit").child(String.valueOf(habit.getHabitID()));
-                                    mDatabase.setValue(habit);
+                                    writeFirebase(habit, user.getUID(), false);
                                     Log.d(TAG, "HabitEdit/Affeceted rows: "+ affected_row);
                                 }
 
@@ -944,8 +955,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                                 myAdapter.notifyItemRangeChanged(position, myAdapter._habitList.size());
                                 myAdapter.notifyDataSetChanged();
 
-                                FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID()).child("habit").child(String.valueOf(habit.getHabitID())).removeValue();
-
+                                writeFirebase(habit, user.getUID(), true);
                                 alertDialog.dismiss();
                             }
                         });
@@ -1158,12 +1168,38 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    //Firebase
-    private void FirebaseDatabase() { //Firebase Reference
+    private void initFirebase() {
         user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
-        Log.i(TAG, "checks for myRef: " + mDatabase);
+    }
+
+    public void writeFirebase(Habit habit, String UID, boolean isDeletion){
+        Log.i(TAG, "Uploading to Database");
+
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitData", serializeToJson(habit))
+                .putBoolean("deletion", isDeletion)
+                .build();
+
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    // Serialize a single object.
+    public String serializeToJson(Habit habit) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habit);
     }
 
 
