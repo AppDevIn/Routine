@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
                 android:text="11"
                 android:textColor="@color/colorWhite"

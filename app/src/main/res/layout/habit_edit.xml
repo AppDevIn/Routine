@@ -45,7 +45,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_toEndOf="@id/habit_Vertical_divider"
                 android:background="@drawable/habit_btn_background2"
-                android:fontFamily="@font/montserrat_regular"
+                android:fontFamily="@font/montserrat_regular_regular"
                 android:letterSpacing="0.1"
                 android:src="@drawable/menu_addhabit"
                 android:text="CANCEL"
@@ -53,7 +53,7 @@
 
             <Button
                 android:background="@drawable/habit_btn_background"
-                android:fontFamily="@font/montserrat_regular"
+                android:fontFamily="@font/montserrat_regular_regular"
                 android:textColor="@color/colorWhite"
                 android:layout_toEndOf="@id/habit_close"
                 android:layout_marginStart="10dp"
@@ -95,7 +95,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="300dp"
             android:layout_height="60dp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_regular"
             android:background="@drawable/edit_text_background"
             android:padding="20dp"
             android:hint="Workout, Study, Do Yoga, etc."
@@ -132,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:text="DAILY"
-                android:fontFamily="@font/montserrat_regular"
+                android:fontFamily="@font/montserrat_regular_regular"
                 android:textColor="@color/colorBlack" />
 
             <Button
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:text="WEEKLY"
-                android:fontFamily="@font/montserrat_regular"
+                android:fontFamily="@font/montserrat_regular_regular"
                 android:textColor="@color/colorBlack" />
 
             <Button
@@ -150,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:text="MONTHLY"
-                android:fontFamily="@font/montserrat_regular"
+                android:fontFamily="@font/montserrat_regular_regular"
                 android:textColor="@color/colorBlack" />
 
             <Button
@@ -159,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:text="YEARLY"
-                android:fontFamily="@font/montserrat_regular"
+                android:fontFamily="@font/montserrat_regular_regular"
                 android:textColor="@color/colorBlack" />
 
 
@@ -194,7 +194,7 @@
                 android:id="@+id/habit_occurence"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:background="@drawable/edit_text_background"
                 android:maxLines="1"
                 android:hint="1" />
@@ -204,7 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
                 android:text="PER"
                 android:textColor="@color/colorBlack" />
@@ -215,7 +215,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
                 android:text="DAY"
                 android:textColor="@color/colorBlack" />

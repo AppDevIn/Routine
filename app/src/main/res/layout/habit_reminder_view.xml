@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/habit_reminder_view_title"
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/montserrat_regular_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Reminder"
@@ -57,7 +57,7 @@
                 android:src="@drawable/notification_none" />
 
             <TextView
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -90,7 +90,7 @@
 
             <TextView
                 android:layout_gravity="center_vertical"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Alert time"
@@ -101,7 +101,7 @@
                 android:id="@+id/habit_reminder_view_displaytime"
                 android:layout_marginStart="240dp"
                 android:layout_gravity="center_vertical"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="time"
@@ -131,7 +131,7 @@
 
             <TextView
                 android:layout_gravity="center_vertical"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Write your custom reminder text!"
@@ -154,7 +154,7 @@
                 android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:padding="20dp"
                 android:hint="Write something to motivate you!"
                 android:maxLines="1"/>
