@@ -102,7 +102,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
                 String taskName = cursor.getString(2);
                 String taskDate = cursor.getString(3);
                 String taskDuration = cursor.getString(4);
-                String taskCompletion = cursor.getInt(5) == 1 ? "True" : "False";
+                String taskCompletion = cursor.getString(5);
 
                 Focus newFocus = new Focus(fbId, uid, taskDate, taskDuration, taskName, taskCompletion);
                 returnList.add(newFocus);

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     private Focus focusViewHolder;
     private User user;
     private String TAG = "FocusAdapter";
+    private ImageView nothing;
 
     public FocusAdapter(User user, Context context, FocusDatabase focusDatabase) {
         this.context = context;
@@ -59,7 +61,9 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         holder.duration.setText(focusList.get(position).getmDuration());
         holder.Task.setText(focusList.get(position).getmTask());
         holder.date.setText(focusList.get(position).getmDateTime());
-        if (focusList.get(position).getmCompletion().equals("True")) {
+        boolean completed = focusList.get(position).getmCompletion().equals("True");
+        Log.v(TAG, focusList.get(position).getmCompletion());
+        if (completed) {
             holder.iconComplete.setImageResource(R.drawable.ic_tick);
         } else {
             holder.iconComplete.setImageResource(R.drawable.ic_cross);

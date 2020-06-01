@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.Constraints;
@@ -190,16 +191,26 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private void focusTime() {
         switch (BUTTON_STATE) {
             case "EnterTask": //Enter Task view where user can enter its view
-                ShowKeyboard();
-                taskInput.setText("");
+                Log.v(TAG, "Button Enter Task is clicked");
+                if(tsecs == 0 && tmins == 0){
+                    textDisplay.setText(R.string.FAIL_TIMER);
+                    textDisplay.setTextColor(ContextCompat.getColor(this, R.color.chineseRed));
+                }else {
+                    textDisplay.setTextColor(ContextCompat.getColor(this, R.color.black));
+                    ShowKeyboard();
+                    taskInput.setText("");
+                }
                 break;
+
             case "Reset": //Reset view where the view will become its initiate state
+                Log.v(TAG, "Button Reset Task is clicked");
                 textDisplay.setText(R.string.REST_STATUS);
                 timerReset();
                 BUTTON_STATE = "EnterTask";
                 break;
 
             case "Running":
+                Log.v(TAG, "Button Running Task is clicked");
                 textDisplay.setText(R.string.PROCESS_STATUS);
                 timeRunner();
                 long totaltime = (tmins * 60) + tsecs;
@@ -210,6 +221,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 break;
 
             case "Success":
+                Log.v(TAG, "Button Sucess Task is clicked");
                 textDisplay.setText(R.string.SUCCESS_STATUS);
                 timerSuccess();
                 BUTTON_STATE = "Reset";
@@ -221,6 +233,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 break;
 
             case "Fail":
+                Log.v(TAG, "Button Fail Task is clicked");
                 textDisplay.setText(R.string.FAIL_STATUS);
                 timerFail();
                 mCountDownTimer.cancel(); //Pause timer
@@ -339,14 +352,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 focusTime();
                 break;
             case R.id.taskSubmit:
-                HideKeyboard();
-                currentTask = taskInput.getText().toString();
-                dateTimeTask = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault()).format(new Date());
-                Log.v(TAG, "Task: " + currentTask + " Date: " + dateTimeTask);
-                BUTTON_STATE = "Running";
-                taskSubmit.setVisibility(View.INVISIBLE);
-                focusTime();
-                break;
+                if(taskInput.getText().toString().isEmpty()){
+                    textDisplay.setText("Please enter a task");
+                }else {
+                    HideKeyboard();
+                    currentTask = taskInput.getText().toString();
+                    dateTimeTask = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault()).format(new Date());
+                    Log.v(TAG, "Task: " + currentTask + " Date: " + dateTimeTask);
+                    BUTTON_STATE = "Running";
+                    taskSubmit.setVisibility(View.INVISIBLE);
+                    focusTime();
+                    break;
+                }
         }
     }
 

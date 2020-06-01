@@ -46,7 +46,7 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void showAlertDialogButtonClicked(final int position, final Focus focus) {
         final String task = Task.getText().toString();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.MyDialogTheme);
         builder.setTitle("Delete");
 
         LayoutInflater inflater = LayoutInflater.from(itemView.getContext());

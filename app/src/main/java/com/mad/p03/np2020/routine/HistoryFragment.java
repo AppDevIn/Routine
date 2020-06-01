@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
@@ -31,6 +32,7 @@ public class HistoryFragment extends Fragment {
     private static final String FOCUS_DATABASE = "FocusDatabase";
 
     private ImageButton buttonFragment;
+    private ImageView nothing;
     private TextView textFragment;
     private OnFragmentInteractionListener mListener;
 
@@ -80,6 +82,7 @@ public class HistoryFragment extends Fragment {
         buttonFragment = view.findViewById(R.id.closeFragment);
         textFragment = view.findViewById(R.id.text_cool);
         completion = view.findViewById(R.id.NumberOfCompletion);
+        nothing = view.findViewById(R.id.nothing);
 
         //RecyclerView for display history
         //Recycler View
@@ -122,6 +125,9 @@ public class HistoryFragment extends Fragment {
 
     public void updateTask() {
         completion.setText(String.format(Locale.getDefault(),"You have completed\n%d Task", user.getmFocusList().size()));
+        if(user.getmFocusList().size() == 0){
+            nothing.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -46,6 +46,7 @@
     <string name="SUCCESS_STATUS">Yayyyy! You have reach your goal!</string>
     <string name="PROCESS_STATUS">While you are at it, Keep fighting!</string>
     <string name="REST_STATUS">What are you focusing today?</string>
+    <string name="FAIL_TIMER">Please enter a valid timer</string>
     <string name="BUTTON_FAIL">Try Again</string>
     <string name="BUTTON_RESTART">Restart</string>
     <string name="BUTTON_START">Start</string>
