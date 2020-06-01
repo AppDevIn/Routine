@@ -1,12 +1,16 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.service.autofill.UserData;
 import android.text.TextUtils;
@@ -119,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -137,6 +142,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     errLogin.setVisibility(View.VISIBLE);
                     errPwd.setVisibility(View.VISIBLE);
+                    et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                    et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
 
                 }
                 break;
@@ -191,6 +198,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -232,6 +240,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             txtError.setVisibility(View.VISIBLE);
+                            et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                            et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+
                             if (checkBox.isChecked()) {
                                 saveData();
                             }
