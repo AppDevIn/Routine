@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,29 +47,31 @@ public class CardActivity extends AppCompatActivity {
         stepFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stepStatus = false;
+                noteStatus = true;
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 if (!stepStatus){
                     StepsFragment stepFrag = new StepsFragment();
-                    fragmentTransaction.add(R.id.fragmentContainer, stepFrag);
+                    fragmentTransaction.replace(R.id.fragmentContainer, stepFrag);
                     fragmentTransaction.commit();
                 }
-                noteStatus = false;
             }
         });
 
         notesFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                noteStatus = false;
+                stepStatus = true;
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 if (!noteStatus){
                     NotesFragment noteFrag = new NotesFragment();
-                    fragmentTransaction.add(R.id.fragmentContainer, noteFrag);
+                    fragmentTransaction.replace(R.id.fragmentContainer, noteFrag);
                     fragmentTransaction.commit();
-                    noteStatus = true;
                 }
             }
         });

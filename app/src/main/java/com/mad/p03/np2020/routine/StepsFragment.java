@@ -20,10 +20,6 @@ import java.util.zip.Inflater;
 
 public class StepsFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     final String TAG = "StepFragment";
     private String mParam1;
     private String mParam2;
@@ -41,8 +37,6 @@ public class StepsFragment extends Fragment {
     public static StepsFragment newInstance(String param1, String param2) {
         StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,8 +45,6 @@ public class StepsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
 
             stepName = getView().findViewById(R.id.stepInput);
             listView = getView().findViewById(R.id.listView);
@@ -60,15 +52,7 @@ public class StepsFragment extends Fragment {
             stepList = new ArrayList<>();
             arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_view_layout, stepList);
 
-            stepAddButton = (Button) getView().findViewById(R.id.addStep);
 
-            stepAddButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.v(TAG, "Step added!");
-                    stepAddButton.setText("LOL");
-                }
-            });
 
         }
     }
@@ -84,6 +68,17 @@ public class StepsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_steps_layout, container, false);
+
+        stepAddButton = view.findViewById(R.id.addStep);
+
+        stepAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG, "Step added!");
+                stepAddButton.setText("LOL");
+            }
+        });
         return inflater.inflate(R.layout.fragment_steps_layout, container, false);
     }
 }
