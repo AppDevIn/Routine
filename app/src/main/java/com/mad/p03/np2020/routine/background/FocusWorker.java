@@ -25,6 +25,7 @@ public class FocusWorker extends Worker {
         super(context, workerParams);
     }
 
+
     @NonNull
     @Override
     public Result doWork() {

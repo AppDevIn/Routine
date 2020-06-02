@@ -11,6 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+/**
+ *
+ * This is to delete the data in firebase task node from
+ * the background which implements the Worker.
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
 public class DeleteTaskWorker extends Worker {
 
     public DeleteTaskWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -21,8 +30,12 @@ public class DeleteTaskWorker extends Worker {
     /**
      *
      * To do background processing, to delete the task data
-     * in firebase using the task id , section id and user id to 
+     * in firebase using the task id , section id and user id to
      * delete from firebase.
+     *
+     * Data that need to be sent over are ID, SectionID and UID.
+     * You can use {@code OneTimeWorkRequest.setInputData(data)} to send and
+     * {@code getInputData()} to retrieve it.
      *
      * @return Result This is tell what happen to the background work
      */

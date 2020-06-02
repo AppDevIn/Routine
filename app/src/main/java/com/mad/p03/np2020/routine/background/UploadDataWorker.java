@@ -5,20 +5,40 @@ import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mad.p03.np2020.routine.Class.User;
-
-import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+
+/**
+ *
+ * This is to upload the data to user data from
+ * the background which implements the Worker.
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
 public class UploadDataWorker extends Worker {
 
     public UploadDataWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
+
+    /**
+     *
+     * To do background processing, to add the user data
+     * in firebase using the user object and UID as the key
+     *
+     * Data that need to be sent over are Name, Email, DOB and UID.
+     * You can use {@code OneTimeWorkRequest.setInputData(data)} to send and
+     * {@code getInputData()} to retrieve it.
+     *
+     *
+     * @return Result This is tell what happen to the background work
+     */
 
     @NonNull
     @Override
