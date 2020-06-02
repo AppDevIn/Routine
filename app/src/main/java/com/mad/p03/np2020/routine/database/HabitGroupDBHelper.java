@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class HabitGroupDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 3;
     private final String TAG = "HabitGroupDatabase";
 
     public HabitGroupDBHelper(@Nullable Context context) {
@@ -41,9 +41,10 @@ public class HabitGroupDBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<HabitGroup> getAllGroups(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
         ArrayList<HabitGroup> habitGroups = new ArrayList<>();
 
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from " + HabitGroup.TABLE_NAME, null );
         res.moveToFirst();
 

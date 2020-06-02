@@ -28,6 +28,7 @@
     <string name="registerPassword">Enter a secure password</string>
     <string name="registerDOB">What is your Date of Birth?</string>
     <string name="empty_text_error">This input is empty</string>
+    <string name="addMessage" >Add New Card</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

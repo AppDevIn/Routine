@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
+import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
@@ -25,15 +34,20 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     private OnItemClickListener mListener;
     static View view;
     HabitDBHelper dbHandler;
+    HabitActivity act;
+    String UID;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public HabitAdapter(Context c, Habit.HabitList habitList) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public HabitAdapter(Context c, Habit.HabitList habitList, String UID) {
         this.c = c;
         this._habitList = habitList;
+        this.UID = UID;
         dbHandler = new HabitDBHelper(c);
+        act =  new HabitActivity();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -70,6 +84,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
                 break;
         }
 
+
         holder.mTitle.setText(habit.getTitle());
         holder.mCount.setText(String.valueOf(habit.getCount()));
         holder.mCount2.setText(String.valueOf(habit.getCount()));
@@ -81,6 +96,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
                 habit.addCount();
                 notifyDataSetChanged();
                 dbHandler.updateCount(habit);
+                writeHabit_Firebase(habit, UID, false);
+
             }
         });
 
@@ -110,6 +127,35 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     @Override
     public int getItemCount() {
         return _habitList.size();
+    }
+
+    public void writeHabit_Firebase(Habit habit, String UID, boolean isDeletion){
+        Log.i(TAG, "Uploading to Firebase");
+
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitData", habit_serializeToJson(habit))
+                .putBoolean("deletion", isDeletion)
+                .build();
+
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(c).enqueue(mywork);
+    }
+
+    // Serialize a single object.
+    public String habit_serializeToJson(Habit habit) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habit);
     }
 
 }

@@ -28,6 +28,10 @@ public class HabitGroup {
         this.grp_name = grp_name;
     }
 
+    public HabitGroup() {
+
+    }
+
     public String getGrp_name() {
         return grp_name;
     }

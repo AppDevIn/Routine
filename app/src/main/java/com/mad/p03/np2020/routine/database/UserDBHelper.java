@@ -12,19 +12,16 @@ import androidx.annotation.NonNull;
 
 
 //This database is just the cache for online data
-public class UserDBHelper extends SQLiteOpenHelper {
+public class UserDBHelper extends DBHelper {
 
-    //TODO: Declare the constant
-    static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 4;
     private final String TAG = "UserDatebase";
 
-
-
     public UserDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
-    
+
+
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "User database is being created");
