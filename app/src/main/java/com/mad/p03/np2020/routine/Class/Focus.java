@@ -7,13 +7,21 @@ import androidx.annotation.NonNull;
 
 public class Focus implements Parcelable {
 
-    private String sqlID;
     private String fbID;
     private String mDateTime;
     private String mDuration;
     private String mTask;
     private String mCompletion;
 
+    /**
+     * Initialize Focus Activity with Focus object
+     * when its called
+     *
+     * @param mDate Date is used to capture the date of activity
+     * @param mDuration Duration is used to capture the Duration of activity
+     * @param mTask Task is used to capture the task of activity
+     * @param mCompletion Completion is used to capture the success of the Focus
+     */
     public Focus(String mDate, String mDuration, String mTask, String mCompletion) {
         this.mDateTime = mDate;
         this.mDuration = mDuration;
@@ -21,34 +29,51 @@ public class Focus implements Parcelable {
         this.mCompletion = mCompletion;
     }
 
-    public Focus(String sqlID, String mDate, String mDuration, String mTask, String mCompletion) {
-        this.sqlID = sqlID;
-        this.mDateTime = mDate;
-        this.mDuration = mDuration;
-        this.mTask = mTask;
-        this.mCompletion = mCompletion;
-    }
-
-    public Focus(String fbID, String sqlID, String mDate, String mDuration, String mTask, String mCompletion) {
+    /**
+     * Initialize Focus Activity with Focus object
+     * when its called
+     *
+     * @param fbID fpID is used for firebase as the primary key
+     * @param sqlID sqlID is used for SQLite as the primary key
+     * @param mDate Date is used to capture the date of activity
+     * @param mDuration Duration is used to capture the Duration of activity
+     * @param mTask Task is used to capture the task of activity
+     * @param mCompletion Completion is used to capture the success of the Focus
+     */
+    public Focus(String fbID, String mDate, String mDuration, String mTask, String mCompletion) {
         this.fbID = fbID;
-        this.sqlID = sqlID;
         this.mDateTime = mDate;
         this.mDuration = mDuration;
         this.mTask = mTask;
         this.mCompletion = mCompletion;
     }
 
+    /**
+     * Initialize Focus Activity with Focus object
+     * when its called
+     *
+     * Empty Constructor
+     */
     public Focus() {
     }
 
+    /**
+     * Initialize Focus Activity with Focus object
+     * when its called
+     *
+     * Parcelable Constructor to allow this custom object to pass on to the class
+     */
     protected Focus(Parcel in) {
-        sqlID = in.readString();
         mDateTime = in.readString();
         mDuration = in.readString();
         mTask = in.readString();
         mCompletion = in.readString();
     }
 
+    /**
+     *
+     * Creator must be implemented for parcelable constructor
+     */
     public static final Creator<Focus> CREATOR = new Creator<Focus>() {
         @Override
         public Focus createFromParcel(Parcel in) {
@@ -61,54 +86,91 @@ public class Focus implements Parcelable {
         }
     };
 
+
+    /**
+     *
+     * Get DateTime of task
+     */
     public String getmDateTime() {
         return mDateTime;
     }
 
+    /**
+     *
+     * Set DateTime of task
+     */
     public void setmDateTime(String mDateTime) {
         this.mDateTime = mDateTime;
     }
 
+    /**
+     *
+     * Get Duration of task
+     */
     public String getmDuration() {
         return mDuration;
     }
 
+    /**
+     *
+     * Set Duration of task
+     */
     public void setmDuration(String mDuration) {
         this.mDuration = mDuration;
     }
 
+    /**
+     *
+     * Get Name of task
+     */
     public String getmTask() {
         return mTask;
     }
 
+    /**
+     *
+     * Set Name of task
+     */
     public void setmTask(String mTask) {
         this.mTask = mTask;
     }
 
+    /**
+     *
+     * Get Completion of task
+     */
     public String getmCompletion() {
         return mCompletion;
     }
 
+    /**
+     *
+     * Set Completion of task
+     */
     public void setmCompletion(String mCompletion) {
         this.mCompletion = mCompletion;
     }
 
-    public String getSqlID() {
-        return sqlID;
-    }
-
-    public void setSqlID(String sqlID) {
-        this.sqlID = sqlID;
-    }
-
+    /**
+     *
+     * Get Firebase ID
+     */
     public String getFbID() {
         return fbID;
     }
 
+    /**
+     *
+     * Set Firebase ID
+     */
     public void setFbID(String fbID) {
         this.fbID = fbID;
     }
 
+    /**
+     *
+     * Custom toString object
+     */
     @NonNull
     @Override
     public String toString() {
@@ -120,14 +182,24 @@ public class Focus implements Parcelable {
                 '}';
     }
 
+    /**
+     *
+     *
+     * This class have child classes, used of child in this case can return in describeContent() different values,
+     * so to know which particular object type to create from Parcel.
+     *
+     */
     @Override
     public int describeContents() {
         return 0;
     }
 
+    /**
+     *
+     * Flatten Focus object to a parcel
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(sqlID);
         dest.writeString(mDateTime);
         dest.writeString(mDuration);
         dest.writeString(mTask);

@@ -116,12 +116,12 @@ public class UserDBHelper extends DBHelper {
      *
      * @return the user the back with the name, email and dob
      */
-    public User getUser(){
+    public User getUser(String UID){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Log.d(TAG, "getUser: Querying data");
         //Get the data from sqllite
-        Cursor cursor = db.rawQuery("select * from " + User.TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("select * from " + User.TABLE_NAME + " where " + User.COLUMN_NAME_ID + "='" + UID+"';", null);
 
         if (cursor != null)
             cursor.moveToFirst(); //Only getting the first value

@@ -21,11 +21,24 @@ public class FocusWorker extends Worker {
     private Focus focusData;
     private Task<Void> result;
 
+    /**
+     *
+     * Constructor for Focus Worker
+     *
+     * @param context Set context to this section
+     * @param workerParams set the workermanager.workerparams to this section
+     *
+     * */
     public FocusWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
-
+    /**
+     *
+     * Called on a pre-specified background thread
+     * synchronously do work and return the ListenableWorker.Result from this method.
+     * Return from this method, the Worker is considered to have finished what its doing and will be destroyed.
+     * */
     @NonNull
     @Override
     public Result doWork() {
@@ -50,6 +63,10 @@ public class FocusWorker extends Worker {
         return ListenableWorker.Result.success();
     }
 
+    /**
+     *
+     * Write To firebase on WorkerManager
+     * */
     private void writeToFirebase() {
         //Write Data to firebase
         Log.i("Focus", "Focus Data being uploaded");
@@ -61,6 +78,10 @@ public class FocusWorker extends Worker {
         });;
     }
 
+    /**
+     *
+     * Delete firebase entry on WorkerManager
+     * */
     private void deleteToFirebase() {
         Log.i("Focus", "Focus Data being deleted with the uid of " + focusData.getFbID());
         mDatabase.child("FocusData").child(focusData.getFbID()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -71,7 +92,12 @@ public class FocusWorker extends Worker {
         });
     }
 
-    // Deserialize to single object.
+    /**
+     *Deserialize object string to custom object (focus)
+     *
+     * @return Focus return converted string to custom object (Focus)
+     * @param jsonString Setting gson string to this section
+     * */
     private Focus deserializeFromJson(String jsonString) {
         Gson gson = new Gson();
         return gson.fromJson(jsonString, Focus.class);
