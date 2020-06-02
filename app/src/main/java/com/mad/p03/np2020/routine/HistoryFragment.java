@@ -25,6 +25,14 @@ import com.mad.p03.np2020.routine.database.FocusDatabase;
 
 import java.util.Locale;
 
+/**
+ *
+ * Model used to manage the section
+ *
+ * @author Lee Quan Sheng
+ * @since 02-06-2020
+ */
+
 
 public class HistoryFragment extends Fragment {
 
@@ -43,10 +51,24 @@ public class HistoryFragment extends Fragment {
     private FocusDatabase focusDatabase;
     private User user;
 
+    /**
+    * Empty Constructor for Fragment History
+    *
+     **/
     public HistoryFragment() {
         // Required empty public constructor
     }
 
+    /**
+     *
+     * Default Constructor for Fragment History
+     * NewInstance() method of Constructor class invoke of 3 arguments
+     * It creates a Bundle for custom object and database to be returned
+     *
+     * @return HistoryFragment return history fragment with object given
+     * @param user Set user in this context
+     * @param focusDatabase Set Local database in this content
+     **/
     public static HistoryFragment newInstance(User user, FocusDatabase focusDatabase) {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
@@ -56,6 +78,13 @@ public class HistoryFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     *
+     * OnCreate the history fragment
+     * Retrieve USER_GET data passed in to parceable format
+     *
+     * @param savedInstanceState Set the bundle data to this content
+     **/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +95,22 @@ public class HistoryFragment extends Fragment {
         }
     }
 
-    public void sendBack() {
+    private void sendBack() {
         if (mListener != null) {
             mListener.onFragmentInteraction();
             Log.v(TAG, "Sending back");
         }
     }
 
+    /**
+     *
+     * OnCreate the history fragment
+     * Retrieve USER_GET data passed in to parceable format
+     *
+     * @param inflater Set the layoutInflater  to this content
+     * @param container Set the viewGroup to this content
+     * @param savedInstanceState Set the bundle to this content
+     **/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,11 +146,20 @@ public class HistoryFragment extends Fragment {
         return view;
     }
 
-    public void initialisation() {
+    /**
+     *
+     * Used for initialization of history Fragment
+     **/
+    private void initialisation() {
         textFragment.setText("History");
         updateTask();
     }
 
+    /**
+    *
+    * Method to be called once the fragment is associated with its activity.
+     * @param context set the context to this content
+    * */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -123,19 +170,31 @@ public class HistoryFragment extends Fragment {
         }
     }
 
-    public void updateTask() {
+    /**
+     *
+     * Method to update task number on the fragment
+     * */
+    private void updateTask() {
         completion.setText(String.format(Locale.getDefault(),"You have completed\n%d Task", user.getmFocusList().size()));
         if(user.getmFocusList().size() == 0){
             nothing.setVisibility(View.VISIBLE);
         }
     }
 
+    /**
+     *
+     * Called when the fragment is no longer attached to its activity to detach the fragment
+     * */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     *
+     * Callback interface
+     * */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction();
     }

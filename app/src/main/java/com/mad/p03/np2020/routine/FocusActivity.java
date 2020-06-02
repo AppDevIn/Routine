@@ -50,26 +50,46 @@ import java.util.Locale;
 
 import static java.lang.String.*;
 
+
+/**
+ *
+ * Model used to manage the section
+ *
+ * @author Lee Quan Sheng
+ * @since 02-06-2020
+ */
+
+
 public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
 
 
-    //Timer widgets
-    private Button focusButton; //Button for the timer
+    /**Timer widget*/
+    /**Button for timer*/
+    private Button focusButton;
 
-    private int tmins, tsecs = 0; //Timer for minutes and seconds
+    /**Timer for minutes and seconds*/
+    private int tmins, tsecs = 0;
 
-    private String BUTTON_STATE = "EnterTask"; //This button state is used to track the timer button next state
+    /**This button state is used to track the timer button next state*/
+    private String BUTTON_STATE = "EnterTask";
 
-    private ImageButton taskSubmit; //This button is to submit the task that user key
-    private EditText taskInput; //User keys in the task
+    /**This button is to submit the task that user key*/
+    private ImageButton taskSubmit; //
 
-    private TextView min, sec, semicolon, textDisplay; //Display of the timer
+    /**EditText for User to enter in the task*/
+    private EditText taskInput; //
 
-    private long mTimeLeftInMillis = 0; //Time left
+    /**TextView on the display of the timer*/
+    private TextView min, sec, semicolon, textDisplay;
 
-    private ImageView minup, mindown, secup, secdown, mface; //Button to control the timer
+    /**Used to track the timer left for Focus*/
+    private long mTimeLeftInMillis = 0;
 
-    private boolean bupmin, bdownmin, bupsec, bdownsec; //Button used for event control the timer
+    /**Button to control the timer*/
+    private ImageView minup, mindown, secup, secdown, mface;
+
+    /**Button used for event control the timer*/
+    private boolean bupmin, bdownmin, bupsec, bdownsec;
 
     private Handler repeatUpdateHandler = new Handler(); //For long touch view
     private CountDownTimer mCountDownTimer; //Main Counteractive for Focus
@@ -79,8 +99,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private String dateTimeTask, currentTask, mCompletion;
     private final String TAG = "Focus";
 
-    //Notification variables
-    public static final String CHANNEL_1_ID = "channel1";
+    /**Notification channel ID is set to channel 1*/
+    private static final String CHANNEL_1_ID = "channel1";
 
     final String title = "You have an ongoing Focus";
     final String message = "Come back now before your Sun becomes depressed!";
@@ -150,10 +170,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     /**
      *
+     * Initialization the focusActivity
      *
-     * Update the text of the timer
-     *
-     * Will be executed every click on the increment or decrement button
+     * Initialize minutes, seconds back to zero
+     * Get Firebase Data
+     * Get Local Database Data
+     * Initialize object
      */
     private void initialization() {
         Log.v(TAG, "Database does not exist");
@@ -171,14 +193,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.v(TAG, "Local database: " + focusDatabase.getAllData().toString());
     }
 
-    //Running, Fail, Success, Reset
+    //
     //This function is to track the button state so that it can show its respective view
     /**
+     * Type of button state: Running, Fail, Success, Reset
+     * @Param BUTTON_STATE Running, Fail, Success Reset
      *
-     *
-     * Update the text of the timer
-     *
-     * Will be executed every click on the increment or decrement button
+     * This is used to trace the button state to display the respective view
      */
     private void focusTime() {
         switch (BUTTON_STATE) {
@@ -239,13 +260,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
-    //Local Database
+
     /**
      *
      *
-     * Update the text of the timer
+     * Write to local Database
      *
-     * Will be executed every click on the increment or decrement button
+     * @Param Focus passed in the new focus object to local database
      */
     private void writeToDatabase(Focus focus) {
         focusDatabase.addData(focus); //Add to database
@@ -253,13 +274,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         writeDataFirebase(focus);
     }
 
-    //Used for update button sequencing (timer)
+
     /**
      *
      *
-     * Update the text of the timer
+     * Used for update button sequencing (timer)
      *
-     * Will be executed every click on the increment or decrement button
      */
     private void timeRunner() { //Timer running
         BUTTON_STATE = "Running";
@@ -275,9 +295,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     /**
      *
      *
-     * Update the text of the timer
+     * Update each view to a fail view
      *
-     * Will be executed every click on the increment or decrement button
+     * If timer doesnt hit 0, user clicks on button_state on Give Up
+     *
      */
     private void timerFail() { //Give up
         BUTTON_STATE = "Fail";

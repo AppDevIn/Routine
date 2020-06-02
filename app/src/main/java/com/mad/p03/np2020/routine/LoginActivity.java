@@ -36,6 +36,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ *
+ * Model used to manage the section
+ *
+ * @author Lee Quan Sheng
+ * @since 02-06-2020
+ */
+
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener {
 
     EditText et_Email, et_Password;
@@ -45,26 +54,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String email, password;
     TextView txtError;
     CheckBox checkBox;
+    TextView errLogin, errPwd;
 
     String TAG = "LOGIN_ACITVITY";
 
+    /**SharedPreference name for Remember Me*/
     public static final String SHARED_PREFS = "sharedPrefs";
+
+    /**String for Email and password*/
     private String sUser, sPassword;
 
+    /**String for username for SharedPreference*/
     public static final String Username = "username";
+
+    /**String for password for SharedPreference*/
     public static final String Password = "password";
+
+    /**String for switch for remember me checkbox*/
     public static final String SWITCH1 = "switch1";
 
+    /**Boolean for checkbox for Remember Me*/
     private boolean switchOnOff;
+
+    /**Firebase*/
     private DatabaseReference myRef;
+
+    /**UserDBHelper for local database*/
     private UserDBHelper userDatabase;
 
-    private TextView errLogin, errPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //Database has to be declared before login check
         userDatabase = new UserDBHelper(this);
@@ -79,7 +102,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "user at login page");
         mAuth = FirebaseAuth.getInstance();
 
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         et_Email = findViewById(R.id.editEmail);
         et_Password = findViewById(R.id.editPassword);
         btn_login = findViewById(R.id.buttonLogin);
@@ -112,6 +134,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
     }
 
+    /**
+     *
+     * Onclick listener
+     *
+     * */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
@@ -143,7 +170,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    //Track the Focus so that if user click outside the keyboard area, the keyboard will hide
+    /**
+     *
+     * onFocusChange event listener
+     * Track the Focus so that if user click outside the keyboard area, the keyboard will hide
+     *
+     *
+     * @param v set view to this content
+     * @param hasFocus set hasFocus to this content
+     * */
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
@@ -160,6 +195,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     *
+     * onKey keyboard event listener
+     *
+     * If user clicks enter the keyboard will hide
+     *
+     * */
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         Log.i(TAG, event.toString());
@@ -183,6 +225,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return false;
     }
 
+    /**
+     *
+     * this is called the first time a database is accessed. Creation a new database will involve here
+     *
+     * @param email set email to this content to be used for firebaseAuth
+     * @param password set password to this content to be used for firebaseAuth
+     * */
     private void firebaseAuthWithGoogle(String email, String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -243,7 +292,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    //Check login
+    /**
+     *
+     * Method used to check if there is an existing user session so that user does not need to
+     * go through the login phase again
+     *
+     * */
     private void CheckLoggedIn() throws ParseException {
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
@@ -257,6 +311,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //This method is used to remember user details
+    /**
+     *
+     * Method used to save data if the the rememberMe Check box is checked
+     * */
     public void saveData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -268,6 +326,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //This method is used to load the details that is stored
+    /**
+     *
+     * Method used to load data if the the rememberMe Check box is checked
+     *
+     * */
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         sUser = sharedPreferences.getString(Username, "");
@@ -276,6 +339,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //Update views if user clicks remember me
+    /**
+     *
+     * Method used to update the editText if there is an existing email and password saved in sharedPreference
+     * */
     public void updateViews() {
         et_Email.setText(sUser);
         et_Password.setText(sPassword);
@@ -283,7 +350,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    //Hide keyboard methods
+    /**
+     *
+     * Method used to hide soft keyboard
+     *
+     * @param taskInput Passed into this context where keyboard will show the keyboard targeting the on the editText
+     * */
     private void HideKeyboard(EditText taskInput) {
         Log.i(TAG, "Hide soft keyboard");
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -292,7 +364,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    //Soft Keyboard methods
+    /**
+     *
+     * Method used to show soft keyboard
+     *
+     * @param taskInput Passed into this context where keyboard will hide from the keyboard
+     * */
     private void ShowKeyboard(EditText taskInput) {
         Log.i(TAG, "Show soft keyboard");
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
