@@ -115,7 +115,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habit_dbHandler = new HabitDBHelper(this); // initialise the HabitDBHelper
         group_dbhandler = new HabitGroupDBHelper(this); // initialise the HabitGroupDBHelper
 
-
         Log.v(TAG,"onCreate");
 
         initData(); // initialise the shared preferences if it is not done so
@@ -1202,7 +1201,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 //
 //        }
 
-        habitGroup_reference = group_dbhandler.getAllGroups();
+//        habitGroup_reference = group_dbhandler.getAllGroups();
     }
 
     private void initFirebase() {

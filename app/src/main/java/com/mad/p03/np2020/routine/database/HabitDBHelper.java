@@ -72,7 +72,8 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
         HabitGroup group = habit.getGroup();
         if (group != null){
-            values.put(Habit.COLUMN_HABIT_GROUP_NAME,habit.getGroup().getGrp_name());
+            values.put(Habit.COLUMN_HABIT_GROUP_ID, group.getGrp_id());
+            values.put(Habit.COLUMN_HABIT_GROUP_NAME, group.getGrp_name());
         }else{
             values.putNull(Habit.COLUMN_HABIT_GROUP_NAME);
         }
@@ -119,10 +120,11 @@ public class HabitDBHelper extends SQLiteOpenHelper {
                 reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
             }
 
+            long group_id = res.getLong(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_ID));
             String group_name = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_NAME));
             HabitGroup group = null;
             if (group_name != null) {// check if habit group is null, if not set the object
-                group = new HabitGroup(group_name);
+                group = new HabitGroup(group_id, group_name);
             }
 
             Habit habit = new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
