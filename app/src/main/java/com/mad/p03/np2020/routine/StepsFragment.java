@@ -62,7 +62,7 @@ public class StepsFragment extends Fragment {
     }
 
     // Function to add items to checklist when add button clicked
-    public void addItemToList(LayoutInflater inflater){
+    public void addItemToList(){
         stepList.add(stepName.getText().toString());
         arrayAdapter.notifyDataSetChanged();
 
@@ -75,13 +75,14 @@ public class StepsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_steps_layout, container, false);
 
+        // Button click listeners for when button clicked to call addItemToList
         stepAddButton = view.findViewById(R.id.addStep);
 
         stepAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "Step added!");
-                stepAddButton.setText("LOL");
+                addItemToList();
             }
         });
         return inflater.inflate(R.layout.fragment_steps_layout, container, false);
