@@ -15,10 +15,26 @@ import com.mad.p03.np2020.routine.R;
 
 import java.util.Calendar;
 
+/**
+ *
+ * Model used to manage the section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
+
 public class AlarmReceiver extends BroadcastReceiver {
 
     private String channelId = "001";
 
+    /**
+     *
+     * This method is an override method which allows BroadcastReceiver to receive the pending intent sent by alarm manager.
+     * This will create a notification upon receiving the pending intent.
+     *
+     * @param context This is to get the context
+     * @param intent This is to get the pending intent
+     * */
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("HabitTracker")) {
@@ -42,6 +58,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     *
+     * This method is used to format text by capitalising the first text of each split text
+     *
+     * @param text This parameter is used to get the text
+     *
+     * @return String This returns the formatted text
+     * */
     public String capitalise(String text){
         String txt = "";
         String[] splited = text.split("\\s+");

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -13,22 +12,50 @@ import com.mad.p03.np2020.routine.Class.HabitGroup;
 
 import java.util.ArrayList;
 
-public class HabitGroupDBHelper extends SQLiteOpenHelper {
+/**
+ *
+ * Model used to manage the section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
 
-    static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 3;
+public class HabitGroupDBHelper extends DBHelper {
+
     private final String TAG = "HabitGroupDatabase";
 
+    /**
+     *
+     * This method is a constructor of HabitGroupDBHelper.
+     *
+     * @param context This parameter is to get the application context.
+     * */
     public HabitGroupDBHelper(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
 
+    /**
+     *
+     * This method is used to initialise the database.
+     *
+     * @param db This parameter is to get the SQLiteDatabase.
+     * */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(HabitGroup.CREATE_GROUPS_TABLE);
         Log.d(TAG, "onCreate: ");
     }
 
+    /**
+     *
+     * This method is used to upgrade the database.
+     *
+     * @param db This parameter is to get the SQLiteDatabase.
+     *
+     * @param oldVersion This parameter is the old version.
+     *
+     * @param newVersion This parameter is the new version.
+     * */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(HabitGroup.DROP_GROUPS_TABLE);
@@ -36,10 +63,26 @@ public class HabitGroupDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "onUpgrade: ");
     }
 
+    /**
+     *
+     * This method is used to downgrade the database.
+     *
+     * @param db This parameter is to get the SQLiteDatabase.
+     *
+     * @param oldVersion This parameter is the old version.
+     *
+     * @param newVersion This parameter is the new version.
+     * */
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.setVersion(oldVersion);
     }
 
+    /**
+     *
+     * This method is used to retrieve all the habitGroups in the SQLiteDatabase.
+     *
+     * @return ArrayList<HabitGroup> This will return the habitGroupList.
+     * */
     public ArrayList<HabitGroup> getAllGroups(){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -63,6 +106,12 @@ public class HabitGroupDBHelper extends SQLiteOpenHelper {
         return habitGroups;
     }
 
+    /**
+     *
+     * This method is used to insert the group to the group column in the SQLiteDatabase.
+     *
+     * @return long This will return the id for the habitGroup after the habitGroup is inserted to the habitGroup column.
+     * */
     public long insertGroup(HabitGroup habitGroup){
         ContentValues values = new ContentValues();
         Log.d(TAG, "insertGroup: "+habitGroup.getGrp_name());

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -13,24 +12,50 @@ import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
 
-public class HabitDBHelper extends SQLiteOpenHelper {
+/**
+ *
+ * Model used to manage the section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
 
-    static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 3;
+public class HabitDBHelper extends DBHelper{
+
     private final String TAG = "HabitDatabase";
 
-
+    /**
+     *
+     * This method is a constructor of HabitDBHelper.
+     *
+     * @param context This parameter is to get the application context.
+     * */
     public HabitDBHelper(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        getWritableDatabase();
+        super(context);
     }
 
+    /**
+     *
+     * This method is used to initialise the database.
+     *
+     * @param db This parameter is to get the SQLiteDatabase.
+     * */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Habit.CREATE_HABITS_TABLE);
         Log.d(TAG, "Habit Database is being created");
     }
 
+    /**
+     *
+     * This method is used to upgrade the database.
+     *
+     * @param db This parameter is to get the SQLiteDatabase.
+     *
+     * @param oldVersion This parameter is the old version.
+     *
+     * @param newVersion This parameter is the new version.
+     * */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(Habit.DROP_HABITS_TABLE);
@@ -38,10 +63,30 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "Habit Database is being upgraded");
     }
 
+    /**
+     *
+     * This method is used to downgrade the database.
+     *
+     * @param db This parameter is to get the SQLiteDatabase.
+     *
+     * @param oldVersion This parameter is the old version.
+     *
+     * @param newVersion This parameter is the new version.
+     * */
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.setVersion(oldVersion);
     }
 
+    /**
+     *
+     * This method is used to insert the habit to the habit column in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @param UID This parameter is the get the UID to refer which habit column is going to be inserted.
+     *
+     * @return long This will return the id for the habit after the habit is inserted to the habit column.
+     * */
     public long insertHabit(Habit habit, String UID) {
 
         ContentValues values = new ContentValues();
@@ -92,6 +137,14 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    /**
+     *
+     * This method is used to retrieve all the habits based on the UID in the SQLiteDatabase.
+     *
+     * @param UID This parameter is the get the UID to refer which habit column is going to be referred.
+     *
+     * @return ArrayList<Habit> This will return the habitList.
+     * */
     public Habit.HabitList getAllHabits(String UID) {
         Habit.HabitList habitList = new Habit.HabitList();
 
@@ -136,6 +189,13 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         return habitList;
     }
 
+    /**
+     *
+     * This method is used to update the count of the habit in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * */
     public void updateCount(Habit habit){
         SQLiteDatabase db = this.getReadableDatabase();
         String query =
@@ -150,6 +210,13 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     *
+     * This method is used to update the habit object in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * */
     public void updateHabit(Habit habit){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -188,6 +255,13 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "Habit: updateHabit: ");
     }
 
+    /**
+     *
+     * This method is used to delete the habit object in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * */
     public void deleteHabit(Habit habit){
         SQLiteDatabase db = this.getReadableDatabase();
 
