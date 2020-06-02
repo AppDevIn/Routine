@@ -95,7 +95,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="300dp"
             android:layout_height="60dp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_regular"
             android:background="@drawable/edit_text_background"
             android:padding="20dp"
             android:hint="Workout, Study, Do Yoga, etc."
@@ -194,7 +194,7 @@
                 android:id="@+id/habit_occurence"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:background="@drawable/edit_text_background"
                 android:maxLines="1"
                 android:hint="1" />
@@ -204,7 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
                 android:text="PER"
                 android:textColor="@color/colorBlack" />
@@ -215,7 +215,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
                 android:text="DAY"
                 android:textColor="@color/colorBlack" />

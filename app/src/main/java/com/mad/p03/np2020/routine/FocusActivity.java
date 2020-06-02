@@ -43,21 +43,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.FocusHolder;
-import com.mad.p03.np2020.routine.Class.FocusWorker;
+import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 import com.mad.p03.np2020.routine.Class.User;
 
+import java.io.File;
+import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import static java.lang.String.*;
 
-public class FocusActivity extends AppCompatActivity implements View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
 
     SQLiteDatabase myLocalDatabase;
 
@@ -94,7 +94,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     final String message = "Come back now before your Sun becomes depressed!";
 
     //Firebase
-    private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
 
     //User
@@ -102,6 +101,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
 
     //Local Database
     FocusDatabase focusDatabase;
+    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
-        FrameLayout fragmentContainer = findViewById(R.id.fragment_container);
         initialization(); //Process of data
 
         //ImageButton
@@ -153,33 +152,36 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         secup.setOnTouchListener(this);
         mindown.setOnTouchListener(this);
 
+        taskInput.setOnFocusChangeListener(this);
+
         mface.startAnimation(translateAnimation);
     }
 
-    //Add to local data from firebase to local database
-    private void initDatabase(List<FocusHolder> focusList) {
-        for (FocusHolder item : focusList) {
-            focusDatabase.addData(item);
-        }
-    }
-
-    private void addLocalDatabase(FocusHolder focus) {
-        focusDatabase.addData(focus);
-    }
-
     private void initialization() {
+        File dbFile = this.getDatabasePath("focus.db");
+        Log.v(TAG, "Current Directory: " + dbFile.getAbsolutePath());
         //How this initialization will work
         //The data will be pulled from the local database and update to the firebase if user is already signed in
+        if(dbFile.exists()){
+            Log.v(TAG, "Database Exist");
+            focusDatabase = new FocusDatabase(FocusActivity.this);
+            user.setmFocusList(focusDatabase.getAllData());
+            FirebaseDatabase();
 
-        focusDatabase = new FocusDatabase(FocusActivity.this);
+        }else{
+            Log.v(TAG, "Database does not exist");
+            focusDatabase = new FocusDatabase(FocusActivity.this);
+            FirebaseDatabase();
+            user.readFocusFirebase(this);
+        }
+
         tmins = 0;
         tsecs = 0;
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        FirebaseDatabase();
+
 
         //Add it to LocalDatabase List
-        user.setmFocusList(focusDatabase.getAllData());
         Log.v(TAG, "Local database: " + focusDatabase.getAllData().toString());
     }
 
@@ -190,7 +192,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
             case "EnterTask": //Enter Task view where user can enter its view
                 ShowKeyboard();
                 taskInput.setText("");
-                taskSubmit.setVisibility(View.VISIBLE);
                 break;
             case "Reset": //Reset view where the view will become its initiate state
                 textDisplay.setText(R.string.REST_STATUS);
@@ -214,7 +215,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
                 BUTTON_STATE = "Reset";
                 mCompletion = "True";
                 String dateSuccess = new SimpleDateFormat("ddMMyyyy, HH:mm:ss", Locale.getDefault()).format(new Date());
-                FocusHolder focusViewHolder = new FocusHolder(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
+                Focus focusViewHolder = new Focus(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
                 focusViewHolder.setFbID(dateSuccess);
                 writeToDatabase(focusViewHolder);
                 break;
@@ -226,18 +227,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
                 BUTTON_STATE = "Reset";
                 mCompletion = "False";
                 String dateFail = new SimpleDateFormat("ddMMyyyy, HH:mm:ss", Locale.getDefault()).format(new Date());
-                FocusHolder focusHolder = new FocusHolder(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
-                focusHolder.setFbID(dateFail);
-                writeToDatabase(focusHolder);
+                Focus focus = new Focus(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
+                focus.setFbID(dateFail);
+                writeToDatabase(focus);
                 break;
         }
     }
 
     //Local Database
-    private void writeToDatabase(FocusHolder focusHolder) {
-        focusDatabase.addData(focusHolder); //Add to database
-        user.addFocusList(focusHolder); //Adding it to list
-        writeDataFirebase(focusHolder);
+    private void writeToDatabase(Focus focus) {
+        focusDatabase.addData(focus); //Add to database
+        user.addFocusList(focus); //Adding it to list
+        writeDataFirebase(focus);
     }
 
     //Used for update button sequencing (timer)
@@ -345,6 +346,17 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
                 BUTTON_STATE = "Running";
                 taskSubmit.setVisibility(View.INVISIBLE);
                 focusTime();
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.taskInput:
+                if (!hasFocus) {
+                    HideKeyboard();
+                }
                 break;
         }
     }
@@ -458,6 +470,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+
     }
 
     @Override
@@ -557,32 +570,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
     private void FirebaseDatabase() { //Firebase Reference
         user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
-        mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference(user.getUID() + "/FocusData");
-    }
-
-    // To read from the database
-    private void readFirebase() {
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    FocusHolder focus = singleSnapshot.getValue(FocusHolder.class);
-                    user.addFocusList(focus);
-                    Log.v(TAG, "Adding each list");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
+        myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        Log.i(TAG, "checks for myRef: " + myRef);
     }
 
     //Writing to google firebase
-    private void writeDataFirebase(FocusHolder focusHolder) {
+    private void writeDataFirebase(Focus focus) {
         Log.i(TAG, "Uploading to Database");
 
         Constraints myConstraints = new Constraints.Builder()
@@ -591,7 +584,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
 
         Data firebaseUserData = new Data.Builder()
                 .putString("ID", user.getUID())
-                .putString("focusData", serializeToJson(focusHolder))
+                .putString("focusData", serializeToJson(focus))
                 .putBoolean("deletion", false)
                 .build();
         OneTimeWorkRequest mywork =
@@ -602,25 +595,37 @@ public class FocusActivity extends AppCompatActivity implements View.OnClickList
 
         WorkManager.getInstance(this).enqueue(mywork);
     }
-
     //Soft Keyboard methods
     private void ShowKeyboard() {
         taskInput.setVisibility(View.VISIBLE);
-        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        final InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        taskSubmit.setVisibility(View.VISIBLE);
         assert mgr != null;
-        mgr.showSoftInput(taskInput, InputMethodManager.SHOW_IMPLICIT);
+        taskInput.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                taskInput.requestFocus();
+                mgr.showSoftInput(taskInput, 0);
+            }
+        }, 100);        Log.i(TAG,"Show Keyboard");
+
     }
 
     private void HideKeyboard() {
         taskInput.setVisibility(View.INVISIBLE);
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        taskSubmit.setVisibility(View.INVISIBLE);
         assert mgr != null;
         mgr.hideSoftInputFromWindow(taskInput.getWindowToken(), 0);
+        Log.i(TAG,"Hide Keyboard");
     }
 
     // Serialize a single object.
-    public String serializeToJson(FocusHolder myClass) {
+    public String serializeToJson(Focus myClass) {
         Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
         return gson.toJson(myClass);
     }
 }

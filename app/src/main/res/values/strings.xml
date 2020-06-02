@@ -51,6 +51,8 @@
     <string name="BUTTON_RESTART">Restart</string>
     <string name="BUTTON_START">Start</string>
     <string name="login_title">Login</string>
+    <string name="INPUT_TASK">Enter your Task</string>
+    <string name="remember_me">Remember Me</string>
     <string name="name">Name</string>
     <string name="add">Add</string>
     <string name="delete">Delete</string>

@@ -1,18 +1,21 @@
 package com.mad.p03.np2020.routine.Class;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.nfc.FormatException;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.mad.p03.np2020.routine.Class.Label;
-import com.mad.p03.np2020.routine.Class.Section;
+import androidx.annotation.NonNull;
 
-import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.Class.FocusHolder;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.database.FocusDatabase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,7 +38,7 @@ public class User implements Parcelable {
     //The creation of the database
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_NAME_ID + " TEXT," +
+                    COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_NAME_NAME + " TEXT," +
                     COLUMN_NAME_EMAIL + " TEXT," +
                     COLUMN_NAME_PASSWORD + " TEXT)";
@@ -46,15 +49,19 @@ public class User implements Parcelable {
 
 
     FirebaseUser mAuth;
+    private String TAG = "User";
+
     private String mName;
     private String mUID;
     private String mEmailAddr;
     private String mPassword;
     private Date mDateOfBirth;
-    private List<Section> mSectionList;
+    private List<Section> mSectionList = new ArrayList<>();
     private String mPPID;
-    private List<Label> mListLabel;
-    private ArrayList<FocusHolder> mFocusList;
+    private List<Label> mListLabel = new ArrayList<>();
+    private ArrayList<Focus> mFocusList = new ArrayList<>();
+    private DatabaseReference myRef;
+    FocusDatabase focusDatabase;
 
     protected User(Parcel in) {
         mAuth = in.readParcelable(FirebaseUser.class.getClassLoader());
@@ -63,7 +70,7 @@ public class User implements Parcelable {
         mEmailAddr = in.readString();
         mPassword = in.readString();
         mPPID = in.readString();
-        mFocusList = in.createTypedArrayList(FocusHolder.CREATOR);
+        mFocusList = in.createTypedArrayList(Focus.CREATOR);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -78,20 +85,55 @@ public class User implements Parcelable {
         }
     };
 
-    public ArrayList<FocusHolder> getmFocusList() {
+    public ArrayList<Focus> getmFocusList() {
         return mFocusList;
     }
 
-    public void setmFocusList(ArrayList<FocusHolder> mFocusList) {
+    public void setmFocusList(ArrayList<Focus> mFocusList) {
         this.mFocusList = mFocusList;
     }
 
-    public void addFocusList(FocusHolder focusHolder){
-        this.mFocusList.add(focusHolder);
+    public void addFocusList(Focus focus){
+        this.mFocusList.add(focus);
     }
 
-    public void removeFocusList(FocusHolder focusHolder){
-        this.mFocusList.remove(focusHolder);
+    public void clearFocusList(){
+        setmFocusList(new ArrayList<Focus>());
+    }
+
+    public void removeFocusList(Focus focus){
+        this.mFocusList.remove(focus);
+    }
+
+    public void readFocusFirebase(Context context){
+        myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
+        focusDatabase = new FocusDatabase(context);
+
+        //Clear all data since there is a change to the database so it can be updated
+
+        myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                focusDatabase.deleteAll();
+                clearFocusList();
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    Focus focus = new Focus();
+                    focus.setFbID((String) singleSnapshot.child("fbID").getValue());
+                    focus.setmCompletion((String) singleSnapshot.child("mCompletion").getValue());
+                    focus.setmDateTime((String) singleSnapshot.child("mDateTime").getValue());
+                    focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
+                    focus.setmTask((String) singleSnapshot.child("mTask").getValue());
+                    addFocusList(focus);
+                    focusDatabase.addData(focus);
+                }
+                setmFocusList(focusDatabase.getAllData());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     public User() {
@@ -100,6 +142,14 @@ public class User implements Parcelable {
     User(String name, String password) {
         this.mName = name;
         this.mPassword = password;
+    }
+
+    public User(String UID, String name, String password, Date dob, String Email) {
+        this.mUID = UID;
+        this.mName = name;
+        this.mPassword = password;
+        this.mDateOfBirth = dob;
+        this.mEmailAddr = Email;
     }
 
     public User(String name, String password, String emailAddr) {
