@@ -127,7 +127,7 @@ open Documentation/index.html
 
 
 
-<div style="text-align: left"><img src="Documentation/images/home.png" alt="home" style="zoom:33%; " /></div>
+<div style="text-align: left"><img src="Documentation/images/home.png" alt="home" style="width:200px; " /></div>
 
 
 
