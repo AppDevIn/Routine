@@ -16,7 +16,24 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
-public class FCMSection extends FirebaseMessagingService {
+
+/**
+ *
+ * This is a Firebase CLoud messaging listener program
+ * which implements the FirebaseMessagingService.
+ *
+ * This program listens to any changes to database
+ * and using cloud trigger to send data through
+ * Firebase CLoud Messaging. The token is actually the messaging
+ * token.
+ *
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
+
+public class FCM extends FirebaseMessagingService {
 
     final private String TAG = "FCMMessaging";
     @Override
@@ -40,13 +57,25 @@ public class FCMSection extends FirebaseMessagingService {
         reference.child("messagingToken").setValue(token);
     }
 
+
+    /**
+     * Called when a message is received.
+     *
+     * This is  called when a notification message is received
+     * while the app is in the foreground. It can receive the
+     * data sent just by using {@code remoteMessage.getData()}.
+     * Depending on the reason (for) it will run different functions
+     * the edit in the database
+     *
+     * @param remoteMessage Remote message that has been received.
+     */
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
         Log.d(TAG, "Date: " + remoteMessage.getData());
 
 
-
+        //Depending on the reason different functions run
         switch (Objects.requireNonNull(remoteMessage.getData().get("for"))){
             case "SectionAdd": addSectionSQL(remoteMessage); break;
             case "SectionDelete": deleteSectionSQL(remoteMessage); ;break;
@@ -56,6 +85,15 @@ public class FCMSection extends FirebaseMessagingService {
         }
 
     }
+
+    /**
+     *
+     * This method used create the section object, using the
+     * object to create the a row in the section table. It also check
+     * the data is already create to avoid duplicate
+     *
+     * @param remoteMessage Remote message that has been received.
+     */
 
     private void addSectionSQL(RemoteMessage remoteMessage){
         Section section = Section.fromJSON(remoteMessage.getData().toString());
@@ -74,18 +112,36 @@ public class FCMSection extends FirebaseMessagingService {
     }
 
 
+    /**
+     *
+     * This method is used to get the data from remote messages
+     * and get the id from the data. The id is unique to each
+     * section which will be used to delete using SectionDBHelper.
+     * It also check is the data exist if it does that it will
+     * delete.
+     *
+     * @param remoteMessage Remote message that has been received.
+     */
     private void deleteSectionSQL(RemoteMessage remoteMessage){
         String id = remoteMessage.getData().get("id");
 
         SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
 
+        //If data exist than delete
         if(sectionDBHelper.hasID(id)){
             sectionDBHelper.delete(id);
             Log.d(TAG, "delete: " + id + " Has been deleted");
         }
     }
 
-
+    /**
+     *
+     * This method is used to add task into the sql.
+     * It created the task object after checking if the
+     * data exist it will add it into the database
+     *
+     * @param remoteMessage Remote message that has been received.
+     */
     private void addTaskSQL(RemoteMessage remoteMessage){
         Task task =  Task.fromJSON(remoteMessage.getData().toString());
         Log.d(TAG, "onMessageReceived(): Section info: " + task.toString());
@@ -97,18 +153,28 @@ public class FCMSection extends FirebaseMessagingService {
         //Check if the Data already exist
         TaskDBHelper taskDBHelper = new TaskDBHelper(this);
         Log.d(TAG, "onMessageReceived: " + taskDBHelper.hasID(id));
+
+        //If the data doesn't exist than add
         if(!taskDBHelper.hasID(id)){
             taskDBHelper.insertTask(task, sectionID);
             Log.d(TAG, "Task from firebase added to SQL");
         }
     }
 
-
+    /**
+     *
+     * This method is used to get the data from remote messages
+     * and get the id from the data. The id is unique to each
+     * task. I will check if it exist in the database if does it will delete it
+     *
+     * @param remoteMessage Remote message that has been received.
+     */
     private void deleteTaskSQL(RemoteMessage remoteMessage){
         String id = remoteMessage.getData().get("id");
 
         TaskDBHelper taskDBHelper = new TaskDBHelper(this);
 
+        //If the data exist it will delete
         if(taskDBHelper.hasID(id)){
             taskDBHelper.delete(id);
             Log.d(TAG, "Task ID " + id + " , has been deleted");

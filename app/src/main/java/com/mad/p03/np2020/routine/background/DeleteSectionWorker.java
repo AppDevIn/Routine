@@ -3,12 +3,10 @@ package com.mad.p03.np2020.routine.background;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
+
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Query;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -20,6 +18,11 @@ public class DeleteSectionWorker extends Worker {
         super(context, workerParams);
     }
 
+
+    /**
+     * fdsnajkndfagkj
+     * @return
+     */
     @NonNull
     @Override
     public Result doWork() {
