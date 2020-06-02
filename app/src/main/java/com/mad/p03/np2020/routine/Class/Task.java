@@ -73,7 +73,7 @@ public class Task {
                     + COLUMN_REMIND_DATE + " TEXT,"
                     + COLUMN_DUE_DATE + " TEXT,"
                     + COLUMN_NOTES + " TEXT,"
-                    + "FOREIGN KEY (" + COLUMN_SECTION_ID + ") REFERENCES  " + Section.TABLE_NAME + "(" + Section.COLUMN_ID + "));";
+                    + "FOREIGN KEY (" + COLUMN_SECTION_ID + ") REFERENCES  " + Section.TABLE_NAME + "(" + Section.COLUMN_SECTION_ID + "));";
 
     //Query to delete the table
     public static final String SQL_DELETE_ENTRIES =

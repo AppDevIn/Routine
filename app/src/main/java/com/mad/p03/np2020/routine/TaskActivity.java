@@ -27,6 +27,7 @@ import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener {
 
@@ -39,7 +40,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     ConstraintLayout mConstraintLayout;
     TextView mTxtListName;
     EditText mEdTask;
-
+    List<Task> mTaskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         Log.d(TAG, "onCreate(): " + mSection.toString());
 
         //Find all the date from SQLite
-        mSection.getTaskDatabase(this);
+        mTaskList = mSection.getTaskList(this);
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -156,10 +157,10 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + task );
 
         //Adding into the local list
-        mSection.getTaskList().add(task);
+        mTaskList.add(task);
 
         //Informing the adapter and view of the new item
-        mTaskAdapter.notifyItemInserted(mSection.getTaskList().size());
+        mTaskAdapter.notifyItemInserted(mTaskList.size());
     }
 
     @Override
@@ -167,16 +168,16 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
 
-        for (int position = 0; position < mSection.getTaskList().size(); position++) {
+        for (int position = 0; position < mTaskList.size(); position++) {
 
-            if(mSection.getTaskList().get(position).getTaskID().equals(ID)){
+            if(mTaskList.get(position).getTaskID().equals(ID)){
 
                 //Remove the list
-                mSection.getTaskList().remove(position);
+                mTaskList.remove(position);
 
                 //Informing the adapter and view after removing
                 mTaskAdapter.notifyItemRemoved(position);
-                mTaskAdapter.notifyItemRangeChanged(position, mSection.getTaskList().size());
+                mTaskAdapter.notifyItemRangeChanged(position, mTaskList.size());
                 break;
             }
         }
@@ -189,7 +190,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
      */
     private void showNewEntry(){
         //scroll to the last item of the recyclerview
-        mRecyclerView.smoothScrollToPosition(mSection.getTaskList().size());
+        mRecyclerView.smoothScrollToPosition(mTaskList.size());
 
         //auto hide keyboard after entry
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);

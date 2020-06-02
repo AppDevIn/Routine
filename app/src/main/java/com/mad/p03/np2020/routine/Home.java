@@ -281,11 +281,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.i(TAG, "adding confirmed for " + listName);
 
         //Create a Section Object for the user input
-        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()]);
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()], mUID);
 
         //Save to SQL
-        String id  = section.addSection(this, mUID);
-        Log.d(TAG, "updateCardUI(): Added to SQL, this ID is " + id);
+        section.addSection(this);
+        Log.d(TAG, "updateCardUI(): Added to SQL");
 
         //Save to firebase
         section.executeFirebaseSectionUpload(mUID, section.getID(), this);

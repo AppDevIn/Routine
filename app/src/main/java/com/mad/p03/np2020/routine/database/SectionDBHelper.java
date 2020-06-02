@@ -20,7 +20,7 @@ public class SectionDBHelper extends SQLiteOpenHelper{
     private static MyDatabaseListener mMyDatabaseListener;
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 7;
+    static final int DATABASE_VERSION = 8;
     private final String TAG = "SectionDatabase";
 
     public SectionDBHelper(Context context) {
