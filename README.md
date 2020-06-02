@@ -1,6 +1,10 @@
+# Routine App
+
+All in one Productivity App
 
 
 
+## Open Doucmentation
 
 ### Donwload the file
 
@@ -10,7 +14,19 @@ git clone https://github.com/AppDevIn/Routine.git
 
 
 
+### Go to the Routine folder
 
+```
+cd path/to/ Routine
+```
+
+
+
+### Open the Document
+
+```
+open Documentation/index.html
+```
 
 
 
@@ -81,4 +97,35 @@ git clone https://github.com/AppDevIn/Routine.git
 
 
 
-The interface code and itemtouchlistner 
+## Strory Mapping 
+
+
+
+## Class Diagram 
+
+
+
+## ER Diagram
+
+
+
+
+
+## Screenshots
+
+
+
+### Login 
+
+
+
+### Register 
+
+
+
+### Home
+
+<img src="/Users/jeyavishnu/Desktop/Screenshot_1591125916.png" alt="Screenshot_1591125916" style="zoom:25%;" />
+
+#### Task
+
