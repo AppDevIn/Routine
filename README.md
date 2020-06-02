@@ -125,7 +125,11 @@ open Documentation/index.html
 
 ### Home
 
-<img src="/Users/jeyavishnu/Desktop/Screenshot_1591125916.png" alt="Screenshot_1591125916" style="zoom:25%;" />
+
+
+<div style="text-align: left"><img src="/Users/jeyavishnu/personal/Current/Routine/Documentation/images/home.png" alt="home" style="zoom:33%; " /></div>
+
+
 
 #### Task
 
