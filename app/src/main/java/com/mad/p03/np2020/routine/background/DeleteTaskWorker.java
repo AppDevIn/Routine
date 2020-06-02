@@ -17,6 +17,15 @@ public class DeleteTaskWorker extends Worker {
         super(context, workerParams);
     }
 
+
+    /**
+     *
+     * To do background processing, to delete the task data
+     * in firebase using the task id , section id and user id to 
+     * delete from firebase.
+     *
+     * @return Result This is tell what happen to the background work
+     */
     @NonNull
     @Override
     public Result doWork() {
