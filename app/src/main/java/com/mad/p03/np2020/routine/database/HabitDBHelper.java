@@ -16,12 +16,13 @@ import com.mad.p03.np2020.routine.Class.HabitReminder;
 public class HabitDBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 3;
     private final String TAG = "HabitDatabase";
 
 
     public HabitDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        getWritableDatabase();
     }
 
     @Override
@@ -41,10 +42,12 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         db.setVersion(oldVersion);
     }
 
-    public long insertHabit(Habit habit) {
+    public long insertHabit(Habit habit, String UID) {
 
         ContentValues values = new ContentValues();
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
+        values.put(Habit.COLUMN_USERID,UID);
+        Log.d(TAG, "insertHabit: "+UID);
         values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
         values.put(Habit.COLUMN_HABIT_COUNT,habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD,habit.getPeriod());
@@ -69,7 +72,8 @@ public class HabitDBHelper extends SQLiteOpenHelper {
 
         HabitGroup group = habit.getGroup();
         if (group != null){
-            values.put(Habit.COLUMN_HABIT_GROUP_NAME,habit.getGroup().getGrp_name());
+            values.put(Habit.COLUMN_HABIT_GROUP_ID, group.getGrp_id());
+            values.put(Habit.COLUMN_HABIT_GROUP_NAME, group.getGrp_name());
         }else{
             values.putNull(Habit.COLUMN_HABIT_GROUP_NAME);
         }
@@ -88,11 +92,12 @@ public class HabitDBHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public Habit.HabitList getAllHabits() {
+    public Habit.HabitList getAllHabits(String UID) {
         Habit.HabitList habitList = new Habit.HabitList();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " +Habit.TABLE_NAME, null );
+        Log.d(TAG, "getAllHabits: "+UID);
+        Cursor res =  db.rawQuery( "select * from " +Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_USERID + " =?", new String[]{UID} );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -115,13 +120,15 @@ public class HabitDBHelper extends SQLiteOpenHelper {
                 reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
             }
 
+            long group_id = res.getLong(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_ID));
             String group_name = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_NAME));
             HabitGroup group = null;
             if (group_name != null) {// check if habit group is null, if not set the object
-                group = new HabitGroup(group_name);
+                group = new HabitGroup(group_id, group_name);
             }
 
-            habitList.addItem(new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group));;
+            Habit habit = new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
+            habitList.addItem(habit);;
             res.moveToNext();
         }
 
