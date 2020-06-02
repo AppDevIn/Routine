@@ -43,10 +43,7 @@ captures/
 
 # IntelliJ
 *.iml
-<<<<<<< HEAD
-=======
 app/app.iml
->>>>>>> 43d8c99d367ca8062e0c63dac9fda368891a6aca
 .idea/workspace.xml
 .idea/gradle.xml
 .idea/assetWizardSettings.xml
@@ -90,12 +87,3 @@ desktop.ini
 
 # OSX files
 .DS_Store
-
-<<<<<<< HEAD
-
-# Documentation
-Documentation/
-=======
-Documentation/
-
->>>>>>> 43d8c99d367ca8062e0c63dac9fda368891a6aca
