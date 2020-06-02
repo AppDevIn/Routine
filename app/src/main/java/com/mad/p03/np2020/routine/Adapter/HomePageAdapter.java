@@ -18,7 +18,6 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.TaskActivity;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,7 +30,10 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * This will be the controller glue between the viewholder and the model
  * This will inflate the the items for the sections to which will give us
- * the view from will be passed to the view holder MyHomeViewHolder
+ * the view from will be passed to the view holder MyHomeViewHolder.
+ *
+ * In here you should be able to move, swipe click, add and delete the section
+ *
  *
  * @author Jeyavishnu
  * @since 02-06-2020
@@ -39,17 +41,19 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter, OnSectionListener{
 
     private final String TAG = "HomeAdapter";
-    private List<Section> mSectionList = new ArrayList<>();
+    private List<Section> mSectionList;
     private Context mContext;
     private LifecycleOwner mOwner;
+
     //Listener
     private ItemTouchHelper mItemTouchHelper;
 
 
     /**
      *
-     * Will set the data and the lifecycle owner and give access to
-     * it's methods
+     * Will set the data and the lifecycle owner, give access to
+     * the adapter's methods. Sets the list into the member variable
+     * and set the owner into the member variable
      *
      * @param sectionList This will be the list of section
      * @param owner Owner of the lifecycle to be able to see
@@ -65,10 +69,10 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
     /**
      *
-     * Called when RecyclerView needs a new View Holder of the given type to represent an item.
+     * Called when RecyclerView needs a new View Holder of the given type to represent the section
      *
-     * This new ViewHolder should be constructed with a new View that can represent the items of the given type.
-     * You can either create a new View manually or inflate it from an XML layout file.
+     * This ViewHolder will be constructed with a new view that will represent the Section which consist
+     * of name, color of the section and the icon that represent it. The view will be inflated from XML file
      *
      * @param parent The ViewGroup into which the new View will be added after it is bound to an adapter position.
      * @param viewType The view type of the new View.
@@ -86,6 +90,9 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
     }
 
     /**
+     *
+     * This will be called to display the section data at the specific position. This will update
+     * the contents of the itemView to which will reflect at the given position
      *
      * @param holder The ViewHolder which should be updated to represent the contents of
      *               the item at the given position in the data set.
@@ -183,6 +190,12 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         mContext.startActivity(intent); //Start the activity
     }
 
+
+    /**
+     * This is method is used to set the custom item touch helper
+     * @param itemTouchHelper The custom touch helper that will be used
+     *                        to controller to movie of the viewholder
+     */
     public void setTouchHelper(ItemTouchHelper itemTouchHelper){
         this.mItemTouchHelper = itemTouchHelper;
     }

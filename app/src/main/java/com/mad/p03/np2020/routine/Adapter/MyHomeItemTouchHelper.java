@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
  * @author Jeyavishnu
  * @since 02-06-2020
  */
-
 public class MyHomeItemTouchHelper extends ItemTouchHelper.Callback{
 
     //Member variable
@@ -32,7 +31,8 @@ public class MyHomeItemTouchHelper extends ItemTouchHelper.Callback{
     }
 
     /**
-     * @return Whether ItemTouchHelper should start a swipe operation if a pointer is swiped over the View.
+     * Tell section if is able start a drag and drop operation if an item is on long pressed
+     * @return if it is allowed to start dragging
      */
     @Override
     public boolean isLongPressDragEnabled() {
@@ -40,7 +40,8 @@ public class MyHomeItemTouchHelper extends ItemTouchHelper.Callback{
     }
 
     /**
-     * @return Whether ItemTouchHelper should start a swipe operation if a pointer is swiped over the View.
+     * Tells section if is able to start a swipe operation if a pointer is swiped over the View.
+     * @return if it is allowed to start swiping
      */
     @Override
     public boolean isItemViewSwipeEnabled() {

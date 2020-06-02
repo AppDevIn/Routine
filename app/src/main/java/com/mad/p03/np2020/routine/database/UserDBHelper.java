@@ -21,7 +21,13 @@ public class UserDBHelper extends DBHelper {
     }
 
 
-
+    /**
+     * Called when the database is created for
+     * the first time. This where the creation of
+     * the user data table will occur
+     *
+     * @param sqLiteDatabase The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "User database is being created");
@@ -30,6 +36,16 @@ public class UserDBHelper extends DBHelper {
         sqLiteDatabase.execSQL(User.SQL_CREATE_ENTRIES);
     }
 
+    /**
+     *
+     * Called when the database needs to be upgraded. This will drop the
+     * database and create a new one. The data from the previous one will
+     * move forward into the new db
+     *
+     * @param sqLiteDatabase The database.
+     * @param i The old database version.
+     * @param i1 The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         Log.d(TAG, "User database is being upgraded");
@@ -37,9 +53,20 @@ public class UserDBHelper extends DBHelper {
         sqLiteDatabase.execSQL(User.SQL_DELETE_ENTRIES); // Delete existing user dat
         onCreate(sqLiteDatabase);
 
+        //TODO: Add tables
+
     }
 
-    //If current version is newer than the requested one
+
+    /**
+     *
+     * If current version is newer than the requested one. This will drop the
+     * database and create a new one.
+     *
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, "User database is downgraded");

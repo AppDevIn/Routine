@@ -147,6 +147,14 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         return false;
     }
 
+    /**
+     *
+     * Triggered to add to the current adapter list
+     * when it is added to the sql
+     *
+     * @param object given from the SQL when triggered
+     *               for this the object is task
+     */
 
     @Override
     public void onDataAdd(Object object) {

@@ -41,7 +41,7 @@ public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.On
 
     }
 
-
+    
     @Override
     public boolean onDown(MotionEvent motionEvent) {
         return false;

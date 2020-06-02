@@ -156,7 +156,7 @@ public class FCM extends FirebaseMessagingService {
 
         //If the data doesn't exist than add
         if(!taskDBHelper.hasID(id)){
-            taskDBHelper.insertTask(task, sectionID);
+            taskDBHelper.insertTask(task);
             Log.d(TAG, "Task from firebase added to SQL");
         }
     }

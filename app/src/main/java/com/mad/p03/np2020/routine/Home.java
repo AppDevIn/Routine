@@ -27,8 +27,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
-import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
-import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
+import com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter;
+import com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.database.MyDatabaseListener;
@@ -36,6 +36,16 @@ import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
 import java.util.List;
 
+
+
+/**
+ *
+ *
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
 public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     //Declare Constants
@@ -47,7 +57,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     HomePageAdapter mHomePageAdapter;
 
     EditText mEditAddList;
-    Spinner mSpinnerColor, mSpinnerBackground;
+    Spinner mSpinnerColor, mSpinnerIcons;
     CardView mCardViewPopUp;
     Button mBtnAdd, mBtnCancel;
     FloatingActionButton mImgAdd;
@@ -79,7 +89,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mImgAdd = findViewById(R.id.imgBtnTodo);
         mEditAddList = findViewById(R.id.txtAddList);
         mSpinnerColor = findViewById(R.id.spinnerColor);
-        mSpinnerBackground = findViewById(R.id.spinnerImg);
+        mSpinnerIcons = findViewById(R.id.spinnerImg);
         mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mBtnAdd = findViewById(R.id.btnAdd);
         mBtnCancel = findViewById(R.id.btnCancel);
@@ -113,8 +123,8 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
-        mSpinnerColor.setAdapter(new MySpinnerApater( mColors)); // For the color
-        mSpinnerBackground.setAdapter(new MySpinnerBackgroundAdapter(mBackgrounds)); //For the background
+        mSpinnerColor.setAdapter(new MySpinnerColorAdapter( mColors)); // For the color
+        mSpinnerIcons.setAdapter(new MySpinnerIconsAdapter(mBackgrounds)); //For the background
 
         //Set the cursor to the start
         mEditAddList.setSelection(0);
@@ -281,7 +291,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.i(TAG, "adding confirmed for " + listName);
 
         //Create a Section Object for the user input
-        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()], mUID);
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerIcons.getSelectedItemPosition()], mUID);
 
         //Save to SQL
         section.addSection(this);
