@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|stateVisible">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".Home" />
         <activity android:name=".MainActivity" />
         <activity android:name=".HabitActivity" />

@@ -1,6 +1,5 @@
 package com.mad.p03.np2020.routine;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -33,34 +32,26 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.database.FocusDatabase;
 import com.mad.p03.np2020.routine.Class.User;
 
-import java.io.File;
-import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import static java.lang.String.*;
 
 public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
 
-    SQLiteDatabase myLocalDatabase;
 
     //Timer widgets
     private Button focusButton; //Button for the timer
@@ -102,7 +93,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     //Local Database
     FocusDatabase focusDatabase;
-    SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,23 +148,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         mface.startAnimation(translateAnimation);
     }
 
+    /**
+     *
+     *
+     * Update the text of the timer
+     *
+     * Will be executed every click on the increment or decrement button
+     */
     private void initialization() {
-        File dbFile = this.getDatabasePath("focus.db");
-        Log.v(TAG, "Current Directory: " + dbFile.getAbsolutePath());
-        //How this initialization will work
-        //The data will be pulled from the local database and update to the firebase if user is already signed in
-        if(dbFile.exists()){
-            Log.v(TAG, "Database Exist");
-            focusDatabase = new FocusDatabase(FocusActivity.this);
-            user.setmFocusList(focusDatabase.getAllData());
-            FirebaseDatabase();
-
-        }else{
-            Log.v(TAG, "Database does not exist");
-            focusDatabase = new FocusDatabase(FocusActivity.this);
-            FirebaseDatabase();
-            user.readFocusFirebase(this);
-        }
+        Log.v(TAG, "Database does not exist");
+        focusDatabase = new FocusDatabase(FocusActivity.this);
+        FirebaseDatabase();
+        user.readFocusFirebase(this);
 
         tmins = 0;
         tsecs = 0;
@@ -188,14 +173,21 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     //Running, Fail, Success, Reset
     //This function is to track the button state so that it can show its respective view
+    /**
+     *
+     *
+     * Update the text of the timer
+     *
+     * Will be executed every click on the increment or decrement button
+     */
     private void focusTime() {
         switch (BUTTON_STATE) {
             case "EnterTask": //Enter Task view where user can enter its view
                 Log.v(TAG, "Button Enter Task is clicked");
-                if(tsecs == 0 && tmins == 0){
+                if (tsecs == 0 && tmins == 0) {
                     textDisplay.setText(R.string.FAIL_TIMER);
                     textDisplay.setTextColor(ContextCompat.getColor(this, R.color.chineseRed));
-                }else {
+                } else {
                     textDisplay.setTextColor(ContextCompat.getColor(this, R.color.black));
                     ShowKeyboard();
                     taskInput.setText("");
@@ -217,7 +209,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 long millisInput = totaltime * 1000;
                 Log.v(TAG, valueOf(millisInput));
                 BUTTON_STATE = "Fail";
-                setTime(millisInput);
+                StartTimer(millisInput);
                 break;
 
             case "Success":
@@ -226,7 +218,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 timerSuccess();
                 BUTTON_STATE = "Reset";
                 mCompletion = "True";
-                String dateSuccess = new SimpleDateFormat("ddMMyyyy, HH:mm:ss", Locale.getDefault()).format(new Date());
+                String dateSuccess = new SimpleDateFormat("ddMMyyyy HH:mm:ss", Locale.getDefault()).format(new Date());
                 Focus focusViewHolder = new Focus(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
                 focusViewHolder.setFbID(dateSuccess);
                 writeToDatabase(focusViewHolder);
@@ -239,7 +231,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 mCountDownTimer.cancel(); //Pause timer
                 BUTTON_STATE = "Reset";
                 mCompletion = "False";
-                String dateFail = new SimpleDateFormat("ddMMyyyy, HH:mm:ss", Locale.getDefault()).format(new Date());
+                String dateFail = new SimpleDateFormat("ddMMyyyy HH:mm:ss", Locale.getDefault()).format(new Date());
                 Focus focus = new Focus(dateTimeTask, tmins + ":" + tsecs, currentTask, mCompletion);
                 focus.setFbID(dateFail);
                 writeToDatabase(focus);
@@ -248,6 +240,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     //Local Database
+    /**
+     *
+     *
+     * Update the text of the timer
+     *
+     * Will be executed every click on the increment or decrement button
+     */
     private void writeToDatabase(Focus focus) {
         focusDatabase.addData(focus); //Add to database
         user.addFocusList(focus); //Adding it to list
@@ -255,6 +254,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     //Used for update button sequencing (timer)
+    /**
+     *
+     *
+     * Update the text of the timer
+     *
+     * Will be executed every click on the increment or decrement button
+     */
     private void timeRunner() { //Timer running
         BUTTON_STATE = "Running";
 
@@ -266,6 +272,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         mface.setImageResource(R.drawable.ic_focus_ast_down);
     }
 
+    /**
+     *
+     *
+     * Update the text of the timer
+     *
+     * Will be executed every click on the increment or decrement button
+     */
     private void timerFail() { //Give up
         BUTTON_STATE = "Fail";
 
@@ -276,6 +289,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         mface.setImageResource(R.drawable.ic_focus_ast_sad);
     }
 
+    /**
+     *
+     * Update each view to a success view
+     *
+     * If timer hits 0, it will execute
+     *
+     */
     private void timerSuccess() { //Timer hits 0
         BUTTON_STATE = "Success";
 
@@ -286,6 +306,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         mface.setImageResource(R.drawable.ic_focus_ast_happy);
     }
 
+    /**
+     *
+     * Reset the text of the timer
+     *
+     * Will be executed when the task has ended
+     */
     private void timerReset() { //Resetting to state
         BUTTON_STATE = "Reset";
 
@@ -307,10 +333,14 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         focusButton.setText(R.string.BUTTON_START);
     }
 
-    private void setTime(long milliseconds) {
-        StartTimer(milliseconds);
-    }
 
+    /**
+     *
+     *
+     * Update the text of the timer
+     *
+     * Will be executed every click on the increment or decrement button
+     */
     private void updateCountDownText() {
         int minutes = (int) (mTimeLeftInMillis / 1000) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
@@ -352,9 +382,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 focusTime();
                 break;
             case R.id.taskSubmit:
-                if(taskInput.getText().toString().isEmpty()){
+                if (taskInput.getText().toString().isEmpty()) {
                     textDisplay.setText("Please enter a task");
-                }else {
+                } else {
                     HideKeyboard();
                     currentTask = taskInput.getText().toString();
                     dateTimeTask = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault()).format(new Date());
@@ -367,6 +397,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
+    /**
+     *
+     * Event State onFocusChange
+     *
+     * Used detect if user click on outside of keyboard so it can automatically hide keyboard
+     *
+     */
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
@@ -378,7 +415,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
-    //This onLongClick Listener purpose is for user to increase the timer recursively
+    /**
+     *
+     * Event State onLongClick
+     *
+     */
     @Override
     public boolean onLongClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {
@@ -399,6 +440,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         return false;
     }
 
+    /**
+     *
+     * Event State touchRelease
+     *
+     * The event onTouch used to stop increment/decrement timer continuously when the button is onRelease
+     * @Param
+     */
     public boolean touchRelease(boolean btimer, MotionEvent event) { //On release hold of timer
         if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL && btimer) {
             return false;
@@ -425,6 +473,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
+    /**
+     *
+     * Event State onTouch
+     *
+     * The event onTouch used to increment/decrement timer continuously when the button is onhold
+     */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
@@ -445,13 +499,15 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         return false;
     }
 
-    //Event State
+    /**
+     *
+     * Event State onPause
+     * If user exited the app, notification is pushed
+     * Within 10 seconds, it will automatically count as fail
+     */
     @Override
     protected void onPause() {
         super.onPause();
-
-        //If user exited the app, notification is pushed
-        //Within 10 seconds, it will automatically count as fail
 
         if (BUTTON_STATE.equals("Fail")) {
             createNotification(); //Notification pushed
@@ -470,6 +526,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
+    /**
+     *
+     * Event State onResume
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -479,7 +539,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
-    //History Fragment
+    /**
+     *
+     * Open History Fragment
+     */
     public void openHistory() { //Open history tab
         HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDatabase);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -490,12 +553,27 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
+    /**
+     *
+     * Decrement time of user preferences
+     *
+     * @return int return back the decremented time
+     * @param tChill used to passed in the current value of the time
+     * @param type used to passed to the type of the time (Minutes, Hours, Seconds)
+     */
     @Override
     public void onFragmentInteraction() {
         onBackPressed();
     }
 
-    //Decrement time
+    /**
+     *
+     * Decrement time of user preferences
+     *
+     * @return int return back the decremented time
+     * @param tChill used to passed in the current value of the time
+     * @param type used to passed to the type of the time (Minutes, Hours, Seconds)
+     */
     public int decrement(int tChill, String type) { //Increment method for timer
         if (type.equals("min")) {
             if (tChill != 0) tChill--;
@@ -509,7 +587,14 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         return tChill;
     }
 
-    //Increment time
+    /**
+     *
+     * Increment time of user preferences
+     *
+     * @return int return back the decremented time
+     * @param tChill used to passed in the current value of the time
+     * @param type used to passed to the type of the time (Minutes, Hours, Seconds)
+     */
     public int increment(int tChill, String type) { //Decrement method for timer
         if (type.equals("min")) {
             tChill++;
@@ -523,7 +608,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         return tChill;
     }
 
-    //Start Timer for focus
+    /**
+     *
+     * Start Timer for Focus task activity
+     * @param TimeLeftInMillis used to passed in the time set on the activity to count down the timer
+     */
     private void StartTimer(long TimeLeftInMillis) {
         Log.v(TAG, "Timer Start");
 
@@ -544,7 +633,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }.start();
     }
 
-    //Notification
+    /**
+     *
+     * Create Notification
+     */
     private void createNotification() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) { //API level for Kitkat
             Intent intent = new Intent(this, FocusActivity.class);
@@ -569,7 +661,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
-    //Send notification to channel 1, used for api above 24
+    /**
+     *
+     * Send notification to channel 1, used for api above 24
+     */
     private void sendChannel1() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Intent intent = new Intent(getApplicationContext(), FocusActivity.class);
@@ -583,7 +678,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
-    //Firebase
+    /**
+     *
+     * Set Reference Data from firebase based on the UID
+     */
     private void FirebaseDatabase() { //Firebase Reference
         user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
@@ -591,7 +689,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.i(TAG, "checks for myRef: " + myRef);
     }
 
-    //Writing to google firebase
+    /**
+     * Writing new Focus activity data to Google Firebase
+     *
+     * The OneTimeWorkRequest is used to set condition if there is network connectivity
+     */
     private void writeDataFirebase(Focus focus) {
         Log.i(TAG, "Uploading to Database");
 
@@ -612,37 +714,47 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         WorkManager.getInstance(this).enqueue(mywork);
     }
-    //Soft Keyboard methods
+
+
+    /**
+     * Show soft keyboard for user input task
+     */
     private void ShowKeyboard() {
         taskInput.setVisibility(View.VISIBLE);
         final InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         taskSubmit.setVisibility(View.VISIBLE);
         assert mgr != null;
-        taskInput.postDelayed(new Runnable()
-        {
+        taskInput.postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 taskInput.requestFocus();
                 mgr.showSoftInput(taskInput, 0);
             }
-        }, 100);        Log.i(TAG,"Show Keyboard");
+        }, 100);
+        Log.i(TAG, "Show Keyboard");
 
     }
 
+
+    /**
+     * Hide soft keyboard for user input task
+     */
     private void HideKeyboard() {
         taskInput.setVisibility(View.INVISIBLE);
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         taskSubmit.setVisibility(View.INVISIBLE);
         assert mgr != null;
         mgr.hideSoftInputFromWindow(taskInput.getWindowToken(), 0);
-        Log.i(TAG,"Hide Keyboard");
+        Log.i(TAG, "Hide Keyboard");
     }
 
-    // Serialize a single object.
+    /**
+     * Serialize a single object.
+     * @return String this returns the custom object class as a string
+     */
     public String serializeToJson(Focus myClass) {
         Gson gson = new Gson();
-        Log.i(TAG,"Object serialize");
+        Log.i(TAG, "Object serialize");
         return gson.toJson(myClass);
     }
 }

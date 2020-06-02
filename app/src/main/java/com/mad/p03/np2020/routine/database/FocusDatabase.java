@@ -23,16 +23,15 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
     public static final String COLUMN_TASK_DURATION = "TASK_DURATION";
     public static final String COLUMN_TASK_COMPLETE = "TASK_COMPLETE";
     public static final String COLUMN_TASK_fbID = "fbID";
-    public static final String COLUMN_TASK_ID = "ID";
 
     public FocusDatabase(@Nullable Context context) {
-        super(context, "focus.db", null, 1);
+        super(context, "Focus.db", null, 4);
     }
 
     // this is called the first time a database is accessed. Creation a new database will involve here
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + FOCUS_TABLE + " (" + COLUMN_TASK_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TASK_fbID + " TEXT, " + COLUMN_TASK_NAME + " TEXT, " + COLUMN_TASK_DATE + " TEXT, " + COLUMN_TASK_DURATION + " TEXT, " + COLUMN_TASK_COMPLETE + " BOOL)";
+        String createTableStatement = "CREATE TABLE " + FOCUS_TABLE + " (" + COLUMN_TASK_fbID + " TEXT PRIMARY KEY, " + COLUMN_TASK_NAME + " TEXT, " + COLUMN_TASK_DATE + " TEXT, " + COLUMN_TASK_DURATION + " TEXT, " + COLUMN_TASK_COMPLETE + " BOOL)";
 
         db.execSQL(createTableStatement);
     }
@@ -63,7 +62,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
         // Find database that match the row data. If it found, delete and return true
 
         SQLiteDatabase db = this.getWritableDatabase();
-        String queryString = "DELETE FROM " + FOCUS_TABLE + " WHERE " + COLUMN_TASK_ID + " = " + focus.getSqlID();
+        String queryString = "DELETE FROM " + FOCUS_TABLE + " WHERE " + COLUMN_TASK_fbID + " = " + "'" + focus.getFbID() + "'";
 
         Cursor cursor = db.rawQuery(queryString, null);
 
@@ -97,14 +96,13 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
 
         if (cursor.moveToFirst()) {
             do {
-                String uid = cursor.getString(0);
-                String fbId = cursor.getString(1); //fbId
-                String taskName = cursor.getString(2);
-                String taskDate = cursor.getString(3);
-                String taskDuration = cursor.getString(4);
-                String taskCompletion = cursor.getString(5);
+                String fbId = cursor.getString(0); //fbId
+                String taskName = cursor.getString(1);
+                String taskDate = cursor.getString(2);
+                String taskDuration = cursor.getString(3);
+                String taskCompletion = cursor.getString(4);
 
-                Focus newFocus = new Focus(fbId, uid, taskDate, taskDuration, taskName, taskCompletion);
+                Focus newFocus = new Focus(fbId, taskDate, taskDuration, taskName, taskCompletion);
                 returnList.add(newFocus);
 
             } while (cursor.moveToNext());
