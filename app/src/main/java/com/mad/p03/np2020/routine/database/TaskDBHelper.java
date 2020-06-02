@@ -15,17 +15,15 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
-public class TaskDBHelper extends SQLiteOpenHelper {
+public class TaskDBHelper extends DBHelper {
 
-    static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 6;
     private final String TAG = "Task Database";
 
     //Listener
     private static MyDatabaseListener mMyDatabaseListener;
 
     public TaskDBHelper(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
 
     // Assign the listener implementing events interface that will receive the events

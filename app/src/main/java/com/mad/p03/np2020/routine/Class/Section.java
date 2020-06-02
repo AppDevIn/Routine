@@ -62,7 +62,8 @@ public class Section implements Serializable {
 
 
     /**
-     * The query to create this table
+     * The query needed to create a sql database
+     * for the user
      */
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + "("
@@ -75,7 +76,7 @@ public class Section implements Serializable {
                     + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
     /**
-     * Query to delete to delete this table
+     * The query needed to delete SQL table user from the database
      */
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;

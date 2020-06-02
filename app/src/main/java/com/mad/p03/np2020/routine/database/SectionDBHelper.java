@@ -14,17 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SectionDBHelper extends SQLiteOpenHelper{
+public class SectionDBHelper extends DBHelper{
 
     //Listener
     private static MyDatabaseListener mMyDatabaseListener;
 
-    static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 8;
     private final String TAG = "SectionDatabase";
 
     public SectionDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
 
     @Override
