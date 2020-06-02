@@ -442,7 +442,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        myAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(user.getUID()));
+        myAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(user.getUID()),user.getUID());
         mRecyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(new HabitAdapter.OnItemClickListener() {
             @Override
