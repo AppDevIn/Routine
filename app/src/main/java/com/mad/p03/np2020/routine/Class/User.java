@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class User implements Parcelable {
+public class  User implements Parcelable {
 
     //User table
     public static final String TABLE_NAME = "user"; //Name of the table

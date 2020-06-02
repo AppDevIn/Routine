@@ -54,6 +54,7 @@ public class CardActivity extends AppCompatActivity {
                     fragmentTransaction.add(R.id.fragmentContainer, stepFrag);
                     fragmentTransaction.commit();
                 }
+                noteStatus = false;
             }
         });
 
@@ -67,6 +68,7 @@ public class CardActivity extends AppCompatActivity {
                     NotesFragment noteFrag = new NotesFragment();
                     fragmentTransaction.add(R.id.fragmentContainer, noteFrag);
                     fragmentTransaction.commit();
+                    noteStatus = true;
                 }
             }
         });
