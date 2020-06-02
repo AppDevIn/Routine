@@ -20,6 +20,7 @@ import java.util.zip.Inflater;
 
 public class StepsFragment extends Fragment {
 
+    // Initializing variables
     final String TAG = "StepFragment";
     private String mParam1;
     private String mParam2;
@@ -29,11 +30,12 @@ public class StepsFragment extends Fragment {
     EditText stepName;
     Button stepAddButton;
 
+    // Constructor
     public StepsFragment() {
         // Required empty public constructor
     }
 
-
+    // Instantiate Steps Fragment
     public static StepsFragment newInstance(String param1, String param2) {
         StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
@@ -46,17 +48,20 @@ public class StepsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
+            // Get user input
             stepName = getView().findViewById(R.id.stepInput);
+
+            // Use list view for cehcklist
             listView = getView().findViewById(R.id.listView);
 
+            // Store checklist items in array lsit
             stepList = new ArrayList<>();
             arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_view_layout, stepList);
-
-
 
         }
     }
 
+    // Function to add items to checklist when add button clicked
     public void addItemToList(LayoutInflater inflater){
         stepList.add(stepName.getText().toString());
         arrayAdapter.notifyDataSetChanged();

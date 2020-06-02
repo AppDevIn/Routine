@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardActivity extends AppCompatActivity {
-
+    //Initialising variables
     final String TAG = "Card Layout";
     ArrayList<String> data = new ArrayList<>();
     ArrayList<Steps> StepItem = new ArrayList<>();
@@ -43,7 +43,7 @@ public class CardActivity extends AppCompatActivity {
         stepFragment = findViewById(R.id.stepFragment);
         notesFragment = findViewById(R.id.notesFragment);
 
-
+        // To open steps fragment
         stepFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +60,7 @@ public class CardActivity extends AppCompatActivity {
             }
         });
 
+        // To open notes fragment
         notesFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
