@@ -20,8 +20,12 @@ public class DeleteSectionWorker extends Worker {
 
 
     /**
-     * fdsnajkndfagkj
-     * @return
+     *
+     * To do background processing, to delete this data in
+     * firebase using the ID of the section and removing in
+     * firebase.
+     *
+     * @return Result This is tell what happen to the background work
      */
     @NonNull
     @Override
