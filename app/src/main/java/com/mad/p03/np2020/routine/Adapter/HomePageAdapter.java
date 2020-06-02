@@ -26,7 +26,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class HomePageAdapterHome extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter, OnSectionListener{
+public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter, OnSectionListener{
 
     private final String TAG = "HomeAdapter";
 
@@ -39,7 +39,7 @@ public class HomePageAdapterHome extends RecyclerView.Adapter<MyHomeViewHolder> 
 
 
 
-    public HomePageAdapterHome(List<Section> sectionList, LifecycleOwner owner) {
+    public HomePageAdapter(List<Section> sectionList, LifecycleOwner owner) {
         mSectionList = sectionList;
         this.mOwner = owner;
 

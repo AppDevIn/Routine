@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SectionDBHelper extends SQLiteOpenHelper {
+public class SectionDBHelper extends SQLiteOpenHelper{
 
     //Listener
     private static MyDatabaseListener mMyDatabaseListener;
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 6;
+    static final int DATABASE_VERSION = 7;
     private final String TAG = "SectionDatabase";
 
     public SectionDBHelper(Context context) {
@@ -136,7 +136,6 @@ public class SectionDBHelper extends SQLiteOpenHelper {
      * @param UID The user Unique Identification
      * @return A list of section data from SQL
      */
-
     public List<Section> getAllSections(String UID){
 
         List<Section> sections = new ArrayList<>();
@@ -144,7 +143,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         // Select All Query
 
         String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME + " WHERE " + Section.COLUMN_USERID + "='" + UID +"' ORDER BY " +
-                Section.COLUMN_ID + " DESC;";
+                Section.COLUMN_POSITION + " ASC;";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -185,6 +184,22 @@ public class SectionDBHelper extends SQLiteOpenHelper {
                 new String[]{ID} // The args will be replaced by ?
                 );
         mMyDatabaseListener.onDataDelete(ID);
+        db.close();
+    }
+
+    public void updatePosition(Section section){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Section.COLUMN_POSITION, section.getPosition());
+        db.update(
+                Section.TABLE_NAME,
+                updateValues,
+                Section.COLUMN_SECTION_ID + " = ?",
+                new String[]{section.getID()}
+        );
+
         db.close();
     }
 

@@ -25,7 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.mad.p03.np2020.routine.Adapter.HomePageAdapterHome;
+import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
@@ -44,7 +44,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     //Declare member variables
     RecyclerView mGridView;
-    HomePageAdapterHome mHomePageAdapter;
+    HomePageAdapter mHomePageAdapter;
 
     EditText mEditAddList;
     Spinner mSpinnerColor, mSpinnerBackground;
@@ -109,7 +109,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
         // Initialize any value
-        mHomePageAdapter = new HomePageAdapterHome(mSectionList, this);
+        mHomePageAdapter = new HomePageAdapter(mSectionList, this);
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
@@ -216,6 +216,17 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
+        for (int i = 0; i < mSectionList.size(); i++) {
+            mSectionList.get(i).setPosition(i);
+            sectionDBHelper.updatePosition(mSectionList.get(i));
+
+        }
+    }
 
     /**
      *

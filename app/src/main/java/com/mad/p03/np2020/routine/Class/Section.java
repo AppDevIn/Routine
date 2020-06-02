@@ -40,12 +40,22 @@ import androidx.work.WorkManager;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
+
+/**
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ */
 public class Section implements Serializable {
 
     //Declare the constants of the database
     public static final String TABLE_NAME = "section";
 
+    /**Used as the primary key for this table*/
     public static final String COLUMN_ID = "id";
+    /**Used to identify the order the sections are in*/
+    public static final String COLUMN_POSITION = "position";
+    /***/
     public static final String COLUMN_SECTION_ID = "SectionID";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_USERID = "userId";
@@ -56,6 +66,7 @@ public class Section implements Serializable {
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_POSITION + " INTEGER,"
                     + COLUMN_SECTION_ID + " TEXT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_COLOR + " INTEGER,"
@@ -77,6 +88,7 @@ public class Section implements Serializable {
     private List<Task> mTaskList = new ArrayList<>();
     private int mBackgroundColor;
     private int bmiIcon;
+    private int position;
     private String ID;
 
 
@@ -89,7 +101,7 @@ public class Section implements Serializable {
         setID(UUID.randomUUID().toString());
     }
 
-    public Section(String name, int color, int iconResID, String ID) {
+    public Section(String name, int color, int iconResID, String ID, int position) {
         this.mName = name;
         this.mBackgroundColor = color;
         this.bmiIcon = iconResID;
@@ -115,7 +127,7 @@ public class Section implements Serializable {
             id = jsonObject.getString("id");
 
             //Return back the object
-            return new Section(name, color, image, id);
+            return new Section(name, color, image, id,5);
 
 
         } catch (JSONException e) {
@@ -136,7 +148,8 @@ public class Section implements Serializable {
                 cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
                 cursor.getInt(cursor.getColumnIndex(Section.COLUMN_COLOR)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_IMAGE)),
-                cursor.getString(cursor.getColumnIndexOrThrow(Section.COLUMN_SECTION_ID))
+                cursor.getString(cursor.getColumnIndexOrThrow(Section.COLUMN_SECTION_ID)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(Section.COLUMN_POSITION))
         );
     }
 
@@ -191,6 +204,13 @@ public class Section implements Serializable {
         return sectionDBHelper.insertSection(this, UID);
     }
 
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     /**
      * Upload the section info to firebase
@@ -243,6 +263,7 @@ public class Section implements Serializable {
 
     }
 
+
     /**
      * Delete the section from firebase
      * when internet connectivity is present
@@ -251,7 +272,6 @@ public class Section implements Serializable {
      *
      * @param owner to be used to observe my upload
      */
-
     public void executeFirebaseSectionDelete(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseSectionDelete(): Preparing to delete, on ID: " + ID);
