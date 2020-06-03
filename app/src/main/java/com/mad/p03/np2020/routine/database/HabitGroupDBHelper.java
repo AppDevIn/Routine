@@ -42,8 +42,7 @@ public class HabitGroupDBHelper extends DBHelper {
      * */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(HabitGroup.CREATE_GROUPS_TABLE);
-        Log.d(TAG, "onCreate: ");
+        super.onCreate(db);
     }
 
     /**
@@ -58,9 +57,7 @@ public class HabitGroupDBHelper extends DBHelper {
      * */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(HabitGroup.DROP_GROUPS_TABLE);
-        onCreate(db);
-        Log.d(TAG, "onUpgrade: ");
+        super.onUpgrade(db, oldVersion, newVersion);
     }
 
     /**
@@ -74,7 +71,7 @@ public class HabitGroupDBHelper extends DBHelper {
      * @param newVersion This parameter is the new version.
      * */
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.setVersion(oldVersion);
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     /**

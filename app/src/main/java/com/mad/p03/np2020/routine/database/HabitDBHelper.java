@@ -42,8 +42,7 @@ public class HabitDBHelper extends DBHelper{
      * */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(Habit.CREATE_HABITS_TABLE);
-        Log.d(TAG, "Habit Database is being created");
+        super.onCreate(db);
     }
 
     /**
@@ -58,9 +57,7 @@ public class HabitDBHelper extends DBHelper{
      * */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(Habit.DROP_HABITS_TABLE);
-        onCreate(db);
-        Log.d(TAG, "Habit Database is being upgraded");
+        super.onUpgrade(db, oldVersion, newVersion);
     }
 
     /**
@@ -74,7 +71,7 @@ public class HabitDBHelper extends DBHelper{
      * @param newVersion This parameter is the new version.
      * */
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.setVersion(oldVersion);
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     /**

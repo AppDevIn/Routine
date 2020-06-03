@@ -21,6 +21,30 @@ public class Focus implements Parcelable {
     private String mTask;
     private String mCompletion;
 
+
+    /**Name for table,  to identify the name of the table*/
+    public static final String FOCUS_TABLE = "focus";
+
+    /**Column task_name for table,  to identify the name of the section*/
+    public static final String COLUMN_TASK_NAME = "TASK_NAME";
+
+    /**Column task_date for table,  to identify the name of the section*/
+    public static final String COLUMN_TASK_DATE = "TASK_DATE";
+
+    /**Column task_duration for table,  to identify the name of the section*/
+    public static final String COLUMN_TASK_DURATION = "TASK_DURATION";
+
+    /**Column task_complete for table,  to identify the name of the section*/
+    public static final String COLUMN_TASK_COMPLETE = "TASK_COMPLETE";
+
+    /**Primary key for table,  to identify the row.*/
+    public static final String COLUMN_TASK_fbID = "fbID";
+
+    public static final String CREATE_SQL = "CREATE TABLE " + FOCUS_TABLE + " (" + COLUMN_TASK_fbID + " TEXT PRIMARY KEY, " + COLUMN_TASK_NAME + " TEXT, " + COLUMN_TASK_DATE + " TEXT, " + COLUMN_TASK_DURATION + " TEXT, " + COLUMN_TASK_COMPLETE + " BOOL)";
+
+    public static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + FOCUS_TABLE;
+
     /**
      * Initialize Focus Activity with Focus object
      * when its called
