@@ -6,7 +6,7 @@ All in one Productivity App
 
 ## Open Doucmentation
 
-### Donwload the file
+### Download the file
 
 ```cmd
 git clone https://github.com/AppDevIn/Routine.git
