@@ -6,7 +6,7 @@ All in one Productivity App
 
 ## Open Doucmentation
 
-(https://appdevin.github.io/routine.documentation.github.io)
+[Routine Class Documentation](https://appdevin.github.io/routine.documentation.github.io)
 
 
 
@@ -75,7 +75,7 @@ All in one Productivity App
 
 24. 
 
-      
+  ​    
 
 ### Quan Sheng and Jeya
 
@@ -136,10 +136,10 @@ All in one Productivity App
 ## Class Diagram 
 
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/routine.svg)
-![Screenshot 2020-06-03 at 9.53.07 AM](images/database.svg)
-![Screenshot 2020-06-03 at 9.53.07 AM](images/background.svg)
-![Screenshot 2020-06-03 at 9.53.07 AM](images/ViewHolder.svg)
-![Screenshot 2020-06-03 at 9.53.07 AM](images/Adapter.svg)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/database.svg)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/background.svg)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](images/Class.svg)
 
 
