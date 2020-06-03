@@ -119,8 +119,30 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
+    class com.mad.p03.np2020.routine.CardActivity {
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
     namespace Class {
       class com.mad.p03.np2020.routine.Class.AlarmReceiver {
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.CardAdapter {
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.CardViewHolder {
       }
     }
   }
@@ -169,6 +191,14 @@ title __APP's Class Diagram__\n
   namespace com.mad.p03.np2020.routine {
     namespace Class {
       class com.mad.p03.np2020.routine.Class.Label {
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.PopUp {
       }
     }
   }
@@ -257,7 +287,25 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
+    class com.mad.p03.np2020.routine.NotesFragment {
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
     class com.mad.p03.np2020.routine.RegisterActivity {
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    class com.mad.p03.np2020.routine.Settings {
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    class com.mad.p03.np2020.routine.StepsFragment {
     }
   }
   
@@ -382,6 +430,14 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace database {
+      class com.mad.p03.np2020.routine.database.CardDBHelper {
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace database {
       class com.mad.p03.np2020.routine.database.DBHelper {
       }
     }
@@ -465,11 +521,15 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Adapter.TaskAdapter .up.|> com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter
   com.mad.p03.np2020.routine.Adapter.TaskAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.BlankViewModel -up-|> androidx.lifecycle.ViewModel
+  com.mad.p03.np2020.routine.CardActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.Class.AlarmReceiver -up-|> android.content.BroadcastReceiver
+  com.mad.p03.np2020.routine.Class.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Class.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.Class.Focus .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitGroup : group
   com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitReminder : habitReminder
   com.mad.p03.np2020.routine.Class.ItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
+  com.mad.p03.np2020.routine.Class.PopUp -up-|> android.app.Activity
   com.mad.p03.np2020.routine.Class.Section .up.|> java.io.Serializable
   com.mad.p03.np2020.routine.Class.User .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
@@ -505,8 +565,11 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.LoginActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.LoginActivity o-- com.mad.p03.np2020.routine.database.UserDBHelper : userDatabase
   com.mad.p03.np2020.routine.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.NotesFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.RegisterActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.RegisterActivity o-- com.mad.p03.np2020.routine.Class.User : mUser
+  com.mad.p03.np2020.routine.Settings -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.StepsFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener
   com.mad.p03.np2020.routine.TaskActivity .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
   com.mad.p03.np2020.routine.TaskActivity -up-|> androidx.appcompat.app.AppCompatActivity
@@ -537,6 +600,7 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.background.UploadDataWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.UploadSectionWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.UploadTaskWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.database.CardDBHelper -up-|> android.database.sqlite.SQLiteOpenHelper
   com.mad.p03.np2020.routine.database.DBHelper -up-|> android.database.sqlite.SQLiteOpenHelper
   com.mad.p03.np2020.routine.database.FocusDBHelper .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.database.FocusDBHelper -up-|> com.mad.p03.np2020.routine.database.DBHelper
