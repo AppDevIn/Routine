@@ -3,42 +3,20 @@ package com.mad.p03.np2020.routine;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-import androidx.work.Worker;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,33 +24,28 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
-import com.mad.p03.np2020.routine.Adapter.ItemTouchHelperAdapter;
-import com.mad.p03.np2020.routine.Adapter.MyItemTouchHelper;
-import com.mad.p03.np2020.routine.Adapter.MySpinnerApater;
-import com.mad.p03.np2020.routine.Adapter.MySpinnerBackgroundAdapter;
-import com.mad.p03.np2020.routine.Adapter.OnSectionListener;
+import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
+import com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter;
+import com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
-import com.mad.p03.np2020.routine.background.UploadDataWorker;
-import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.database.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
+
+
+/**
+ *
+ *
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
 public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     //Declare Constants
@@ -84,7 +57,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     HomePageAdapter mHomePageAdapter;
 
     EditText mEditAddList;
-    Spinner mSpinnerColor, mSpinnerBackground;
+    Spinner mSpinnerColor, mSpinnerIcons;
     CardView mCardViewPopUp;
     Button mBtnAdd, mBtnCancel;
     FloatingActionButton mImgAdd;
@@ -116,14 +89,14 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mImgAdd = findViewById(R.id.imgBtnTodo);
         mEditAddList = findViewById(R.id.txtAddList);
         mSpinnerColor = findViewById(R.id.spinnerColor);
-        mSpinnerBackground = findViewById(R.id.spinnerImg);
+        mSpinnerIcons = findViewById(R.id.spinnerImg);
         mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mBtnAdd = findViewById(R.id.btnAdd);
         mBtnCancel = findViewById(R.id.btnCancel);
 
 
 
-        //Get all the section data from firebase
+        //Get all the section data from SQL
         mSectionDBHelper = new SectionDBHelper(this);
         mSectionList = mSectionDBHelper.getAllSections(mUID);
         Log.d(TAG, "onCreate(): Data received from SQL");
@@ -138,12 +111,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //To set to Full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: GUI is ready");
 
 
         //Recycler view setup
@@ -156,17 +123,40 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mGridView.setAdapter(mHomePageAdapter);
 
         //Declaring a custom adapter
-        mSpinnerColor.setAdapter(new MySpinnerApater( mColors)); // For the color
-        mSpinnerBackground.setAdapter(new MySpinnerBackgroundAdapter(mBackgrounds)); //For the background
+        mSpinnerColor.setAdapter(new MySpinnerColorAdapter( mColors)); // For the color
+        mSpinnerIcons.setAdapter(new MySpinnerIconsAdapter(mBackgrounds)); //For the background
 
         //Set the cursor to the start
         mEditAddList.setSelection(0);
 
         //Setting up touchhelper
-        ItemTouchHelper.Callback callback = new MyItemTouchHelper(mHomePageAdapter);
+        ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         mHomePageAdapter.setTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mGridView);
+
+
+        //Subscribing to the topic to listen to
+        FirebaseMessaging.getInstance().subscribeToTopic(mUID)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (!task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: Done Running");
+                        }
+
+                        Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: GUI is ready");
 
 
         //Make sure the card view is not visible
@@ -236,33 +226,41 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
+        for (int i = 0; i < mSectionList.size(); i++) {
+            mSectionList.get(i).setPosition(i);
+            sectionDBHelper.updatePosition(mSectionList.get(i));
+
+        }
+    }
 
     /**
      *
      * Triggered to add to the current adapter list
      * when it is added to the sql
      *
-     * @param section given from the SQL when triggered
+     * @param object given from the SQL when triggered
+     *               for this the object is section
      */
     @Override
-    public void onSectionAdd(final Section section) {
-        Log.d(TAG, "A new section has been added: " + section.toString());
+    public void onDataAdd(final Object object) {
+        Log.d(TAG, "A new section has been added: " + object.toString());
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //Add to List<Section>
-                mHomePageAdapter.addItem(section);
+                mHomePageAdapter.addItem((Section) object);
             }
         });
     }
 
     @Override
-    public void onSectionDelete(String ID) {
-        //Remove item from the data in adapter/local list
-
-
+    public void onDataDelete(String ID) {
         for (int position = 0; position < mSectionList.size(); position++) {
 
 
@@ -277,8 +275,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
                 break;
             }
         }
-
     }
+
+
 
     /**
      *
@@ -292,11 +291,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.i(TAG, "adding confirmed for " + listName);
 
         //Create a Section Object for the user input
-        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerBackground.getSelectedItemPosition()]);
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerIcons.getSelectedItemPosition()], mUID);
 
         //Save to SQL
-        String id  = section.addSection(this, mUID);
-        Log.d(TAG, "updateCardUI(): Added to SQL, this ID is " + id);
+        section.addSection(this);
+        Log.d(TAG, "updateCardUI(): Added to SQL");
 
         //Save to firebase
         section.executeFirebaseSectionUpload(mUID, section.getID(), this);
@@ -328,4 +327,3 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
 }
-

@@ -1,68 +1,64 @@
 package com.mad.p03.np2020.routine.Adapter;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.HabitActivity;
-import com.mad.p03.np2020.routine.Home;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.TaskActivity;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
-import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
-import com.mad.p03.np2020.routine.background.UploadSectionWorker;
-import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 
-public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements ItemTouchHelperAdapter, OnSectionListener{
+
+/**
+ *
+ * This will be the controller glue between the viewholder and the model
+ * This will inflate the the items for the sections to which will give us
+ * the view from will be passed to the view holder MyHomeViewHolder.
+ *
+ * In here you should be able to move, swipe click, add and delete the section
+ *
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ */
+public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter, OnSectionListener{
 
     private final String TAG = "HomeAdapter";
-
-    List<Section> mSectionList = new ArrayList<>();
-    Context mContext;
-    LifecycleOwner mOwner;
+    private List<Section> mSectionList;
+    private Context mContext;
+    private LifecycleOwner mOwner;
 
     //Listener
     private ItemTouchHelper mItemTouchHelper;
 
 
-
+    /**
+     *
+     * Will set the data and the lifecycle owner, give access to
+     * the adapter's methods. Sets the list into the member variable
+     * and set the owner into the member variable
+     *
+     * @param sectionList This will be the list of section
+     * @param owner Owner of the lifecycle to be able to see
+     *             lifecycle changes
+     */
     public HomePageAdapter(List<Section> sectionList, LifecycleOwner owner) {
         mSectionList = sectionList;
         this.mOwner = owner;
@@ -71,6 +67,17 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
     }
 
+    /**
+     *
+     * Called when RecyclerView needs a new View Holder of the given type to represent the section
+     *
+     * This ViewHolder will be constructed with a new view that will represent the Section which consist
+     * of name, color of the section and the icon that represent it. The view will be inflated from XML file
+     *
+     * @param parent The ViewGroup into which the new View will be added after it is bound to an adapter position.
+     * @param viewType The view type of the new View.
+     * @return MyHomeViewHolder with the view inflated
+     */
     @NonNull
     @Override
     public MyHomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -82,9 +89,19 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         return new MyHomeViewHolder(view, this, mItemTouchHelper);
     }
 
+    /**
+     *
+     * This will be called to display the section data at the specific position. This will update
+     * the contents of the itemView to which will reflect at the given position
+     *
+     * @param holder The ViewHolder which should be updated to represent the contents of
+     *               the item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(@NonNull MyHomeViewHolder holder, final int position) {
         //***************** Set values into view *****************//
+
 
         //For the TextView
         holder.mTextViewListName.setText(mSectionList.get(position).getName());
@@ -106,44 +123,89 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
     }
 
+    /**
+     * Returns the total number of items in the list set and held by the adapter.
+     *
+     * @return The total number of items in list
+     */
     @Override
     public int getItemCount() {
         return mSectionList.size();
     }
 
+    /**
+     *
+     * This is when the item is moved it will
+     * move the items in the array by removing
+     * the object from that position and adding
+     * it into the new position
+     *
+     * @param fromPosition int where the item was
+     * @param toPosition int where the item is currently at
+     */
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
+        //Create the object
          Section fromSection = mSectionList.get(fromPosition);
-         mSectionList.remove(fromPosition);
-         mSectionList.add(toPosition, fromSection);
-         notifyItemMoved(fromPosition, toPosition);
 
+         mSectionList.remove(fromPosition); // Remove the object from the list
+         mSectionList.add(toPosition, fromSection); // Add the the object into the new position
+
+         //Notify the adapter the change
+         notifyItemMoved(fromPosition, toPosition);
 
         Log.d(TAG, "onItemMove(): From: " + fromPosition + " To: " + toPosition);
     }
 
+
+    /**
+     * When it is swiped it will call the a alert dialog to confirm the delete
+     *
+     * @param position This is the position it was swiped from
+     */
     @Override
     public void onItemSwiped(int position) {
-        Log.d(TAG, "onItemSwiped: " + position);
+        Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
 
         confirmDelete(position);
     }
 
 
+    /**
+     *
+     * This used to intent to another layout
+     * and adding data object section in it which
+     * can be retrieved from the other layout
+     * by calling {@code getIntent()}.
+     *
+     * @param position The item position it was clicked from
+     */
     @Override
     public void onSectionClick(int position) {
         Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
+
+        //Move to new activity
+        Intent intent = new Intent(mContext, TaskActivity.class);
+        intent.putExtra("section", mSectionList.get(position)); // Add the object
+        mContext.startActivity(intent); //Start the activity
     }
 
+
+    /**
+     * This is method is used to set the custom item touch helper
+     * @param itemTouchHelper The custom touch helper that will be used
+     *                        to controller to movie of the viewholder
+     */
     public void setTouchHelper(ItemTouchHelper itemTouchHelper){
         this.mItemTouchHelper = itemTouchHelper;
     }
 
 
     /**
-     * To be able give back the section for the list in the adapter
+     * To be able give back the section from the list in the adapter
      *
-     * @param position
+     * @param position which position of the list
+     *                 do you want the section from
      * @return give back the section for the position
      */
     public Section getSection(int position) {
@@ -153,7 +215,8 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
     /**
      * Adding the section to
-     * the list
+     * the list and notifying the adapter
+     * of the change
      * @param section the section that will be added
      */
     public void addItem(Section section){
@@ -165,7 +228,9 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
     }
 
     /**
-     * The place to delete the item in the list
+     * The place to delete the item in the list and notify the change
+     * to the adapter
+     *
      * @param position The position from the data will be removed from
      */
     public void removeItem(int position){
@@ -180,7 +245,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
     }
 
 
-
+    /**
+     *
+     * This method builds the adapter and inflates a view for a image
+     * with positive and negative button (yes and no). When the positive button
+     * is clicked the it will remove from firebase followed by removing it from SQL
+     *
+     * @param position which position in the list will the data be deleted
+     */
     private void confirmDelete(final int position){
         Log.d(TAG, "Deletion prompt is building");
 

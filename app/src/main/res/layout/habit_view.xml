@@ -18,7 +18,7 @@
             android:layout_gravity="right"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/habit_close" />
+            app:srcCompat="@drawable/habit_close" />
 
         <TextView
             android:id="@+id/habit_view_title"
@@ -83,7 +83,7 @@
                 android:layout_marginEnd="70dp"
                 android:layout_toStartOf="@+id/habit_view_count"
                 android:scaleX="-1"
-                android:src="@drawable/habit_refresh" />
+                app:srcCompat="@drawable/habit_refresh" />
 
 
             <TextView
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
                 android:text="11"
                 android:textColor="@color/colorWhite"
@@ -115,7 +115,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
                 android:layout_toEndOf="@id/habit_view_add"
-                android:src="@drawable/habit_modify" />
+                app:srcCompat="@drawable/habit_modify" />
 
         </RelativeLayout>
 
@@ -200,14 +200,14 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/habit_modify" />
+            app:srcCompat="@drawable/habit_modify" />
 
         <ImageButton
             android:id="@+id/habit_view_delete"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/habit_delete" />
+            app:srcCompat="@drawable/habit_delete" />
 
 
 

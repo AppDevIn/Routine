@@ -31,6 +31,7 @@
     <string name="registerPassword">Enter a secure password</string>
     <string name="registerDOB">What is your Date of Birth?</string>
     <string name="empty_text_error">This input is empty</string>
+    <string name="addMessage" >Add New Card</string>
 
     <string name="account"><b><u>Account</u></b></string>
     <string name="notifications"><b><u>Notifications</u></b></string>
@@ -63,10 +64,13 @@
     <string name="SUCCESS_STATUS">Yayyyy! You have reach your goal!</string>
     <string name="PROCESS_STATUS">While you are at it, Keep fighting!</string>
     <string name="REST_STATUS">What are you focusing today?</string>
+    <string name="FAIL_TIMER">Please enter a valid timer</string>
     <string name="BUTTON_FAIL">Try Again</string>
     <string name="BUTTON_RESTART">Restart</string>
     <string name="BUTTON_START">Start</string>
     <string name="login_title">Login</string>
+    <string name="INPUT_TASK">Enter your Task</string>
+    <string name="remember_me">Remember Me</string>
     <string name="name">Name</string>
     <string name="add">Add</string>
     <string name="delete">Delete</string>

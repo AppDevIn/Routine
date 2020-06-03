@@ -8,52 +8,76 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class SectionDBHelper extends SQLiteOpenHelper {
+
+/**
+ *
+ * This is the database that is used create the section table
+ * in the database
+ *
+ *
+ * @author Jeyavishnu
+ * @since 03-06-2020
+ */
+public class SectionDBHelper extends DBHelper{
 
     //Listener
     private static MyDatabaseListener mMyDatabaseListener;
 
-    static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 5;
-    private final String TAG = "SectionDatebase";
+    private final String TAG = "SectionDatabase";
 
     public SectionDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
 
+
+    /**
+     * Create the table section
+     * @param sqLiteDatabase The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d(TAG, "User database is being created");
-
-        //Create user database
-        sqLiteDatabase.execSQL(Section.SQL_CREATE_ENTRIES);
+        super.onCreate(sqLiteDatabase);
     }
 
+    /**
+     *
+     * Called when the database needs to be upgraded. This will drop the
+     * database and create a new one. The data from the previous one will
+     * move forward into the new db
+     *
+     * @param sqLiteDatabase The database.
+     * @param i The old database version.
+     * @param i1 The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.d(TAG, "User database is being upgraded");
-
-        sqLiteDatabase.execSQL(Section.SQL_DELETE_ENTRIES); // Delete existing user dat
-        onCreate(sqLiteDatabase);
+        super.onUpgrade(sqLiteDatabase, i, i1);
     }
 
-    //If current version is newer than the requested one
+    /**
+     *
+     * If current version is newer than the requested one. This will drop the
+     * database and create a new one.
+     *
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(TAG, "User database is downgraded");
-
-        onUpgrade(db,oldVersion,newVersion);
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
-
-    // Assign the listener implementing events interface that will receive the events
-    public static void  setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
+    /**
+     * Assign the listener implementing events interface
+     * that will receive the events
+     * @param myDatabaseListener setting the listener where the owner will listen to the message
+     */
+    public static void setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
         mMyDatabaseListener = myDatabaseListener;
     }
 
@@ -91,7 +115,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
             Log.d(TAG, "insertSection(): Data inserted");
         }
         if (mMyDatabaseListener != null)
-            mMyDatabaseListener.onSectionAdd(section);
+            mMyDatabaseListener.onDataAdd(section);
 
         return String.valueOf(id);
     }
@@ -136,7 +160,6 @@ public class SectionDBHelper extends SQLiteOpenHelper {
      * @param UID The user Unique Identification
      * @return A list of section data from SQL
      */
-
     public List<Section> getAllSections(String UID){
 
         List<Section> sections = new ArrayList<>();
@@ -144,7 +167,7 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         // Select All Query
 
         String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME + " WHERE " + Section.COLUMN_USERID + "='" + UID +"' ORDER BY " +
-                Section.COLUMN_ID + " DESC;";
+                Section.COLUMN_POSITION + " ASC;";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -171,9 +194,10 @@ public class SectionDBHelper extends SQLiteOpenHelper {
         return sections;
     }
 
+
     /**
      * To delete the data in SQL
-     * from the ID fin parameter
+     * from the ID parameter
      *
      * @param ID it is from section object
      */
@@ -184,11 +208,45 @@ public class SectionDBHelper extends SQLiteOpenHelper {
                 Section.COLUMN_SECTION_ID + " = ?", //The condition
                 new String[]{ID} // The args will be replaced by ?
                 );
-        mMyDatabaseListener.onSectionDelete(ID);
+        mMyDatabaseListener.onDataDelete(ID);
         db.close();
     }
 
 
+    /**
+     *
+     * This method will update the position of the given
+     * row based on the ID
+     *
+     * @param section The object that needs to be updates
+     */
+    public void updatePosition(Section section){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Section.COLUMN_POSITION, section.getPosition());
+        db.update(
+                Section.TABLE_NAME,
+                updateValues,
+                Section.COLUMN_SECTION_ID + " = ?",
+                new String[]{section.getID()}
+        );
+
+        db.close();
+    }
+
+
+    /**
+     *
+     * This method will query from the database
+     * if it doesn't exist it return false if does true
+     * based on the {@code moveToFirst()}
+     *
+     * @param id Section ID to check against the table
+     * @return Boolean if is true or false depending on if
+     * the row exits. If it exists is true
+     */
     public Boolean hasID(String id){
         SQLiteDatabase db = this.getReadableDatabase();
 

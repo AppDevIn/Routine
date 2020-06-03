@@ -12,42 +12,55 @@ import androidx.annotation.NonNull;
 
 
 //This database is just the cache for online data
-public class UserDBHelper extends SQLiteOpenHelper {
+public class UserDBHelper extends DBHelper {
 
-    //TODO: Declare the constant
-    static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 4;
     private final String TAG = "UserDatebase";
 
-
-
     public UserDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
-    
+
+
+    /**
+     * Called when the database is created for
+     * the first time. This where the creation of
+     * the user data table will occur
+     *
+     * @param sqLiteDatabase The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d(TAG, "User database is being created");
-
-        //Create user database
-        sqLiteDatabase.execSQL(User.SQL_CREATE_ENTRIES);
+        super.onCreate(sqLiteDatabase);
     }
 
+    /**
+     *
+     * Called when the database needs to be upgraded. This will drop the
+     * database and create a new one. The data from the previous one will
+     * move forward into the new db
+     *
+     * @param sqLiteDatabase The database.
+     * @param i The old database version.
+     * @param i1 The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.d(TAG, "User database is being upgraded");
-
-        sqLiteDatabase.execSQL(User.SQL_DELETE_ENTRIES); // Delete existing user dat
-        onCreate(sqLiteDatabase);
-
+        super.onUpgrade(sqLiteDatabase,i,i1);
     }
 
-    //If current version is newer than the requested one
+
+    /**
+     *
+     * If current version is newer than the requested one. This will drop the
+     * database and create a new one.
+     *
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(TAG, "User database is downgraded");
-
-        onUpgrade(db,oldVersion,newVersion);
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     /**
@@ -92,12 +105,12 @@ public class UserDBHelper extends SQLiteOpenHelper {
      *
      * @return the user the back with the name, email and dob
      */
-    public User getUser(){
+    public User getUser(String UID){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Log.d(TAG, "getUser: Querying data");
         //Get the data from sqllite
-        Cursor cursor = db.rawQuery("select * from " + User.TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("select * from " + User.TABLE_NAME + " where " + User.COLUMN_NAME_ID + "='" + UID+"';", null);
 
         if (cursor != null)
             cursor.moveToFirst(); //Only getting the first value

@@ -42,14 +42,9 @@ proguard/
 captures/
 
 # IntelliJ
-<<<<<<< HEAD
-.iml
-=======
 *.iml
->>>>>>> 40eef2b849382788480a881f0eb543830f745809
 app/app.iml
 .idea/workspace.xml
-.idea/tasks.xml
 .idea/gradle.xml
 .idea/assetWizardSettings.xml
 .idea/dictionaries
