@@ -44,7 +44,8 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  */
 public class Section implements Serializable {
 
-    //Declare the constants of the database
+
+    /**The table name of this class in SQL*/
     public static final String TABLE_NAME = "section";
 
     /**Used as the primary key for this table*/
@@ -63,7 +64,7 @@ public class Section implements Serializable {
 
     /**
      * The query needed to create a sql database
-     * for the user
+     * for the section
      */
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + "("
@@ -76,7 +77,7 @@ public class Section implements Serializable {
                     + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
     /**
-     * The query needed to delete SQL table user from the database
+     * The query needed to delete SQL table section from the database
      */
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -160,7 +161,6 @@ public class Section implements Serializable {
     public int getBmiIcon() {
         return bmiIcon;
     }
-
 
     /**@return String This return the name of this section*/
     public String getName() {

@@ -91,7 +91,13 @@ open Documentation/index.html
 
 21. DBHelper
 
-    
+22. MyHomeViewHolder
+
+23. TaskViewHolder
+
+24. 
+
+      
 
 ### Quan Sheng and Jeya
 
