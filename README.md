@@ -83,51 +83,51 @@ All in one Productivity App
 
 ### Lee Quan Sheng
 
-1. FocusAdapter.java
+1. [FocusAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/FocusAdapter.java)
 
-2. FocusWorker.java
+2. [FocusWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/FocusWorker.java)
 
-3. Focus.java
+3. [Focus.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Focus.java)
 
-4. ItemDecoration.java
+4. [ItemDecoration.java](app/src/main/java/com/mad/p03/np2020/routine/Class/ItemDecoration.java)
 
-5. FocusDBHelper.java
+5. [FocusDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/FocusDBHelper.java)
 
-6. FocusActivity.java
+6. [FocusActivity.java](app/src/main/java/com/mad/p03/np2020/routine/FocusActivity.java)
 
-7. LoginActivity.java
+7. [LoginActivity.java](app/src/main/java/com/mad/p03/np2020/routine/LoginActivity.java)
 
-8. HistoryFragment.java
+8. [HistoryFragment.java](app/src/main/java/com/mad/p03/np2020/routine/HistoryFragment.java)
 
-9. FocusViewHolder.java
+9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
 
 ### Wai Hou Man
 
-1. HabitAdapter.java
+1. [HabitAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HabitAdapter.java)
 
-2. HabitGroupAdapter.java
+2. [HabitGroupAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HabitGroupAdapter.java)
 
-3. OnItemClickListener.java
+3. [OnItemClickListener.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/OnItemClickListener.java)
 
-4. HabitWorker.java
+4. [HabitWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/HabitWorker.java)
 
-5. HabitGroupWorker.java
+5. [HabitGroupWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/HabitGroupWorker.java)
 
-6. Habit.java
+6. [Habit.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Habit.java)
 
-7. HabitGroup.java
+7. [HabitGroup.java](app/src/main/java/com/mad/p03/np2020/routine/Class/HabitGroup.java)
 
-8. HabitReminder.java
+8. [HabitReminder.java](app/src/main/java/com/mad/p03/np2020/routine/Class/HabitReminder.java)
 
-9. HabitDBHelper.java
+9. [HabitDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/HabitDBHelper.java)
 
-10. HabitGroupDBHelper.java
+10. [HabitGroupDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/HabitGroupDBHelper.java)
 
-11. HabitHolder.java
+11. [HabitHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/HabitHolder.java)
 
-12. HabitGroupHolder.java
+12. [HabitGroupHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/HabitGroupHolder.java)
 
-13. HabitActivity.java
+13. [HabitActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitActivity.java)
 
 ## Story Mapping 
 
@@ -140,7 +140,7 @@ All in one Productivity App
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/background.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.svg)
-![Screenshot 2020-06-03 at 9.53.07 AM](images/Class.svg)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Class.svg)
 
 
 ## ER Diagram
