@@ -17,7 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
+
 import com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
@@ -25,8 +25,7 @@ import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.database.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener {
@@ -148,6 +147,14 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         return false;
     }
 
+    /**
+     *
+     * Triggered to add to the current adapter list
+     * when it is added to the sql
+     *
+     * @param object given from the SQL when triggered
+     *               for this the object is task
+     */
 
     @Override
     public void onDataAdd(Object object) {

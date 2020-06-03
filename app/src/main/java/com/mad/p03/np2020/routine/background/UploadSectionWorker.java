@@ -11,12 +11,33 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+/**
+ *
+ * This is to upload the data to Section data from
+ * the background which implements the Worker.
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
 public class UploadSectionWorker extends Worker {
 
     public UploadSectionWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
+    /**
+     *
+     * To do background processing, to add the section data
+     * in firebase using the section object and UID and SectionID as the key
+     *
+     * Data that need to be sent over are Name, ID, Image, Color, Position and UID.
+     * You can use {@code OneTimeWorkRequest.setInputData(data)} to send and
+     * {@code getInputData()} to retrieve it.
+     *
+     *
+     * @return Result This is tell what happen to the background work
+     */
     @NonNull
     @Override
     public Result doWork() {

@@ -8,12 +8,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+
+/**
+ *
+ * This is the database that is used create the section table
+ * in the database
+ *
+ *
+ * @author Jeyavishnu
+ * @since 03-06-2020
+ */
 public class SectionDBHelper extends DBHelper{
 
     //Listener
@@ -25,6 +33,11 @@ public class SectionDBHelper extends DBHelper{
         super(context);
     }
 
+
+    /**
+     * Create the table section
+     * @param sqLiteDatabase The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "User database is being created");
@@ -33,6 +46,16 @@ public class SectionDBHelper extends DBHelper{
         sqLiteDatabase.execSQL(Section.SQL_CREATE_ENTRIES);
     }
 
+    /**
+     *
+     * Called when the database needs to be upgraded. This will drop the
+     * database and create a new one. The data from the previous one will
+     * move forward into the new db
+     *
+     * @param sqLiteDatabase The database.
+     * @param i The old database version.
+     * @param i1 The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         Log.d(TAG, "User database is being upgraded");
@@ -41,16 +64,29 @@ public class SectionDBHelper extends DBHelper{
         onCreate(sqLiteDatabase);
     }
 
-    //If current version is newer than the requested one
+    /**
+     *
+     * If current version is newer than the requested one. This will drop the
+     * database and create a new one.
+     *
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, "User database is downgraded");
 
         onUpgrade(db,oldVersion,newVersion);
+
+        //TODO: Add data
     }
 
-
-    // Assign the listener implementing events interface that will receive the events
+    /**
+     * Assign the listener implementing events interface
+     * that will receive the events
+     * @param myDatabaseListener setting the listener where the owner will listen to the message
+     */
     public static void  setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
         mMyDatabaseListener = myDatabaseListener;
     }
@@ -168,9 +204,10 @@ public class SectionDBHelper extends DBHelper{
         return sections;
     }
 
+
     /**
      * To delete the data in SQL
-     * from the ID fin parameter
+     * from the ID parameter
      *
      * @param ID it is from section object
      */
@@ -185,6 +222,14 @@ public class SectionDBHelper extends DBHelper{
         db.close();
     }
 
+
+    /**
+     *
+     * This method will update the position of the given
+     * row based on the ID
+     *
+     * @param section The object that needs to be updates
+     */
     public void updatePosition(Section section){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -202,6 +247,16 @@ public class SectionDBHelper extends DBHelper{
     }
 
 
+    /**
+     *
+     * This method will query from the database
+     * if it doesn't exist it return false if does true
+     * based on the {@code moveToFirst()}
+     *
+     * @param id Section ID to check against the table
+     * @return Boolean if is true or false depending on if
+     * the row exits. If it exists is true
+     */
     public Boolean hasID(String id){
         SQLiteDatabase db = this.getReadableDatabase();
 

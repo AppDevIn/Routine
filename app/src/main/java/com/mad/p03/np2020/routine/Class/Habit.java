@@ -3,7 +3,6 @@ package com.mad.p03.np2020.routine.Class;
 import com.mad.p03.np2020.routine.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -90,8 +89,6 @@ public class Habit {
     private String holder_color;
     private HabitReminder habitReminder;
     private HabitGroup group;
-    private List<Integer> mCountList;
-
 
     /**This method is an empty constructor for habit*/
     public Habit() { }

@@ -207,7 +207,7 @@ public class Task {
     public void addTask(Context context){
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
 
-        taskDBHelper.insertTask(this, getSectionID());
+        taskDBHelper.insertTask(this);
     }
 
     public void deleteTask(Context context){

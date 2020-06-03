@@ -40,7 +40,7 @@
         </receiver>
 
         <service
-            android:name=".background.FCMSection"
+            android:name=".background.FCM"
             android:directBootAware="true"
             android:exported="false">
             <intent-filter>

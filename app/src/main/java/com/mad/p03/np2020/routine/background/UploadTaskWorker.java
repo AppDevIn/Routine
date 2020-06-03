@@ -13,12 +13,33 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+/**
+ *
+ * This is to upload the data to Task data from
+ * the background which implements the Worker.
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
 public class UploadTaskWorker extends Worker {
 
     public UploadTaskWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
+    /**
+     *
+     * To do background processing, to add the task data
+     * in firebase using the section object and UID, SectionID and ID as the key
+     *
+     * Data that need to be sent over are Name, ID and section ID
+     * You can use {@code OneTimeWorkRequest.setInputData(data)} to send and
+     * {@code getInputData()} to retrieve it.
+     *
+     *
+     * @return Result This is tell what happen to the background work
+     */
     @NonNull
     @Override
     public Result doWork() {

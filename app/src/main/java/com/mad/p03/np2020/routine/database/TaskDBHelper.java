@@ -4,10 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 
 import java.util.ArrayList;
@@ -15,6 +12,14 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
+/**
+ *
+ * The database that is used to create the Task table
+ * in the database
+ *
+ * @author Jeyavishnu
+ * @since 03-06-2020
+ */
 public class TaskDBHelper extends DBHelper {
 
     private final String TAG = "Task Database";
@@ -26,11 +31,19 @@ public class TaskDBHelper extends DBHelper {
         super(context);
     }
 
-    // Assign the listener implementing events interface that will receive the events
+    /**
+     * Assign the listener implementing events interface
+     * that will receive the events
+     * @param myDatabaseListener setting the listener where the owner will listen to the message
+     */
     public static void setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
         mMyDatabaseListener = myDatabaseListener;
     }
 
+    /**
+     * Create the table for section
+     * @param sqLiteDatabase The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "Task database is being created");
@@ -39,14 +52,35 @@ public class TaskDBHelper extends DBHelper {
         sqLiteDatabase.execSQL(Task.SQL_CREATE_ENTRIES);
     }
 
+    /**
+     *
+     * Called when the database needs to be upgraded. This will drop the
+     * database and create a new one. The data from the previous one will
+     * move forward into the new db
+     *
+     * @param sqLiteDatabase The database.
+     * @param i The old database version.
+     * @param i1 The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         Log.d(TAG, "Task database is being upgraded");
 
         sqLiteDatabase.execSQL(Task.SQL_DELETE_ENTRIES); // Delete existing task
         onCreate(sqLiteDatabase);
+
+        //TODO: Add data
     }
 
+    /**
+     *
+     * If current version is newer than the requested one. This will drop the
+     * database and create a new one.
+     *
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, "Task database is downgraded");
@@ -54,8 +88,16 @@ public class TaskDBHelper extends DBHelper {
         onUpgrade(db,oldVersion,newVersion);
     }
 
-
-    public String insertTask(Task task, String sectionID){
+    /**
+     *
+     * To insert the task
+     * into the sqlite
+     *
+     * @param task to access the variables to be
+     *             put into the database
+     * @return the id in this case the row in belongs
+     */
+    public String insertTask(Task task){
 
         Log.d(TAG, "insertTask(): Preparing to insert the new user ");
 
@@ -66,7 +108,7 @@ public class TaskDBHelper extends DBHelper {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(Task.COLUMN_TASK_ID, task.getTaskID());
-        values.put(Task.COLUMN_SECTION_ID, sectionID);
+        values.put(Task.COLUMN_SECTION_ID, task.getSectionID());
         values.put(Task.COLUMN_NAME, task.getName());
         values.put(Task.COLUMN_CHECKED, task.isChecked());
         values.put(Task.COLUMN_REMIND_DATE, task.getRemindDate() != null ? task.getRemindDate().toString() : null);
@@ -89,6 +131,15 @@ public class TaskDBHelper extends DBHelper {
         return String.valueOf(id);
     }
 
+    /**
+     *
+     * This will get all the task from the database
+     * based on the sectionID and store in to the object
+     * and return it
+     *
+     * @param sectionID The ID that the task belongs to
+     * @return List<Task> This will return a list of tasks
+     */
     public List<Task> getAllTask(String sectionID){
 
         List<Task> taskList = new ArrayList<>();
@@ -124,6 +175,12 @@ public class TaskDBHelper extends DBHelper {
         return taskList;
     }
 
+    /**
+     * This will delete the data from task table with
+     * TaskID
+     *
+     * @param ID ID that will be used find the task and delete it
+     */
     public void delete(String ID){
 
         Log.d(TAG, "delete(): Will be deleting ID " + ID );
@@ -143,6 +200,16 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+    /**
+     *
+     * This method will query from the database
+     * if it doesn't exist it return false if does true
+     * based on the {@code moveToFirst()}
+     *
+     * @param id Section ID to check against the table
+     * @return Boolean if is true or false depending on if
+     * the row exits. If it exists is true
+     */
     public Boolean hasID(String id){
         SQLiteDatabase db = this.getReadableDatabase();
 
