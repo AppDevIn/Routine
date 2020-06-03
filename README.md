@@ -142,7 +142,7 @@ All in one Productivity App
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/database.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/background.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.svg)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.jpg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Class.svg)
 
 
