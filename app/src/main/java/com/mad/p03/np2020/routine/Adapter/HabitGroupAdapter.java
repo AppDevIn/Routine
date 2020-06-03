@@ -79,8 +79,10 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
      * */
     @Override
     public void onBindViewHolder(@NonNull HabitGroupHolder holder, int position) {
+        // retrieve the habitGroup object
         final HabitGroup group = _habitGroupList.get(position);
 
+        // set the text based on its group name
         holder.grp_name.setText(group.getGrp_name());
     }
 

@@ -53,6 +53,7 @@ public class HabitGroupWorker extends Worker {
 
         writeToFirebase();
 
+        // return the work result
         return ListenableWorker.Result.success();
     }
 

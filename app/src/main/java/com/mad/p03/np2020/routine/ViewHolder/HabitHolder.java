@@ -57,13 +57,15 @@ public class HabitHolder extends RecyclerView.ViewHolder {
         this.mPeriod = itemView.findViewById(R.id.habit_period);
         this.habit_row = itemView.findViewById(R.id.habit_row);
 
+        //set an onclick listener when the holder is clicked
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener!=null){
-                    int position = getAdapterPosition();
+                    int position = getAdapterPosition(); //this is to get the position of the holder
                     if (position != RecyclerView.NO_POSITION){
                         listener.onItemClick(position);
+                        //this is to parse the position into the parameter so that we can utilise the position in other activity further on
                     }
                 }
             }

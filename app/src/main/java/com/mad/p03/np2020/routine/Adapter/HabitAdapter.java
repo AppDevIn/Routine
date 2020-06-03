@@ -98,7 +98,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull HabitHolder holder, final int position) {
+        // retrieve the habit object
         final Habit habit = _habitList.getItemAt(position);
+
+        // set the background color of the holder based on its holder color value
         switch (habit.getHolder_color()){
             case ("cyangreen"):
                 holder.habit_row.setBackgroundResource(R.drawable.habit_holder_cyangreen);
@@ -117,23 +120,26 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
                 break;
         }
 
-
+        // set text on TextView based on the object
         holder.mTitle.setText(habit.getTitle());
         holder.mCount.setText(String.valueOf(habit.getCount()));
         holder.mCount2.setText(String.valueOf(habit.getCount()));
         holder.mOccurrence.setText(String.valueOf(habit.getOccurrence()));
         holder.addBtn.setBackgroundColor(Color.TRANSPARENT);
+        // set onClickListener on add button
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                habit.addCount();
-                notifyDataSetChanged();
-                dbHandler.updateCount(habit);
-                writeHabit_Firebase(habit, UID, false);
+                // this will trigger the habit class add count method
+                habit.addCount(); // add the count by 1
+                notifyDataSetChanged(); // notify the data set has changed
+                dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
+                writeHabit_Firebase(habit, UID, false); // write the habit to the firebase
 
             }
         });
 
+        // set the period text based on its period attribute value
         switch (habit.getPeriod()){
             case 1:
                 holder.mPeriod.setText("TODAY:");
@@ -149,10 +155,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
                 break;
         }
 
-        if (habit.getCount() >= habit.getOccurrence()){
-            holder.addBtn.setImageResource(R.drawable.habit_tick);
-        }else{
-            holder.addBtn.setImageResource(R.drawable.habit_add);
+        if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
+            holder.addBtn.setImageResource(R.drawable.habit_tick); // replace the add button as a tick button
+        }else{ // if habit count < habit occurrence
+            holder.addBtn.setImageResource(R.drawable.habit_add); // set the add button
         }
 
     }
@@ -192,13 +198,14 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
                 .putBoolean("deletion", isDeletion)
                 .build();
 
-        // send a work request
+        // wrap the work request
         OneTimeWorkRequest mywork =
                 new OneTimeWorkRequest.Builder(HabitWorker.class)
                         .setConstraints(myConstraints)
                         .setInputData(firebaseUserData)
                         .build();
 
+        // send the work request to the work manager
         WorkManager.getInstance(c).enqueue(mywork);
     }
 

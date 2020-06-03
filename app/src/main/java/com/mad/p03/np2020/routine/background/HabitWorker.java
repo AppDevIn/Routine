@@ -60,6 +60,7 @@ public class HabitWorker extends Worker {
             writeToFirebase();
         }
 
+        // return the work result
         return ListenableWorker.Result.success();
     }
 
