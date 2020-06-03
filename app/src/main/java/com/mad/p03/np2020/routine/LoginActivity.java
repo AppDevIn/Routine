@@ -21,14 +21,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.database.UserDBHelper;
 
@@ -300,6 +303,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * */
     private void CheckLoggedIn() throws ParseException {
         mAuth = FirebaseAuth.getInstance();
+
+
         if (mAuth.getCurrentUser() != null) {
             User user;
             user = userDatabase.getUser(mAuth.getCurrentUser().getUid());

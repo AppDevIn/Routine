@@ -22,8 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Adapter.HomePageAdapter;
 import com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper;
@@ -135,20 +137,27 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mHomePageAdapter.setTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mGridView);
 
-
         //Subscribing to the topic to listen to
-        FirebaseMessaging.getInstance().subscribeToTopic(mUID)
+        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        if (!task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: Done Running");
+                            Toast.makeText(Home.this, FirebaseAuth.getInstance().getCurrentUser().getUid().toString(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(Home.this, "Never subscribe yet", Toast.LENGTH_SHORT).show();
                         }
 
-                        Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Home.this, "Gone", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
     }

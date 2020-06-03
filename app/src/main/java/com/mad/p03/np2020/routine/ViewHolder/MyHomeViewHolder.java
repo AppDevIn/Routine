@@ -15,6 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+
+/**
+ *
+ *
+ * To be used with the adapter HomePageAdapter. This
+ * holds reference to the id of the view resource. This
+ * is where we implement onTouchListener and onGestureListener
+ * to listen to swipes, clicks and drag.
+ *
+ * @author Jeyavishnu
+ * @since 03-06-2020
+ */
+
 public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     public TextView mTextViewListName;
