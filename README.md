@@ -37,7 +37,7 @@ open Documentation/index.html
 1. Jeyavishnu, S10192836C
 2. Lee Quan sheng, S10198298G
 3. Pritheev
-4. 
+4. Wai Hou Man, S10197636F
 
 
 
