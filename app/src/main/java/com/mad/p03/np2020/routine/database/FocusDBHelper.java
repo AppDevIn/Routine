@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 
 
-public class FocusDBHelper extends DBHelper implements Parcelable {
+public class FocusDBHelper extends DBHelper  implements Parcelable{
 
 
 
@@ -165,23 +165,35 @@ public class FocusDBHelper extends DBHelper implements Parcelable {
         return returnList;
     }
 
-
-    /**
+    /***
      *
+     * Method is used to check if table exist inside the database
      *
-     * This class have child classes, used of child in this case can return in describeContent() different values,
-     * so to know which particular object type to create from Parcel.
-     *
+     * @param tableName Pass in table name to the current content
+     * @return boolean Return True or False;
+     * True will be return if table exist
+     * False will be return if table does not exist
      */
+    public boolean isTableExists(String tableName) {
+
+        SQLiteDatabase mDatabase = this.getReadableDatabase();
+
+        String query = "select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'";
+        try (Cursor cursor = mDatabase.rawQuery(query, null)) {
+            if(cursor!=null) {
+                if(cursor.getCount()>0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    /**
-     *
-     * Flatten Focus object to a parcel
-     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
