@@ -117,8 +117,35 @@ open Documentation/index.html
 
 9. FocusViewHolder.java
 
+### Wai Hou Man
 
-## Strory Mapping 
+1. HabitAdapter.java
+
+2. HabitGroupAdapter.java
+
+3. OnItemClickListener.java
+
+4. HabitWorker.java
+
+5. HabitGroupWorker.java
+
+6. Habit.java
+
+7. HabitGroup.java
+
+8. HabitReminder.java
+
+9. HabitDBHelper.java
+
+10. HabitGroupDBHelper.java
+
+11. HabitHolder.java
+
+12. HabitGroupHolder.java
+
+13. HabitActivity.java
+
+## Story Mapping 
 
 
 
