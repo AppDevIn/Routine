@@ -8,22 +8,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/*
+ *
+ * CardActivity class used to manage card activities
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment
+{
 
+    //Empty constructor
     public NotesFragment() {
         // Required empty public constructor
     }
 
-    public static NotesFragment newInstance() {
+    //Initializing variables for NotesFragment when new instance created
+    public static NotesFragment newInstance()
+    {
+        //Initializing a new instance of NotesFragment
         NotesFragment fragment = new NotesFragment();
+
+        //Initializing Bundle
         Bundle args = new Bundle();
+
+        //Setting bundle for fragment
         fragment.setArguments(args);
+
+        //Returning fragment
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
     }

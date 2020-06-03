@@ -50,16 +50,25 @@ public class StepsFragment extends Fragment{
     //View used in onCreateView function
     View view;
 
-    //Constructor for StepsFragment
-    public StepsFragment() {
+    //Empty Constructor for StepsFragment
+    public StepsFragment()
+    {
         // Required empty public constructor
     }
 
-    // Instantiate Steps Fragment
-    public static StepsFragment newInstance() {
+    //Initializing variables for StepsFragment when new instance created
+    public static StepsFragment newInstance()
+    {
+        //Creating an instance of StepsFragment
         StepsFragment fragment = new StepsFragment();
+
+        //Initializing Bundle
         Bundle args = new Bundle();
+
+        //Setting Bundle for fragment
         fragment.setArguments(args);
+
+        //Returning fragment
         return fragment;
     }
 
@@ -68,24 +77,31 @@ public class StepsFragment extends Fragment{
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
-            // Get user input
+            //Get user input from EditText of StepsFragment
             stepName = getView().findViewById(R.id.stepInput);
 
-            // Use list view for checklist
+            //Use list view for checklist
             listView = getView().findViewById(R.id.listView);
 
             // Store checklist items in array list
             stepList = new ArrayList<>();
+
+            //Creating an instance of array adapter
             arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_view_layout, stepList);
 
         }
     }
 
     // Function to add items to checklist when add button clicked
-    public void addItemToList(){
+    public void addItemToList()
+    {
+        //Adding step input into list
         stepList.add(stepName.getText().toString());
+
+        //Notifying that data set changed
         arrayAdapter.notifyDataSetChanged();
 
+        //Setting text to empty after item added to list
         stepName.setText("");
     }
 
@@ -98,10 +114,15 @@ public class StepsFragment extends Fragment{
         // Button click listeners for when button clicked to call addItemToList
         stepAddButton = (Button) view.findViewById(R.id.stepAdd);
 
+        //onClickListener for stepAddButton
         stepAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                //Log Message
                 Log.v(TAG, "Step added!");
+
+                //Calling addItemToList() function
                 addItemToList();
             }
         });
