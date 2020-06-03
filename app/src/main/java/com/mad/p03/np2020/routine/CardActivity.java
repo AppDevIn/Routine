@@ -39,7 +39,7 @@ public class CardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_layout);
 
-        stepAddButton = findViewById(R.id.addStep);
+        stepAddButton = findViewById(R.id.stepAdd);
         stepFragment = findViewById(R.id.stepFragment);
         notesFragment = findViewById(R.id.notesFragment);
 

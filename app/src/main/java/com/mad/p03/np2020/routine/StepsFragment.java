@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.zip.Inflater;
 
 
-public class StepsFragment extends Fragment implements View.OnClickListener{
+public class StepsFragment extends Fragment{
 
     // Initializing variables
     final String TAG = "StepFragment";
@@ -77,16 +77,18 @@ public class StepsFragment extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.fragment_steps_layout, container, false);
 
         // Button click listeners for when button clicked to call addItemToList
-        stepAddButton = (Button) view.findViewById(R.id.addStep);
+        stepAddButton = (Button) view.findViewById(R.id.stepAdd);
 
-        stepAddButton.setOnClickListener(this);
+        stepAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG, "Step added!");
+                addItemToList();
+            }
+        });
         return view;
 
     }
 
-    @Override
-    public void onClick(View v) {
-        Log.v(TAG, "Step added!");
-        addItemToList();
-    }
+
 }
