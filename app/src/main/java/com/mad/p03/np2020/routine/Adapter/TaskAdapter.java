@@ -39,6 +39,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     private List<Task> mTaskList;
     private LifecycleOwner mOwner;
 
+
     //Listener
     private ItemTouchHelper mItemTouchHelper;
 
@@ -49,16 +50,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      * adapter's methods. Gets the list from section and save it to the member
      * variable and set owner into the member variable
      *
-     * @param section the object section where the task list is located at
+     * @param taskList the list of tasks
      * @param owner Owner of the lifecycle to be able to see
      *             lifecycle changes
      */
-    public TaskAdapter(Section section, LifecycleOwner owner) {
+    public TaskAdapter(List<Task> taskList, LifecycleOwner owner) {
 
         this.mOwner = owner;
+        mTaskList = taskList;
 
-        //Add into the list
-        mTaskList = section.getTaskList(mContext);
+
         Log.d(TAG, "TaskAdapter: " + mTaskList);
     }
 

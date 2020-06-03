@@ -33,7 +33,7 @@ import androidx.annotation.NonNull;
  *
  */
 
-public class FCM extends FirebaseMessagingService {
+public class FCMSection extends FirebaseMessagingService {
 
     final private String TAG = "FCMMessaging";
     @Override
@@ -51,10 +51,10 @@ public class FCM extends FirebaseMessagingService {
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
 
-        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        reference.child("messagingToken").setValue(token);
+//        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users")
+//                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//        reference.child("messagingToken").setValue(token);
     }
 
 
@@ -73,6 +73,8 @@ public class FCM extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
         Log.d(TAG, "Date: " + remoteMessage.getData());
+
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
 
 
         //Depending on the reason different functions run

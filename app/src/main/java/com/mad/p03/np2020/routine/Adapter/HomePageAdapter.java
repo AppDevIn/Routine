@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @author Jeyavishnu
  * @since 02-06-2020
  */
-public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter, OnSectionListener{
+public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter{
 
     private final String TAG = "HomeAdapter";
     private List<Section> mSectionList;
@@ -86,7 +86,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_grid_view_items, parent, false);
         mContext = view.getContext();
 
-        return new MyHomeViewHolder(view, this, mItemTouchHelper);
+        return new MyHomeViewHolder(view, mItemTouchHelper, this);
     }
 
     /**
@@ -181,7 +181,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
      * @param position The item position it was clicked from
      */
     @Override
-    public void onSectionClick(int position) {
+    public void onItemClicked(int position) {
         Log.d(TAG, "onClick(): You have clicked on " + mSectionList.get(position).getName() + " list");
 
         //Move to new activity

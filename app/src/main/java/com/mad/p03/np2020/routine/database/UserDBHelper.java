@@ -112,15 +112,15 @@ public class UserDBHelper extends DBHelper {
         //Get the data from sqllite
         Cursor cursor = db.rawQuery("select * from " + User.TABLE_NAME + " where " + User.COLUMN_NAME_ID + "='" + UID+"';", null);
 
-        if (cursor != null)
-            cursor.moveToFirst(); //Only getting the first value
-
-        //Prepare a user object
-        User user = new User(
-                cursor.getString(cursor.getColumnIndex(User.COLUMN_NAME_NAME)),
-                cursor.getString(cursor.getColumnIndex(User.COLUMN_NAME_PASSWORD)),
-                cursor.getString(cursor.getColumnIndex(User.COLUMN_NAME_EMAIL))
-        );
+        User user = null;
+        if (cursor.moveToFirst()) {
+            //Prepare a user object
+            user = new User(
+                    cursor.getString(cursor.getColumnIndex(User.COLUMN_NAME_NAME)),
+                    cursor.getString(cursor.getColumnIndex(User.COLUMN_NAME_PASSWORD)),
+                    cursor.getString(cursor.getColumnIndex(User.COLUMN_NAME_EMAIL))
+            );
+        }
 
         //Close the DB connection
         db.close();

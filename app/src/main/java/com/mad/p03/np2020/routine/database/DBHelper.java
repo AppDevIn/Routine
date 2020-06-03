@@ -38,23 +38,29 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      *
      * Called when the database is created for
-     * the first time.
+     * the first time. This will create all the
+     * table like Section, task, user, habit, habitgroup
+     * and focus
      *
      * @param sqLiteDatabase The database.
      */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        //Create user database
-        sqLiteDatabase.execSQL(Section.SQL_CREATE_ENTRIES);
-        sqLiteDatabase.execSQL(Task.SQL_CREATE_ENTRIES);
-        sqLiteDatabase.execSQL(User.SQL_CREATE_ENTRIES);
-        sqLiteDatabase.execSQL(Habit.CREATE_HABITS_TABLE);
-        sqLiteDatabase.execSQL(HabitGroup.CREATE_GROUPS_TABLE);
-        sqLiteDatabase.execSQL(Focus.CREATE_SQL);
+
+        sqLiteDatabase.execSQL(Section.SQL_CREATE_ENTRIES); //Create section database
+        sqLiteDatabase.execSQL(Task.SQL_CREATE_ENTRIES); //Create task database
+        sqLiteDatabase.execSQL(User.SQL_CREATE_ENTRIES); //Create user database
+        sqLiteDatabase.execSQL(Habit.CREATE_HABITS_TABLE); //Create habit database
+        sqLiteDatabase.execSQL(HabitGroup.CREATE_GROUPS_TABLE); //Create habit group database
+        sqLiteDatabase.execSQL(Focus.CREATE_SQL); //Create focus database
     }
 
     /**
-     * Called when the database needs to be upgraded
+     *
+     * Called when the database needs to be upgraded. This will drop the
+     * database and create a new one. The data from the previous one will
+     * move forward into the new db
+     *
      * @param sqLiteDatabase The database.
      * @param i The old database version.
      * @param i1 The new database version.
@@ -69,9 +75,15 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(HabitGroup.DROP_GROUPS_TABLE);
         sqLiteDatabase.execSQL(Focus.SQL_DELETE_ENTRIES);
         onCreate(sqLiteDatabase);
+
+        //Add previous data
     }
 
     /**
+     *
+     * If current version is newer than the requested one. This will drop the
+     * database and create a new one.
+     *
      * @param db The database.
      * @param oldVersion The old database version.
      * @param newVersion The new database version.

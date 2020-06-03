@@ -4,15 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-import android.widget.CheckBox;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.mad.p03.np2020.routine.Class.Label;
-import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.background.DeleteTaskWorker;
-import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadTaskWorker;
-import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import org.json.JSONException;
@@ -21,7 +14,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,9 +28,16 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 
-
+/**
+ *
+ * Model used to manage the Task
+ *
+ * @author Jeyavishnu
+ * @since 04-06-2020
+ */
 public class Task {
 
+    //Member variable
     private String mName;
     private String mTaskID;
     private String mSectionID;
@@ -52,18 +51,29 @@ public class Task {
 
     private final static String TAG = "Task Model";
 
-    //Declare the constants of the database
+    /**The table name for this model*/
     public static final String TABLE_NAME = "task";
 
+    /**Used as the primary key for this table*/
     public static final String COLUMN_TASK_ID = "TaskID";
+    /**Column name for table,  to identify the name of the task*/
     public static final String COLUMN_NAME = "Name";
+    /**Column name for table,  to check if this task has been checked already*/
     public static final String COLUMN_CHECKED = "Checked";
+    /**Column name for table,  to know when this task is going to end*/
     public static final String COLUMN_REMIND_DATE = "RemindDate";
+    /**Column name for table,  to identify the due data of this task*/
     public static final String COLUMN_DUE_DATE = "DueDate";
+    /**Column name for table,  the notes to this task*/
     public static final String COLUMN_NOTES = "Notes";
+    /**Column name for table,  the foreign key for the task */
     public static final String COLUMN_SECTION_ID = "SectionID";
 
-    // Create table SQL query
+
+    /**
+     * The query needed to create a sql database
+     * for the Task
+     */
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_TASK_ID + " TEXT PRIMARY KEY,"
@@ -75,13 +85,12 @@ public class Task {
                     + COLUMN_NOTES + " TEXT,"
                     + "FOREIGN KEY (" + COLUMN_SECTION_ID + ") REFERENCES  " + Section.TABLE_NAME + "(" + Section.COLUMN_SECTION_ID + "));";
 
-    //Query to delete the table
+    /**
+     * The query needed to delete SQL table task from the database
+     */
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-
-    public Task() {
-    }
 
     public Task(String name, String sectionID) {
 
@@ -99,6 +108,14 @@ public class Task {
     }
 
 
+    /**
+     *
+     * This is to convert the data received from SQL and
+     * convert it into a object
+     *
+     * @param cursor The query that has been given buy database
+     * @return Task Return back a task object
+     */
     public static Task fromCursor(Cursor cursor){
 
         return new Task(
@@ -109,6 +126,16 @@ public class Task {
         );
     }
 
+    /**
+     *
+     * This is used to create task object using
+     * a string that is in json format. This will
+     * convert it into json object and extract the
+     * information needed for the object
+     *
+     * @param json The string of data in json format
+     * @return Task Return back a task object
+     */
     public static Task fromJSON(String json){
 
         String name = "";
@@ -141,61 +168,68 @@ public class Task {
 
     }
 
-
+    /**@return String This return the name of the task*/
     public String getName() {
         return mName;
     }
 
+    /**@return boolean Check if the task has been completed before*/
     public boolean isChecked() {
         return checked;
     }
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
-
+    /**@return Date This return the data that I need to remind about the task*/
     public Date getRemindDate() {
         return remindDate;
     }
 
-    public void setRemindDate(Date remindDate) {
-        this.remindDate = remindDate;
-    }
-
+    /**@return Date This return the date the task is going to be due*/
     public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
+    /**@return String This return a string of notes for this task*/
     public String getNotes() {
         return mNotes;
     }
 
-    public void setNotes(String notes) {
-        mNotes = notes;
-    }
-
+    /**@return String This return the unique task ID for each task*/
     public String getTaskID() {
         return mTaskID;
     }
 
-    public void setTaskID(String taskID) {
-        mTaskID = taskID;
-    }
-
+    /**
+     * This method is used to set the Section ID this
+     * task belongs too
+     *
+     * @return This parameter is used to set the section ID
+     * this task belongs too
+     */
     public String getSectionID() {
         return mSectionID;
     }
 
-    public void setSectionID(String sectionID) {
-        mSectionID = sectionID;
+    /**
+     *
+     * This method is used to set
+     * the taskID of this task
+     *
+     * @param taskID This parameter is used to set the taskID
+     *                 of this task
+     */
+    public void setTaskID(String taskID) {
+        mTaskID = taskID;
     }
 
+
+    /**
+     *
+     * @param date String This parameter gives me the data and time in
+     *             this format dd/MM/yyyy
+     * @return Date Return the date object
+     */
     public Date stringToDate(String date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             return sdf.parse(date);
         } catch (ParseException ex) {
@@ -204,18 +238,43 @@ public class Task {
         }
     }
 
+    /**
+     *
+     * This method is used to add
+     * the task data from SQL
+     * using the TaskDBHelper
+     *
+     * @param context To know from which state of the object the code is called from
+     */
     public void addTask(Context context){
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
 
         taskDBHelper.insertTask(this);
     }
 
+    /**
+     *
+     * This method is used to delete
+     * the task data from SQL
+     * using the TaskDBHelper
+     *
+     * @param context To know from which state of the object the code is called from
+     */
     public void deleteTask(Context context){
 
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
         taskDBHelper.delete(getTaskID());
     }
 
+    /**
+     *
+     * Upload the task info to firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner LifecycleOwner to be used to observe my upload
+     */
     public void executeFirebaseUpload(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
@@ -256,6 +315,14 @@ public class Task {
 
     }
 
+    /**
+     * Delete the task from firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner to be used to observe my upload
+     */
     public void executeFirebaseDelete(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseDelete(): Preparing to delete, on ID: " + getTaskID());

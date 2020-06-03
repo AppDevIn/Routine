@@ -22,4 +22,9 @@ public interface HomeItemTouchHelperAdapter {
      */
     void onItemSwiped(int position);
 
+    /**
+     * @param position the position of item that was clicked
+     */
+    void onItemClicked(int position);
+
 }
