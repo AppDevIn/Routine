@@ -27,7 +27,7 @@ All in one Productivity App
 
 ### Jeyavishnu
 
-1. FCM.java
+1. [FCM.java](app/src/main/java/com/mad/p03/np2020/routine/background/FCMSection.java)
 
 2. DeleteSectionWorker.java
 
@@ -59,8 +59,6 @@ All in one Productivity App
 
 16. TaskAdapter
 
-17. Section.java
-
 18. SectionDBHelper
 
 19. UserDBHelper
@@ -73,13 +71,15 @@ All in one Productivity App
 
 23. TaskViewHolder
 
-24. 
+24. [Task](app/src/main/java/com/mad/p03/np2020/routine/Class/Section.java)
 
-  ​    
+24. [Section](app/src/main/java/com/mad/p03/np2020/routine/Class/Task.java)
+
+   ​    
 
 ### Quan Sheng and Jeya
 
-1. User.java
+1. [User.java](app/src/main/java/com/mad/p03/np2020/routine/Class/User.java)
 
 ### Lee Quan Sheng
 
