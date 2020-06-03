@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="251.49px" preserveAspectRatio="none" style="width:1419px;height:251px;" version="1.1" viewBox="0 0 1419 251" width="1419.05px" zoomAndPan="magnify"><defs><filter height="300%" id="f10f6c7z7klyls" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.02"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.04" dy="4.04" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><text fill="#000000" font-family="sans-serif" font-size="18.18" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="193.92" x="618.625" y="18.8724">CLASS's Class Diagram</text><text fill="#000000" font-family="sans-serif" font-size="18.18" lengthAdjust="spacingAndGlyphs" textLength="0" x="718.11" y="41.7394"/><!--MD5=[c0528f8a8fd1d55ed309f20867289e3b]
+cluster com.mad.p03.np2020.routine--><polygon fill="#FFFFFF" filter="url(#f10f6c7z7klyls)" points="22.22,69.9741,230.28,69.9741,237.35,93.8195,240.38,93.8195,240.38,239.6541,22.22,239.6541,22.22,69.9741" style="stroke: #000000; stroke-width: 1.5150000000000001;"/><line style="stroke: #000000; stroke-width: 1.5150000000000001;" x1="22.22" x2="237.35" y1="93.8195" y2="93.8195"/><text fill="#000000" font-family="sans-serif" font-size="14.14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="202" x="26.26" y="86.6726">com.mad.p03.np2020.routine</text><!--MD5=[6ad32808f928386d4e4fd337af0e8356]
+cluster com.mad.p03.np2020.routine.Class--><polygon fill="#FFFFFF" filter="url(#f10f6c7z7klyls)" points="64.64,114.4141,109.08,114.4141,116.15,138.2595,197.96,138.2595,197.96,215.4141,64.64,215.4141,64.64,114.4141" style="stroke: #000000; stroke-width: 1.5150000000000001;"/><line style="stroke: #000000; stroke-width: 1.5150000000000001;" x1="64.64" x2="116.15" y1="138.2595" y2="138.2595"/><text fill="#000000" font-family="sans-serif" font-size="14.14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="38.38" x="68.68" y="131.1126">Class</text><!--MD5=[59cbe5613c4b1168525eb1a57df57b4a]
+cluster android.content--><polygon fill="#FFFFFF" filter="url(#f10f6c7z7klyls)" points="264.62,114.4141,383.8,114.4141,390.87,138.2595,434.3,138.2595,434.3,215.4141,264.62,215.4141,264.62,114.4141" style="stroke: #000000; stroke-width: 1.5150000000000001;"/><line style="stroke: #000000; stroke-width: 1.5150000000000001;" x1="264.62" x2="390.87" y1="138.2595" y2="138.2595"/><text fill="#000000" font-family="sans-serif" font-size="14.14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="113.12" x="268.66" y="131.1126">android.content</text><!--MD5=[dea9b5bbfa9fcc376e7517230b1e1656]
+cluster android.os--><polygon fill="#FFFFFF" filter="url(#f10f6c7z7klyls)" points="458.54,114.4141,540.35,114.4141,547.42,138.2595,583.78,138.2595,583.78,215.4141,458.54,215.4141,458.54,114.4141" style="stroke: #000000; stroke-width: 1.5150000000000001;"/><line style="stroke: #000000; stroke-width: 1.5150000000000001;" x1="458.54" x2="547.42" y1="138.2595" y2="138.2595"/><text fill="#000000" font-family="sans-serif" font-size="14.14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="75.75" x="462.58" y="131.1126">android.os</text><!--MD5=[38f035cb52bdd32f0497adb062304b55]
+cluster androidx.recyclerview.widget.RecyclerView--><polygon fill="#FFFFFF" filter="url(#f10f6c7z7klyls)" points="608.02,114.4141,922.13,114.4141,929.2,138.2595,932.23,138.2595,932.23,215.4141,608.02,215.4141,608.02,114.4141" style="stroke: #000000; stroke-width: 1.5150000000000001;"/><line style="stroke: #000000; stroke-width: 1.5150000000000001;" x1="608.02" x2="929.2" y1="138.2595" y2="138.2595"/><text fill="#000000" font-family="sans-serif" font-size="14.14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="308.05" x="612.06" y="131.1126">androidx.recyclerview.widget.RecyclerView</text><!--MD5=[0d852700fdad35b7061d461d6907a324]
+cluster java.io--><polygon fill="#FFFFFF" filter="url(#f10f6c7z7klyls)" points="956.47,114.4141,1008.99,114.4141,1016.06,138.2595,1085.75,138.2595,1085.75,215.4141,956.47,215.4141,956.47,114.4141" style="stroke: #000000; stroke-width: 1.5150000000000001;"/><line style="stroke: #000000; stroke-width: 1.5150000000000001;" x1="956.47" x2="1016.06" y1="138.2595" y2="138.2595"/><text fill="#000000" font-family="sans-serif" font-size="14.14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="46.46" x="960.51" y="131.1126">java.io</text><!--MD5=[4d693f715ca92bafca276f55718100f5]
+cluster com.mad.p03.np2020.routine.database--><polygon fill="#FFFFFF" filter="url(#f10f6c7z7klyls)" points="1109.99,114.4141,1386.73,114.4141,1393.8,138.2595,1396.83,138.2595,1396.83,215.4141,1109.99,215.4141,1109.99,114.4141" style="stroke: #000000; stroke-width: 1.5150000000000001;"/><line style="stroke: #000000; stroke-width: 1.5150000000000001;" x1="1109.99" x2="1393.8" y1="138.2595" y2="138.2595"/><text fill="#000000" font-family="sans-serif" font-size="14.14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="270.68" x="1114.03" y="131.1126">com.mad.p03.np2020.routine.database</text><!--MD5=[e1ea73d5a20e0e30a4aff183ba234408]
+class com.mad.p03.np2020.routine.Class.todoListItem--><rect fill="#FEFECE" filter="url(#f10f6c7z7klyls)" height="48.48" id="com.mad.p03.np2020.routine.Class.todoListItem" style="stroke: #A80036; stroke-width: 1.5150000000000001;" width="101" x="80.8" y="150.7741"/><ellipse cx="95.95" cy="166.9341" fill="#ADD1B2" rx="11.11" ry="11.11" style="stroke: #A80036; stroke-width: 1.01;"/><path d="M97.97,163.3991 Q98.1752,162.8941 98.4119,162.6416 Q98.6486,162.3891 98.9169,162.3891 Q99.3903,162.3891 99.6902,162.6731 Q99.99,162.9572 99.99,163.62 L99.99,165.1981 Q99.99,165.8609 99.7059,166.145 Q99.4219,166.4291 98.98,166.4291 Q98.5855,166.4291 98.333,166.2555 Q98.0805,166.0819 97.97,165.6242 Q97.9227,165.3086 97.7491,165.135 Q97.4334,164.8036 96.8653,164.6063 Q96.2972,164.4091 95.7291,164.4091 Q95.0189,164.4091 94.4271,164.6931 Q93.8353,164.9772 93.3777,165.6084 Q92.92,166.2397 92.92,167.1077 L92.92,168.0388 Q92.92,169.0803 93.7722,169.7747 Q94.6244,170.4691 96.1394,170.4691 Q97.0389,170.4691 97.6702,170.2639 Q98.0331,170.1534 98.4434,169.7905 Q98.7117,169.5853 98.8538,169.5222 Q98.9958,169.4591 99.1694,169.4591 Q99.5008,169.4591 99.7454,169.7195 Q99.99,169.9798 99.99,170.3428 Q99.99,170.69 99.6428,171.1003 Q99.1378,171.7 98.333,172.0314 Q97.2756,172.4891 95.9816,172.4891 Q94.4666,172.4891 93.2514,171.8894 Q92.273,171.4159 91.5865,170.3902 Q90.9,169.3644 90.9,168.1492 L90.9,167.0445 Q90.9,165.782 91.5076,164.6773 Q92.1152,163.5727 93.1804,162.9809 Q94.2456,162.3891 95.445,162.3891 Q96.1709,162.3891 96.8022,162.6416 Q97.4334,162.8941 97.97,163.3991 Z "/><text fill="#000000" font-family="sans-serif" font-size="12.12" lengthAdjust="spacingAndGlyphs" textLength="68.68" x="110.09" y="171.8933">todoListItem</text><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="81.81" x2="180.79" y1="183.0941" y2="183.0941"/><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="81.81" x2="180.79" y1="191.1741" y2="191.1741"/><!--MD5=[153c5f7e19387446fea9823b9798821f]
+class android.content.BroadcastReceiver--><rect fill="#FEFECE" filter="url(#f10f6c7z7klyls)" height="48.48" id="android.content.BroadcastReceiver" style="stroke: #A80036; stroke-width: 1.5150000000000001;" width="137.36" x="280.78" y="150.7741"/><ellipse cx="295.93" cy="166.9341" fill="#ADD1B2" rx="11.11" ry="11.11" style="stroke: #A80036; stroke-width: 1.01;"/><path d="M297.95,163.3991 Q298.1552,162.8941 298.3919,162.6416 Q298.6286,162.3891 298.8969,162.3891 Q299.3703,162.3891 299.6702,162.6731 Q299.97,162.9572 299.97,163.62 L299.97,165.1981 Q299.97,165.8609 299.6859,166.145 Q299.4019,166.4291 298.96,166.4291 Q298.5655,166.4291 298.313,166.2555 Q298.0605,166.0819 297.95,165.6242 Q297.9027,165.3086 297.7291,165.135 Q297.4134,164.8036 296.8453,164.6063 Q296.2772,164.4091 295.7091,164.4091 Q294.9989,164.4091 294.4071,164.6931 Q293.8153,164.9772 293.3577,165.6084 Q292.9,166.2397 292.9,167.1077 L292.9,168.0388 Q292.9,169.0803 293.7522,169.7747 Q294.6044,170.4691 296.1194,170.4691 Q297.0189,170.4691 297.6502,170.2639 Q298.0131,170.1534 298.4234,169.7905 Q298.6917,169.5853 298.8338,169.5222 Q298.9758,169.4591 299.1494,169.4591 Q299.4808,169.4591 299.7254,169.7195 Q299.97,169.9798 299.97,170.3428 Q299.97,170.69 299.6228,171.1003 Q299.1178,171.7 298.313,172.0314 Q297.2556,172.4891 295.9616,172.4891 Q294.4466,172.4891 293.2314,171.8894 Q292.253,171.4159 291.5665,170.3902 Q290.88,169.3644 290.88,168.1492 L290.88,167.0445 Q290.88,165.782 291.4876,164.6773 Q292.0952,163.5727 293.1604,162.9809 Q294.2256,162.3891 295.425,162.3891 Q296.1509,162.3891 296.7822,162.6416 Q297.4134,162.8941 297.95,163.3991 Z "/><text fill="#000000" font-family="sans-serif" font-size="12.12" lengthAdjust="spacingAndGlyphs" textLength="105.04" x="310.07" y="171.8933">BroadcastReceiver</text><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="281.79" x2="417.13" y1="183.0941" y2="183.0941"/><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="281.79" x2="417.13" y1="191.1741" y2="191.1741"/><!--MD5=[55e549cb5507dd26e28fb7640f5dae12]
+class android.os.Parcelable--><rect fill="#FEFECE" filter="url(#f10f6c7z7klyls)" height="48.48" id="android.os.Parcelable" style="stroke: #A80036; stroke-width: 1.5150000000000001;" width="91.91" x="475.205" y="150.7741"/><ellipse cx="490.355" cy="166.9341" fill="#ADD1B2" rx="11.11" ry="11.11" style="stroke: #A80036; stroke-width: 1.01;"/><path d="M492.375,163.3991 Q492.5802,162.8941 492.8169,162.6416 Q493.0536,162.3891 493.3219,162.3891 Q493.7953,162.3891 494.0952,162.6731 Q494.395,162.9572 494.395,163.62 L494.395,165.1981 Q494.395,165.8609 494.1109,166.145 Q493.8269,166.4291 493.385,166.4291 Q492.9905,166.4291 492.738,166.2555 Q492.4855,166.0819 492.375,165.6242 Q492.3277,165.3086 492.1541,165.135 Q491.8384,164.8036 491.2703,164.6063 Q490.7022,164.4091 490.1341,164.4091 Q489.4239,164.4091 488.8321,164.6931 Q488.2403,164.9772 487.7827,165.6084 Q487.325,166.2397 487.325,167.1077 L487.325,168.0388 Q487.325,169.0803 488.1772,169.7747 Q489.0294,170.4691 490.5444,170.4691 Q491.4439,170.4691 492.0752,170.2639 Q492.4381,170.1534 492.8484,169.7905 Q493.1167,169.5853 493.2588,169.5222 Q493.4008,169.4591 493.5744,169.4591 Q493.9058,169.4591 494.1504,169.7195 Q494.395,169.9798 494.395,170.3428 Q494.395,170.69 494.0478,171.1003 Q493.5428,171.7 492.738,172.0314 Q491.6806,172.4891 490.3866,172.4891 Q488.8716,172.4891 487.6564,171.8894 Q486.678,171.4159 485.9915,170.3902 Q485.305,169.3644 485.305,168.1492 L485.305,167.0445 Q485.305,165.782 485.9126,164.6773 Q486.5202,163.5727 487.5854,162.9809 Q488.6506,162.3891 489.85,162.3891 Q490.5759,162.3891 491.2072,162.6416 Q491.8384,162.8941 492.375,163.3991 Z "/><text fill="#000000" font-family="sans-serif" font-size="12.12" lengthAdjust="spacingAndGlyphs" textLength="59.59" x="504.495" y="171.8933">Parcelable</text><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="476.215" x2="566.105" y1="183.0941" y2="183.0941"/><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="476.215" x2="566.105" y1="191.1741" y2="191.1741"/><!--MD5=[b8ed280277582f0624062b5b61e83df6]
+class androidx.recyclerview.widget.RecyclerView.ItemDecoration--><rect fill="#FEFECE" filter="url(#f10f6c7z7klyls)" height="48.48" id="androidx.recyclerview.widget.RecyclerView.ItemDecoration" style="stroke: #A80036; stroke-width: 1.5150000000000001;" width="117.16" x="711.04" y="150.7741"/><ellipse cx="726.19" cy="166.9341" fill="#ADD1B2" rx="11.11" ry="11.11" style="stroke: #A80036; stroke-width: 1.01;"/><path d="M728.21,163.3991 Q728.4152,162.8941 728.6519,162.6416 Q728.8886,162.3891 729.1569,162.3891 Q729.6303,162.3891 729.9302,162.6731 Q730.23,162.9572 730.23,163.62 L730.23,165.1981 Q730.23,165.8609 729.9459,166.145 Q729.6619,166.4291 729.22,166.4291 Q728.8255,166.4291 728.573,166.2555 Q728.3205,166.0819 728.21,165.6242 Q728.1627,165.3086 727.9891,165.135 Q727.6734,164.8036 727.1053,164.6063 Q726.5372,164.4091 725.9691,164.4091 Q725.2589,164.4091 724.6671,164.6931 Q724.0753,164.9772 723.6177,165.6084 Q723.16,166.2397 723.16,167.1077 L723.16,168.0388 Q723.16,169.0803 724.0122,169.7747 Q724.8644,170.4691 726.3794,170.4691 Q727.2789,170.4691 727.9102,170.2639 Q728.2731,170.1534 728.6834,169.7905 Q728.9517,169.5853 729.0938,169.5222 Q729.2358,169.4591 729.4094,169.4591 Q729.7408,169.4591 729.9854,169.7195 Q730.23,169.9798 730.23,170.3428 Q730.23,170.69 729.8828,171.1003 Q729.3778,171.7 728.573,172.0314 Q727.5156,172.4891 726.2216,172.4891 Q724.7066,172.4891 723.4914,171.8894 Q722.513,171.4159 721.8265,170.3902 Q721.14,169.3644 721.14,168.1492 L721.14,167.0445 Q721.14,165.782 721.7476,164.6773 Q722.3552,163.5727 723.4204,162.9809 Q724.4856,162.3891 725.685,162.3891 Q726.4109,162.3891 727.0422,162.6416 Q727.6734,162.8941 728.21,163.3991 Z "/><text fill="#000000" font-family="sans-serif" font-size="12.12" lengthAdjust="spacingAndGlyphs" textLength="84.84" x="740.33" y="171.8933">ItemDecoration</text><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="712.05" x2="827.19" y1="183.0941" y2="183.0941"/><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="712.05" x2="827.19" y1="191.1741" y2="191.1741"/><!--MD5=[5a5af9b0547913863cbe0ddf55a9ab5e]
+class java.io.Serializable--><rect fill="#FEFECE" filter="url(#f10f6c7z7klyls)" height="48.48" id="java.io.Serializable" style="stroke: #A80036; stroke-width: 1.5150000000000001;" width="96.96" x="972.63" y="150.7741"/><ellipse cx="987.78" cy="166.9341" fill="#ADD1B2" rx="11.11" ry="11.11" style="stroke: #A80036; stroke-width: 1.01;"/><path d="M989.8,163.3991 Q990.0052,162.8941 990.2419,162.6416 Q990.4786,162.3891 990.7469,162.3891 Q991.2203,162.3891 991.5202,162.6731 Q991.82,162.9572 991.82,163.62 L991.82,165.1981 Q991.82,165.8609 991.5359,166.145 Q991.2519,166.4291 990.81,166.4291 Q990.4155,166.4291 990.163,166.2555 Q989.9105,166.0819 989.8,165.6242 Q989.7527,165.3086 989.5791,165.135 Q989.2634,164.8036 988.6953,164.6063 Q988.1272,164.4091 987.5591,164.4091 Q986.8489,164.4091 986.2571,164.6931 Q985.6653,164.9772 985.2077,165.6084 Q984.75,166.2397 984.75,167.1077 L984.75,168.0388 Q984.75,169.0803 985.6022,169.7747 Q986.4544,170.4691 987.9694,170.4691 Q988.8689,170.4691 989.5002,170.2639 Q989.8631,170.1534 990.2734,169.7905 Q990.5417,169.5853 990.6838,169.5222 Q990.8258,169.4591 990.9994,169.4591 Q991.3308,169.4591 991.5754,169.7195 Q991.82,169.9798 991.82,170.3428 Q991.82,170.69 991.4728,171.1003 Q990.9678,171.7 990.163,172.0314 Q989.1056,172.4891 987.8116,172.4891 Q986.2966,172.4891 985.0814,171.8894 Q984.103,171.4159 983.4165,170.3902 Q982.73,169.3644 982.73,168.1492 L982.73,167.0445 Q982.73,165.782 983.3376,164.6773 Q983.9452,163.5727 985.0104,162.9809 Q986.0756,162.3891 987.275,162.3891 Q988.0009,162.3891 988.6322,162.6416 Q989.2634,162.8941 989.8,163.3991 Z "/><text fill="#000000" font-family="sans-serif" font-size="12.12" lengthAdjust="spacingAndGlyphs" textLength="64.64" x="1001.92" y="171.8933">Serializable</text><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="973.64" x2="1068.58" y1="183.0941" y2="183.0941"/><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="973.64" x2="1068.58" y1="191.1741" y2="191.1741"/><!--MD5=[c3930f832584fe5a4f4b03a1d5d32ce8]
+class com.mad.p03.np2020.routine.database.FocusDBHelper--><rect fill="#FEFECE" filter="url(#f10f6c7z7klyls)" height="48.48" id="com.mad.p03.np2020.routine.database.FocusDBHelper" style="stroke: #A80036; stroke-width: 1.5150000000000001;" width="121.2" x="1192.81" y="150.7741"/><ellipse cx="1207.96" cy="166.9341" fill="#ADD1B2" rx="11.11" ry="11.11" style="stroke: #A80036; stroke-width: 1.01;"/><path d="M1209.98,163.3991 Q1210.1852,162.8941 1210.4219,162.6416 Q1210.6586,162.3891 1210.9269,162.3891 Q1211.4003,162.3891 1211.7002,162.6731 Q1212,162.9572 1212,163.62 L1212,165.1981 Q1212,165.8609 1211.7159,166.145 Q1211.4319,166.4291 1210.99,166.4291 Q1210.5955,166.4291 1210.343,166.2555 Q1210.0905,166.0819 1209.98,165.6242 Q1209.9327,165.3086 1209.7591,165.135 Q1209.4434,164.8036 1208.8753,164.6063 Q1208.3072,164.4091 1207.7391,164.4091 Q1207.0289,164.4091 1206.4371,164.6931 Q1205.8453,164.9772 1205.3877,165.6084 Q1204.93,166.2397 1204.93,167.1077 L1204.93,168.0388 Q1204.93,169.0803 1205.7822,169.7747 Q1206.6344,170.4691 1208.1494,170.4691 Q1209.0489,170.4691 1209.6802,170.2639 Q1210.0431,170.1534 1210.4534,169.7905 Q1210.7217,169.5853 1210.8638,169.5222 Q1211.0058,169.4591 1211.1794,169.4591 Q1211.5108,169.4591 1211.7554,169.7195 Q1212,169.9798 1212,170.3428 Q1212,170.69 1211.6528,171.1003 Q1211.1478,171.7 1210.343,172.0314 Q1209.2856,172.4891 1207.9916,172.4891 Q1206.4766,172.4891 1205.2614,171.8894 Q1204.283,171.4159 1203.5965,170.3902 Q1202.91,169.3644 1202.91,168.1492 L1202.91,167.0445 Q1202.91,165.782 1203.5176,164.6773 Q1204.1252,163.5727 1205.1904,162.9809 Q1206.2556,162.3891 1207.455,162.3891 Q1208.1809,162.3891 1208.8122,162.6416 Q1209.4434,162.8941 1209.98,163.3991 Z "/><text fill="#000000" font-family="sans-serif" font-size="12.12" lengthAdjust="spacingAndGlyphs" textLength="88.88" x="1222.1" y="171.8933">FocusDBHelper</text><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="1193.82" x2="1313" y1="183.0941" y2="183.0941"/><line style="stroke: #A80036; stroke-width: 1.5150000000000001;" x1="1193.82" x2="1313" y1="191.1741" y2="191.1741"/><!--MD5=[bdd644b866f3b4824f58f18d60522cf0]
+@startuml
+
+title __CLASS's Class Diagram__\n
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.AlarmReceiver {
+          - channelId : String
+          + capitalise()
+          + onReceive()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Focus {
+          {static} + COLUMN_TASK_COMPLETE : String
+          {static} + COLUMN_TASK_DATE : String
+          {static} + COLUMN_TASK_DURATION : String
+          {static} + COLUMN_TASK_NAME : String
+          {static} + COLUMN_TASK_fbID : String
+          {static} + CREATE_SQL : String
+          {static} + CREATOR : Creator<Focus>
+          {static} + FOCUS_TABLE : String
+          {static} + SQL_DELETE_ENTRIES : String
+          - fbID : String
+          - mCompletion : String
+          - mDateTime : String
+          - mDuration : String
+          - mTask : String
+          + Focus()
+          + Focus()
+          + Focus()
+          + describeContents()
+          + getFbID()
+          + getmCompletion()
+          + getmDateTime()
+          + getmDuration()
+          + getmTask()
+          + setFbID()
+          + setmCompletion()
+          + setmDateTime()
+          + setmDuration()
+          + setmTask()
+          + toString()
+          + writeToParcel()
+          # Focus()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Habit {
+          {static} + COLUMN_HABIT_COUNT : String
+          {static} + COLUMN_HABIT_GROUP_ID : String
+          {static} + COLUMN_HABIT_GROUP_NAME : String
+          {static} + COLUMN_HABIT_HOLDERCOLOR : String
+          {static} + COLUMN_HABIT_OCCURRENCE : String
+          {static} + COLUMN_HABIT_PERIOD : String
+          {static} + COLUMN_HABIT_REMINDER_CUSTOMTEXT : String
+          {static} + COLUMN_HABIT_REMINDER_HOURS : String
+          {static} + COLUMN_HABIT_REMINDER_ID : String
+          {static} + COLUMN_HABIT_REMINDER_MESSAGES : String
+          {static} + COLUMN_HABIT_REMINDER_MINUTES : String
+          {static} + COLUMN_HABIT_TIMECREATED : String
+          {static} + COLUMN_HABIT_TITLE : String
+          {static} + COLUMN_ID : String
+          {static} + COLUMN_USERID : String
+          {static} + CREATE_HABITS_TABLE : String
+          {static} + DROP_HABITS_TABLE : String
+          {static} + TABLE_NAME : String
+          - count : int
+          - habitID : long
+          - holder_color : String
+          - occurrence : int
+          - period : int
+          - time_created : String
+          - title : String
+          + Habit()
+          + Habit()
+          + Habit()
+          + addCount()
+          + getCount()
+          + getGroup()
+          + getHabitID()
+          + getHabitReminder()
+          + getHolder_color()
+          + getOccurrence()
+          + getPeriod()
+          + getTime_created()
+          + getTitle()
+          + minusCount()
+          + modifyCount()
+          + modifyTitle()
+          + returnColorID()
+          + returnPeriodText()
+          + setCount()
+          + setGroup()
+          + setHabitID()
+          + setHabitReminder()
+          + setHolder_color()
+          + setOccurrence()
+          + setPeriod()
+          + setTime_created()
+          + setTitle()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Habit.HabitList {
+          - habitList : ArrayList<Habit>
+          + HabitList()
+          + addItem()
+          + getItemAt()
+          + removeItemAt()
+          + size()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.HabitGroup {
+          {static} + COLUMN_GROUP_NAME : String
+          {static} + COLUMN_ID : String
+          {static} + CREATE_GROUPS_TABLE : String
+          {static} + DROP_GROUPS_TABLE : String
+          {static} + TABLE_NAME : String
+          - grp_id : long
+          - grp_name : String
+          + HabitGroup()
+          + HabitGroup()
+          + HabitGroup()
+          + getGrp_id()
+          + getGrp_name()
+          + setGrp_id()
+          + setGrp_name()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.HabitReminder {
+          - custom_text : String
+          - hours : int
+          - id : int
+          - message : String
+          - minutes : int
+          + HabitReminder()
+          + HabitReminder()
+          + getCustom_text()
+          + getHours()
+          + getId()
+          + getMessage()
+          + getMinutes()
+          + setCustom_text()
+          + setHours()
+          + setId()
+          + setMessage()
+          + setMinutes()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.ItemDecoration {
+          - mDivider : Drawable
+          - verticalSpaceHeight : int
+          + ItemDecoration()
+          + getItemOffsets()
+          + onDraw()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Label {
+          - mName : String
+          + Label()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Section {
+          {static} + COLUMN_COLOR : String
+          {static} + COLUMN_IMAGE : String
+          {static} + COLUMN_NAME : String
+          {static} + COLUMN_POSITION : String
+          {static} + COLUMN_SECTION_ID : String
+          {static} + COLUMN_USERID : String
+          {static} + SQL_CREATE_ENTRIES : String
+          {static} + SQL_DELETE_ENTRIES : String
+          {static} + TABLE_NAME : String
+          - ID : String
+          - bmiIcon : int
+          - mBackgroundColor : int
+          - mName : String
+          - mUID : String
+          - position : int
+          + Section()
+          + Section()
+          + addSection()
+          + deleteSection()
+          + executeFirebaseSectionDelete()
+          + executeFirebaseSectionUpload()
+          {static} + fromCursor()
+          {static} + fromJSON()
+          + getBackgroundColor()
+          + getBmiIcon()
+          + getID()
+          + getName()
+          + getPosition()
+          + getTaskList()
+          + setName()
+          + setPosition()
+          + toString()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Steps {
+          - mName : String
+          - mUID : int
+          + Steps()
+          + generateUID()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Task {
+          {static} + COLUMN_CHECKED : String
+          {static} + COLUMN_DUE_DATE : String
+          {static} + COLUMN_NAME : String
+          {static} + COLUMN_NOTES : String
+          {static} + COLUMN_REMIND_DATE : String
+          {static} + COLUMN_SECTION_ID : String
+          {static} + COLUMN_TASK_ID : String
+          {static} + SQL_CREATE_ENTRIES : String
+          {static} + SQL_DELETE_ENTRIES : String
+          {static} + TABLE_NAME : String
+          {static} - TAG : String
+          - checked : boolean
+          - dueDate : Date
+          - mLabelList : List<Label>
+          - mLabels : String
+          - mName : String
+          - mNotes : String
+          - mSectionID : String
+          - mSteps : List<Steps>
+          - mTaskID : String
+          - remindDate : Date
+          + Task()
+          + Task()
+          + Task()
+          + addTask()
+          + deleteTask()
+          + executeFirebaseDelete()
+          + executeFirebaseUpload()
+          {static} + fromCursor()
+          {static} + fromJSON()
+          + getDueDate()
+          + getName()
+          + getNotes()
+          + getRemindDate()
+          + getSectionID()
+          + getTaskID()
+          + isChecked()
+          + setChecked()
+          + setDueDate()
+          + setNotes()
+          + setRemindDate()
+          + setSectionID()
+          + setTaskID()
+          + stringToDate()
+          + toString()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.User {
+          {static} + COLUMN_NAME_EMAIL : String
+          {static} + COLUMN_NAME_ID : String
+          {static} + COLUMN_NAME_NAME : String
+          {static} + COLUMN_NAME_PASSWORD : String
+          {static} + CREATOR : Creator<User>
+          {static} + SQL_CREATE_ENTRIES : String
+          {static} + SQL_DELETE_ENTRIES : String
+          {static} + TABLE_NAME : String
+          ~ mAuth : FirebaseUser
+          - TAG : String
+          - mDateOfBirth : Date
+          - mEmailAddr : String
+          - mFocusList : ArrayList<Focus>
+          - mListLabel : List<Label>
+          - mName : String
+          - mPPID : String
+          - mPassword : String
+          - mSectionList : List<Section>
+          - mUID : String
+          - myRef : DatabaseReference
+          + User()
+          + User()
+          + User()
+          + addFocus()
+          + addFocusList()
+          + addSection()
+          + changeName()
+          + clearFocusList()
+          + describeContents()
+          + digestPassword()
+          + getAuth()
+          + getDateOfBirth()
+          + getEmailAdd()
+          + getName()
+          + getPassword()
+          + getUID()
+          + getmFocusList()
+          + readFocusFirebase()
+          + resetPwd()
+          + setAuth()
+          + setDateOfBirth()
+          + setEmailAdd()
+          + setName()
+          + setPPID()
+          + setPassword()
+          + setUID()
+          + setmFocusList()
+          + writeToParcel()
+          # User()
+          ~ User()
+          - stringToDate()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.todoListItem {
+      }
+    }
+  }
+  
+
+  com.mad.p03.np2020.routine.Class.AlarmReceiver -up-|> android.content.BroadcastReceiver
+  com.mad.p03.np2020.routine.Class.Focus .up.|> android.os.Parcelable
+  com.mad.p03.np2020.routine.Class.Habit o- - com.mad.p03.np2020.routine.Class.HabitGroup : group
+  com.mad.p03.np2020.routine.Class.Habit o- - com.mad.p03.np2020.routine.Class.HabitReminder : habitReminder
+  com.mad.p03.np2020.routine.Class.Habit +-down- com.mad.p03.np2020.routine.Class.Habit.HabitList
+  com.mad.p03.np2020.routine.Class.ItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
+  com.mad.p03.np2020.routine.Class.Section .up.|> java.io.Serializable
+  com.mad.p03.np2020.routine.Class.User .up.|> android.os.Parcelable
+  com.mad.p03.np2020.routine.Class.User o- - com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+
+@enduml
+
+PlantUML version 1.2020.03beta6(Unknown compile time)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 1.8.0_212-release-1586-b04
+Operating System: Windows 10
+Default Encoding: Cp1252
+Language: en
+Country: SG
+--></g></svg>
