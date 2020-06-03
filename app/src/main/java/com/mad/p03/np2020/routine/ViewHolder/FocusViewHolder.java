@@ -23,8 +23,6 @@ import com.mad.p03.np2020.routine.R;
  * @author Lee Quan Sheng
  * @since 02-06-2020
  */
-
-
 public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView iconComplete;
     public TextView Task, date, duration;

@@ -4,8 +4,8 @@ import com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder;
 
 /**
  *
- * This is used to be a trigger when it
- * is move or swiped or clicked
+ * This are events that will be fired / triggered
+ * by the parent. This used trigger changes in the task view holder
  *
  * @author Jeyavishnu
  * @since 02-06-2020

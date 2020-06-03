@@ -1,30 +1,16 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.PopUp;
-import com.mad.p03.np2020.routine.Class.Steps;
-import com.mad.p03.np2020.routine.database.CardDBHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /*
 *

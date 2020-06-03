@@ -62,7 +62,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTaskAdapter = new TaskAdapter(mSection, this);
+        mTaskAdapter = new TaskAdapter(mSection.getTaskList(this), this);
         mRecyclerView.setAdapter(mTaskAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

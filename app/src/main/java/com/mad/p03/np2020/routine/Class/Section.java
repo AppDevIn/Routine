@@ -253,9 +253,7 @@ public class Section implements Serializable {
 
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
 
-        List<Task> taskList = taskDBHelper.getAllTask(getID());
-
-        return taskList;
+        return taskDBHelper.getAllTask(getID());
     }
 
     /**
