@@ -95,6 +95,21 @@ open Documentation/index.html
 
 1. User.java
 
+### Lee Quan Sheng
+
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+11.
+12.
+13.
 
 
 ## Strory Mapping 
@@ -127,7 +142,7 @@ open Documentation/index.html
 
 
 
-<div style="text-align: left"><img src="/Users/jeyavishnu/personal/Current/Routine/Documentation/images/home.png" alt="home" style="zoom:33%; " /></div>
+<img src="Documentation/images/home.png" alt="drawing" width="200"/>
 
 
 
