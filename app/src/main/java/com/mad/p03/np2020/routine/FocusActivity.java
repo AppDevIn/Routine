@@ -17,6 +17,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -179,8 +181,17 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private void initialization() {
         Log.v(TAG, "Database does not exist");
         focusDBHelper = new FocusDBHelper(FocusActivity.this);
-        FirebaseDatabase();
-        user.readFocusFirebase(this);
+        if(focusDBHelper.isTableExists("FOCUS_TABLE")){
+            Log.v(TAG, "Database Exist");
+            focusDBHelper = new FocusDBHelper(FocusActivity.this);
+            user.setmFocusList(focusDBHelper.getAllData());
+            FirebaseDatabase();
+        }else{
+            Log.v(TAG, "Database does not exist");
+            focusDBHelper = new FocusDBHelper(FocusActivity.this);
+            FirebaseDatabase();
+            user.readFocusFirebase(this);
+        }
 
         tmins = 0;
         tsecs = 0;
@@ -370,6 +381,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         sec.setText(format(Locale.US, "%02d", seconds));
     }
 
+    /***
+     *
+     * OnClick event listener for each button on the Focus activity
+     *
+     * @param v Passing the current view to this content
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId() /*to get clicked view id**/) {
@@ -777,4 +794,5 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.i(TAG, "Object serialize");
         return gson.toJson(myClass);
     }
+
 }

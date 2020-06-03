@@ -95,6 +95,7 @@ public class HistoryFragment extends Fragment {
         }
     }
 
+
     private void sendBack() {
         if (mListener != null) {
             mListener.onFragmentInteraction();
