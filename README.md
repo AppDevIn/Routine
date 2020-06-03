@@ -97,19 +97,23 @@ open Documentation/index.html
 
 ### Lee Quan Sheng
 
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
-10.
-11.
-12.
-13.
+1. FocusAdapter.java
+
+2. FocusWorker.java
+
+3. Focus.java
+
+4. ItemDecoration.java
+
+5. FocusDBHelper.java
+
+6. FocusActivity.java
+
+7. LoginActivity.java
+
+8. HistoryFragment.java
+
+9. FocusViewHolder.java
 
 
 ## Strory Mapping 
@@ -118,11 +122,11 @@ open Documentation/index.html
 
 ## Class Diagram 
 
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/classDiagram.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/classDiagram.png)
 
 ## ER Diagram
 
-![Screenshot 2020-06-03 at 9.54.40 AM](Documentation/images/erDiagram.png)
+![Screenshot 2020-06-03 at 9.54.40 AM](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/erDiagram.png)
 
 
 
