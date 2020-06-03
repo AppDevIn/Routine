@@ -20,17 +20,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:text="Navbar"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/icon_menu"
+            android:contentDescription="@string/side_navigation_drawer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.014"
+            app:layout_constraintHorizontal_bias="0.005"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/id_edit_text"
@@ -75,8 +77,9 @@
             android:id="@+id/stepFragment"
             android:layout_width="115dp"
             android:layout_height="44dp"
-            android:background="@drawable/rounded_white_rectangle"
+            android:background="@drawable/rounded_button"
             android:text="@string/StepAdd"
+            android:fontFamily="@font/montserrat_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.016"
