@@ -35,7 +35,9 @@ open Documentation/index.html
 ## Team Members
 
 1. Jeyavishnu, S10192836C
-2. 
+2. Lee Quan sheng, S10198298G
+3. Pritheev
+4. 
 
 
 
@@ -122,11 +124,11 @@ open Documentation/index.html
 
 ## Class Diagram 
 
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/classDiagram.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/classDiagram.png)
 
 ## ER Diagram
 
-![Screenshot 2020-06-03 at 9.54.40 AM]Documentation/images/erDiagram.png)
+![Screenshot 2020-06-03 at 9.54.40 AM](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/erDiagram.png)
 
 
 
