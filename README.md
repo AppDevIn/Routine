@@ -6,29 +6,7 @@ All in one Productivity App
 
 ## Open Doucmentation
 
-### Download the file
-
-```cmd
-git clone https://github.com/AppDevIn/Routine.git
-```
-
-
-
-### Go to the Routine folder
-
-```
-cd path/to/ Routine
-```
-
-
-
-### Open the Document
-
-```
-open Documentation/index.html
-```
-
-
+(https://appdevin.github.io/routine.documentation.github.io)
 
 
 
@@ -36,7 +14,7 @@ open Documentation/index.html
 
 1. Jeyavishnu, S10192836C
 2. Lee Quan sheng, S10198298G
-3. Pritheev
+3. Pritheev, [Student ID]
 4. Wai Hou Man, S10197636F
 
 
