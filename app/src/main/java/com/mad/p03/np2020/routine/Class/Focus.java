@@ -5,6 +5,14 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+/**
+ *
+ * Model used to manage the section
+ *
+ * @author Lee Quan Sheng
+ * @since 02-06-2020
+ */
+
 public class Focus implements Parcelable {
 
     private String fbID;

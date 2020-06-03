@@ -15,7 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mad.p03.np2020.routine.database.FocusDatabase;
+import com.mad.p03.np2020.routine.database.FocusDBHelper;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -71,7 +71,7 @@ public class User implements Parcelable {
     private List<Label> mListLabel = new ArrayList<>();
     private ArrayList<Focus> mFocusList = new ArrayList<>();
     private DatabaseReference myRef;
-    FocusDatabase focusDatabase;
+    FocusDBHelper focusDBHelper;
 
     /**
      * Parcelable constructor for custom object
@@ -160,14 +160,14 @@ public class User implements Parcelable {
      */
     public void readFocusFirebase(Context context) {
         myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        focusDatabase = new FocusDatabase(context);
+        focusDBHelper = new FocusDBHelper(context);
 
         //Clear all data since there is a change to the database so it can be updated
 
         myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                focusDatabase.deleteAll();
+                focusDBHelper.deleteAll();
                 clearFocusList();
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     Focus focus = new Focus();
@@ -177,9 +177,9 @@ public class User implements Parcelable {
                     focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
                     focus.setmTask((String) singleSnapshot.child("mTask").getValue());
                     addFocusList(focus);
-                    focusDatabase.addData(focus);
+                    focusDBHelper.addData(focus);
                 }
-                setmFocusList(focusDatabase.getAllData());
+                setmFocusList(focusDBHelper.getAllData());
             }
 
             @Override

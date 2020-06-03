@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 
 
-public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
+public class FocusDBHelper extends SQLiteOpenHelper implements Parcelable {
 
     /**Name for table,  to identify the name of the table*/
     public static final String FOCUS_TABLE = "FOCUS_TABLE";
@@ -52,7 +52,7 @@ public class FocusDatabase extends SQLiteOpenHelper implements Parcelable {
      * @param context set context to this content
      *
      * */
-    public FocusDatabase(@Nullable Context context) {
+    public FocusDBHelper(@Nullable Context context) {
         super(context, "Focus.db", null, 4);
     }
 

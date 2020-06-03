@@ -25,7 +25,7 @@ import com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.database.FocusDatabase;
+import com.mad.p03.np2020.routine.database.FocusDBHelper;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
     private List<Focus> focusList; //List of focus
     private Context context; //Current context
-    private FocusDatabase focusDatabase;
+    private FocusDBHelper focusDBHelper;
     private User user;
     private String TAG = "FocusAdapter";
 
@@ -42,11 +42,11 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      *
      * @param user This parameter is used to set the user of the section
      * @param context This parameter is used to set the context of the section
-     * @param focusDatabase This parameter is used to set the focus database of the section
+     * @param focusDBHelper This parameter is used to set the focus database of the section
      */
-    public FocusAdapter(User user, Context context, FocusDatabase focusDatabase) {
+    public FocusAdapter(User user, Context context, FocusDBHelper focusDBHelper) {
         this.context = context;
-        this.focusDatabase = focusDatabase;
+        this.focusDBHelper = focusDBHelper;
         this.user = user;
         this.focusList = user.getmFocusList();
         user.readFocusFirebase(context);
@@ -94,7 +94,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      */
     public void remove(int position, Focus focusViewHolder) {
         focusList.remove(position);
-        focusDatabase.removeOneData(focusViewHolder);
+        focusDBHelper.removeOneData(focusViewHolder);
         deleteDataFirebase(focusViewHolder);
         this.notifyItemRemoved(position);
     }

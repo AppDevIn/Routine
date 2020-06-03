@@ -17,7 +17,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.background.FocusWorker;
-import com.mad.p03.np2020.routine.database.FocusDatabase;
+import com.mad.p03.np2020.routine.database.FocusDBHelper;
 import com.mad.p03.np2020.routine.Class.User;
 
 import java.text.SimpleDateFormat;
@@ -112,7 +111,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private User user = new User();
 
     //Local Database
-    FocusDatabase focusDatabase;
+    FocusDBHelper focusDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +178,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void initialization() {
         Log.v(TAG, "Database does not exist");
-        focusDatabase = new FocusDatabase(FocusActivity.this);
+        focusDBHelper = new FocusDBHelper(FocusActivity.this);
         FirebaseDatabase();
         user.readFocusFirebase(this);
 
@@ -190,7 +189,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
 
         //Add it to LocalDatabase List
-        Log.v(TAG, "Local database: " + focusDatabase.getAllData().toString());
+        Log.v(TAG, "Local database: " + focusDBHelper.getAllData().toString());
     }
 
     //
@@ -269,7 +268,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * @Param Focus passed in the new focus object to local database
      */
     private void writeToDatabase(Focus focus) {
-        focusDatabase.addData(focus); //Add to database
+        focusDBHelper.addData(focus); //Add to database
         user.addFocusList(focus); //Adding it to list
         writeDataFirebase(focus);
     }
@@ -565,7 +564,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Open History Fragment
      */
     public void openHistory() { //Open history tab
-        HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDatabase);
+        HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDBHelper);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);

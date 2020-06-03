@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
 import com.mad.p03.np2020.routine.Class.ItemDecoration;
 import com.mad.p03.np2020.routine.Class.User;
-import com.mad.p03.np2020.routine.database.FocusDatabase;
+import com.mad.p03.np2020.routine.database.FocusDBHelper;
 
 import java.util.Locale;
 
@@ -48,7 +48,7 @@ public class HistoryFragment extends Fragment {
     private final String TAG = "Focus";
     private TextView completion;
 
-    private FocusDatabase focusDatabase;
+    private FocusDBHelper focusDBHelper;
     private User user;
 
     /**
@@ -67,13 +67,13 @@ public class HistoryFragment extends Fragment {
      *
      * @return HistoryFragment return history fragment with object given
      * @param user Set user in this context
-     * @param focusDatabase Set Local database in this content
+     * @param focusDBHelper Set Local database in this content
      **/
-    public static HistoryFragment newInstance(User user, FocusDatabase focusDatabase) {
+    public static HistoryFragment newInstance(User user, FocusDBHelper focusDBHelper) {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         args.putParcelable(USER_GET, user);
-        args.putParcelable(FOCUS_DATABASE, focusDatabase);
+        args.putParcelable(FOCUS_DATABASE, focusDBHelper);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,7 +90,7 @@ public class HistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(USER_GET);
-            focusDatabase = getArguments().getParcelable("FocusDatabase");
+            focusDBHelper = getArguments().getParcelable("FocusDatabase");
             Log.v(TAG, "Created fragment");
         }
     }
@@ -127,7 +127,7 @@ public class HistoryFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerHistory);
 
         //recycler adapter
-        FocusAdapter focusAdapter = new FocusAdapter(user, getActivity(), focusDatabase);
+        FocusAdapter focusAdapter = new FocusAdapter(user, getActivity(), focusDBHelper);
         Drawable dividerDrawable = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false); //Declare layoutManager
 
