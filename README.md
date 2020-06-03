@@ -95,6 +95,21 @@ open Documentation/index.html
 
 1. User.java
 
+### Lee Quan Sheng
+
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+11.
+12.
+13.
 
 
 ## Strory Mapping 
