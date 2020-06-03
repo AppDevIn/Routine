@@ -40,10 +40,7 @@ public class SectionDBHelper extends DBHelper{
      */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d(TAG, "User database is being created");
-
-        //Create user database
-        sqLiteDatabase.execSQL(Section.SQL_CREATE_ENTRIES);
+        super.onCreate(sqLiteDatabase);
     }
 
     /**
@@ -58,10 +55,7 @@ public class SectionDBHelper extends DBHelper{
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.d(TAG, "User database is being upgraded");
-
-        sqLiteDatabase.execSQL(Section.SQL_DELETE_ENTRIES); // Delete existing user
-        onCreate(sqLiteDatabase);
+        super.onUpgrade(sqLiteDatabase, i, i1);
     }
 
     /**
@@ -75,11 +69,7 @@ public class SectionDBHelper extends DBHelper{
      */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(TAG, "User database is downgraded");
-
-        onUpgrade(db,oldVersion,newVersion);
-
-        //TODO: Add data
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     /**
@@ -87,7 +77,7 @@ public class SectionDBHelper extends DBHelper{
      * that will receive the events
      * @param myDatabaseListener setting the listener where the owner will listen to the message
      */
-    public static void  setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
+    public static void setMyDatabaseListener(MyDatabaseListener myDatabaseListener){
         mMyDatabaseListener = myDatabaseListener;
     }
 

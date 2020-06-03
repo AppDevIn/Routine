@@ -46,10 +46,7 @@ public class TaskDBHelper extends DBHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d(TAG, "Task database is being created");
-
-        //Create user database
-        sqLiteDatabase.execSQL(Task.SQL_CREATE_ENTRIES);
+        super.onCreate(sqLiteDatabase);
     }
 
     /**
@@ -64,12 +61,7 @@ public class TaskDBHelper extends DBHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.d(TAG, "Task database is being upgraded");
-
-        sqLiteDatabase.execSQL(Task.SQL_DELETE_ENTRIES); // Delete existing task
-        onCreate(sqLiteDatabase);
-
-        //TODO: Add data
+        super.onUpgrade(sqLiteDatabase, i, i1);
     }
 
     /**
@@ -83,9 +75,7 @@ public class TaskDBHelper extends DBHelper {
      */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(TAG, "Task database is downgraded");
-
-        onUpgrade(db,oldVersion,newVersion);
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     /**

@@ -25,25 +25,9 @@ import java.util.ArrayList;
  */
 
 
-public class FocusDBHelper extends SQLiteOpenHelper  {
+public class FocusDBHelper extends DBHelper implements Parcelable {
 
-    /**Name for table,  to identify the name of the table*/
-    public static final String FOCUS_TABLE = "FOCUS_TABLE";
 
-    /**Column task_name for table,  to identify the name of the section*/
-    public static final String COLUMN_TASK_NAME = "TASK_NAME";
-
-    /**Column task_date for table,  to identify the name of the section*/
-    public static final String COLUMN_TASK_DATE = "TASK_DATE";
-
-    /**Column task_duration for table,  to identify the name of the section*/
-    public static final String COLUMN_TASK_DURATION = "TASK_DURATION";
-
-    /**Column task_complete for table,  to identify the name of the section*/
-    public static final String COLUMN_TASK_COMPLETE = "TASK_COMPLETE";
-
-    /**Primary key for table,  to identify the row.*/
-    public static final String COLUMN_TASK_fbID = "fbID";
 
     /**
      *
@@ -53,7 +37,7 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
      *
      * */
     public FocusDBHelper(@Nullable Context context) {
-        super(context, "MyRoutine.db", null, 8);
+        super(context);
     }
 
     /**
@@ -64,9 +48,7 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
      * */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + FOCUS_TABLE + " (" + COLUMN_TASK_fbID + " TEXT PRIMARY KEY, " + COLUMN_TASK_NAME + " TEXT, " + COLUMN_TASK_DATE + " TEXT, " + COLUMN_TASK_DURATION + " TEXT, " + COLUMN_TASK_COMPLETE + " BOOL)";
-
-        db.execSQL(createTableStatement);
+        super.onCreate(db);
     }
 
     /**
@@ -79,7 +61,12 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
      * */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onUpgrade(db, oldVersion, newVersion);
+    }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     /**
@@ -93,13 +80,13 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_TASK_fbID, focus.getFbID());
-        cv.put(COLUMN_TASK_NAME, focus.getmTask());
-        cv.put(COLUMN_TASK_COMPLETE, focus.getmCompletion());
-        cv.put(COLUMN_TASK_DURATION, focus.getmDuration());
-        cv.put(COLUMN_TASK_DATE, focus.getmDateTime());
+        cv.put(Focus.COLUMN_TASK_fbID, focus.getFbID());
+        cv.put(Focus.COLUMN_TASK_NAME, focus.getmTask());
+        cv.put(Focus.COLUMN_TASK_COMPLETE, focus.getmCompletion());
+        cv.put(Focus.COLUMN_TASK_DURATION, focus.getmDuration());
+        cv.put(Focus.COLUMN_TASK_DATE, focus.getmDateTime());
 
-        long insert = db.insert(FOCUS_TABLE, null, cv); //if insert is -1 means fail
+        long insert = db.insert(Focus.FOCUS_TABLE, null, cv); //if insert is -1 means fail
         if (insert == -1) return false;
         else return true;
     }
@@ -115,7 +102,7 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
         // Find database that match the row data. If it found, delete and return true
 
         SQLiteDatabase db = this.getWritableDatabase();
-        String queryString = "DELETE FROM " + FOCUS_TABLE + " WHERE " + COLUMN_TASK_fbID + " = " + "'" + focus.getFbID() + "'";
+        String queryString = "DELETE FROM " + Focus.FOCUS_TABLE + " WHERE " + Focus.COLUMN_TASK_fbID + " = " + "'" + focus.getFbID() + "'";
 
         Cursor cursor = db.rawQuery(queryString, null);
 
@@ -136,7 +123,7 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
     {
         //This is called to destroy SQLite Database
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(FOCUS_TABLE,null,null);
+        db.delete(Focus.FOCUS_TABLE,null,null);
         db.close();
     }
 
@@ -151,7 +138,7 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
         //This is called to get all Data existing in the firebase database
         ArrayList<Focus> returnList = new ArrayList<>();
 
-        String queryString = "Select * FROM " + FOCUS_TABLE;
+        String queryString = "Select * FROM " + Focus.FOCUS_TABLE;
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -178,40 +165,25 @@ public class FocusDBHelper extends SQLiteOpenHelper  {
         return returnList;
     }
 
+
     /**
      *
-     * This is called to check if the table exist
      *
-     * @param tableName pass in parameter to the current content
-     * @param openDb pass in openDb to the current content
-     * @return boolean To identify table exist
+     * This class have child classes, used of child in this case can return in describeContent() different values,
+     * so to know which particular object type to create from Parcel.
+     *
      */
-    public boolean isTableExists(String tableName, boolean openDb) {
-
-        SQLiteDatabase mDatabase = this.getWritableDatabase();
-
-        if(openDb) {
-            if(mDatabase == null || !mDatabase.isOpen()) {
-                mDatabase = getReadableDatabase();
-            }
-
-            if(!mDatabase.isReadOnly()) {
-                mDatabase.close();
-                mDatabase = getReadableDatabase();
-            }
-        }
-
-        String query = "select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'";
-        try (Cursor cursor = mDatabase.rawQuery(query, null)) {
-            if(cursor!=null) {
-                if(cursor.getCount()>0) {
-                    mDatabase.close();
-                    return true;
-                }
-            }
-            mDatabase.close();
-            return false;
-        }
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
+    /**
+     *
+     * Flatten Focus object to a parcel
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }

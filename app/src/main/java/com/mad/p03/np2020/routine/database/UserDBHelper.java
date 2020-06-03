@@ -30,10 +30,7 @@ public class UserDBHelper extends DBHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d(TAG, "User database is being created");
-
-        //Create user database
-        sqLiteDatabase.execSQL(User.SQL_CREATE_ENTRIES);
+        super.onCreate(sqLiteDatabase);
     }
 
     /**
@@ -48,13 +45,7 @@ public class UserDBHelper extends DBHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        Log.d(TAG, "User database is being upgraded");
-
-        sqLiteDatabase.execSQL(User.SQL_DELETE_ENTRIES); // Delete existing user dat
-        onCreate(sqLiteDatabase);
-
-        //TODO: Add tables
-
+        super.onUpgrade(sqLiteDatabase,i,i1);
     }
 
 
@@ -69,9 +60,7 @@ public class UserDBHelper extends DBHelper {
      */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(TAG, "User database is downgraded");
-
-        onUpgrade(db,oldVersion,newVersion);
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     /**
