@@ -13,6 +13,7 @@
         android:layout_height="184dp"
         android:layout_alignParentTop="true"
         android:padding="10dp"
+        android:background="@drawable/card_gradient"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

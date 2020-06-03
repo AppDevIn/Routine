@@ -35,4 +35,6 @@
     <color name="yellow">#FCFFE9</color>
     <color name="red">#FF2000</color>
     <color name="white">#FFFFFF</color>
+    <color name="gradientPurple">#753A88</color>
+    <color name="gradientPink">#CC2B5E</color>
 </resources>
