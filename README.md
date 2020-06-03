@@ -151,7 +151,7 @@ open Documentation/index.html
 
 ## Class Diagram 
 
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/classDiagram.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/routine.svg)
 
 ## ER Diagram
 
