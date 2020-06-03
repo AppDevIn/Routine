@@ -17,27 +17,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
+/*
+ *
+ * CardActivity class used to manage card activities
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 
 public class StepsFragment extends Fragment{
-
     // Initializing variables
+
+    //TAG used for logging
     final String TAG = "StepFragment";
-    private String mParam1;
-    private String mParam2;
+
+    //Array adapter for list of checklist objects
     ArrayAdapter<String> arrayAdapter;
+
+    //List for storing checklist items
     List<String> stepList;
+
+    //ListView for FragmentContainer
     ListView listView;
+
+    //EditText for storing step name input
     EditText stepName;
+
+    //Button for when adding step to the list
     Button stepAddButton;
+
+    //View used in onCreateView function
     View view;
 
-    // Constructor
+    //Constructor for StepsFragment
     public StepsFragment() {
         // Required empty public constructor
     }
 
     // Instantiate Steps Fragment
-    public static StepsFragment newInstance(String param1, String param2) {
+    public static StepsFragment newInstance() {
         StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -52,10 +71,10 @@ public class StepsFragment extends Fragment{
             // Get user input
             stepName = getView().findViewById(R.id.stepInput);
 
-            // Use list view for cehcklist
+            // Use list view for checklist
             listView = getView().findViewById(R.id.listView);
 
-            // Store checklist items in array lsit
+            // Store checklist items in array list
             stepList = new ArrayList<>();
             arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_view_layout, stepList);
 
