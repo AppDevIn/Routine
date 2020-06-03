@@ -28,7 +28,13 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 
-
+/**
+ *
+ * Model used to manage the Task
+ *
+ * @author Jeyavishnu
+ * @since 04-06-2020
+ */
 public class Task {
 
     //Member variable
@@ -45,7 +51,7 @@ public class Task {
 
     private final static String TAG = "Task Model";
 
-    //Declare the constants of the database
+    /**The table name for this model*/
     public static final String TABLE_NAME = "task";
 
     /**Used as the primary key for this table*/
@@ -172,36 +178,58 @@ public class Task {
         return checked;
     }
 
-    /**@return boolean Check if the task has been completed before*/
+    /**@return Date This return the data that I need to remind about the task*/
     public Date getRemindDate() {
         return remindDate;
     }
 
-
+    /**@return Date This return the date the task is going to be due*/
     public Date getDueDate() {
         return dueDate;
     }
 
+    /**@return String This return a string of notes for this task*/
     public String getNotes() {
         return mNotes;
     }
 
+    /**@return String This return the unique task ID for each task*/
     public String getTaskID() {
         return mTaskID;
     }
 
+    /**
+     * This method is used to set the Section ID this
+     * task belongs too
+     *
+     * @return This parameter is used to set the section ID
+     * this task belongs too
+     */
     public String getSectionID() {
         return mSectionID;
     }
 
-
+    /**
+     *
+     * This method is used to set
+     * the taskID of this task
+     *
+     * @param taskID This parameter is used to set the taskID
+     *                 of this task
+     */
     public void setTaskID(String taskID) {
         mTaskID = taskID;
     }
 
 
+    /**
+     *
+     * @param date String This parameter gives me the data and time in
+     *             this format dd/MM/yyyy
+     * @return Date Return the date object
+     */
     public Date stringToDate(String date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try {
             return sdf.parse(date);
         } catch (ParseException ex) {
@@ -210,18 +238,43 @@ public class Task {
         }
     }
 
+    /**
+     *
+     * This method is used to add
+     * the task data from SQL
+     * using the TaskDBHelper
+     *
+     * @param context To know from which state of the object the code is called from
+     */
     public void addTask(Context context){
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
 
         taskDBHelper.insertTask(this);
     }
 
+    /**
+     *
+     * This method is used to delete
+     * the task data from SQL
+     * using the TaskDBHelper
+     *
+     * @param context To know from which state of the object the code is called from
+     */
     public void deleteTask(Context context){
 
         TaskDBHelper taskDBHelper = new TaskDBHelper(context);
         taskDBHelper.delete(getTaskID());
     }
 
+    /**
+     *
+     * Upload the task info to firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner LifecycleOwner to be used to observe my upload
+     */
     public void executeFirebaseUpload(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
@@ -262,6 +315,14 @@ public class Task {
 
     }
 
+    /**
+     * Delete the task from firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner to be used to observe my upload
+     */
     public void executeFirebaseDelete(LifecycleOwner owner){
 
         Log.d(TAG, "executeFirebaseDelete(): Preparing to delete, on ID: " + getTaskID());

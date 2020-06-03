@@ -27,25 +27,29 @@ import java.util.List;
 
 /**
  *
- * Model used to manage the section
+ * Model used to manage the user data
  *
- * @author Lee Quan Sheng and jeyavishnu
- * @since 02-06-2020
+ * @author Lee Quan Sheng and Jeyavishnu
+ * @since 04-06-2020
  */
-
-
 public class User implements Parcelable {
 
-    //User table
+    /**The table name for this model*/
     public static final String TABLE_NAME = "user"; //Name of the table
 
-    //Column name in the user table
+    /**Used as the primary key for this table*/
     public static final String COLUMN_NAME_ID = "id";
+    /**Column name for table,  to identify the name of the user*/
     public static final String COLUMN_NAME_NAME = "name";
+    /**Column name for table,  to identify the email of the user*/
     public static final String COLUMN_NAME_EMAIL = "email";
+    /**Column name for table,  to identify the password of the task*/
     public static final String COLUMN_NAME_PASSWORD = "password"; //The password will be encrypted
 
-    //The creation of the database
+    /**
+     * The query needed to create a sql database
+     * for the user
+     */
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_NAME_ID + " TEXT PRIMARY KEY," +
@@ -53,14 +57,16 @@ public class User implements Parcelable {
                     COLUMN_NAME_EMAIL + " TEXT," +
                     COLUMN_NAME_PASSWORD + " TEXT)";
 
-    //Query to delete the table
+    /**
+     * The query needed to drop the table for task
+     */
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
+    final private String TAG = "User";
 
-    FirebaseUser mAuth;
-    private String TAG = "User";
-
+    //Member variable
+    private FirebaseUser mAuth;
     private String mName;
     private String mUID;
     private String mEmailAddr;
@@ -71,7 +77,7 @@ public class User implements Parcelable {
     private List<Label> mListLabel = new ArrayList<>();
     private ArrayList<Focus> mFocusList = new ArrayList<>();
     private DatabaseReference myRef;
-    FocusDBHelper focusDBHelper;
+    private FocusDBHelper focusDBHelper;
 
     /**
      * Parcelable constructor for custom object
@@ -109,7 +115,7 @@ public class User implements Parcelable {
         /**
          * Implementation of parcelable interface of a type implements the Parcelable.Creator Interface
          *
-         * @param in Container for a message (data and object references) that is sent through an IBinder
+         * @param size Container for a message (data and object references) that is sent through an IBinder
          * @return customObject Array size
          */
         @Override
@@ -209,9 +215,17 @@ public class User implements Parcelable {
         this.mName = name;
         this.mPassword = password;
         this.mEmailAddr = emailAddr;
-//        this.mDateOfBirth = dateOfBirth;
     }
 
+    /**
+     *
+     * This methods is to check if the name is empty and
+     * set it into the object
+     *
+     * @param name This parameter take in the name of the user
+     *             and set it
+     * @throws FormatException On input given if it empty of not
+     */
     public void setName(String name) throws FormatException {
 
         if (!name.isEmpty()) {
@@ -220,6 +234,16 @@ public class User implements Parcelable {
             throw new FormatException("Text is empty");
     }
 
+    /**
+     *
+     * This method is to check if the email is empty and if it's in the email format and
+     * set it into the object
+     *
+     * @param emailAdd This parameter take in the email address of the user
+     *                     and set it
+     * @throws FormatException On input given must follow the email format (@ and .com)
+     * and not empty
+     */
     public void setEmailAdd(String emailAdd) throws FormatException {
 
         if (!emailAdd.isEmpty()) {
@@ -239,6 +263,16 @@ public class User implements Parcelable {
         }
     }
 
+    /**
+     *
+     * This method is to check if the password is empty and if it's in the strong password format and
+     * set it into the object
+     *
+     * @param password This parameter take in the password of the user
+     *                 and set it
+     * @throws FormatException On input given must follow the strong password format have 8 characters,
+     * with special symbol and alphanumeric, not empty and no white space
+     */
     public void setPassword(String password) throws FormatException {
         //TODO: Encrypt the password
 
@@ -267,6 +301,15 @@ public class User implements Parcelable {
 
     }
 
+    /**
+     *
+     * This method is to check if the Date of Birth is empty and if it's in the right
+     * format (DD/MM/YYYY) and set it into the object
+     *
+     * @param dateOfBirth This parameter take in the Date of birth of the user
+     *                    and set it
+     * @throws FormatException On input given must follow the Date format (DD/MM/YYYY)
+     */
     public void setDateOfBirth(String dateOfBirth) throws FormatException {
         if (!dateOfBirth.isEmpty()) {
             String DOBPATTERN = "[0-9]+[0-9]+/+[0-9]+[0-9]+/[0-9]+[0-9][0-9]+[0-9]";
@@ -286,6 +329,25 @@ public class User implements Parcelable {
 
     }
 
+    /**
+     * This method is used to set the
+     * user unique ID into the object
+     *
+     * @param UID This parameter is used to set the UID
+     *            of the user
+     */
+    public void setUID(String UID) {
+        mUID = UID;
+    }
+
+    /**
+     *
+     * This method is used to set the
+     * user authentication into the object
+     *
+     * @param auth This parameter is used to set the authentication
+     *             info of the user from firebase
+     */
     public void setAuth(FirebaseUser auth) {
         mAuth = auth;
 
@@ -293,58 +355,42 @@ public class User implements Parcelable {
         this.setUID(this.mAuth.getUid());
     }
 
-    public void setUID(String UID) {
-        mUID = UID;
-    }
 
+    /**@return String This return the UID of the user*/
     public String getUID() {
         return mUID;
     }
 
+    /**@return FirebaseUser This return the authentication for this user by firebase*/
     public FirebaseUser getAuth() {
         return mAuth;
     }
 
+    /**@return String This return the name of the user*/
     public String getName() {
         return mName;
     }
 
+    /**@return String This return the email address the user*/
     public String getEmailAdd() {
         return mEmailAddr;
     }
 
+    /**@return String This return the password of the user */
     public String getPassword() {
         return mPassword;
     }
 
-    public String digestPassword() {
-        return mPassword;
-    }
-
+    /**
+     *
+     * This method convert the date into string and
+     * returns it
+     *
+     * @return String This return the date of birth of the user */
     public String getDateOfBirth() {
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return mDateOfBirth == null ? null : dateFormat.format(mDateOfBirth);
-    }
-
-    public void changeName(String newName) {
-        // TODO: Please upload any changes to this class to the main branch`
-    }
-
-    public void setPPID() {
-        // TODO: Please upload any changes to this class to the main branch`
-    }
-
-    public void addSection(Section section) {
-        // TODO: Please upload any changes to this class to the main branch`
-    }
-
-    public void addFocus() {
-        // TODO: Please upload any changes to this class to the main branch`
-    }
-
-    public void resetPwd() {
-        // TODO: Please upload any changes to this class to the main branch`
     }
 
 
@@ -369,6 +415,13 @@ public class User implements Parcelable {
     }
 
 
+    /**
+     *
+     * Describe the kinds of special objects contained in this
+     * Parcelable instance's marshaled representation.
+     *
+     * @return This return 0
+     */
     @Override
     public int describeContents() {
         return 0;

@@ -222,7 +222,7 @@ public class Section implements Serializable {
 
     /**
      *
-     * This method is used to delete
+     * This method is used to add
      * the section data from SQL
      * using the SectionDBHelper
      *
