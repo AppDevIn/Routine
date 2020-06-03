@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.zip.Inflater;
 
 
-public class StepsFragment extends Fragment {
+public class StepsFragment extends Fragment implements View.OnClickListener{
 
     // Initializing variables
     final String TAG = "StepFragment";
@@ -29,6 +29,7 @@ public class StepsFragment extends Fragment {
     ListView listView;
     EditText stepName;
     Button stepAddButton;
+    View view;
 
     // Constructor
     public StepsFragment() {
@@ -73,18 +74,19 @@ public class StepsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_steps_layout, container, false);
+        view = inflater.inflate(R.layout.fragment_steps_layout, container, false);
 
         // Button click listeners for when button clicked to call addItemToList
-        stepAddButton = view.findViewById(R.id.addStep);
+        stepAddButton = (Button) view.findViewById(R.id.addStep);
 
-        stepAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "Step added!");
-                addItemToList();
-            }
-        });
-        return inflater.inflate(R.layout.fragment_steps_layout, container, false);
+        stepAddButton.setOnClickListener(this);
+        return view;
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.v(TAG, "Step added!");
+
     }
 }
