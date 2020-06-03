@@ -101,6 +101,8 @@ All in one Productivity App
 
 9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
 
+   ​    
+
 ### Wai Hou Man
 
 1. [HabitAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HabitAdapter.java)
@@ -128,6 +130,7 @@ All in one Productivity App
 12. [HabitGroupHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/HabitGroupHolder.java)
 
 13. [HabitActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitActivity.java)
+   ​    
 
 ## Story Mapping 
 
