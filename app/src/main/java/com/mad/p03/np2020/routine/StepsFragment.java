@@ -87,6 +87,6 @@ public class StepsFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         Log.v(TAG, "Step added!");
-
+        addItemToList();
     }
 }
