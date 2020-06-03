@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 
 
-public class FocusDBHelper extends SQLiteOpenHelper implements Parcelable {
+public class FocusDBHelper extends SQLiteOpenHelper  {
 
     /**Name for table,  to identify the name of the table*/
     public static final String FOCUS_TABLE = "FOCUS_TABLE";
@@ -53,7 +53,7 @@ public class FocusDBHelper extends SQLiteOpenHelper implements Parcelable {
      *
      * */
     public FocusDBHelper(@Nullable Context context) {
-        super(context, "Focus.db", null, 4);
+        super(context, "MyRoutine.db", null, 8);
     }
 
     /**
@@ -178,25 +178,40 @@ public class FocusDBHelper extends SQLiteOpenHelper implements Parcelable {
         return returnList;
     }
 
-
     /**
      *
+     * This is called to check if the table exist
      *
-     * This class have child classes, used of child in this case can return in describeContent() different values,
-     * so to know which particular object type to create from Parcel.
-     *
+     * @param tableName pass in parameter to the current content
+     * @param openDb pass in openDb to the current content
+     * @return boolean To identify table exist
      */
-    @Override
-    public int describeContents() {
-        return 0;
+    public boolean isTableExists(String tableName, boolean openDb) {
+
+        SQLiteDatabase mDatabase = this.getWritableDatabase();
+
+        if(openDb) {
+            if(mDatabase == null || !mDatabase.isOpen()) {
+                mDatabase = getReadableDatabase();
+            }
+
+            if(!mDatabase.isReadOnly()) {
+                mDatabase.close();
+                mDatabase = getReadableDatabase();
+            }
+        }
+
+        String query = "select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'";
+        try (Cursor cursor = mDatabase.rawQuery(query, null)) {
+            if(cursor!=null) {
+                if(cursor.getCount()>0) {
+                    mDatabase.close();
+                    return true;
+                }
+            }
+            mDatabase.close();
+            return false;
+        }
     }
 
-    /**
-     *
-     * Flatten Focus object to a parcel
-     */
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }

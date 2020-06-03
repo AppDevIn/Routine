@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,7 @@ public class HistoryFragment extends Fragment {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         args.putParcelable(USER_GET, user);
-        args.putParcelable(FOCUS_DATABASE, focusDBHelper);
+        args.putParcelable(FOCUS_DATABASE, (Parcelable) focusDBHelper);
         fragment.setArguments(args);
         return fragment;
     }

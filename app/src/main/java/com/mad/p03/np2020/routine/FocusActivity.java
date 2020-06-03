@@ -179,8 +179,17 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private void initialization() {
         Log.v(TAG, "Database does not exist");
         focusDBHelper = new FocusDBHelper(FocusActivity.this);
-        FirebaseDatabase();
-        user.readFocusFirebase(this);
+        if(focusDBHelper.isTableExists("FOCUS_TABLE", true)){
+            Log.v(TAG, "Database Exist");
+            focusDBHelper = new FocusDBHelper(FocusActivity.this);
+            user.setmFocusList(focusDBHelper.getAllData());
+            FirebaseDatabase();
+        }else{
+            Log.v(TAG, "Database does not exist");
+            focusDBHelper = new FocusDBHelper(FocusActivity.this);
+            FirebaseDatabase();
+            user.readFocusFirebase(this);
+        }
 
         tmins = 0;
         tsecs = 0;
@@ -777,4 +786,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.i(TAG, "Object serialize");
         return gson.toJson(myClass);
     }
+
+
 }

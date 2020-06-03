@@ -12,10 +12,10 @@
         android:windowSoftInputMode="adjustPan">
         <activity android:name=".TaskActivity"/>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".FocusActivity" />
+        <activity android:name=".Home" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".Home">
+        <activity android:name=".FocusActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
