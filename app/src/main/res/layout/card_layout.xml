@@ -47,17 +47,6 @@
             app:layout_constraintVertical_bias="0.065" />
 
         <Button
-            android:id="@+id/scheduleButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.219" />
-
-        <Button
             android:id="@+id/textView"
             android:layout_width="384dp"
             android:layout_height="20dp"
@@ -70,16 +59,17 @@
 
         </Button>
 
-        <Button
+        <ImageButton
             android:id="@+id/notifyButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/notification"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.868"
+            app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.214" />
+            app:layout_constraintVertical_bias="0.074" />
 
         <Button
             android:id="@+id/stepFragment"
