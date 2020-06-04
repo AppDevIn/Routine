@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +42,9 @@ public class CardActivity extends AppCompatActivity {
     //Used to identify step adding button
     Button stepAddButton;
 
+    //Used to identify notification button
+    ImageButton notifyButton;
+
     //Used to identify Notes Fragment
     Button notesFragment;
 
@@ -59,6 +64,9 @@ public class CardActivity extends AppCompatActivity {
 
         //Used to initialize stepAddButton with an id from view
         stepAddButton = findViewById(R.id.stepAdd);
+
+        //Used to initialize notificationButton with an id from view
+        notifyButton = findViewById(R.id.notifyButton);
 
         //Used to initialize stepFragment with an id from view
         stepFragment = findViewById(R.id.stepFragment);
@@ -121,6 +129,15 @@ public class CardActivity extends AppCompatActivity {
                     //Committing to enable fragment view
                     fragmentTransaction.commit();
                 }
+            }
+        });
+
+        //Notification Button On Click Listener
+        notifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PopUp.class);
+
             }
         });
 
