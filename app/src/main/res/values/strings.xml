@@ -42,6 +42,8 @@
     <string name="NotesHint">Type Here</string>
     <string name="Add">Add</string>
     <string name="EnterStep">Enter Step Name</string>
+    <string name="NotificationDescription">Notification Icon</string>
+    <string name="ArrowDescription">Arrow Buttons</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

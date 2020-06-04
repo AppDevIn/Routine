@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card_gradient">
+    android:background="@color/registerColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_section"
         android:layout_width="412dp"
-        android:layout_height="195dp"
+        android:layout_height="183dp"
         android:layout_alignParentTop="true"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +30,7 @@
             android:background="@drawable/icon_menu"
             android:contentDescription="@string/side_navigation_drawer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.005"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,74 +44,63 @@
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.065" />
-
-        <Button
-            android:id="@+id/textView"
-            android:layout_width="384dp"
-            android:layout_height="20dp"
-            android:background="@drawable/label"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.615"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </Button>
+            app:layout_constraintVertical_bias="0.42" />
 
         <ImageButton
             android:id="@+id/notifyButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/notification"
+            android:contentDescription="@string/NotificationDescription"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/notification_bell"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.954"
+            app:layout_constraintHorizontal_bias="0.926"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.074" />
+            app:layout_constraintVertical_bias="0.444" />
 
         <Button
             android:id="@+id/stepFragment"
             android:layout_width="115dp"
             android:layout_height="44dp"
             android:background="@drawable/rounded_button"
-            android:text="@string/StepAdd"
             android:fontFamily="@font/montserrat_regular"
+            android:text="@string/StepAdd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.016"
+            app:layout_constraintHorizontal_bias="0.02"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.957" />
+            app:layout_constraintVertical_bias="0.985" />
 
         <Button
             android:id="@+id/notesFragment"
             android:layout_width="115dp"
             android:layout_height="44dp"
-            android:background="@drawable/rounded_white_rectangle"
+            android:background="@drawable/rounded_button"
             android:text="@string/NotesAdd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.957" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/focusButton"
             android:layout_width="115dp"
             android:layout_height="44dp"
-            android:background="@drawable/rounded_white_rectangle"
+            android:background="@drawable/rounded_button"
             android:text="@string/FocusButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.986"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.957" />
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
