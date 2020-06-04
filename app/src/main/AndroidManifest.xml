@@ -23,10 +23,12 @@
 
         <activity android:name=".HabitActivity" />
 
-        <activity android:name=".CardActivity"
+        <activity android:name=".Home"
                 android:exported="true"/>
 
-        <activity android:name=".Class.PopUp"/>
+        <activity android:name=".Class.PopUp"
+            android:theme="@style/AppTheme.NotificationTheme">
+        </activity>
 
         <activity android:name=".FocusActivity" />
 
@@ -40,7 +42,7 @@
         <activity android:name=".RegisterActivity" />
 
         <activity
-            android:name=".Home">
+            android:name=".CardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

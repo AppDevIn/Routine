@@ -1,0 +1,424 @@
+@startuml
+
+title __CLASS's Class Diagram__\n
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.AlarmReceiver {
+          - channelId : String
+          + capitalise()
+          + onReceive()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.CardAdapter {
+          ~ data : ArrayList<String>
+          + CardAdapter()
+          + getItemCount()
+          + onBindViewHolder()
+          + onCreateViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.CardViewHolder {
+          ~ stepItem : CheckedTextView
+          + CardViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Focus {
+          {static} + COLUMN_TASK_COMPLETE : String
+          {static} + COLUMN_TASK_DATE : String
+          {static} + COLUMN_TASK_DURATION : String
+          {static} + COLUMN_TASK_NAME : String
+          {static} + COLUMN_TASK_fbID : String
+          {static} + CREATE_SQL : String
+          {static} + CREATOR : Creator<Focus>
+          {static} + FOCUS_TABLE : String
+          {static} + SQL_DELETE_ENTRIES : String
+          - fbID : String
+          - mCompletion : String
+          - mDateTime : String
+          - mDuration : String
+          - mTask : String
+          + Focus()
+          + Focus()
+          + Focus()
+          + describeContents()
+          + getFbID()
+          + getmCompletion()
+          + getmDateTime()
+          + getmDuration()
+          + getmTask()
+          + setFbID()
+          + setmCompletion()
+          + setmDateTime()
+          + setmDuration()
+          + setmTask()
+          + toString()
+          + writeToParcel()
+          # Focus()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Habit {
+          {static} + COLUMN_HABIT_COUNT : String
+          {static} + COLUMN_HABIT_GROUP_ID : String
+          {static} + COLUMN_HABIT_GROUP_NAME : String
+          {static} + COLUMN_HABIT_HOLDERCOLOR : String
+          {static} + COLUMN_HABIT_OCCURRENCE : String
+          {static} + COLUMN_HABIT_PERIOD : String
+          {static} + COLUMN_HABIT_REMINDER_CUSTOMTEXT : String
+          {static} + COLUMN_HABIT_REMINDER_HOURS : String
+          {static} + COLUMN_HABIT_REMINDER_ID : String
+          {static} + COLUMN_HABIT_REMINDER_MESSAGES : String
+          {static} + COLUMN_HABIT_REMINDER_MINUTES : String
+          {static} + COLUMN_HABIT_TIMECREATED : String
+          {static} + COLUMN_HABIT_TITLE : String
+          {static} + COLUMN_ID : String
+          {static} + COLUMN_USERID : String
+          {static} + CREATE_HABITS_TABLE : String
+          {static} + DROP_HABITS_TABLE : String
+          {static} + TABLE_NAME : String
+          - count : int
+          - habitID : long
+          - holder_color : String
+          - occurrence : int
+          - period : int
+          - time_created : String
+          - title : String
+          + Habit()
+          + Habit()
+          + Habit()
+          + addCount()
+          + getCount()
+          + getGroup()
+          + getHabitID()
+          + getHabitReminder()
+          + getHolder_color()
+          + getOccurrence()
+          + getPeriod()
+          + getTime_created()
+          + getTitle()
+          + minusCount()
+          + modifyCount()
+          + modifyTitle()
+          + returnColorID()
+          + returnPeriodText()
+          + setCount()
+          + setGroup()
+          + setHabitID()
+          + setHabitReminder()
+          + setHolder_color()
+          + setOccurrence()
+          + setPeriod()
+          + setTime_created()
+          + setTitle()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Habit.HabitList {
+          - habitList : ArrayList<Habit>
+          + HabitList()
+          + addItem()
+          + getItemAt()
+          + removeItemAt()
+          + size()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.HabitGroup {
+          {static} + COLUMN_GROUP_NAME : String
+          {static} + COLUMN_ID : String
+          {static} + CREATE_GROUPS_TABLE : String
+          {static} + DROP_GROUPS_TABLE : String
+          {static} + TABLE_NAME : String
+          - grp_id : long
+          - grp_name : String
+          + HabitGroup()
+          + HabitGroup()
+          + HabitGroup()
+          + getGrp_id()
+          + getGrp_name()
+          + setGrp_id()
+          + setGrp_name()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.HabitReminder {
+          - custom_text : String
+          - hours : int
+          - id : int
+          - message : String
+          - minutes : int
+          + HabitReminder()
+          + HabitReminder()
+          + getCustom_text()
+          + getHours()
+          + getId()
+          + getMessage()
+          + getMinutes()
+          + setCustom_text()
+          + setHours()
+          + setId()
+          + setMessage()
+          + setMinutes()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.ItemDecoration {
+          - mDivider : Drawable
+          - verticalSpaceHeight : int
+          + ItemDecoration()
+          + getItemOffsets()
+          + onDraw()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Label {
+          - mName : String
+          + Label()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.PopUp {
+          # onCreate()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Section {
+          {static} + COLUMN_COLOR : String
+          {static} + COLUMN_IMAGE : String
+          {static} + COLUMN_NAME : String
+          {static} + COLUMN_POSITION : String
+          {static} + COLUMN_SECTION_ID : String
+          {static} + COLUMN_USERID : String
+          {static} + SQL_CREATE_ENTRIES : String
+          {static} + SQL_DELETE_ENTRIES : String
+          {static} + TABLE_NAME : String
+          - ID : String
+          - bmiIcon : int
+          - mBackgroundColor : int
+          - mName : String
+          - mUID : String
+          - position : int
+          + Section()
+          + Section()
+          + addSection()
+          + deleteSection()
+          + executeFirebaseSectionDelete()
+          + executeFirebaseSectionUpload()
+          {static} + fromCursor()
+          {static} + fromJSON()
+          + getBackgroundColor()
+          + getBmiIcon()
+          + getID()
+          + getName()
+          + getPosition()
+          + getTaskList()
+          + setName()
+          + setPosition()
+          + toString()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Steps {
+          - mName : String
+          - mUID : int
+          + Steps()
+          + generateUID()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.Task {
+          {static} + COLUMN_CHECKED : String
+          {static} + COLUMN_DUE_DATE : String
+          {static} + COLUMN_NAME : String
+          {static} + COLUMN_NOTES : String
+          {static} + COLUMN_REMIND_DATE : String
+          {static} + COLUMN_SECTION_ID : String
+          {static} + COLUMN_TASK_ID : String
+          {static} + SQL_CREATE_ENTRIES : String
+          {static} + SQL_DELETE_ENTRIES : String
+          {static} + TABLE_NAME : String
+          {static} - TAG : String
+          - checked : boolean
+          - dueDate : Date
+          - mLabelList : List<Label>
+          - mLabels : String
+          - mName : String
+          - mNotes : String
+          - mSectionID : String
+          - mSteps : List<Steps>
+          - mTaskID : String
+          - remindDate : Date
+          + Task()
+          + Task()
+          + Task()
+          + addTask()
+          + deleteTask()
+          + executeFirebaseDelete()
+          + executeFirebaseUpload()
+          {static} + fromCursor()
+          {static} + fromJSON()
+          + getDueDate()
+          + getName()
+          + getNotes()
+          + getRemindDate()
+          + getSectionID()
+          + getTaskID()
+          + isChecked()
+          + setChecked()
+          + setDueDate()
+          + setNotes()
+          + setRemindDate()
+          + setSectionID()
+          + setTaskID()
+          + stringToDate()
+          + toString()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.User {
+          {static} + COLUMN_NAME_EMAIL : String
+          {static} + COLUMN_NAME_ID : String
+          {static} + COLUMN_NAME_NAME : String
+          {static} + COLUMN_NAME_PASSWORD : String
+          {static} + CREATOR : Creator<User>
+          {static} + SQL_CREATE_ENTRIES : String
+          {static} + SQL_DELETE_ENTRIES : String
+          {static} + TABLE_NAME : String
+          ~ mAuth : FirebaseUser
+          - TAG : String
+          - mDateOfBirth : Date
+          - mEmailAddr : String
+          - mFocusList : ArrayList<Focus>
+          - mListLabel : List<Label>
+          - mName : String
+          - mPPID : String
+          - mPassword : String
+          - mSectionList : List<Section>
+          - mUID : String
+          - myRef : DatabaseReference
+          + User()
+          + User()
+          + User()
+          + addFocus()
+          + addFocusList()
+          + addSection()
+          + changeName()
+          + clearFocusList()
+          + describeContents()
+          + digestPassword()
+          + getAuth()
+          + getDateOfBirth()
+          + getEmailAdd()
+          + getName()
+          + getPassword()
+          + getUID()
+          + getmFocusList()
+          + readFocusFirebase()
+          + resetPwd()
+          + setAuth()
+          + setDateOfBirth()
+          + setEmailAdd()
+          + setName()
+          + setPPID()
+          + setPassword()
+          + setUID()
+          + setmFocusList()
+          + writeToParcel()
+          # User()
+          ~ User()
+          - stringToDate()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Class {
+      class com.mad.p03.np2020.routine.Class.todoListItem {
+      }
+    }
+  }
+  
+
+  com.mad.p03.np2020.routine.Class.AlarmReceiver -up-|> android.content.BroadcastReceiver
+  com.mad.p03.np2020.routine.Class.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Class.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Class.Focus .up.|> android.os.Parcelable
+  com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitGroup : group
+  com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitReminder : habitReminder
+  com.mad.p03.np2020.routine.Class.Habit +-down- com.mad.p03.np2020.routine.Class.Habit.HabitList
+  com.mad.p03.np2020.routine.Class.ItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
+  com.mad.p03.np2020.routine.Class.PopUp -up-|> android.app.Activity
+  com.mad.p03.np2020.routine.Class.Section .up.|> java.io.Serializable
+  com.mad.p03.np2020.routine.Class.User .up.|> android.os.Parcelable
+  com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

@@ -54,7 +54,7 @@ import static java.lang.String.*;
 
 /**
  *
- * Model used to manage the section
+ * Focus activity used to manage the focus layout section
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020
@@ -64,7 +64,6 @@ import static java.lang.String.*;
 public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
 
 
-    /**Timer widget*/
     /**Button for timer*/
     private Button focusButton;
 
@@ -120,6 +119,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_focus);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        user.setUID(getIntent().getParcelableExtra("user").toString());
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
         initialization(); //Process of data

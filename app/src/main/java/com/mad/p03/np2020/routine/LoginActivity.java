@@ -41,7 +41,7 @@ import java.util.Date;
 
 /**
  *
- * Model used to manage the section
+ * Login Activity for user
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020

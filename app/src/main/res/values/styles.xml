@@ -17,4 +17,9 @@
         <item name="colorPrimary">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="AppTheme.NotificationTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
 </resources>

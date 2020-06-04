@@ -1,6 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/timer_shape">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/SetNotification"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/semicolon"
+        app:layout_constraintEnd_toStartOf="@+id/timerRight"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toEndOf="@+id/timerLeft" />
+
+    <ImageButton
+        android:id="@+id/LeftTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
+        app:layout_constraintBottom_toTopOf="@+id/timerLeft"
+        app:layout_constraintEnd_toStartOf="@+id/semicolon"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/RightDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
+        android:rotation="180"
+        app:layout_constraintStart_toStartOf="@+id/timerRight"
+        app:layout_constraintTop_toBottomOf="@+id/semicolon"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/RightTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
+        app:layout_constraintBottom_toTopOf="@+id/semicolon"
+        app:layout_constraintStart_toStartOf="@+id/timerRight"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/LeftDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
+        android:rotation="180"
+        app:layout_constraintEnd_toEndOf="@+id/timerLeft"
+        app:layout_constraintTop_toBottomOf="@+id/timerLeft"></ImageButton>
+
+    <TextView
+        android:id="@+id/timerRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:includeFontPadding="false"
+        android:text="@string/timer_ground"
+        android:textColor="#000000"
+        android:textSize="72sp"
+        app:layout_constraintBottom_toBottomOf="@+id/semicolon"
+        app:layout_constraintStart_toEndOf="@+id/semicolon"
+        app:layout_constraintTop_toTopOf="@+id/semicolon" />
+
+    <TextView
+        android:id="@+id/semicolon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:includeFontPadding="false"
+        android:text="@string/timer_center"
+        android:textColor="#000000"
+        android:textSize="72sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timerLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:includeFontPadding="false"
+        android:text="@string/timer_ground"
+        android:textColor="#000000"
+        android:textSize="72sp"
+        app:layout_constraintBottom_toBottomOf="@+id/semicolon"
+        app:layout_constraintEnd_toStartOf="@+id/semicolon"
+        app:layout_constraintTop_toTopOf="@+id/semicolon" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded_white_rectangle"
+        android:text="@string/SetTimer"
+        app:layout_constraintEnd_toStartOf="@+id/timerRight"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/semicolon"
+        app:layout_constraintTop_toBottomOf="@+id/semicolon" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
