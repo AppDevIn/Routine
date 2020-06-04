@@ -50,76 +50,123 @@ public class PopUp extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
 
+        //Identifying hours add button
         UpArrowLeft = findViewById(R.id.LeftTop);
+
+        //Identifying minutes add button
         UpArrowRight = findViewById(R.id.RightTop);
+
+        //Identifying hours reduce button
         DownArrowLeft = findViewById(R.id.LeftDown);
+
+        //Identifying minutes reduce button
         DownArrowRight = findViewById(R.id.RightDown);
 
+        //Identifying hours timer text view
         TimerLeft = findViewById(R.id.timerLeft);
+
+        //Identifying minutes timer text view
         TimerRight = findViewById(R.id.timerRight);
 
+        //Button onClickListener
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Add 1 to hours when button clicked
                 hours += 1;
+
+                //Setting text of hours
                 TimerLeft.setText(timeToText(hours, 24));
             }
         });
 
+        //Button onClickListener
         DownArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Remove 1 to hours when button clicked
                 hours -= 1;
+
+                //Setting text of hours
                 TimerLeft.setText(timeToText(hours, 24));
             }
         });
 
+        //Button onClickListener
         UpArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Add 1 to minutes when button clicked
                 minutes += 1;
+
+                //Setting text of minutes
                 TimerRight.setText(timeToText(minutes, 60));
             }
         });
 
+        //Button onClickListener
         DownArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Remove 1 to minutes when button clicked
                 minutes -= 1;
+
+                //Setting text of minutes
                 TimerRight.setText(timeToText(minutes, 60));
             }
         });
 
+        //Initializing display metrics
         DisplayMetrics dm = new DisplayMetrics();
+
+        //Setting metrics of window manager to dm
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
+        //Set height with display metric
         int height = dm.heightPixels;
+
+        //Set width with display metric
         int width = dm.widthPixels;
 
+        //Setting layout to 60% width and 40% height
         getWindow().setLayout((int) (width*.6), (int) (height*.4));
 
     }
 
+    //Function to set text to 24 hour format
     public String timeToText(int time, int limit)
     {
-        String timer = "";
+        //initializing timer
+        String timer;
+
+        //Adding "0" to values less than 10
+        //then returns timer
         if (time < 10 && time >= 0)
         {
-            timer = "0" + String.valueOf(time);
+            timer = "0" + time;
             return timer;
         }
+
+        //Disables timer to go into negative
+        //then return timer
         else if (time < 0)
         {
             timer = "00";
             return timer;
         }
 
+        //Ensures timer does not go over limits
+        //Not more than 23 for hours
+        //Not more than 59 minutes
         if (time >= limit)
         {
+            //Removes 1 from timer to ensure it does not breach limit
             timer = String.valueOf(limit-1);
             return timer;
         }
 
+        //Turns timer from int into string
+        //then returns timer
         timer = String.valueOf(time);
         return timer;
     }

@@ -15,54 +15,54 @@
         android:text="@string/SetNotification"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/semicolon"
-        app:layout_constraintEnd_toEndOf="@+id/timerRight"
+        app:layout_constraintEnd_toStartOf="@+id/timerRight"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="@+id/timerLeft" />
+        app:layout_constraintStart_toEndOf="@+id/timerLeft" />
 
     <ImageButton
         android:id="@+id/LeftTop"
-        android:contentDescription="@string/ArrowDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="35dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
         app:layout_constraintBottom_toTopOf="@+id/timerLeft"
-        app:layout_constraintEnd_toStartOf="@+id/semicolon"
-        app:layout_constraintStart_toStartOf="@+id/timerLeft"></ImageButton>
+        app:layout_constraintEnd_toStartOf="@+id/semicolon"></ImageButton>
 
     <ImageButton
         android:id="@+id/RightDown"
-        android:contentDescription="@string/ArrowDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
         android:rotation="180"
-        app:layout_constraintEnd_toEndOf="@+id/timerRight"
         app:layout_constraintStart_toStartOf="@+id/timerRight"
         app:layout_constraintTop_toBottomOf="@+id/semicolon"></ImageButton>
 
     <ImageButton
         android:id="@+id/RightTop"
-        android:contentDescription="@string/ArrowDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
         app:layout_constraintBottom_toTopOf="@+id/semicolon"
-        app:layout_constraintEnd_toEndOf="@+id/timerRight"
         app:layout_constraintStart_toStartOf="@+id/timerRight"></ImageButton>
 
     <ImageButton
         android:id="@+id/LeftDown"
-        android:contentDescription="@string/ArrowDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="36dp"
         android:background="@drawable/arrow_up"
+        android:contentDescription="@string/ArrowDescription"
         android:rotation="180"
-        app:layout_constraintEnd_toStartOf="@+id/semicolon"
-        app:layout_constraintStart_toStartOf="@+id/timerLeft"
+        app:layout_constraintEnd_toEndOf="@+id/timerLeft"
         app:layout_constraintTop_toBottomOf="@+id/timerLeft"></ImageButton>
 
     <TextView
@@ -112,9 +112,9 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/rounded_button"
         android:text="@string/SetTimer"
-        app:layout_constraintEnd_toEndOf="@+id/timerRight"
+        app:layout_constraintEnd_toStartOf="@+id/timerRight"
         app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/timerLeft"
+        app:layout_constraintStart_toStartOf="@+id/semicolon"
         app:layout_constraintTop_toBottomOf="@+id/semicolon" />
 
 
