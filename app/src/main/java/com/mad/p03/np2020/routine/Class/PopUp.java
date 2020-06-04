@@ -9,7 +9,7 @@ import com.mad.p03.np2020.routine.R;
 public class PopUp extends Activity {
 
     @Override
-    protected void OnCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
