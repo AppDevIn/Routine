@@ -23,7 +23,7 @@
 
         <activity android:name=".HabitActivity" />
 
-        <activity android:name=".CardActivity"
+        <activity android:name=".Home"
                 android:exported="true"/>
 
         <activity android:name=".Class.PopUp"/>
@@ -40,7 +40,7 @@
         <activity android:name=".RegisterActivity" />
 
         <activity
-            android:name=".Home">
+            android:name=".CardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

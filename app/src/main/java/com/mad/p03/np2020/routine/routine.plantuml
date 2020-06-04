@@ -12,6 +12,10 @@ title __ROUTINE's Class Diagram__\n
     class com.mad.p03.np2020.routine.CardActivity {
         ~ TAG : String
         ~ noteStatus : boolean
+        ~ notesFragment : Button
+        ~ notifyButton : ImageButton
+        ~ stepAddButton : Button
+        ~ stepFragment : Button
         ~ stepStatus : boolean
         # onCreate()
     }
@@ -41,11 +45,23 @@ title __ROUTINE's Class Diagram__\n
         - currentTask : String
         - dateTimeTask : String
         - eCountDownTimer : CountDownTimer
+        - focusButton : Button
         - mCompletion : String
         - mCountDownTimer : CountDownTimer
         - mTimeLeftInMillis : long
+        - mface : ImageView
+        - min : TextView
+        - mindown : ImageView
+        - minup : ImageView
         - myRef : DatabaseReference
         - repeatUpdateHandler : Handler
+        - sec : TextView
+        - secdown : ImageView
+        - secup : ImageView
+        - semicolon : TextView
+        - taskInput : EditText
+        - taskSubmit : ImageButton
+        - textDisplay : TextView
         - tmins : int
         - tsecs : int
         + decrement()
@@ -137,6 +153,10 @@ title __ROUTINE's Class Diagram__\n
         - TAG : String
         {static} - USER_GET : String
         {static} - VERTICAL_ITEM_SPACE : int
+        - buttonFragment : ImageButton
+        - completion : TextView
+        - nothing : ImageView
+        - textFragment : TextView
         + HistoryFragment()
         {static} + newInstance()
         + onAttach()
@@ -161,10 +181,13 @@ title __ROUTINE's Class Diagram__\n
     class com.mad.p03.np2020.routine.Home {
         ~ TAG : String
         ~ mBackgrounds : Integer[]
+        ~ mBtnAdd : Button
+        ~ mBtnCancel : Button
         ~ mCardViewPopUp : CardView
         ~ mColors : Integer[]
         ~ mEditAddList : EditText
         ~ mGridView : RecyclerView
+        ~ mImgAdd : FloatingActionButton
         ~ mSectionList : List<Section>
         ~ mSpinnerColor : Spinner
         ~ mSpinnerIcons : Spinner
@@ -188,9 +211,17 @@ title __ROUTINE's Class Diagram__\n
         {static} + SWITCH1 : String
         {static} + Username : String
         ~ TAG : String
+        ~ btn_login : Button
+        ~ btn_register : Button
+        ~ checkBox : CheckBox
         ~ email : String
+        ~ errLogin : TextView
+        ~ errPwd : TextView
+        ~ et_Email : EditText
+        ~ et_Password : EditText
         ~ mAuth : FirebaseAuth
         ~ password : String
+        ~ txtError : TextView
         - myRef : DatabaseReference
         - sPassword : String
         - sUser : String
@@ -231,8 +262,12 @@ title __ROUTINE's Class Diagram__\n
   namespace com.mad.p03.np2020.routine {
     class com.mad.p03.np2020.routine.RegisterActivity {
         {static} ~ TAG : String
+        ~ mBack : Button
         ~ mEdInput : EditText
         ~ mProgessCount : int
+        ~ mSubmit : Button
+        ~ mTxtErrorMessage : TextView
+        ~ mTxtQuestion : TextView
         # onCreate()
         # onDestroy()
         # onPause()
@@ -276,6 +311,7 @@ title __ROUTINE's Class Diagram__\n
         ~ TAG : String
         ~ arrayAdapter : ArrayAdapter<String>
         ~ listView : ListView
+        ~ stepAddButton : Button
         ~ stepList : List<String>
         ~ stepName : EditText
         ~ view : View
@@ -294,6 +330,7 @@ title __ROUTINE's Class Diagram__\n
         ~ mEdTask : EditText
         ~ mRecyclerView : RecyclerView
         ~ mTaskList : List<Task>
+        ~ mTxtListName : TextView
         - TAG : String
         + onDataAdd()
         + onDataDelete()
@@ -307,11 +344,45 @@ title __ROUTINE's Class Diagram__\n
     }
   }
 
+
+  com.mad.p03.np2020.routine.BlankViewModel -up-|> androidx.lifecycle.ViewModel
+  com.mad.p03.np2020.routine.CardActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
+  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnClickListener
+  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnFocusChangeListener
+  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnLongClickListener
+  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnTouchListener
+  com.mad.p03.np2020.routine.FocusActivity .up.|> com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener
+  com.mad.p03.np2020.routine.FocusActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.FocusActivity +-down- com.mad.p03.np2020.routine.FocusActivity.RptUpdater
+  com.mad.p03.np2020.routine.FocusActivity.RptUpdater .up.|> java.lang.Runnable
+  com.mad.p03.np2020.routine.HabitActivity .up.|> android.view.View.OnClickListener
+  com.mad.p03.np2020.routine.HabitActivity .up.|> com.mad.p03.np2020.routine.Adapter.OnItemClickListener
+  com.mad.p03.np2020.routine.HabitActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter : groupAdapter
+  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.database.HabitGroupDBHelper : group_dbhandler
+  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Adapter.HabitAdapter : habitAdapter
+  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
+  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.HistoryFragment -up-|> androidx.fragment.app.Fragment
+  com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener : mListener
+  com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.HistoryFragment +-down- com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener
+  com.mad.p03.np2020.routine.Home .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
+  com.mad.p03.np2020.routine.Home -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.Adapter.HomePageAdapter : mHomePageAdapter
+  com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.database.SectionDBHelper : mSectionDBHelper
+  com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.Class.User : mUser
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnFocusChangeListener
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnKeyListener
   com.mad.p03.np2020.routine.LoginActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.LoginActivity o-- com.mad.p03.np2020.routine.database.UserDBHelper : userDatabase
+  
+
   com.mad.p03.np2020.routine.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.NotesFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.RegisterActivity -up-|> androidx.appcompat.app.AppCompatActivity
