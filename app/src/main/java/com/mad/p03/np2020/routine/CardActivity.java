@@ -19,7 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mad.p03.np2020.routine.Class.PopUp;
 import com.mad.p03.np2020.routine.Class.Steps;
+import com.mad.p03.np2020.routine.database.CardDBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,8 +138,8 @@ public class CardActivity extends AppCompatActivity {
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PopUp.class);
-
+                Intent intent = new Intent(CardActivity.this, PopUp.class);
+                startActivity(intent);
             }
         });
 
