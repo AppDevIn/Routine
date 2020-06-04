@@ -21,4 +21,5 @@ public class PopUp extends Activity {
         int width = dm.widthPixels;
 
     }
+
 }
