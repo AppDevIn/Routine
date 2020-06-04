@@ -138,13 +138,16 @@ All in one Productivity App
 
 ## Class Diagram 
 
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/routine.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/database.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/background.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.jpg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Class.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/habitActivity.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/LoginActivityClass.png)
+
 
 
 
