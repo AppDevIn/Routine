@@ -198,11 +198,30 @@ public class User implements Parcelable {
     public User() {
     }
 
+    /**
+     *
+     * This will set the name and the password
+     * to the object
+     *
+     * @param name The name of the user
+     * @param password The password of the user
+     */
     User(String name, String password) {
         this.mName = name;
         this.mPassword = password;
     }
 
+    /**
+     *
+     * This will set the UID, name, password,
+     * dob and email into the object
+     *
+     * @param UID The unique ID of the user
+     * @param name The name of the user
+     * @param password The password of the user
+     * @param dob The date of birth the user
+     * @param Email The email of the user
+     */
     public User(String UID, String name, String password, Date dob, String Email) {
         this.mUID = UID;
         this.mName = name;
@@ -211,6 +230,15 @@ public class User implements Parcelable {
         this.mEmailAddr = Email;
     }
 
+    /**
+     *
+     * You can set the name, password and the email of the
+     * user in to the object
+     *
+     * @param name The name of the user
+     * @param password The password of the user
+     * @param emailAddr The email of the user
+     */
     public User(String name, String password, String emailAddr) {
         this.mName = name;
         this.mPassword = password;

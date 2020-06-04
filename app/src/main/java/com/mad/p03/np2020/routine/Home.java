@@ -42,10 +42,11 @@ import java.util.List;
 
 /**
  *
- *
+ * The controller class for xml layout activity_home
+ * This will manage things that are on the home activity
  *
  * @author Jeyavishnu
- * @since 02-06-2020
+ * @since 04-06-2020
  *
  */
 public class Home extends AppCompatActivity implements MyDatabaseListener {
@@ -71,6 +72,16 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
 
+    /**
+     *
+     * This is used to get the ID of for the view and initialize the recycler
+     * view for the tasks. Setting the onclick lister too and also setting 2 custom
+     * spinner adapter one for color and the other for icon
+     *
+     * @param savedInstanceState will be null at first as
+     *                           the orientation changes it will get
+     *                           in use
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +173,10 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     }
 
+    /**
+     * Make the card view disappear and the set the image resource
+     * the floating button
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -176,6 +191,13 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mImgAdd.setImageResource(R.drawable.ic_add_black_24dp);
     }
 
+    /**
+     *
+     * Used when interacting with the user
+     * This when the onClickListener for the buttons are at and
+     * an OnEditorActionListener
+     *
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -235,6 +257,10 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     }
 
+    /**
+     * When the activity stops it will update the position
+     * in the database
+     */
     @Override
     protected void onStop() {
         super.onStop();
