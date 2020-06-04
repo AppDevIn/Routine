@@ -9,17 +9,39 @@ import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.R;
 
+/**
+ *
+ * CardActivity class used to manage card activities
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class PopUp extends Activity {
+    //Initializing variables
 
+    //Used for hours add button
     ImageButton UpArrowLeft;
+
+    //Used for minutes add button
     ImageButton UpArrowRight;
+
+    //Used for hours reduce button
     ImageButton DownArrowLeft;
+
+    //Used for minutes reduce button
     ImageButton DownArrowRight;
 
+    //Used for hours timer
     TextView TimerLeft;
+
+    //Used for minutes timer
     TextView TimerRight;
 
+    //Initializing hours variable
     public int hours = 0;
+
+    //Initializing minutes variable
     public int minutes = 0;
 
     @Override
