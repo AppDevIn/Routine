@@ -21,6 +21,7 @@
         <activity android:name=".HabitActivity" />
         <activity android:name=".CardActivity"
                 android:exported="true"/>
+        <activity android:name=".Class.PopUp"/>
         <activity android:name=".FocusActivity" />
         <activity android:name=".Settings"
                 android:exported="true"/>

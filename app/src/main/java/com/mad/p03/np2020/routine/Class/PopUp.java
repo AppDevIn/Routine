@@ -2,6 +2,9 @@ package com.mad.p03.np2020.routine.Class;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+
+import com.mad.p03.np2020.routine.R;
 
 public class PopUp extends Activity {
 
@@ -9,7 +12,13 @@ public class PopUp extends Activity {
     protected void OnCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.Layout.);
+        setContentView(R.layout.popupwindow);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        int height = dm.heightPixels;
+        int width = dm.widthPixels;
 
     }
 }
