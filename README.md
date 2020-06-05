@@ -75,6 +75,10 @@ All in one Productivity App
 
 24. [Section](app/src/main/java/com/mad/p03/np2020/routine/Class/Task.java)
 
+25. [TaskActivity](app/src/main/java/com/mad/p03/np2020/routine/TaskActivity.java)
+
+26. [Home](app/src/main/java/com/mad/p03/np2020/routine/Home.java)
+
    ​    
 
 ### Quan Sheng and Jeya
