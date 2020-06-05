@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +29,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +53,8 @@ import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -63,13 +62,13 @@ import static java.lang.String.format;
 
 /**
  *
- * Model used to manage the section
+ * Habit activity used to manage the habit's layout section
  *
  * @author Hou Man
  * @since 02-06-2020
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
+
 public class HabitActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener {
 
     private static final String TAG = "HabitTracker";
@@ -166,7 +165,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // initialise the habitAdapter
-        habitAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(user.getUID()),user.getUID());
+        habitAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(),user.getUID());
 
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);

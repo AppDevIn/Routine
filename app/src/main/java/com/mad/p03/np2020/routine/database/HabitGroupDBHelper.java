@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  *
- * Model used to manage the section
+ * This created to handle the habitGroup Data in SQLiteDatabase
  *
  * @author Hou Man
  * @since 02-06-2020

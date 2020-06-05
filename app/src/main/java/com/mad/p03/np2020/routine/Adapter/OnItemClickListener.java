@@ -2,7 +2,7 @@ package com.mad.p03.np2020.routine.Adapter;
 
 /**
  *
- * Model used to manage the section
+ * This is used to set onClickListener on each holder by parsing position from the adapter.
  *
  * @author Hou Man
  * @since 02-06-2020

@@ -16,7 +16,9 @@ import java.util.ArrayList;
 
 /**
  *
- * Model used to manage the section
+ * This will be the controller glue between the viewHolder and the model.
+ * This will inflate the the items for the habitGroups to which will give us
+ * the view from will be passed to the view holder HabitGroupViewHolder
  *
  * @author Hou Man
  * @since 02-06-2020

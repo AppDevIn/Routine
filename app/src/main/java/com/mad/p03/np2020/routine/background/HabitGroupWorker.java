@@ -15,7 +15,8 @@ import com.mad.p03.np2020.routine.Class.HabitGroup;
 
 /**
  *
- * Model used to manage the section
+ * This is to upload the data to HabitGroup data from
+ * the background which implements the Worker.
  *
  * @author Hou Man
  * @since 02-06-2020
