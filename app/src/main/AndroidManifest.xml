@@ -66,6 +66,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".Class.CardNotification"/>
+
 
     </application>
 

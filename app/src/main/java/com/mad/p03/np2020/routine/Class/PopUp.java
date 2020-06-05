@@ -1,14 +1,19 @@
 package com.mad.p03.np2020.routine.Class;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.mad.p03.np2020.routine.R;
+
+import java.util.Calendar;
 
 /**
  *
@@ -123,6 +128,13 @@ public class PopUp extends Activity {
             }
         });
 
+        SetTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+
         //Initializing display metrics
         DisplayMetrics dm = new DisplayMetrics();
 
@@ -177,5 +189,7 @@ public class PopUp extends Activity {
         timer = String.valueOf(time);
         return timer;
     }
+
+
 
 }
