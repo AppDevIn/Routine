@@ -16,6 +16,7 @@ import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
@@ -53,6 +56,7 @@ import com.mad.p03.np2020.routine.Class.HabitReminder;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.HabitGroupWorker;
 import com.mad.p03.np2020.routine.background.HabitWorker;
+import com.mad.p03.np2020.routine.database.FocusDBHelper;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
@@ -70,7 +74,7 @@ import static java.lang.String.format;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class HabitActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener {
+public class HabitActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener, AddHabitFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "HabitTracker";
     private String channelId = "001"; // notification channel ID for habitTracker
@@ -161,6 +165,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         ImageView add_habit = findViewById(R.id.add_habit);
         // set onClickListener on add_habit button
         add_habit.setOnClickListener(this);
+
+        ImageView test = findViewById(R.id.test);
+        test.setOnClickListener(this);
 
         habitRecyclerView = findViewById(R.id.my_recycler_view);
         habitRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -610,6 +617,28 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v){
         switch (v.getId()){
+            case R.id.test:
+//                HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDBHelper);
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+//
+//                fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+
+                AddHabitFragment fragment = new AddHabitFragment();
+                // create a FragmentManager
+                FragmentManager fm = getSupportFragmentManager();
+                // create a FragmentTransaction to begin the transaction and replace the Fragment
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                // replace the FrameLayout with new Fragment
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("habitDBHandler", (Parcelable) habit_dbHandler);
+                fragment.setArguments(bundle);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.add(R.id.fragment_container, fragment);
+                fragmentTransaction.commit(); // save the changes
+                break;
+
             case R.id.add_habit:
                 Log.d(TAG, "Add Habit");
                 // Create an alert dialog (add habit)
@@ -1612,5 +1641,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         });
 
         alertDialog.show(); //show the alert dialog (habit view)
+    }
+
+    @Override
+    public void onFragmentInteraction() {
+        onBackPressed();
     }
 }
