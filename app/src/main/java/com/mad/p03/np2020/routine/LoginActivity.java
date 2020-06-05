@@ -142,7 +142,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Onclick listener
      *
      * */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -161,9 +160,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     errLogin.setVisibility(View.VISIBLE);
                     errPwd.setVisibility(View.VISIBLE);
-                    et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                    et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+                        et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                        et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                    }
                 }
                 break;
             case R.id.buttonRegister: //Registration Button
