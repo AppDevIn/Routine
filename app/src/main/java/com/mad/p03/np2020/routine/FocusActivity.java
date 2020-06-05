@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +39,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -169,6 +172,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         taskInput.setOnFocusChangeListener(this);
 
         mface.startAnimation(translateAnimation);
+
+        //Bottom Navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
+
     }
 
     /**
@@ -796,5 +804,25 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.i(TAG, "Object serialize");
         return gson.toJson(myClass);
     }
+
+    /**
+     *
+     * To set the bottom nav to listen to item changes
+     * and chose the item that have been selected
+     *
+     * @param bottomNavigationView The botomNav that needs to be set to listen
+     */
+    private void bottomNavInit(BottomNavigationView bottomNavigationView){
+
+        //To have the highlight
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper  navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
 
 }

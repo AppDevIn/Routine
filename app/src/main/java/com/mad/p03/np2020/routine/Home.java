@@ -375,7 +375,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //To have the highlight
         Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(0);
+        MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
         //To set setOnNavigationItemSelectedListener

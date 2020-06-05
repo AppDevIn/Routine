@@ -185,7 +185,8 @@
 
 
         app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@color/black"
+        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
+
 
         android:background="#FFFFFF"
 
