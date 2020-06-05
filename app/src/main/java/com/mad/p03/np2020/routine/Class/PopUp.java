@@ -2,7 +2,12 @@ package com.mad.p03.np2020.routine.Class;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -59,6 +64,8 @@ public class PopUp extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
 
+        createNotificationChannel();
+
         //Identifying hours add button
         UpArrowLeft = findViewById(R.id.LeftTop);
 
@@ -79,6 +86,8 @@ public class PopUp extends Activity {
 
         //Identifying minutes timer text view
         TimerRight = findViewById(R.id.timerRight);
+
+        final Calendar calendar = Calendar.getInstance();
 
         //Button onClickListener
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +140,13 @@ public class PopUp extends Activity {
         SetTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent intent = new Intent(PopUp.this, CardNotification.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
+                //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
             }
         });
 
@@ -188,6 +203,21 @@ public class PopUp extends Activity {
         //then returns timer
         timer = String.valueOf(time);
         return timer;
+    }
+
+    private void createNotificationChannel()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            CharSequence name = "CardNotificationChannel";
+            String description = "Channel for card reminders";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notifyCard", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 

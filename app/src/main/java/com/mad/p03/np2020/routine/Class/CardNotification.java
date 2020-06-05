@@ -23,5 +23,6 @@ public class CardNotification extends BroadcastReceiver {
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 
         notificationManagerCompat.notify(200,  builder.build());
+
     }
 }
