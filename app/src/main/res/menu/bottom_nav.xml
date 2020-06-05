@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/habit"
-        android:icon="@drawable/ic_add_black_24dp"
+        android:icon="@drawable/habit"
         android:title="@string/habit" />
 
     <item
