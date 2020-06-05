@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,6 +54,8 @@ import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -69,7 +69,7 @@ import static java.lang.String.format;
  * @since 02-06-2020
  */
 
-@RequiresApi(api = Build.VERSION_CODES.N)
+
 public class HabitActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener {
 
     private static final String TAG = "HabitTracker";

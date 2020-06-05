@@ -46,7 +46,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     public Habit.HabitList _habitList;
 
     /**This method is a constructor for habitAdapter*/
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     public HabitAdapter(Context c, Habit.HabitList habitList, String UID) {
         this.c = c;
         this._habitList = habitList;
@@ -95,7 +95,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
      * @param position This parameter is used to get the position
      *
      * */
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     public void onBindViewHolder(@NonNull HabitHolder holder, final int position) {
         // retrieve the habit object
