@@ -13,5 +13,6 @@
 
         android:contentDescription="@string/icon_description"
 
-        app:srcCompat="@drawable/amazon" />
+        android:src="@drawable/amazon"
+         />
 </LinearLayout>
