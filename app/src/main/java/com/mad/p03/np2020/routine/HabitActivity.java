@@ -44,6 +44,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
@@ -161,7 +162,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // initialise the notification channel
         initialiseHabitNotificationChannel();
 
-        ImageView add_habit = findViewById(R.id.add_habit);
+        FloatingActionButton add_habit = findViewById(R.id.add_habit);
         // set onClickListener on add_habit button
         add_habit.setOnClickListener(this);
 

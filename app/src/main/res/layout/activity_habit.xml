@@ -45,7 +45,7 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:id="@+id/imgBtnTodo"
+        android:id="@+id/add_habit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
