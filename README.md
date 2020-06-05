@@ -75,6 +75,10 @@ All in one Productivity App
 
 24. [Section](app/src/main/java/com/mad/p03/np2020/routine/Class/Task.java)
 
+25. [TaskActivity](app/src/main/java/com/mad/p03/np2020/routine/TaskActivity.java)
+
+26. [Home](app/src/main/java/com/mad/p03/np2020/routine/Home.java)
+
    ​    
 
 ### Quan Sheng and Jeya
@@ -138,13 +142,16 @@ All in one Productivity App
 
 ## Class Diagram 
 
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/routine.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/database.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/background.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.jpg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Class.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/habitActivity.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/LoginActivityClass.png)
+
 
 
 

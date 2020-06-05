@@ -14,7 +14,7 @@ import com.mad.p03.np2020.routine.Class.HabitReminder;
 
 /**
  *
- * Model used to manage the section
+ * This created to handle the habit Data in SQLiteDatabase
  *
  * @author Hou Man
  * @since 02-06-2020
@@ -144,12 +144,12 @@ public class HabitDBHelper extends DBHelper{
      *
      * This method is used to retrieve all the habits based on the UID in the SQLiteDatabase.
      *
-     * @param UID This parameter is the get the UID to refer which habit column is going to be referred.
+//     * @param UID This parameter is the get the UID to refer which habit column is going to be referred.
      *
      * @return ArrayList<Habit> This will return the habitList.
      * */
-    public Habit.HabitList getAllHabits(String UID) {
-        Log.d(TAG, "getAllHabits: " + UID);
+    public Habit.HabitList getAllHabits() {
+        Log.d(TAG, "getAllHabits: ");
 
         // initialise the habitList
         Habit.HabitList habitList = new Habit.HabitList();
@@ -158,7 +158,7 @@ public class HabitDBHelper extends DBHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         // run the query
-        Cursor res =  db.rawQuery( "select * from " +Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_USERID + " =?", new String[]{UID} );
+        Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME, null );
         res.moveToFirst(); // move to the first result found
 
         // loop through the result found
@@ -280,8 +280,8 @@ public class HabitDBHelper extends DBHelper{
     public void deleteHabit(Habit habit){
         Log.d(TAG, "Habit: deleteHabit: ");
 
-        // get the readable database
-        SQLiteDatabase db = this.getReadableDatabase();
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
 
         String whereClause = Habit.COLUMN_ID + "=?"; // specify to delete based on the column id
 
@@ -291,6 +291,18 @@ public class HabitDBHelper extends DBHelper{
         // delete the habit column
         db.delete(Habit.TABLE_NAME, whereClause, whereArgs);
         
-        db.close();
+        db.close(); // close the db connection
+    }
+
+    public void deleteAllHabit(){
+        Log.d(TAG, "Habit: deleteAllHabit: ");
+
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete the habit table
+        db.delete(Habit.TABLE_NAME,null,null);
+
+        db.close(); //close the db connection
     }
 }

@@ -2,7 +2,7 @@ package com.mad.p03.np2020.routine.Class;
 
 /**
  *
- * Model used to manage the section
+ * Model used to manage the habitGroup
  *
  * @author Hou Man
  * @since 02-06-2020

@@ -28,6 +28,15 @@ import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.util.List;
 
+/**
+ *
+ * The controller class for xml layout activity_task
+ * This will manage things that are on the task activity
+ *
+ * @author Jeyavishnu
+ * @since 04-06-2020
+ *
+ */
 public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener {
 
     private final String TAG = "Task";
@@ -41,6 +50,15 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     EditText mEdTask;
     List<Task> mTaskList;
 
+    /**
+     *
+     * This is used to get the ID of for the view and initialize the recycler
+     * view for the tasks. Setting the onclick lister too
+     *
+     * @param savedInstanceState will be null at first as
+     *                           the orientation changes it will get
+     *                           in use
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +108,12 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
     }
 
+    /**
+     *
+     * Set the color for layout based
+     * on the users preference and set the name of the section
+     *
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -107,18 +131,36 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
     }
 
+    /**
+     * Not implemented yet
+     */
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "GUI in the foreground and interactive");
     }
 
+    /**
+     * Not implemented yet
+     */
     @Override
     protected void onStop() {
         super.onStop();
 
     }
 
+    /**
+     *
+     * The action is being performed on the keyboard
+     * when the the Enter key is pressed add the task into
+     * the adapter and hide the keyboard
+     *
+     * @param textView The view that was clicked.
+     * @param actionId  Identifier of the action. This will be either the identifier you supplied, or
+     *                  EditorInfo#IME_NULL if being called due to the enter key being pressed.
+     * @param event  If triggered by an enter key, this is the event; otherwise, this is null.
+     * @return Return true if you have consumed the action, else false.
+     */
     @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
 
@@ -140,8 +182,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             showNewEntry();
 
 
-            Log.d(TAG, "onEditorAction: ");
-
             return true;
         }
         return false;
@@ -155,7 +195,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
      * @param object given from the SQL when triggered
      *               for this the object is task
      */
-
     @Override
     public void onDataAdd(Object object) {
 
@@ -170,6 +209,13 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         mTaskAdapter.notifyItemInserted(mTaskList.size());
     }
 
+    /**
+     *
+     * When the onDataDelete is triggered it will
+     * check the array of task that manages the task ID
+     *
+     * @param ID The ID of the task that need to be deleted
+     */
     @Override
     public void onDataDelete(String ID) {
 
@@ -208,7 +254,12 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     }
 
 
-    //Soft Keyboard methods
+    /**
+     *
+     * Show the keyboard the the focused view
+     *
+     * @param view The view that wants to receive the soft keyboard input
+     */
     private void showKeyboard(View view) {
         Log.i(TAG, "Show soft keyboard");
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 
 import com.mad.p03.np2020.routine.Class.PopUp;
 
-/*
+/**
 *
 * CardActivity class used to manage card activities
 *

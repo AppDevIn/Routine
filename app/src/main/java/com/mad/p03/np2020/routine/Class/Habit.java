@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  *
- * Model used to manage the section
+ * Model used to manage the habit
  *
  * @author Hou Man
  * @since 02-06-2020

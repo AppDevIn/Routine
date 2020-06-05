@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -156,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (!TextUtils.isEmpty(et_Email.getText().toString()) & !TextUtils.isEmpty(et_Password.getText().toString())) {
                     email = et_Email.getText().toString();
                     password = et_Password.getText().toString();
-                    firebaseAuthWithGoogle(email, password);
+                    firebaseAuthWithGoogle(email, password, this);
                 } else {
                     errLogin.setVisibility(View.VISIBLE);
                     errPwd.setVisibility(View.VISIBLE);
@@ -235,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param email set email to this content to be used for firebaseAuth
      * @param password set password to this content to be used for firebaseAuth
      * */
-    private void firebaseAuthWithGoogle(String email, String password) {
+    private void firebaseAuthWithGoogle(String email, String password, final Context context) {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -275,6 +276,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             userDatabase.insertUser(user);
 
                             //TODO Get All User Routine Data
+                            user.readHabit_Firebase(context);
+                            user.readHabitGroup_Firebase(context);
 
                             Intent intent = new Intent(LoginActivity.this, Home.class);
                             intent.putExtra("user", user);
