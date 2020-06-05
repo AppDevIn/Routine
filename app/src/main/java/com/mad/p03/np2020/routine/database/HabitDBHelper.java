@@ -14,7 +14,7 @@ import com.mad.p03.np2020.routine.Class.HabitReminder;
 
 /**
  *
- * Model used to manage the section
+ * This created to handle the habit Data in SQLiteDatabase
  *
  * @author Hou Man
  * @since 02-06-2020

@@ -26,7 +26,9 @@ import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 /**
  *
- * Model used to manage the section
+ * This will be the controller glue between the viewHolder and the model.
+ * This will inflate the the items for the habits to which will give us
+ * the view from will be passed to the view holder HabitViewHolder
  *
  * @author Hou Man
  * @since 02-06-2020

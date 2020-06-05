@@ -11,7 +11,8 @@ import com.mad.p03.np2020.routine.R;
 
 /**
  *
- * Model used to manage the section
+ * To be used with the adapter HabitAdapter. This
+ * holds reference to the id of the view resource
  *
  * @author Hou Man
  * @since 02-06-2020

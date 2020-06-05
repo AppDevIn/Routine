@@ -62,7 +62,7 @@ import static java.lang.String.format;
 
 /**
  *
- * Model used to manage the section
+ * Habit activity used to manage the habit's layout section
  *
  * @author Hou Man
  * @since 02-06-2020

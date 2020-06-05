@@ -20,7 +20,8 @@ import java.util.Calendar;
 
 /**
  *
- * Model used to manage the section
+ * This class is to receive the pending intent sent by alarm manager, and then send out the notifications
+ * and also re-register the alarms when boot completed.
  *
  * @author Hou Man
  * @since 02-06-2020
@@ -35,14 +36,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /**
      *
-     * This method is an override method which allows BroadcastReceiver to receive the pending intent sent by alarm manager.
+     * This method is an override method which allows BroadcastReceiver to receive the pending intent sent by alarm manager and re-register the alarms.
      * This will create a notification upon receiving the pending intent.
+     * This will re-register the alarms after rebooting(boot completed)
      *
      * @param context This is to get the context
      * @param intent This is to get the pending intent
      * */
     @Override
     public void onReceive(Context context, Intent intent) {
+        // this is to send out the notification when a pending intent is received
         if (intent.getAction().equals("HabitTracker")) {
             Bundle bundle = intent.getExtras();
             int id = bundle.getInt("id");
@@ -63,6 +66,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         }
 
+        // this is to re-register the alarms after rebooting(boot completed)
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
             habitDBHelper = new HabitDBHelper(context);
             habitList = habitDBHelper.getAllHabits();
