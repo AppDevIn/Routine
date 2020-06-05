@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,6 +32,9 @@ public class PopUp extends Activity {
 
     //Used for minutes reduce button
     ImageButton DownArrowRight;
+
+    //Used for Set Timer Button
+    Button SetTimer;
 
     //Used for hours timer
     TextView TimerLeft;
@@ -61,6 +65,9 @@ public class PopUp extends Activity {
 
         //Identifying minutes reduce button
         DownArrowRight = findViewById(R.id.RightDown);
+
+        //Identifying Set Timer Button
+        SetTimer = findViewById(R.id.setTimer);
 
         //Identifying hours timer text view
         TimerLeft = findViewById(R.id.timerLeft);

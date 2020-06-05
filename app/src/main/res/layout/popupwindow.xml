@@ -107,6 +107,7 @@
         app:layout_constraintTop_toTopOf="@+id/semicolon" />
 
     <Button
+        android:id="@+id/setTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
