@@ -179,8 +179,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitAdapter.setOnItemClickListener(this);
 
         //Bottom Navigation
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
-//        bottomNavInit(bottomNavigationView);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
 
     }
 
