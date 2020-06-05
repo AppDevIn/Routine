@@ -13,6 +13,15 @@ import com.mad.p03.np2020.routine.Class.Habit;
 
 import androidx.annotation.NonNull;
 
+
+/**
+ *
+ * This allow all the layout with the bottom nav to
+ * function the same and to set the listener for item by the nav bar
+ *
+ * @author Jeyavishnu
+ * @since 05-06-2020
+ */
 public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelectedListener {
 
 
@@ -22,10 +31,19 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
     }
 
 
-
+    /**
+     *
+     * This method will navigate them to the
+     * intended layout and changing the animation to none
+     *
+     * @param item The selected item
+     * @return true to display the selected item and false if
+     * the item should not be selected
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+        //Remove animation
         ActivityOptions options =
                 ActivityOptions.makeCustomAnimation(mContext, 0, 0);
 
@@ -54,6 +72,6 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
                 break;
         }
 
-        return false;
+        return true;
     }
 }
