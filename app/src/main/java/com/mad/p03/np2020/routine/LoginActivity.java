@@ -240,7 +240,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -286,8 +285,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             txtError.setVisibility(View.VISIBLE);
-                            et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                            et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+                                et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                                et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                            }
 
                             if (checkBox.isChecked()) {
                                 saveData();
