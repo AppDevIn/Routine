@@ -78,6 +78,10 @@
     <string name="name">Name</string>
     <string name="add">Add</string>
     <string name="delete">Delete</string>
+    <string name="habit">Habit</string>
+    <string name="home">Home</string>
+    <string name="calender">Calender</string>
+    <string name="profile">Profile</string>
 
 
 </resources>
