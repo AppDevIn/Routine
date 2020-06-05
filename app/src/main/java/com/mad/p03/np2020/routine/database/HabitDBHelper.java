@@ -8,7 +8,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
@@ -145,12 +144,12 @@ public class HabitDBHelper extends DBHelper{
      *
      * This method is used to retrieve all the habits based on the UID in the SQLiteDatabase.
      *
-     * @param UID This parameter is the get the UID to refer which habit column is going to be referred.
+//     * @param UID This parameter is the get the UID to refer which habit column is going to be referred.
      *
      * @return ArrayList<Habit> This will return the habitList.
      * */
-    public Habit.HabitList getAllHabits(String UID) {
-        Log.d(TAG, "getAllHabits: " + UID);
+    public Habit.HabitList getAllHabits() {
+        Log.d(TAG, "getAllHabits: ");
 
         // initialise the habitList
         Habit.HabitList habitList = new Habit.HabitList();
@@ -159,7 +158,7 @@ public class HabitDBHelper extends DBHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         // run the query
-        Cursor res =  db.rawQuery( "select * from " +Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_USERID + " =?", new String[]{UID} );
+        Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME, null );
         res.moveToFirst(); // move to the first result found
 
         // loop through the result found
