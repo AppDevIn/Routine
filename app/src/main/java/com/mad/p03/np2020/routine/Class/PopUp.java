@@ -1,13 +1,24 @@
 package com.mad.p03.np2020.routine.Class;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.mad.p03.np2020.routine.R;
+
+import java.util.Calendar;
 
 /**
  *
@@ -32,6 +43,9 @@ public class PopUp extends Activity {
     //Used for minutes reduce button
     ImageButton DownArrowRight;
 
+    //Used for Set Timer Button
+    Button SetTimer;
+
     //Used for hours timer
     TextView TimerLeft;
 
@@ -50,6 +64,8 @@ public class PopUp extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
 
+        createNotificationChannel();
+
         //Identifying hours add button
         UpArrowLeft = findViewById(R.id.LeftTop);
 
@@ -62,11 +78,16 @@ public class PopUp extends Activity {
         //Identifying minutes reduce button
         DownArrowRight = findViewById(R.id.RightDown);
 
+        //Identifying Set Timer Button
+        SetTimer = findViewById(R.id.setTimer);
+
         //Identifying hours timer text view
         TimerLeft = findViewById(R.id.timerLeft);
 
         //Identifying minutes timer text view
         TimerRight = findViewById(R.id.timerRight);
+
+        final Calendar calendar = Calendar.getInstance();
 
         //Button onClickListener
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +134,19 @@ public class PopUp extends Activity {
 
                 //Setting text of minutes
                 TimerRight.setText(timeToText(minutes, 60));
+            }
+        });
+
+        SetTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PopUp.this, CardNotification.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
+                //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
             }
         });
 
@@ -170,5 +204,22 @@ public class PopUp extends Activity {
         timer = String.valueOf(time);
         return timer;
     }
+
+    private void createNotificationChannel()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            CharSequence name = "CardNotificationChannel";
+            String description = "Channel for card reminders";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notifyCard", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
 
 }

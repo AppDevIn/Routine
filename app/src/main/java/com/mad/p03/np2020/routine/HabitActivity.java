@@ -31,7 +31,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,11 +41,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
@@ -505,7 +500,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     /** This method is used to initialise the firebase */
     private void initFirebase() {
-        user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
     }
 
@@ -610,91 +605,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         Gson gson = new Gson();
         Log.i(TAG,"Object serialize");
         return gson.toJson(habitGroup);
-    }
-
-
-    /** This method is read the habits from firebase */
-    public void readHabit_Firebase(){
-        Log.d(TAG, "readHabit_Firebase: ");
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
-        myRef.child("habit").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: ");
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    Habit habit = new Habit();
-                    habit.setHabitID((Long) singleSnapshot.child("habitID").getValue(Long.class));
-                    habit.setTitle((String) singleSnapshot.child("title").getValue());
-                    habit.setCount((Integer) singleSnapshot.child("count").getValue(Integer.class));
-                    habit.setOccurrence((Integer) singleSnapshot.child("occurrence").getValue(Integer.class));
-                    habit.setPeriod((Integer) singleSnapshot.child("period").getValue(Integer.class));
-                    habit.setHolder_color((String) singleSnapshot.child("holder_color").getValue());
-                    habit.setTime_created((String) singleSnapshot.child("time_created").getValue());
-
-                    HabitGroup habitGroup = new HabitGroup();
-                    if (singleSnapshot.hasChild("group")){
-                        habitGroup.setGrp_id((Long) singleSnapshot.child("group").child("grp_id").getValue(Long.class));
-                        habitGroup.setGrp_name((String) singleSnapshot.child("group").child("grp_name").getValue());
-                        habit.setGroup(habitGroup);
-                    }else{
-                        habit.setGroup(null);
-                    }
-
-                    HabitReminder habitReminder = new HabitReminder();
-                    if (singleSnapshot.hasChild("habitReminder")){
-                        habitReminder.setId((Integer) singleSnapshot.child("habitReminder").child("id").getValue(Integer.class));
-                        habitReminder.setMessage((String) singleSnapshot.child("habitReminder").child("message").getValue());
-                        habitReminder.setCustom_text((String) singleSnapshot.child("habitReminder").child("custom_text").getValue());
-                        habitReminder.setHours((Integer) singleSnapshot.child("habitReminder").child("hours").getValue(Integer.class));
-                        habitReminder.setMinutes((Integer) singleSnapshot.child("habitReminder").child("minutes").getValue(Integer.class));
-                        habit.setHabitReminder(habitReminder);
-                    }else{
-                        habit.setHabitReminder(null);
-                    }
-
-
-                    habit_dbHandler.insertHabit(habit, user.getUID());
-                    Log.d(TAG, "reading lines");
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-    /** This method is read the habitGroups from firebase */
-    public void readHabitGroup_Firebase(){
-        Log.d(TAG, "readHabitGroup_Firebase: ");
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
-        myRef.child("habitGroup").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    HabitGroup habitGroup = new HabitGroup();
-                    habitGroup.setGrp_id((Long) singleSnapshot.child("grp_id").getValue(Long.class));
-                    habitGroup.setGrp_name((String) singleSnapshot.child("grp_name").getValue());
-
-                    Log.d(TAG, "onDataChange: "+habitGroup.getGrp_id());
-                    Log.d(TAG, "onDataChange: "+habitGroup.getGrp_name());
-
-                    group_dbhandler.insertGroup(habitGroup);
-
-                    Log.d(TAG, "reading lines");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
     }
 
     @Override
@@ -1200,7 +1110,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Edit Habit: ");
                 // create an alert dialog (edit habit)
                 final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog); // use the custom alert dialog type
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -1643,7 +1552,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                             habit_dbHandler.updateHabit(habit); // update the habit in SQLiteDatabase
                             habitAdapter.notifyDataSetChanged(); // notify the data set has changed in the adapter
                             writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
-                            Log.d(TAG, "HabitEdit/Affeceted rows: "+ affected_row);
+                            Log.d(TAG, "Edit Habit: Habit Edited! ");
+                            Log.d(TAG, "Edit Habit: Affeceted rows: "+ affected_row);
                         }
 
                         alertDialog.dismiss(); // dismiss the alert dialog (edit habit)

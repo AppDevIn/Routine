@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.mad.p03.np2020.routine.Class.Focus;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.HabitReminder;
@@ -280,8 +281,8 @@ public class HabitDBHelper extends DBHelper{
     public void deleteHabit(Habit habit){
         Log.d(TAG, "Habit: deleteHabit: ");
 
-        // get the readable database
-        SQLiteDatabase db = this.getReadableDatabase();
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
 
         String whereClause = Habit.COLUMN_ID + "=?"; // specify to delete based on the column id
 
@@ -291,6 +292,18 @@ public class HabitDBHelper extends DBHelper{
         // delete the habit column
         db.delete(Habit.TABLE_NAME, whereClause, whereArgs);
         
-        db.close();
+        db.close(); // close the db connection
+    }
+
+    public void deleteAllHabit(){
+        Log.d(TAG, "Habit: deleteAllHabit: ");
+
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete the habit table
+        db.delete(Habit.TABLE_NAME,null,null);
+
+        db.close(); //close the db connection
     }
 }
