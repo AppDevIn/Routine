@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/habit"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="@string/habit" />
+
+    <item
+        android:id="@+id/focus"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="@string/FocusButton"
+        />
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title=""
+        />
+
+
+    <item
+        android:id="@+id/calender"
+        android:icon="@drawable/ic_add_black_24dp"
+        />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_add_black_24dp"
+        />
+
+
+
+
+
+</menu>
