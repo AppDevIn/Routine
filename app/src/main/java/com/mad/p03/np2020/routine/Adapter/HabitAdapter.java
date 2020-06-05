@@ -26,7 +26,9 @@ import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 /**
  *
- * Model used to manage the section
+ * This will be the controller glue between the viewHolder and the model.
+ * This will inflate the the items for the habits to which will give us
+ * the view from will be passed to the view holder HabitViewHolder
  *
  * @author Hou Man
  * @since 02-06-2020
@@ -46,7 +48,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     public Habit.HabitList _habitList;
 
     /**This method is a constructor for habitAdapter*/
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     public HabitAdapter(Context c, Habit.HabitList habitList, String UID) {
         this.c = c;
         this._habitList = habitList;
@@ -95,7 +97,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
      * @param position This parameter is used to get the position
      *
      * */
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     public void onBindViewHolder(@NonNull HabitHolder holder, final int position) {
         // retrieve the habit object
