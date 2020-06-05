@@ -81,13 +81,13 @@ public class BootReceiver extends BroadcastReceiver {
     public void re_registerAlarm(Context context, Habit.HabitList habitList){
         // looping through each reminder
         for (int i = 0; i < habitList.size(); i++){
-            Log.d(TAG, "Re-registering alarm");
             // get the habit object
             Habit habit = habitList.getItemAt(i);
             // get the habit reminder object
             HabitReminder reminder = habit.getHabitReminder();
             // jump to next loop if reminder is null
             if (reminder == null){ continue;}
+            Log.d(TAG, "Re-registering alarm");
             // get the reminder attributes
             String title = habit.getTitle();
             int minutes = reminder.getMinutes();
