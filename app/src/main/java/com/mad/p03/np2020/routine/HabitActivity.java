@@ -166,7 +166,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // initialise the habitAdapter
-        habitAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(user.getUID()),user.getUID());
+        habitAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(),user.getUID());
 
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
