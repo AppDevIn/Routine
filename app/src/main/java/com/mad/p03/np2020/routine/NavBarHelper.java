@@ -5,6 +5,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mad.p03.np2020.routine.Class.Focus;
@@ -40,11 +41,13 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
                 mContext.startActivity(intent3, options.toBundle());
                 break;
             case R.id.calender:
+                Toast.makeText(mContext, "Calender will be implemented in stage 2", Toast.LENGTH_SHORT).show();
                 //TODO: Stage 2 implement
 //                Intent intent2 = new Intent(mContext, Main4Activity.class);
 //                mContext.startActivity(intent2, options.toBundle());
                 break;
             case R.id.profile:
+                Toast.makeText(mContext, "Profile will be implemented in stage 2", Toast.LENGTH_SHORT).show();
                 //TODO: Stage 2 implement
 //                Intent intent5 = new Intent(mContext, Main5Activity.class);
 //                mContext.startActivity(intent5, options.toBundle());
