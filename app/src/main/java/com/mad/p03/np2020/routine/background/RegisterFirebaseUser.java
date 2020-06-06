@@ -26,20 +26,32 @@ public class RegisterFirebaseUser extends AsyncTask<Void, Void, Void> {
     private OnFirebaseAuth mOnFirebaseAuth;
     @SuppressLint("StaticFieldLeak")
     private Activity mActivity;
-    private String mUsername;
+    private String mEmail;
     private String mPassword;
 
-    public RegisterFirebaseUser(OnFirebaseAuth onFirebaseAuth, Activity activity, String username, String password) {
+    /**
+     *
+     * To create object give access to a its method, it will take
+     * in a listener to inform ant changes in state of authentication.
+     * It will set the email and password the give the object on the user password
+     *
+     *
+     * @param onFirebaseAuth The listener this get triggered when successes or failed
+     * @param activity
+     * @param email The email the user want to register this account with
+     * @param password The password 
+     */
+    public RegisterFirebaseUser(OnFirebaseAuth onFirebaseAuth, Activity activity, String email, String password) {
         mOnFirebaseAuth = onFirebaseAuth;
         mActivity = activity;
-        mUsername = username;
+        mEmail = email;
         mPassword = password;
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        auth.createUserWithEmailAndPassword(mUsername, mPassword)
+        auth.createUserWithEmailAndPassword(mEmail, mPassword)
                 .addOnCompleteListener(mActivity, new OnCompleteListener<AuthResult>() { // Check if the process is completed
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
