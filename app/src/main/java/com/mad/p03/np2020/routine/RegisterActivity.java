@@ -3,30 +3,24 @@ package com.mad.p03.np2020.routine;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
+
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.nfc.FormatException;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.text.InputType;
+import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,14 +28,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
 import com.mad.p03.np2020.routine.Class.User;
-import com.mad.p03.np2020.routine.background.UploadDataWorker;
+
 import com.mad.p03.np2020.routine.database.UserDBHelper;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -50,31 +42,37 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     //Declare member variables
-    Button mSubmit, mBack;
-    int mProgessCount = 0;
-    TextView mTxtQuestion, mTxtErrorMessage;
-    EditText mEdInput;
     User mUser;
-
+    TextView mTxtErrorName, mTxtErrorEmail, mTxtErrorPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         Log.d(TAG, "UI is being created");
 
-        //Find IDs
-        mSubmit = findViewById(R.id.btnSubmit);
-        mTxtQuestion = findViewById(R.id.txtQuestion);
-        mEdInput = findViewById(R.id.input);
-        mBack = findViewById(R.id.btnBack);
-        mTxtErrorMessage = findViewById(R.id.txtError);
 
-        //Create a User object
-        mUser = new User();
+        //ID for the error message
+        mTxtErrorName = findViewById(R.id.errorName);
+        mTxtErrorEmail = findViewById(R.id.errorEmail);
+        mTxtErrorPassword = findViewById(R.id.errorPwd);
 
 
+        //ID for the animatio
+        TextView txtTypeWriter = findViewById(R.id.txtTypeWriter);
+        ImageView imageView = findViewById(R.id.imageView);
+
+//        //Find IDs
+//        mSubmit = findViewById(R.id.btnSubmit);
+//        mTxtQuestion = findViewById(R.id.txtQuestion);
+//        mEdInput = findViewById(R.id.input);
+//        mBack = findViewById(R.id.btnBack);
+//        mTxtErrorMessage = findViewById(R.id.txtError);
+//
+//        //Create a User object
+//        mUser = new User();
 
 
+        startUpAnimation(txtTypeWriter, imageView);
 
     }
 
@@ -83,11 +81,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart: GUI is ready");
 
-        //Default Update before the click
-        starterUI();
-
-        //change Background olor of button transparent
-        mSubmit.setBackgroundColor(Color.TRANSPARENT);
 
         //To set to Full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -100,16 +93,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: GUI is in the Foreground and Interactive");
-
-        //Listener to the submit button
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateCardView(false);
-            }
-        });
-
-
 
 
     }
@@ -137,312 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "onDestroy: Activity no longer exists");
     }
 
-    //UI used when the layout is foreground
-    private void starterUI(){
-        mProgessCount = 1;
-        askName();
-    }
-
-    private void updateCardView(Boolean isForward){
-
-        Log.d(TAG, "UI updated");
-
-        if (isForward) {
-            mProgessCount++;
-        } else {
-            mProgessCount--;
-        }
-
-        switch (mProgessCount){
-            case 1:
-                askName();
-                break;
-            case 2:
-                askEmail();
-                break;
-            case 3:
-                askPassword();
-                break;
-            case 4:
-                askDateOfBirth();
-                break;
-            case 5:
-                startRegistration();
-                break;
-            default:
-                break;
-        }
-    }
-
-
-
-    private void updateUI(String name, TextView textView){
-        Log.d(TAG, name + ": " + textView.getText().toString());
-
-        //Move the next one
-        updateCardView(true);
-
-        //Make the text invisible
-        toggleError();
-    }
-
-    /**
-     * show the error text view and make it visible
-     *
-     * @param localizedMessage is the String provided from the user class
-     *
-     */
-    private void toggleError(String localizedMessage){
-
-        Log.d(TAG, "Showing error message");
-        mTxtErrorMessage.setVisibility(View.VISIBLE);
-        //Error message for empty text
-        Log.e(TAG, "toggleError: Condition failed: " + localizedMessage);
-        mTxtErrorMessage.setText(localizedMessage);
-
-    }
-
-    /**
-     * Make the text invisible
-     *
-     */
-    private void toggleError(){
-        if(mTxtErrorMessage.getVisibility() == View.VISIBLE){
-            Log.d(TAG, "Error text disappear");
-            mTxtErrorMessage.setVisibility(View.INVISIBLE);
-        }
-    }
-
-
-
-
-
-    //Changes the cardview details to name
-    private void askName() {
-        Log.d(TAG, "Asking for name");
-
-        //Show previous data if exist
-        if(mUser.getName() != null){
-            mEdInput.setText(mUser.getName());
-
-            Log.d(TAG, "Existing value, Name: " + mUser.getName());
-
-        }else {
-            Log.d(TAG, "No Existing value, Name value");
-            mEdInput.setText("");
-
-        }
-
-        //Ask for the name
-        mTxtQuestion.setText(R.string.registerName);
-
-        //Invisible is because going back is not possible
-        mBack.setVisibility(View.INVISIBLE);
-
-        //Check for input and ensure the string is not empty
-        mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                Log.i(TAG, "onClick: " + textView.getText().toString());
-
-                try {
-                    mUser.setName(textView.getText().toString());// Make the error text invisible move the next question
-                    updateUI("Name", textView);
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage());//To show Error message
-                }
-
-                return false;
-            }
-        });
-
-        //Setting a listener for the button
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG, "onClick: " + mEdInput.getText().toString());
-
-                try {
-                    mUser.setName(mEdInput.getText().toString());// Make the error text invisible move the next question
-                    updateUI("Name", mEdInput);
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage());//To show Error message
-                }
-            }
-        });
-    }
-
-    //Changes the cardview details to emial
-    private void askEmail() {
-        Log.d(TAG, "Ask for Email");
-
-        //Run the default ask
-        //Show previous data if exist
-        if(mUser.getEmailAdd() != null){
-            mEdInput.setText(mUser.getEmailAdd());
-
-            Log.d(TAG, "Existing value, Name: " + mUser.getEmailAdd());
-
-        }else {
-            Log.d(TAG, "No Existing value, Name value");
-            mEdInput.setText("");
-
-        }
-
-        //Ask for the email
-        mTxtQuestion.setText(R.string.registerEmail);
-
-        //Visible as going is possible
-        mBack.setVisibility(View.VISIBLE);
-
-        //Check for input and ensure the string is not empty and is email
-        mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                try {
-                    mUser.setEmailAdd(textView.getText().toString().trim());
-                    updateUI("Email", textView); // Make the error text invisible move the next question
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage());//To show Error message
-                }
-                return false;
-            }
-
-        });
-
-        //Setting a listener for the button
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    mUser.setEmailAdd(mEdInput.getText().toString().trim());
-                    updateUI("Email", mEdInput); // Make the error text invisible move the next question
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage());//To show Error message
-                }
-            }
-        });
-    }
-
-    //Changes the cardview details to Password
-    private void askPassword() {
-        Log.d(TAG, "Ask for password");
-
-        //Run the default ask
-        //Show previous data if exist
-        if(mUser.getPassword() != null){
-            mEdInput.setText(mUser.getPassword());
-
-            Log.d(TAG, "Existing value, Name: " + mUser.getPassword());
-
-        }else {
-            Log.d(TAG, "No Existing value, Name value");
-            mEdInput.setText("");
-
-        }
-
-        //Set the the input the dots
-        mEdInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
-        //Aak for password
-        mTxtQuestion.setText(R.string.registerPassword);
-
-        //TODO: Set dot as the password
-
-        //Check for input and ensure the string is not empty
-        mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-
-                try {
-                    mUser.setPassword(textView.getText().toString().trim());
-                    updateUI("Password", textView); // Make the error text invisible move the next question
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage()); //To show Error message
-                }
-
-                return false;
-            }
-        });
-
-        //Setting a listener for the button
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    mUser.setPassword(mEdInput.getText().toString().trim());
-                    updateUI("Password", mEdInput); // Make the error text invisible move the next question
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage()); //To show Error message
-                }
-
-            }
-        });
-    }
-
-    //Changes the cardview details to Confirm Password
-    private void askDateOfBirth() {
-        Log.d(TAG, "Ask for DOB");
-
-        //Run the default ask
-        //Show previous data if exist
-        if(mUser.getDateOfBirth() != null){
-            mEdInput.setText(mUser.getDateOfBirth().toString());
-
-            Log.d(TAG, "Existing value, Name: " + mUser.getDateOfBirth());
-
-        }else {
-            Log.d(TAG, "No Existing value, Name value");
-            mEdInput.setText("");
-
-        }
-
-        //Ask for date for birth
-        mTxtQuestion.setText(R.string.registerDOB);
-
-        //Give hint the the user on the format
-        mEdInput.setHint(R.string.dateFormat);
-
-
-        //Check for input and ensure the string is not empty
-        mEdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                try {
-                    mUser.setDateOfBirth(textView.getText().toString().trim());
-                    updateUI("DOB", textView);// Make the error text invisible move the next question
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage()); //To show Error message
-                }
-
-                return false;
-            }
-        });
-
-        //Setting a listener for the button
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                try {
-                    mUser.setDateOfBirth(mEdInput.getText().toString().trim());
-                    updateUI("DOB", mEdInput);// Make the error text invisible move the next question
-                } catch (FormatException e) {
-                    e.printStackTrace();
-                    toggleError(e.getLocalizedMessage()); //To show Error message
-                }
-
-            }
-        });
-
-    }
 
     private void startRegistration(){
 
@@ -454,6 +131,46 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
+
+
+
+    /**
+     *
+     * This is the start up animation are done
+     * like typewriter effect and up animation on the view
+     * with our logo
+     *
+     * @param textView The text the typewriter animation is implemented
+     * @param upView The view where the animation done
+     */
+    private void startUpAnimation(final TextView textView, View upView){
+
+
+        ObjectAnimator animation = ObjectAnimator.ofFloat(upView, "translationY",100f ,-100f);
+        animation.setDuration(2000);
+        animation.start();
+
+
+        //Add typewriter effect to the textview
+        final CountDownTimer countDownTimer = new CountDownTimer(1800, 200) {
+            int i = 0;
+            public void onFinish() {
+                // When timer is finished
+                // Execute your code here'
+                Log.d(TAG, "onFinish: Done with Register animation");
+
+            }
+
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+                String title = "Register";
+                textView.append(title.substring(i,i+1));
+                i++;
+
+            }
+        }.start();
+    }
+
 
 
     /**
@@ -481,9 +198,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Log.i(TAG, "onComplete: The current user's email is " + mUser.getAuth().getEmail());
 
                                 //Save data
-
-                                //Firebase
-                                executeFirebaseUserUpload();
+                                mUser.executeFirebaseUserUpload();
 
                                 //SQL
                                 //instantiate UserDb
@@ -532,8 +247,6 @@ public class RegisterActivity extends AppCompatActivity {
      */
     private void firebaseFailedError(String errorMessage){
         Log.d(TAG, "firebaseFailedError: Alert dialog being created");
-        //Change the progress to 0
-        mProgessCount = 2; //To ensure it start from the email
 
         //Show error dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
@@ -548,51 +261,13 @@ public class RegisterActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //goes back to the start(Email)
-                askEmail();
+                //TODO
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
         Log.d(TAG, "firebaseFailedError: Alert dialog being Showed");
-
-    }
-
-
-    /**
-     * Upload Name, Email, DOB up the firebase
-     * After registering successfully
-     *
-     * It will be done in the background
-     */
-    private void executeFirebaseUserUpload(){
-
-        Log.d(TAG, "executeFirebaseUserUpload(): Preparing the upload ");
-
-        //Setting condition
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        //Adding data which will be received from the worker
-        @SuppressLint("RestrictedApi") Data firebaseUserData = new Data.Builder()
-                .putString("ID", mUser.getUID())
-                .putString("Name", mUser.getName())
-                .putString("Email", mUser.getEmailAdd())
-                .putString("DOB", mUser.getDateOfBirth())
-                .build();
-
-        //Create the request
-        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
-                Builder(UploadDataWorker.class)
-                .setConstraints(constraints)
-                .setInputData(firebaseUserData)
-                .build();
-
-        //Enqueue the request
-        WorkManager.getInstance(this).enqueue(uploadTask);
-        Log.d(TAG, "executeFirebaseUserUpload(): Put in queue");
 
     }
 
