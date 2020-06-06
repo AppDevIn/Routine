@@ -207,19 +207,22 @@ public class User implements Parcelable {
     }
 
     /** This method is read the habits from firebase
-     * @param context*/
+     * @param context This is to get the context of the activity
+     *
+     * */
     public void readHabit_Firebase(Context context){
-        Log.d(TAG, "readHabit_Firebase: ");
+        Log.d(TAG, "read Habit_Firebase: ");
 
         habitDBHelper = new HabitDBHelper(context);
 
+        // delete all the habit
         habitDBHelper.deleteAllHabit();
 
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
         myRef.child("habit").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: ");
+                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     Habit habit = new Habit();
                     habit.setHabitID((Long) singleSnapshot.child("habitID").getValue(Long.class));
@@ -253,7 +256,7 @@ public class User implements Parcelable {
 
 
                     habitDBHelper.insertHabit(habit, getUID());
-                    Log.d(TAG, "reading lines");
+                    Log.d(TAG, "reading Habit Lines");
 
                 }
 
@@ -266,17 +269,23 @@ public class User implements Parcelable {
         });
     }
 
-    /** This method is read the habitGroups from firebase */
+    /** This method is read the habitGroups from firebase
+     *  @param context This is to get the context of the activity
+     *
+     * */
     public void readHabitGroup_Firebase(Context context){
-        Log.d(TAG, "readHabitGroup_Firebase: ");
+        Log.d(TAG, "read HabitGroup_Firebase: ");
 
         habitGroupDBHelper = new HabitGroupDBHelper(context);
+
+        // delete all habitGroups
+        habitGroupDBHelper.deleteAllHabitGroups();
 
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
         myRef.child("habitGroup").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     HabitGroup habitGroup = new HabitGroup();
                     habitGroup.setGrp_id((Long) singleSnapshot.child("grp_id").getValue(Long.class));
@@ -287,7 +296,7 @@ public class User implements Parcelable {
 
                     habitGroupDBHelper.insertGroup(habitGroup);
 
-                    Log.d(TAG, "reading lines");
+                    Log.d(TAG, "reading HabitGroup Lines");
                 }
             }
 

@@ -137,4 +137,17 @@ public class HabitGroupDBHelper extends DBHelper {
         return id;
     }
 
+    /**This method is used to delete the all habitGroups object in the SQLiteDatabase.* */
+    public void deleteAllHabitGroups(){
+        Log.d(TAG, "Habit: deleteAllHabit: ");
+
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete the habit table
+        db.delete(HabitGroup.TABLE_NAME,null,null);
+
+        db.close(); //close the db connection
+    }
+
 }

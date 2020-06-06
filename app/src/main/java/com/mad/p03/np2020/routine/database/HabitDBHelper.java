@@ -294,6 +294,7 @@ public class HabitDBHelper extends DBHelper{
         db.close(); // close the db connection
     }
 
+    /**This method is used to delete the all habit object in the SQLiteDatabase.* */
     public void deleteAllHabit(){
         Log.d(TAG, "Habit: deleteAllHabit: ");
 
@@ -304,5 +305,67 @@ public class HabitDBHelper extends DBHelper{
         db.delete(Habit.TABLE_NAME,null,null);
 
         db.close(); //close the db connection
+    }
+
+    /**
+     *
+     * This method is used to check whether a specific reminder is existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return true if the reminder is existed and false if it is not.
+     * */
+    public boolean isReminderExisted(Habit habit){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.d(TAG, "isReminderExisted: ");
+
+        Cursor cursor =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
+        if (cursor == null){
+            return false;
+        }
+
+        cursor.moveToFirst(); //Only getting the first value
+
+        if (cursor.getString(cursor.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES)) != null ){
+            return true;
+        }
+
+        return false;
+
+    }
+
+    /**
+     *
+     * This method is used to get a specific reminder existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return the habitReminder object, and return null if no result found.
+     * */
+    public HabitReminder getReminder(Habit habit){
+        Log.d(TAG, "getReminder: ");
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
+        if (res != null){
+            res.moveToFirst(); //Only getting the first value
+        }
+
+        int reminder_id = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_ID));
+        int reminder_hours = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_HOURS));
+        int reminder_minutes = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MINUTES));
+        String reminder_message = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES));
+        String reminder_customText = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT));
+
+        HabitReminder reminder = null;
+        if (reminder_message != null){ //check if habit reminder is null, if not set the object
+            reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
+        }
+
+        return reminder;
+
     }
 }
