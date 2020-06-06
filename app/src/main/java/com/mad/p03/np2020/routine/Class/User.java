@@ -8,6 +8,11 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
@@ -17,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.database.FocusDBHelper;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
@@ -540,6 +546,43 @@ public class User implements Parcelable {
             return null;
         }
     }
+
+
+    /**
+     * Upload Name, Email and UID up the firebase
+     * After registering successfully
+     *
+     * It will be done in the background
+     */
+    public void executeFirebaseUserUpload(){
+
+        Log.d(TAG, "executeFirebaseUserUpload(): Preparing the upload ");
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseUserData = new Data.Builder()
+                .putString("ID", getUID())
+                .putString("Name", getName())
+                .putString("Email", getEmailAdd())
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(UploadDataWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseUserData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+        Log.d(TAG, "executeFirebaseUserUpload(): Put in queue");
+
+    }
+
 
 
     /**
