@@ -44,6 +44,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <Button
+                    android:id="@+id/buttonRegister"
+                    android:layout_width="82dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/back_button_design"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="@string/register"
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toBottomOf="@+id/errorName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.268" />
+
                 <EditText
                     android:id="@+id/edEmail"
                     android:layout_width="match_parent"
