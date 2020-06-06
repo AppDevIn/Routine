@@ -83,6 +83,9 @@
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1560805060745865</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1560805060745865</string>
+    <string name="error_email_password">Invalid Email or Password</string>
+    <string name="error_empty_email">Email cannot be empty</string>
+    <string name="error_password_empty">Password cannot be empty</string>
 
 </resources>
 
