@@ -157,9 +157,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         }
 
         if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_tick); // replace the add button as a tick button
+            holder.addBtn.setImageResource(R.drawable.habit_tick_white); // replace the add button as a tick button
         }else{ // if habit count < habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_add); // set the add button
+            holder.addBtn.setImageResource(R.drawable.habit_add_white); // set the add button
         }
 
     }

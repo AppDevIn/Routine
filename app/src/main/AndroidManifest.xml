@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan">
 
-        <activity android:name=".HabitActivity"
+        <activity android:name=".LoginActivity"
         android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +45,7 @@
 
         <activity android:name=".TaskActivity"/>
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".HabitActivity" />
 
         <activity android:name=".CardActivity" />
 

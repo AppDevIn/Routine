@@ -200,7 +200,16 @@ public class HabitViewActivity extends AppCompatActivity {
                 saveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int dialogCnt = Integer.parseInt(dialog_cnt.getText().toString()); // retrieve the count from the input field
+                        String cntString = dialog_cnt.getText().toString();
+                        if (cntString.equalsIgnoreCase("")){
+                            dialog_cnt.setError("Please enter a number");
+                            return;
+                        }
+                        int dialogCnt = Integer.parseInt(cntString); // retrieve the count from the input field
+                        if (dialogCnt > 1000 ){
+                            dialog_cnt.setError("Please enter a smaller number");
+                            return;
+                        }
                         // trigger the habit class modify count method
                         habit.modifyCount(dialogCnt); // modify the count
                         habit_dbHandler.updateCount(habit); // update the habit data in SQLiteDatabase

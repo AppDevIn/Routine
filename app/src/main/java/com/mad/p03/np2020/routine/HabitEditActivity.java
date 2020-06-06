@@ -173,9 +173,10 @@ public class HabitEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go back to habit view activity
+                Habit initial_habit = habit_dbHandler.getHabit(habit);
                 Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString("recorded_habit", habit_serializeToJson(habit));
+                extras.putString("recorded_habit", habit_serializeToJson(initial_habit));
                 activityName.putExtras(extras);
                 startActivity(activityName);
             }
