@@ -96,7 +96,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
 
-        mUID = "aRbjnh0WpNe8gGga1PkDfOiJLH03";
+        mUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
 
@@ -106,6 +106,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mEditAddList = findViewById(R.id.txtAddList);
         mSpinnerColor = findViewById(R.id.spinnerColor);
         mSpinnerIcons = findViewById(R.id.spinnerImg);
+        mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mBtnAdd = findViewById(R.id.btnAdd);
         mBtnCancel = findViewById(R.id.btnCancel);
@@ -151,14 +152,14 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         itemTouchHelper.attachToRecyclerView(mGridView);
 
         //Subscribing to the topic to listen to
-        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        FirebaseMessaging.getInstance().subscribeToTopic(mUID)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: Done Running");
-                            Toast.makeText(Home.this, FirebaseAuth.getInstance().getCurrentUser().getUid().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(Home.this, "Never subscribe yet", Toast.LENGTH_SHORT).show();
                         }

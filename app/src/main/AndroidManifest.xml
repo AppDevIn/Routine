@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mad.p03.np2020.routine"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
+    package="com.mad.p03.np2020.routine">
 
-
-    <dist:module dist:instant="true" />
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -24,16 +21,16 @@
         <activity android:name=".CardActivity"
         android:theme="@style/AppTheme"/>
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Home" />
 
-        <activity android:name=".Home"
+        <activity android:name=".HabitActivity"
                 android:exported="true"/>
 
         <activity android:name=".Class.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
 
-        <activity android:name=".HabitActivity" />
+        <activity android:name=".FocusActivity" />
 
         <activity android:name=".Settings"
                 android:exported="true"/>
@@ -45,7 +42,7 @@
         <activity android:name=".RegisterActivity" />
 
         <activity
-            android:name=".FocusActivity">
+            android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

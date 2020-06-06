@@ -11,5 +11,8 @@
 
         android:layout_margin="10dp"
 
-        app:srcCompat="@drawable/amazon" />
+        android:contentDescription="@string/icon_description"
+
+        android:src="@drawable/amazon"
+         />
 </LinearLayout>
