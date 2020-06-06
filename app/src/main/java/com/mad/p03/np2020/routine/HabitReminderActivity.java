@@ -23,23 +23,52 @@ import java.util.Calendar;
 
 import static java.lang.String.format;
 
+/**
+ *
+ * Habit activity used to manage the habit reminder layout section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
+
 public class HabitReminderActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitReminderActivity";
+
+    // Widgets
     private ImageView close_btn;
     private Switch reminder_switch;
     private TextView reminder_displayTime;
     private TimePicker timePicker;
     private TextView customText;
     private ImageView save_btn;
+
+    // Habit
     private Habit habit;
+
+    // HabitReminder
     private HabitReminder reminder;
+
+    // to record the time of the timepicker
     private int minutes, hours;
+
+    // to check the timepicker is modified
     private boolean isModified;
+
+    // to record the initial custom text
     private String initial_customText;
 
+    // to record the activity action
     private String action;
 
+    /**
+     *
+     * This method will be called when the start of the HabitActivity.
+     * This will initialise the widgets and set onClickListener on them.
+     *
+     * @param savedInstanceState This parameter refers to the saved state of the bundle object.
+     *
+     * */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +85,9 @@ public class HabitReminderActivity extends AppCompatActivity {
         customText = findViewById(R.id.habit_reminder_view_customtext);
         save_btn = findViewById(R.id.habit_reminder_view_save);
 
-        isModified = false;
+        isModified = false; // set as false at the beginning
 
-        // TODO receive the intent package and initialise the reminder
+        // This is to get the habit object from intent bundle
         Intent intent = getIntent();
         if (intent.hasExtra("recorded_habit")){
             habit = deserializeFromJson(intent.getExtras().getString("recorded_habit"));
@@ -72,6 +101,7 @@ public class HabitReminderActivity extends AppCompatActivity {
             reminder = null;
         }
 
+        // get the activity action
         if (intent.hasExtra("action")){
             action = intent.getExtras().getString("action");
         }
@@ -133,12 +163,16 @@ public class HabitReminderActivity extends AppCompatActivity {
                     String chosen_txt = customText.getText().toString();
 
                     if (reminder!= null && !chosen_txt.equals(initial_customText)){
+                        // update the text if the text is modified
                         habit.getHabitReminder().setCustom_text(chosen_txt);
                     }
 
                     if (isModified){
+                        // set a new reminder if the reminder is modified
                         habit.setHabitReminder(new HabitReminder(habit.getTitle(),minutes, hours, chosen_txt));
                     }
+
+                    // go the respective activity based on action
                     Intent activityName = new Intent(HabitReminderActivity.this, HabitAddActivity.class);
                     if (action.equals("edit")){
                         activityName = new Intent(HabitReminderActivity.this, HabitEditActivity.class);
@@ -151,6 +185,7 @@ public class HabitReminderActivity extends AppCompatActivity {
                     startActivity(activityName);
 
                 }else{ // if switch is unchecked, turn the reminder inactive
+                    // go the respective activity based on action
                     Intent activityName = new Intent(HabitReminderActivity.this, HabitAddActivity.class);
                     if (action.equals("edit")){
                         activityName = new Intent(HabitReminderActivity.this, HabitEditActivity.class);
@@ -171,6 +206,7 @@ public class HabitReminderActivity extends AppCompatActivity {
         close_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // go the respective activity based on action
                 Intent activityName = new Intent(HabitReminderActivity.this, HabitAddActivity.class);
                 if (action.equals("edit")){
                     activityName = new Intent(HabitReminderActivity.this, HabitEditActivity.class);
@@ -185,6 +221,11 @@ public class HabitReminderActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
+    }
 
     /**
      *

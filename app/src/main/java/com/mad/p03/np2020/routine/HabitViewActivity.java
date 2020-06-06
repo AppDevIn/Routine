@@ -37,18 +37,40 @@ import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 import static java.lang.String.format;
 
+/**
+ *
+ * Habit activity used to manage the habit view layout section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
+
 public class HabitViewActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitViewActivity";
+
+    // Widgets
     private TextView title, cnt, occurrence, cnt2, period;
-    private ImageButton reduceBtn, addBtn, modifyBtn, closeBtn, editBtn, deletebtn;
+    private ImageButton reduceCountBtn, addCountBtn, modifyCountBtn, closeBtn, editBtn, deletebtn;
     private LinearLayout habit_view_upper;
 
+    // Habit
     private Habit habit;
 
+    // HabitDBHandler
     private HabitDBHelper habit_dbHandler;
+
+    // User
     private User user;
 
+    /**
+     *
+     * This method will be called when the start of the HabitActivity.
+     * This will initialise the widgets and set onClickListener on them.
+     *
+     * @param savedInstanceState This parameter refers to the saved state of the bundle object.
+     *
+     * */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +82,9 @@ public class HabitViewActivity extends AppCompatActivity {
         // initialise widgets
         title = findViewById(R.id.habit_view_title);
         cnt = findViewById(R.id.habit_view_count);
-        reduceBtn = findViewById(R.id.habit_view_reduce);
-        addBtn = findViewById(R.id.habit_view_add);
-        modifyBtn = findViewById(R.id.habit_view_modify);
+        reduceCountBtn = findViewById(R.id.habit_view_reduce);
+        addCountBtn = findViewById(R.id.habit_view_add);
+        modifyCountBtn = findViewById(R.id.habit_view_modify);
         closeBtn = findViewById(R.id.habit_view_close);
         editBtn = findViewById(R.id.habit_view_edit);
         deletebtn = findViewById(R.id.habit_view_delete);
@@ -71,10 +93,14 @@ public class HabitViewActivity extends AppCompatActivity {
         period = findViewById(R.id.habit_period);
         habit_view_upper = findViewById(R.id.habit_view_upper);
 
+        // initialise habitDBHandler
         habit_dbHandler = new HabitDBHelper(this);
+
+        // set user
         user = new User();
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+        // This is to get the habit object from intent bundle
         Intent intent = getIntent();
         if (intent.hasExtra("recorded_habit")){
             habit = deserializeFromJson(intent.getExtras().getString("recorded_habit"));
@@ -90,9 +116,9 @@ public class HabitViewActivity extends AppCompatActivity {
         period.setText(habit.returnPeriodText(habit.getPeriod()));
 
         // set the transparent background of the button
-        reduceBtn.setBackgroundColor(Color.TRANSPARENT);
-        addBtn.setBackgroundColor(Color.TRANSPARENT);
-        modifyBtn.setBackgroundColor(Color.TRANSPARENT);
+        reduceCountBtn.setBackgroundColor(Color.TRANSPARENT);
+        addCountBtn.setBackgroundColor(Color.TRANSPARENT);
+        modifyCountBtn.setBackgroundColor(Color.TRANSPARENT);
         closeBtn.setBackgroundColor(Color.TRANSPARENT);
         editBtn.setBackgroundColor(Color.TRANSPARENT);
         deletebtn.setBackgroundColor(Color.TRANSPARENT);
@@ -110,7 +136,7 @@ public class HabitViewActivity extends AppCompatActivity {
         });
 
         // set onClickListener on add count button
-        addBtn.setOnClickListener(new View.OnClickListener() {
+        addCountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Habit: Add Count");
@@ -123,7 +149,8 @@ public class HabitViewActivity extends AppCompatActivity {
             }
         });
 
-        reduceBtn.setOnClickListener(new View.OnClickListener() {
+        // set onClickListener on reduce count button
+        reduceCountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Habit: Minus Count");
@@ -136,7 +163,8 @@ public class HabitViewActivity extends AppCompatActivity {
             }
         });
 
-        modifyBtn.setOnClickListener(new View.OnClickListener() {
+        // set onClickListener on modify count button
+        modifyCountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Habit: Modify Count");
@@ -183,9 +211,11 @@ public class HabitViewActivity extends AppCompatActivity {
             }
         });
 
+        // set onClickListener on edit habit button
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // go the edit habit activity
                 Intent activityName = new Intent(HabitViewActivity.this, HabitEditActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
@@ -194,7 +224,7 @@ public class HabitViewActivity extends AppCompatActivity {
             }
         });
 
-        // delete the habit
+        // set onClickListener on delete habit button
         deletebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,8 +238,6 @@ public class HabitViewActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // if the user choose to delete the habit
 
-                        // retrieve the habit object
-
                         Log.v(TAG, format("%s deleted!",habit.getTitle()));
 
                         if (habit.getHabitReminder() != null){ // if the reminder of the habit object is not null
@@ -222,6 +250,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
                         writeHabit_Firebase(habit, user.getUID(), true); // delete the habit in the firebase
 
+                        // go back to habit activity
                         Intent activityName = new Intent(HabitViewActivity.this, HabitActivity.class);
                         startActivity(activityName);
 
@@ -239,6 +268,12 @@ public class HabitViewActivity extends AppCompatActivity {
                 alert.show(); // show the alert dialog (delete habit)
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
     }
 
     /**

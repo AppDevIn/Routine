@@ -32,11 +32,17 @@ import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static java.lang.String.format;
+
+/**
+ *
+ * Habit activity used to manage the edit habit layout section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
 
 public class HabitEditActivity extends AppCompatActivity {
 
@@ -48,18 +54,24 @@ public class HabitEditActivity extends AppCompatActivity {
 
     private Habit habit;
 
-
-
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
 
     //User
     private User user;
 
+    // Period and color section
     private int[] period;
     private String[] color;
 
-
+    /**
+     *
+     * This method will be called when the start of the HabitActivity.
+     * This will initialise the widgets and set onClickListener on them.
+     *
+     * @param savedInstanceState This parameter refers to the saved state of the bundle object.
+     *
+     * */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +92,7 @@ public class HabitEditActivity extends AppCompatActivity {
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
 
+        // set new user
         user = new User();
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -91,6 +104,7 @@ public class HabitEditActivity extends AppCompatActivity {
         color = new String[1]; // this is used to store the chosen color
         populateColorBtn(this,color);
 
+        // This is to get the habit object from intent bundle
         Intent intent = getIntent();
         if (intent.hasExtra("recorded_habit")){
             habit = deserializeFromJson(intent.getExtras().getString("recorded_habit"));
@@ -98,6 +112,7 @@ public class HabitEditActivity extends AppCompatActivity {
             Log.d(TAG, "LOADING HABIT ERROR ");
         }
 
+        // initialise the period and color section
         habit_edit_initialise_periodSection(this, habit, period, period_text);
         habit_edit_initialise_colorSection(this, habit, color);
 
@@ -123,9 +138,11 @@ public class HabitEditActivity extends AppCompatActivity {
             habit_reminder_indicate_text.setText("NONE");
         }
 
+        // set onClickListener on the group indicate text
         group_indicate_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // go the habit group activity
                 Intent activityName = new Intent(HabitEditActivity.this, HabitGroupActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
@@ -135,9 +152,11 @@ public class HabitEditActivity extends AppCompatActivity {
             }
         });
 
+        // set onClickListener on the habit reminder indicate text
         habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // got to habit reminder activity
                 Intent activityName = new Intent(HabitEditActivity.this, HabitReminderActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
@@ -147,9 +166,11 @@ public class HabitEditActivity extends AppCompatActivity {
             }
         });
 
+        // set onClickListener on close button
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // go back to habit view activity
                 Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
@@ -158,6 +179,7 @@ public class HabitEditActivity extends AppCompatActivity {
             }
         });
 
+        // set onClickListener on save button
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +209,7 @@ public class HabitEditActivity extends AppCompatActivity {
                     habit.setHolder_color(color[0]); // modify the holder color
                 }
 
+                // set or cancel the alarm based on the habit reminder
                 HabitReminder reminder = habit.getHabitReminder();
                 if (habit_dbHandler.isReminderExisted(habit)){
                     if (reminder == null){
@@ -210,9 +233,11 @@ public class HabitEditActivity extends AppCompatActivity {
                     }
                 }
 
+                // write habits to firebase
                 habit_dbHandler.updateHabit(habit); // update the habit in SQLiteDatabase
                 writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
 
+                // go back to habit view activity
                 Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
@@ -221,6 +246,12 @@ public class HabitEditActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
     }
 
     /**

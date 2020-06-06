@@ -460,6 +460,4 @@ public class Habit {
          * */
         public Integer size() { return this.habitList.size(); }
     }
-
-
 }

@@ -27,33 +27,55 @@ import androidx.work.WorkManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
-import com.mad.p03.np2020.routine.Adapter.OnItemClickListener;
+import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.HabitGroupWorker;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
+/**
+ *
+ * Habit activity used to manage the habit group layout section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
+
 public class HabitGroupActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitGroupActivity";
+
+    // HabitGroup RecyclerView and Adapter
     private RecyclerView habitGroupRecyclerView;
     private HabitGroupAdapter groupAdapter;
 
     // initialise the handler
     private HabitGroupDBHelper group_dbhandler;
 
+    // User
     private User user;
 
+    // Widgets
     private ImageView close;
     private Button cancel;
     private Button create_grp;
     private TextView curr_grp;
 
+    // Habit
     private Habit habit;
 
+    // to record the activity action(add/edit habit)
     private String action;
 
+    /**
+     *
+     * This method will be called when the start of the HabitActivity.
+     * This will initialise the widgets and set onClickListener on them.
+     *
+     * @param savedInstanceState This parameter refers to the saved state of the bundle object.
+     *
+     * */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +84,7 @@ public class HabitGroupActivity extends AppCompatActivity {
         // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        // initialise groupDBHandler
         group_dbhandler = new HabitGroupDBHelper(this);
 
         // initialise widgets
@@ -70,9 +93,11 @@ public class HabitGroupActivity extends AppCompatActivity {
         create_grp = findViewById(R.id.habit_group_view_create_group);
         curr_grp = findViewById(R.id.current_grp);
 
+        // set user
         user = new User();
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+        // This is to get the habit object from intent bundle and set the text for the current group
         Intent intent = getIntent();
         if (intent.hasExtra("recorded_habit")){
             habit = deserializeFromJson(intent.getExtras().getString("recorded_habit"));
@@ -83,6 +108,7 @@ public class HabitGroupActivity extends AppCompatActivity {
             curr_grp.setText("NONE");
         }
 
+        // get the activity action
         if (intent.hasExtra("action")){
             action = intent.getExtras().getString("action");
         }
@@ -91,7 +117,7 @@ public class HabitGroupActivity extends AppCompatActivity {
         habitGroupRecyclerView = findViewById(R.id.habit_recycler_view);
         habitGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         // initialise group adapter
-        groupAdapter= new HabitGroupAdapter(group_dbhandler.getAllGroups(), getApplicationContext());
+        groupAdapter= new HabitGroupAdapter(group_dbhandler.getAllGroups(), this);
         // set groupAdapter on RecyclerView
         habitGroupRecyclerView.setAdapter(groupAdapter);
 
@@ -104,8 +130,8 @@ public class HabitGroupActivity extends AppCompatActivity {
                 // retrieve the group of the holder
                 HabitGroup chosen_grp = groupAdapter._habitGroupList.get(position);
                 habit.setGroup(chosen_grp);
-                Log.d(TAG, "onItemClick: "+chosen_grp.getGrp_name() +" " +chosen_grp.getGrp_id());
 
+                // go to respective activity based on the action
                 Intent activityName = new Intent(HabitGroupActivity.this, HabitAddActivity.class);
                 if (action.equals("edit")){
                     activityName = new Intent(HabitGroupActivity.this, HabitEditActivity.class);
@@ -116,9 +142,6 @@ public class HabitGroupActivity extends AppCompatActivity {
                 activityName.putExtras(extras);
 
                 startActivity(activityName);
-
-
-
             }
         });
 
@@ -126,6 +149,7 @@ public class HabitGroupActivity extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // go to respective activity based on the action
                 Intent activityName = new Intent(HabitGroupActivity.this, HabitAddActivity.class);
                 if (action.equals("edit")){
                     activityName = new Intent(HabitGroupActivity.this, HabitEditActivity.class);
@@ -146,6 +170,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                 // cancel the existing group
                 habit.setGroup(null);
 
+                // go to respective activity based on the action
                 Intent activityName = new Intent(HabitGroupActivity.this, HabitAddActivity.class);
                 if (action.equals("edit")){
                     activityName = new Intent(HabitGroupActivity.this, HabitEditActivity.class);
@@ -211,6 +236,12 @@ public class HabitGroupActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
     }
 
     /**

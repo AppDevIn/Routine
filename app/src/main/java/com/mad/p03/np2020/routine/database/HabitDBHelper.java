@@ -294,6 +294,7 @@ public class HabitDBHelper extends DBHelper{
         db.close(); // close the db connection
     }
 
+    /**This method is used to delete the all habit object in the SQLiteDatabase.* */
     public void deleteAllHabit(){
         Log.d(TAG, "Habit: deleteAllHabit: ");
 
@@ -306,6 +307,14 @@ public class HabitDBHelper extends DBHelper{
         db.close(); //close the db connection
     }
 
+    /**
+     *
+     * This method is used to check whether a specific reminder is existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return true if the reminder is existed and false if it is not.
+     * */
     public boolean isReminderExisted(Habit habit){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -327,8 +336,17 @@ public class HabitDBHelper extends DBHelper{
 
     }
 
+    /**
+     *
+     * This method is used to get a specific reminder existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return the habitReminder object, and return null if no result found.
+     * */
     public HabitReminder getReminder(Habit habit){
         Log.d(TAG, "getReminder: ");
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );

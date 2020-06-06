@@ -19,9 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
-import com.mad.p03.np2020.routine.Adapter.OnItemClickListener;
+import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
 import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
@@ -47,13 +46,13 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
 
-
     //User
     private User user;
 
     /**
      *
-     * This method will be called when the start of the HabitActivity
+     * This method will be called when the start of the HabitActivity.
+     * This will initialise the recyclerview,widgets and set onClickListener on them.
      *
      * @param savedInstanceState This parameter refers to the saved state of the bundle object.
      *
@@ -70,7 +69,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
-
 
         // set User
         user = new User();
@@ -148,14 +146,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-
     /** This method is used to initialise the firebase */
     private void initFirebase() {
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
     }
-
-
 
     /**
      *
@@ -174,19 +169,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      *
-     * This method is used to serialize a single object. (into Json String)
+     * This method is an override method of onClick.
      *
-     * @param habitGroup This parameter is used to get the habitGroup object
-     *
-     * @return String This returns the serialized object.
+     * @param v The parameter is to pass the view.
      *
      * */
-    public String habitGroup_serializeToJson(HabitGroup habitGroup) {
-        Gson gson = new Gson();
-        Log.i(TAG,"Object serialize");
-        return gson.toJson(habitGroup);
-    }
-
     @Override
     public void onClick(View v){
         switch (v.getId()){
@@ -194,17 +181,20 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 Intent activityName = new Intent(HabitActivity.this, HabitAddActivity.class);
                 startActivity(activityName);
                 break;
-
         }
     }
 
+    /**
+     *
+     * This method is an override method of onItemClick on habitAdapter.
+     *
+     * @param position The parameter is to pass the position of the holder of the recycleView.
+     *
+     * */
     @Override
     public void onItemClick(final int position) {
         // Editing habit
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
-        if (habit.getHabitReminder()!=null){
-            Log.d(TAG, "onItemClick: "+habit.getHabitReminder().getMessage());
-        }
         Log.d(TAG, "Editing habit " + habit.getTitle());
 
         Intent activityName = new Intent(HabitActivity.this, HabitViewActivity.class);
