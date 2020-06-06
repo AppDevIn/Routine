@@ -86,6 +86,8 @@
     <string name="error_email_password">Invalid Email or Password</string>
     <string name="error_empty_email">Email cannot be empty</string>
     <string name="error_password_empty">Password cannot be empty</string>
+    <string name="register">Register</string>
+    <string name="error_name_empty">Name cannot be empty</string>
 
 </resources>
 
