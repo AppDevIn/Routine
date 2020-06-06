@@ -59,7 +59,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
      * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v(TAG,"onCreate");
+        Log.d(TAG, "onCreate: ");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit);

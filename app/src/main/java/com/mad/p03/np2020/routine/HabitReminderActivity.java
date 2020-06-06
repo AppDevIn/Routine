@@ -71,6 +71,8 @@ public class HabitReminderActivity extends AppCompatActivity {
      * */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.habit_reminder_view);
 
