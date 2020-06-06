@@ -8,9 +8,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,9 +22,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
-import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 /**

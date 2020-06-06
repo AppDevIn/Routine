@@ -59,10 +59,8 @@
 
         <activity android:name=".HabitEditActivity" />
 
-        <activity
-            android:name=".Home">
+        <activity android:name=".Home" />
 
-        </activity>
         <service
             android:name=".background.FCMSection"
             android:exported="false">
