@@ -48,7 +48,6 @@ public class UploadDataWorker extends Worker {
         String UID = getInputData().getString("ID");
         String Name =  getInputData().getString("Name");
         String Email = getInputData().getString("Email");
-        String DOB = getInputData().getString("DOB") ;
 
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
@@ -56,7 +55,6 @@ public class UploadDataWorker extends Worker {
         //Setting data into the user portion
         mDatabase.child("Name").setValue(Name); //Setting the name
         mDatabase.child("Email").setValue(Email); //Setting the Email
-        mDatabase.child("DOB").setValue(DOB); //Setting the DOB
         mDatabase.child("messagingToken").setValue(UID); //Adding message token
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");

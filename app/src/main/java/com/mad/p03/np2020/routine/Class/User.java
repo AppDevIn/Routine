@@ -8,6 +8,11 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
@@ -17,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.database.FocusDBHelper;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
@@ -75,7 +81,6 @@ public class User implements Parcelable {
     private String mUID;
     private String mEmailAddr;
     private String mPassword;
-    private Date mDateOfBirth;
     private List<Section> mSectionList = new ArrayList<>();
     private String mPPID;
     private List<Label> mListLabel = new ArrayList<>();
@@ -318,14 +323,12 @@ public class User implements Parcelable {
      * @param UID The unique ID of the user
      * @param name The name of the user
      * @param password The password of the user
-     * @param dob The date of birth the user
      * @param Email The email of the user
      */
-    public User(String UID, String name, String password, Date dob, String Email) {
+    public User(String UID, String name, String password, String Email) {
         this.mUID = UID;
         this.mName = name;
         this.mPassword = password;
-        this.mDateOfBirth = dob;
         this.mEmailAddr = Email;
     }
 
@@ -419,35 +422,7 @@ public class User implements Parcelable {
 
                 //Error message for password when password doesn't
                 //have digit, lower and upper case, special character and min 8 letter
-                throw new FormatException("Text doesn't meet strong password requirement");
-            }
-        } else {
-            //Error message for empty text
-            throw new FormatException("Text is empty");
-        }
-
-    }
-
-    /**
-     *
-     * This method is to check if the Date of Birth is empty and if it's in the right
-     * format (DD/MM/YYYY) and set it into the object
-     *
-     * @param dateOfBirth This parameter take in the Date of birth of the user
-     *                    and set it
-     * @throws FormatException On input given must follow the Date format (DD/MM/YYYY)
-     */
-    public void setDateOfBirth(String dateOfBirth) throws FormatException {
-        if (!dateOfBirth.isEmpty()) {
-            String DOBPATTERN = "[0-9]+[0-9]+/+[0-9]+[0-9]+/[0-9]+[0-9][0-9]+[0-9]";
-            if (dateOfBirth.trim().matches(DOBPATTERN)) {
-                //Get the date from String
-                mDateOfBirth = stringToDate(dateOfBirth);
-
-            } else {
-
-                //Error message for DOB when it does match DD/MM/YYYY
-                throw new FormatException("Text doesn't meet DOB (DD/MM/YYYY) requirement");
+                throw new FormatException("Needs to be alphanumeric, special\n character and the length of 8");
             }
         } else {
             //Error message for empty text
@@ -508,38 +483,42 @@ public class User implements Parcelable {
         return mPassword;
     }
 
-    /**
-     *
-     * This method convert the date into string and
-     * returns it
-     *
-     * @return String This return the date of birth of the user */
-    public String getDateOfBirth() {
-
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return mDateOfBirth == null ? null : dateFormat.format(mDateOfBirth);
-    }
-
 
     /**
-     * To convert string to date
-     * The function has 2 possible returns
-     * <p>
-     * if Successfully changed a Date object will be return
-     * else null will be returned
+     * Upload Name, Email and UID up the firebase
+     * After registering successfully
      *
-     * @param DOB is a String that is provided by the user
+     * It will be done in the background
      */
+    public void executeFirebaseUserUpload(){
 
-    private Date stringToDate(String DOB) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
-        try {
-            return sdf.parse(DOB);
-        } catch (ParseException ex) {
-            Log.e("Exception", "Date unable to change reason: " + ex.getLocalizedMessage());
-            return null;
-        }
+        Log.d(TAG, "executeFirebaseUserUpload(): Preparing the upload ");
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseUserData = new Data.Builder()
+                .putString("ID", getUID())
+                .putString("Name", getName())
+                .putString("Email", getEmailAdd())
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(UploadDataWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseUserData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+        Log.d(TAG, "executeFirebaseUserUpload(): Put in queue");
+
     }
+
 
 
     /**

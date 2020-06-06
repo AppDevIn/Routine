@@ -21,9 +21,9 @@
         <activity android:name=".CardActivity"
         android:theme="@style/AppTheme"/>
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Home" />
 
-        <activity android:name=".Home"
+        <activity android:name=".HabitActivity"
                 android:exported="true"/>
 
         <activity android:name=".Class.PopUp"
@@ -39,7 +39,7 @@
 
         <activity android:name=".TaskActivity"/>
 
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity" />
 
         <activity android:name=".AddHabitActivity" />
 
@@ -49,7 +49,7 @@
 
 
         <activity
-            android:name=".HabitActivity">
+            android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
