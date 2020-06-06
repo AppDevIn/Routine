@@ -29,8 +29,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegisterActivity" />
-
         <activity android:name=".RegisterActivity"
                 android:exported="true"/>
 
@@ -48,6 +46,8 @@
         <activity android:name=".TaskActivity"/>
 
         <activity android:name=".LoginActivity" />
+
+        <activity android:name=".HabitActivity" />
 
         <activity android:name=".HabitAddActivity" />
 
