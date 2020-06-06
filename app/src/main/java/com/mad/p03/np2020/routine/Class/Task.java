@@ -227,6 +227,7 @@ public class Task {
     }
 
 
+
     /**
      *
      * This method is used to set
@@ -253,6 +254,10 @@ public class Task {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public void setName(String name) {
+        mName = name;
     }
 
     /**

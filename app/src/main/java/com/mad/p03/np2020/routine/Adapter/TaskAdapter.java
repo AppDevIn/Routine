@@ -1,11 +1,16 @@
 package com.mad.p03.np2020.routine.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 import com.mad.p03.np2020.routine.Class.Section;
@@ -107,6 +112,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      *               the item at the given position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final TaskViewHolder holder, final int position) {
 
@@ -120,6 +126,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mTaskList.get(position).setChecked(b);
+            }
+        });
+
+        holder.mListName.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                view.setClickable(true);
+
+                return false;
+            }
+        });
+
+
+        holder.mListName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                mTaskList.get(position).setName(holder.mListName.getText().toString());
+                return false;
             }
         });
 

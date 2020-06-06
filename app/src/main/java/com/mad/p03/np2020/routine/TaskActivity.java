@@ -157,7 +157,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         TaskDBHelper taskDBHelper = new TaskDBHelper(this);
         for (int i = 0; i < mTaskList.size(); i++) {
             mTaskList.get(i).setPosition(i);
-            mTaskList.get(i).executeFirebaseUpload(this);
+//            mTaskList.get(i).executeFirebaseUpload(this);
             taskDBHelper.updatePosition(mTaskList.get(i));
 
         }
@@ -222,10 +222,11 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             //Adding into the local list
             mTaskList.add(task);
 
+            //Informing the adapter and view of the new item
+            mTaskAdapter.notifyItemInserted(mTaskList.size());
+
         }
 
-        //Informing the adapter and view of the new item
-        mTaskAdapter.notifyItemInserted(mTaskList.size());
     }
 
     /**

@@ -201,12 +201,14 @@ public class TaskDBHelper extends DBHelper {
      */
     public void updatePosition(Task task){
 
-        Log.d(TAG, "updatePosition(): " + task.isChecked());
         SQLiteDatabase db = this.getWritableDatabase();
+
+        Log.d(TAG, "updatePosition: " + task.getName());
 
         ContentValues updateValues = new ContentValues();
         updateValues.put(Task.COLUMN_POSITION, task.getPosition());
         updateValues.put(Task.COLUMN_CHECKED, task.isChecked());
+        updateValues.put(Task.COLUMN_NAME, task.getName());
         db.update(
                 Task.TABLE_NAME,
                 updateValues,

@@ -290,7 +290,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         }
 
-        finish();
+
     }
 
     /**
