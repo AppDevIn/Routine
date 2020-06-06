@@ -35,7 +35,13 @@ import com.mad.p03.np2020.routine.background.RegisterFirebaseUser;
 import com.mad.p03.np2020.routine.database.UserDBHelper;
 
 
-
+/**
+ *
+ * This is controller that glues the activity_register together
+ *
+ * @author Jeyavishnu
+ * @since 06-06-2020
+ */
 public class RegisterActivity extends AppCompatActivity implements TextView.OnEditorActionListener, View.OnClickListener, OnFirebaseAuth {
 
     //Declare Constants
@@ -46,7 +52,15 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     User mUser;
     TextView mTxtErrorName, mTxtErrorEmail, mTxtErrorPassword;
 
-
+    /**
+     *
+     * This is used to get the ID of for the view and initialize the recycler
+     * view for the tasks. Setting the onclick lister and onEditorLister too
+     *
+     * @param savedInstanceState will be null at first as
+     *                           the orientation changes it will get
+     *                           in use
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +105,9 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
 
     }
 
+    /**
+     * Used when the GUI is ready the screen is set full screen
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -103,20 +120,27 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     }
 
 
-
+    /**
+     * Not implemented
+     */
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: GUI is in the Foreground and Interactive");
-
     }
 
+    /**
+     * Not implemented
+     */
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: Activity not in foreground");
     }
 
+    /**
+     * When this activity activates the process to get destroyed
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -125,13 +149,27 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
 
     }
 
+    /**
+     * Not implemented
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: Activity no longer exists");
     }
 
-
+    /**
+     *
+     * The action is being performed on the keyboard
+     * when the the Enter key is pressed check if the
+     * view that was entered has followed the right format
+     *
+     * @param textView The view that was clicked.
+     * @param actionId  Identifier of the action. This will be either the identifier you supplied, or
+     *                  EditorInfo#IME_NULL if being called due to the enter key being pressed.
+     * @param keyEvent  If triggered by an enter key, this is the event; otherwise, this is null.
+     * @return Return true if you have consumed the action, else false.
+     */
     @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
@@ -149,6 +187,13 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         return false;
     }
 
+    /**
+     *
+     * Starts the registration process when clicked and
+     * also check if all the input are in the right format
+     *
+     * @param view The view that being clicked
+     */
     @Override
     public void onClick(View view) {
 
@@ -169,6 +214,10 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         }
     }
 
+    /**
+     * When the user is successfully registered I save the information into
+     * firebase and sql and move the home layout
+     */
     @Override
     public void OnSignUpSuccess() {
         Log.d(TAG, mUser.getEmailAdd() + " is successfully created");
@@ -192,6 +241,10 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         moveToHome();
     }
 
+    /**
+     * When the firebase fails to register the user
+     * @param e The error
+     */
     @Override
     public void OnSignUpFailure(Exception e) {
         Log.d(TAG, mUser.getEmailAdd() + " is unsuccessfully");
@@ -201,6 +254,14 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         firebaseFailedError(e.getLocalizedMessage());
     }
 
+    /**
+     *
+     * This method is used to check if the email
+     * is in the right format
+     *
+     * @param textView The textview that needs be checked
+     * @return bool if the format is right it will true else false
+     */
     private boolean emailCheck(TextView textView){
 
 
@@ -218,6 +279,14 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     }
 
 
+    /**
+     *
+     * This method is used to check if the name
+     * is in the right format
+     *
+     * @param textView The textview that needs be checked
+     * @return bool if the format is right it will true else false
+     */
     private boolean nameCheck(TextView textView){
 
         if(textView.getText().equals("")){
@@ -237,6 +306,14 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         }
     }
 
+    /**
+     *
+     * This method is used to check if the password
+     * is in the right format
+     *
+     * @param textView The textview that needs be checked
+     * @return bool if the format is right it will true else false
+     */
     private boolean passwordCheck(TextView textView){
 
         try {

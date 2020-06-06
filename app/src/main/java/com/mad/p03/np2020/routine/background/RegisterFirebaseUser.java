@@ -37,9 +37,9 @@ public class RegisterFirebaseUser extends AsyncTask<Void, Void, Void> {
      *
      *
      * @param onFirebaseAuth The listener this get triggered when successes or failed
-     * @param activity
+     * @param activity The activity this was called from
      * @param email The email the user want to register this account with
-     * @param password The password 
+     * @param password The password the user wants to set
      */
     public RegisterFirebaseUser(OnFirebaseAuth onFirebaseAuth, Activity activity, String email, String password) {
         mOnFirebaseAuth = onFirebaseAuth;
@@ -48,6 +48,13 @@ public class RegisterFirebaseUser extends AsyncTask<Void, Void, Void> {
         mPassword = password;
     }
 
+    /**
+     *
+     * This will register the user in the background
+     *
+     * @param voids This parameter accepts vVid
+     * @return it will return a void
+     */
     @Override
     protected Void doInBackground(Void... voids) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
