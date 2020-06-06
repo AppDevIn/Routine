@@ -50,10 +50,26 @@
         android:layout_height="wrap_content"
 
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="70dp"
 
         android:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavViewBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
+
+        android:layout_alignParentBottom="true"
+
+        android:background="#FFFFFF"
+
+        app:menu="@menu/bottom_nav"
+        />
 
 </RelativeLayout>

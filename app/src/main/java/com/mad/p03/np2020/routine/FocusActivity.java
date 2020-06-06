@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -25,6 +26,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +40,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -120,7 +125,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         setContentView(R.layout.activity_focus);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        user.setUID(getIntent().getParcelableExtra("user").toString());
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
         initialization(); //Process of data
@@ -168,6 +173,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         taskInput.setOnFocusChangeListener(this);
 
         mface.startAnimation(translateAnimation);
+
+        //Bottom Navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
+
+
     }
 
     /**
@@ -795,5 +806,25 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.i(TAG, "Object serialize");
         return gson.toJson(myClass);
     }
+
+    /**
+     *
+     * To set the bottom nav to listen to item changes
+     * and chose the item that have been selected
+     *
+     * @param bottomNavigationView The botomNav that needs to be set to listen
+     */
+    private void bottomNavInit(BottomNavigationView bottomNavigationView){
+
+        //To have the highlight
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper  navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
 
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/habit"
+        android:icon="@drawable/habit"
+        android:title="@string/habit" />
+
+    <item
+        android:id="@+id/focus"
+        android:icon="@drawable/focus"
+        android:title="@string/FocusButton"
+        />
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="@string/home"
+        />
+
+
+    <item
+        android:id="@+id/calender"
+        android:icon="@drawable/calender"
+        android:title="@string/calender"
+        />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/profile"
+        android:title="@string/profile"
+        />
+
+
+
+
+
+</menu>

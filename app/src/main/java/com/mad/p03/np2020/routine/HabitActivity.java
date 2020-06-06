@@ -16,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -38,6 +40,8 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
@@ -152,7 +156,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // initialise the notification channel
         initialiseHabitNotificationChannel();
 
-        ImageView add_habit = findViewById(R.id.add_habit);
+        FloatingActionButton add_habit = findViewById(R.id.add_habit);
         // set onClickListener on add_habit button
         add_habit.setOnClickListener(this);
 
@@ -167,6 +171,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
+
+        //Bottom Navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
 
     }
 
@@ -1611,4 +1619,24 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         alertDialog.show(); //show the alert dialog (habit view)
     }
+
+    /**
+     *
+     * To set the bottom nav to listen to item changes
+     * and chose the item that have been selected
+     *
+     * @param bottomNavigationView The botomNav that needs to be set to listen
+     */
+    private void bottomNavInit( BottomNavigationView bottomNavigationView){
+
+        //To have the highlight
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper  navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
 }
