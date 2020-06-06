@@ -72,7 +72,8 @@ import static java.lang.String.format;
 public class HabitActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener {
 
     private static final String TAG = "HabitTracker";
-    private String channelId = "001"; // notification channel ID for habitTracker
+    private static final String SHARED_PREFS = "sharedPrefs"; // initialise sharedPrefs
+    private static final String channelId = "001"; // notification channel ID for habitTracker
 
     // initialise recyclerview and adapter
     private RecyclerView habitRecyclerView;
@@ -89,9 +90,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     private int[] color_buttonIDS;
     private int[] color_schemeIDS;
     private String[] colorList;
-
-    // initialise sharedPrefs
-    private static String SHARED_PREFS;
 
     // initialise the variable used by timePicker
     private int minutes;
@@ -133,9 +131,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         color_buttonIDS = new int[]{R.id.lightcoral_btn, R.id.slightdesblue_btn, R.id.fadepurple_btn, R.id.cyangreen_btn};
         color_schemeIDS = new int[]{R.color.colorLightCoral, R.color.colorSlightDesBlue, R.color.colorFadePurple, R.color.colorCyanGreen};
         colorList = new String[]{"lightcoral", "slightdesblue", "fadepurple", "cyangreen"};
-
-        // set sharedPreferences
-        SHARED_PREFS = "sharedPrefs";
 
         // initialise dateFormat
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -610,365 +605,367 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v){
         switch (v.getId()){
             case R.id.add_habit:
-                Log.d(TAG, "Add Habit");
-                // Create an alert dialog (add habit)
-                final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog); // use the custom alert dialog type
-                ViewGroup viewGroup = findViewById(android.R.id.content);
-                final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false); // inflate the layout
-                builder.setView(dialogView); // set the view of the builder
-                final AlertDialog alertDialog = builder.create(); // build the dialog (add habit)
-
-                // initialise widgets
-                final TextView menu_count = dialogView.findViewById(R.id.menu_count);
-                final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
-                final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
-                final TextView period_text = dialogView.findViewById(R.id.period_txt);
-                final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
-                final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
-                final ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
-                final ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
-
-                // initialise period section
-                final int[] period = new int[1]; // this is used to store the chosen period
-                populatePeriodBtn(dialogView, period, period_text);
-                habit_add_initialise_periodSection(dialogView,period);
-
-                // initialise color section
-                final String[] color = new String[1]; // this is used to store the chosen color
-                populateColorBtn(dialogView,color);
-                habit_add_initialise_colorSection(dialogView,color);
-
-                // set onClickListener on the add count button
-                add_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String cnt = menu_count.getText().toString();
-                        // add the count by 1
-                        int count = Integer.parseInt(cnt);
-                        count++;
-                        // set the count in the TextView
-                        menu_count.setText(String.valueOf(count));
-                    }
-                });
-
-                // set onClickListener on the minus count button
-                minus_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String cnt = menu_count.getText().toString();
-                        // minus the count by 1 if count > 0
-                        int count = Integer.parseInt(cnt);
-                        if (count > 0){
-                            count--;
-                        }
-                        // set the count in the TextView
-                        menu_count.setText(String.valueOf(count));
-                    }
-                });
-
-
-                // Group section
-                // initialise group
-                final String[] _grp_name = {null}; // this is used to store the chosen group name
-                final long[] _grp_id = new long[1]; // this is used to store the chosen group id
-
-                // set onClickListener on the group indicate text
-                group_indicate_text.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Create an alert dialog (group view)
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog); // use the custom alert dialog type
-                        LayoutInflater inflater = getLayoutInflater();
-                        View convertView = inflater.inflate(R.layout.habit_group, null); // inflate the layout
-
-                        // initialise widgets
-                        ImageView close = convertView.findViewById(R.id.habit_group_view_close);
-                        Button cancel = convertView.findViewById(R.id.habit_group_view_cancel);
-                        Button create_grp = convertView.findViewById(R.id.habit_group_view_create_group);
-                        final TextView curr_grp = convertView.findViewById(R.id.current_grp);
-
-                        // set the current group text based on the chosen group
-                        if (_grp_name[0] != null){
-                            // set the chosen group on TextView
-                            curr_grp.setText(_grp_name[0]);
-                        }else{
-                            // set "None" on TextView
-                            curr_grp.setText("None");
-                        }
-
-                        // inflate habitGroup RecyclerView
-                        habitGroupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
-                        habitGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        // initialise group adapter
-                        groupAdapter= new HabitGroupAdapter(group_dbhandler.getAllGroups(),getApplicationContext());
-                        // set groupAdapter on RecyclerView
-                        habitGroupRecyclerView.setAdapter(groupAdapter);
-                        builder.setView(convertView); // set the view of the builder
-                        final AlertDialog alertDialog = builder.create(); // build the dialog (group view)
-
-                        // set OnItemClickListener on group adapter
-                        groupAdapter.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
-                                // when a holder is clicked
-
-                                // retrieve the group of the holder
-                                HabitGroup grp = groupAdapter._habitGroupList.get(position);
-                                group_indicate_text.setText(grp.getGrp_name()); // update the chosen group on the group_indicate_text TextView
-                                _grp_name[0] = grp.getGrp_name(); // update the chosen group name
-                                _grp_id[0] = grp.getGrp_id(); // update the chosen group id
-                                alertDialog.dismiss(); // dismiss the dialog (group view)
-                            }
-                        });
-
-                        // set onClickListener on close button
-                        close.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog.dismiss(); // dismiss the dialog (group view)
-                            }
-                        });
-
-                        // set onClickListener on cancel group button
-                        cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // cancel the existing group
-                                _grp_name[0] = null; // update the chosen group name to null
-                                _grp_id[0] = -1; // update the chosen group id to negative(ineffective)
-                                group_indicate_text.setText("NONE"); // set "None" on group_indicate_text
-                                alertDialog.dismiss(); // dismiss the dialog (group view)
-                            }
-                        });
-
-                        // set onClickListener on create group button
-                        create_grp.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // create an alert dialog (create group)
-                                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
-                                ViewGroup viewGroup = findViewById(android.R.id.content);
-                                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false); // inflate the view
-                                builder.setView(dialogView); // set the view of the builder
-                                final AlertDialog alertDialog = builder.create(); // build the dialog (create group)
-
-                                // initialise widgets
-                                final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
-                                final Button saveBtn = dialogView.findViewById(R.id.group_save);
-                                final EditText name = dialogView.findViewById(R.id.creating_group_name);
-
-                                // setonClickListener on cancel button
-                                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        alertDialog.dismiss(); // dismiss the dialog (create group)
-                                    }
-                                });
-
-                                // setonClickListener on save button
-                                saveBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // Retrieve the values from the input field
-                                        String grp_name = name.getText().toString();
-                                        HabitGroup grp = new HabitGroup(grp_name);
-
-                                        // Insert the group into SQLiteDatabase
-                                        long grp_id = group_dbhandler.insertGroup(grp);
-                                        // The insert process is success if group id returned is not equal to 1
-
-                                        if (grp_id != -1){ // check if group id returned is not equal to 1
-                                            grp.setGrp_id(grp_id); // set the group id to the group object
-                                            groupAdapter._habitGroupList.add(grp); // add the group to the adapter list
-                                            groupAdapter.notifyDataSetChanged(); // notify data set has changed
-                                            writeHabitGroup_Firebase(grp, user.getUID()); // write habitGroup to firebase
-                                            Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        alertDialog.dismiss(); // dismiss the dialog after the process (create group)
-                                    }
-                                });
-
-                                alertDialog.show(); // show the create group dialog
-                            }
-                        });
-
-                        alertDialog.show(); // show the group view dialog
-                    }
-                });
-
-
-                // Reminder section
-                // initialise reminder
-                final int[] chosen_hours = new int[1]; // this is used to store the chosen reminder hours
-                final int[] chosen_minutes = new int[1]; // this is used to store the chosen reminder minutes
-                final String[] custom_text = {""}; // this is used to store the chosen reminder's custom text
-                final boolean[] reminder_flag = {false}; // this is used to store the reminder flag which indicates active or inactive of the reminder
-
-                // set onClickListener on habit_reminder_indicate_text
-                habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Create an alert dialog (set reminder)
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog); // use the custom alert dialog type
-                        ViewGroup viewGroup = findViewById(android.R.id.content);
-                        final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_reminder_view, viewGroup, false); // inflate the view
-                        builder.setView(dialogView); // set the view of builder
-                        final AlertDialog alertDialog = builder.create(); // build the dialog (set reminder)
-
-                        // initialise widgets
-                        final ImageView close_btn = dialogView.findViewById(R.id.habit_reminder_view_close);
-                        final Switch reminder_switch = dialogView.findViewById(R.id.habit_reminder_view_switch);
-                        final TextView reminder_displayTime = dialogView.findViewById(R.id.habit_reminder_view_displaytime);
-                        final TimePicker timePicker = dialogView.findViewById(R.id.habit_reminder_view_timepicker);
-                        final TextView _custom_text = dialogView.findViewById(R.id.habit_reminder_view_customtext);
-                        final ImageView save_btn = dialogView.findViewById(R.id.habit_reminder_view_save);
-
-                        // to determine what should be displayed on timePicker and time indicate field
-                        if (reminder_flag[0]){ // if the flag is true which indicates active reminder
-                            Calendar c = Calendar.getInstance();
-                            // display time and timePicker based on the chosen hours and minutes
-                            c.set(Calendar.HOUR_OF_DAY, chosen_hours[0]);
-                            c.set(Calendar.MINUTE, chosen_minutes[0]);
-                            timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
-                            timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
-                            reminder_switch.setChecked(true); // set the switch checked as the reminder is active
-                            reminder_displayTime.setText(format("%d:%d",chosen_hours[0],chosen_minutes[0])); // set the text based on the chosen timing
-
-                        }else{ // if the flag is false which indicates inactive reminder
-                            // set the minutes and hours based on the current time
-                            if (Build.VERSION.SDK_INT <= 23) {
-                                minutes = timePicker.getCurrentMinute(); // before api level 23
-                                hours = timePicker.getCurrentHour(); // before api level 23
-                            }else{
-                                minutes = timePicker.getMinute(); // after api level 23
-                                hours  = timePicker.getHour(); // after api level 23
-                            }
-                            reminder_switch.setChecked(false); // set the switch unchecked as the reminder is inactive
-                            reminder_displayTime.setText(format("%d:%d",hours,minutes)); // set the text based on the chosen timing
-                        }
-
-                        // leave the custom text input field as blank if nothing has been filled and recorded down
-                        // or set the custom text based on the chosen custom text
-                        if (custom_text[0] != ""){
-                            _custom_text.setText(custom_text[0]);
-                        }
-
-                        // set onTimeChangedListener on timePicker
-                        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                            @Override
-                            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-
-                                if (Build.VERSION.SDK_INT <= 23) {
-                                    minutes = timePicker.getCurrentMinute(); // before api level 23
-                                    hours = timePicker.getCurrentHour(); // before api level 23
-                                }else{
-                                    minutes = timePicker.getMinute(); // after api level 23
-                                    hours  = timePicker.getHour(); // after api level 23
-                                }
-                                reminder_displayTime.setText(format("%d:%d",hours,minutes)); // update the text based on the chosen timing
-                            }
-                        });
-
-                        // set onClickListener on save button
-                        save_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (reminder_switch.isChecked()){ // if switch is switched, turn the reminder active
-                                    // set the text on habit_reminder_indicate_text based on chosen timing
-                                    habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
-                                    if (_custom_text.getText().toString() != ""){
-                                        // update the chosen custom text if it is not blank
-                                        custom_text[0] = _custom_text.getText().toString();
-                                    }
-                                    reminder_flag[0] = true; // turn on the flag
-                                    chosen_hours[0] = hours; // record down the chosen hours
-                                    chosen_minutes[0] = minutes; // record down the chosen minutes
-
-                                }else{ // if switch is unchecked, turn the reminder inactive
-                                    reminder_flag[0] = false; // turn off thr flag
-                                    habit_reminder_indicate_text.setText("NONE"); // set "None" on habit_reminder_indicate_text
-                                    custom_text[0] = ""; // reset the custom text as nothing
-                                }
-
-                                alertDialog.dismiss(); // dismiss the dialog (set reminder)
-                            }
-                        });
-
-                        // set onClickListener on close button
-                        close_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog.dismiss(); // dismiss the dialog (set reminder)
-                            }
-                        });
-
-                        alertDialog.show(); // show the alert dialog (set reminder)
-                    }
-                });
-
-                // set onClickListener on close button
-                Button buttonClose = dialogView.findViewById(R.id.habit_close);
-                buttonClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss(); // dismiss the add_habit dialog
-                    }
-                });
-
-                // set onClickListener on create button
-                Button buttonOk = dialogView.findViewById(R.id.create_habit);
-                buttonOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = habit_name.getText().toString(); // retrieve the title of the habit from the input field
-                        if (name.equalsIgnoreCase("")){
-                            // set Error Message if the user never input the habit title
-                            habit_name.setError("Please enter habit name");
-                            return;
-                        }
-
-                        int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
-                        int cnt = Integer.parseInt(menu_count.getText().toString()); // retrieve the count of the habit from the input field
-
-                        Date date = new Date(); // call the date function
-                        HabitReminder hr = null;
-                        if (reminder_flag[0]){ // set a reminder if the reminder is in active
-                            int id = getUniqueHabitReminderID(); // retrieve the unique habitReminder ID
-                            String txt = custom_text[0]; // retrieve the custom text
-                            setReminder(name, chosen_minutes[0], chosen_hours[0], id, txt); // set the reminder
-                            hr = new HabitReminder(name, id, chosen_minutes[0], chosen_hours[0], txt); // set a new habitReminder object
-                        }
-
-                        HabitGroup hg = null;
-                        if (_grp_name[0] != null){ // set a new habitGroup object if the user chooses something for the group name
-                            hg = new HabitGroup(_grp_id[0], _grp_name[0]);
-                        }
-
-                        // create a habit object
-                        Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
-
-                        // insert the habit into SQLiteDatabase
-                        long habitID = habit_dbHandler.insertHabit(habit, user.getUID());
-                        // The insert process is success if habit id returned is not equal to 1
-
-                        if (habitID != -1){ // if habitID returned is legit
-                            habit.setHabitID(habitID); // set the id to the habit
-                            habitAdapter._habitList.addItem(habit); // add the habit into the adapter list
-                            habitAdapter.notifyDataSetChanged(); // notify the data set has changed
-                            writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase
-
-                            Log.d(TAG, "onClick: "+habit.getHabitID());
-                            // toast a message to alert the habit has been created
-                            Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
-                        }
-
-                        alertDialog.dismiss(); // dismiss the add_habit dialog
-                    }
-                });
-
-                alertDialog.show(); // show the add_habit dialog
-
+                Intent activityName = new Intent(HabitActivity.this, AddHabitActivity.class);
+                startActivity(activityName);
+//                Log.d(TAG, "Add Habit");
+//                // Create an alert dialog (add habit)
+//                final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog); // use the custom alert dialog type
+//                ViewGroup viewGroup = findViewById(android.R.id.content);
+//                final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.add_habit, viewGroup, false); // inflate the layout
+//                builder.setView(dialogView); // set the view of the builder
+//                final AlertDialog alertDialog = builder.create(); // build the dialog (add habit)
+//
+//                // initialise widgets
+//                final TextView menu_count = dialogView.findViewById(R.id.menu_count);
+//                final TextView habit_name = dialogView.findViewById(R.id.add_habit_name);
+//                final TextView habit_occur = dialogView.findViewById(R.id.habit_occurence);
+//                final TextView period_text = dialogView.findViewById(R.id.period_txt);
+//                final TextView habit_reminder_indicate_text = dialogView.findViewById(R.id.reminder_indicate_text);
+//                final TextView group_indicate_text = dialogView.findViewById(R.id.group_indicate_text);
+//                final ImageButton add_btn = dialogView.findViewById(R.id.menu_add_count);
+//                final ImageButton minus_btn = dialogView.findViewById(R.id.menu_minus_count);
+//
+//                // initialise period section
+//                final int[] period = new int[1]; // this is used to store the chosen period
+//                populatePeriodBtn(dialogView, period, period_text);
+//                habit_add_initialise_periodSection(dialogView,period);
+//
+//                // initialise color section
+//                final String[] color = new String[1]; // this is used to store the chosen color
+//                populateColorBtn(dialogView,color);
+//                habit_add_initialise_colorSection(dialogView,color);
+//
+//                // set onClickListener on the add count button
+//                add_btn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String cnt = menu_count.getText().toString();
+//                        // add the count by 1
+//                        int count = Integer.parseInt(cnt);
+//                        count++;
+//                        // set the count in the TextView
+//                        menu_count.setText(String.valueOf(count));
+//                    }
+//                });
+//
+//                // set onClickListener on the minus count button
+//                minus_btn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String cnt = menu_count.getText().toString();
+//                        // minus the count by 1 if count > 0
+//                        int count = Integer.parseInt(cnt);
+//                        if (count > 0){
+//                            count--;
+//                        }
+//                        // set the count in the TextView
+//                        menu_count.setText(String.valueOf(count));
+//                    }
+//                });
+//
+//
+//                // Group section
+//                // initialise group
+//                final String[] _grp_name = {null}; // this is used to store the chosen group name
+//                final long[] _grp_id = new long[1]; // this is used to store the chosen group id
+//
+//                // set onClickListener on the group indicate text
+//                group_indicate_text.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        // Create an alert dialog (group view)
+//                        final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog); // use the custom alert dialog type
+//                        LayoutInflater inflater = getLayoutInflater();
+//                        View convertView = inflater.inflate(R.layout.habit_group, null); // inflate the layout
+//
+//                        // initialise widgets
+//                        ImageView close = convertView.findViewById(R.id.habit_group_view_close);
+//                        Button cancel = convertView.findViewById(R.id.habit_group_view_cancel);
+//                        Button create_grp = convertView.findViewById(R.id.habit_group_view_create_group);
+//                        final TextView curr_grp = convertView.findViewById(R.id.current_grp);
+//
+//                        // set the current group text based on the chosen group
+//                        if (_grp_name[0] != null){
+//                            // set the chosen group on TextView
+//                            curr_grp.setText(_grp_name[0]);
+//                        }else{
+//                            // set "None" on TextView
+//                            curr_grp.setText("None");
+//                        }
+//
+//                        // inflate habitGroup RecyclerView
+//                        habitGroupRecyclerView = convertView.findViewById(R.id.habit_recycler_view);
+//                        habitGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//                        // initialise group adapter
+//                        groupAdapter= new HabitGroupAdapter(group_dbhandler.getAllGroups(),getApplicationContext());
+//                        // set groupAdapter on RecyclerView
+//                        habitGroupRecyclerView.setAdapter(groupAdapter);
+//                        builder.setView(convertView); // set the view of the builder
+//                        final AlertDialog alertDialog = builder.create(); // build the dialog (group view)
+//
+//                        // set OnItemClickListener on group adapter
+//                        groupAdapter.setOnItemClickListener(new OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(int position) {
+//                                // when a holder is clicked
+//
+//                                // retrieve the group of the holder
+//                                HabitGroup grp = groupAdapter._habitGroupList.get(position);
+//                                group_indicate_text.setText(grp.getGrp_name()); // update the chosen group on the group_indicate_text TextView
+//                                _grp_name[0] = grp.getGrp_name(); // update the chosen group name
+//                                _grp_id[0] = grp.getGrp_id(); // update the chosen group id
+//                                alertDialog.dismiss(); // dismiss the dialog (group view)
+//                            }
+//                        });
+//
+//                        // set onClickListener on close button
+//                        close.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                alertDialog.dismiss(); // dismiss the dialog (group view)
+//                            }
+//                        });
+//
+//                        // set onClickListener on cancel group button
+//                        cancel.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                // cancel the existing group
+//                                _grp_name[0] = null; // update the chosen group name to null
+//                                _grp_id[0] = -1; // update the chosen group id to negative(ineffective)
+//                                group_indicate_text.setText("NONE"); // set "None" on group_indicate_text
+//                                alertDialog.dismiss(); // dismiss the dialog (group view)
+//                            }
+//                        });
+//
+//                        // set onClickListener on create group button
+//                        create_grp.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                // create an alert dialog (create group)
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this);
+//                                ViewGroup viewGroup = findViewById(android.R.id.content);
+//                                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_group_create, viewGroup, false); // inflate the view
+//                                builder.setView(dialogView); // set the view of the builder
+//                                final AlertDialog alertDialog = builder.create(); // build the dialog (create group)
+//
+//                                // initialise widgets
+//                                final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
+//                                final Button saveBtn = dialogView.findViewById(R.id.group_save);
+//                                final EditText name = dialogView.findViewById(R.id.creating_group_name);
+//
+//                                // setonClickListener on cancel button
+//                                cancelBtn.setOnClickListener(new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        alertDialog.dismiss(); // dismiss the dialog (create group)
+//                                    }
+//                                });
+//
+//                                // setonClickListener on save button
+//                                saveBtn.setOnClickListener(new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        // Retrieve the values from the input field
+//                                        String grp_name = name.getText().toString();
+//                                        HabitGroup grp = new HabitGroup(grp_name);
+//
+//                                        // Insert the group into SQLiteDatabase
+//                                        long grp_id = group_dbhandler.insertGroup(grp);
+//                                        // The insert process is success if group id returned is not equal to 1
+//
+//                                        if (grp_id != -1){ // check if group id returned is not equal to 1
+//                                            grp.setGrp_id(grp_id); // set the group id to the group object
+//                                            groupAdapter._habitGroupList.add(grp); // add the group to the adapter list
+//                                            groupAdapter.notifyDataSetChanged(); // notify data set has changed
+//                                            writeHabitGroup_Firebase(grp, user.getUID()); // write habitGroup to firebase
+//                                            Toast.makeText(HabitActivity.this, "New group has been created.", Toast.LENGTH_SHORT).show();
+//                                        }
+//
+//                                        alertDialog.dismiss(); // dismiss the dialog after the process (create group)
+//                                    }
+//                                });
+//
+//                                alertDialog.show(); // show the create group dialog
+//                            }
+//                        });
+//
+//                        alertDialog.show(); // show the group view dialog
+//                    }
+//                });
+//
+//
+//                // Reminder section
+//                // initialise reminder
+//                final int[] chosen_hours = new int[1]; // this is used to store the chosen reminder hours
+//                final int[] chosen_minutes = new int[1]; // this is used to store the chosen reminder minutes
+//                final String[] custom_text = {""}; // this is used to store the chosen reminder's custom text
+//                final boolean[] reminder_flag = {false}; // this is used to store the reminder flag which indicates active or inactive of the reminder
+//
+//                // set onClickListener on habit_reminder_indicate_text
+//                habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        // Create an alert dialog (set reminder)
+//                        final AlertDialog.Builder builder = new AlertDialog.Builder(HabitActivity.this,R.style.CustomAlertDialog); // use the custom alert dialog type
+//                        ViewGroup viewGroup = findViewById(android.R.id.content);
+//                        final View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_reminder_view, viewGroup, false); // inflate the view
+//                        builder.setView(dialogView); // set the view of builder
+//                        final AlertDialog alertDialog = builder.create(); // build the dialog (set reminder)
+//
+//                        // initialise widgets
+//                        final ImageView close_btn = dialogView.findViewById(R.id.habit_reminder_view_close);
+//                        final Switch reminder_switch = dialogView.findViewById(R.id.habit_reminder_view_switch);
+//                        final TextView reminder_displayTime = dialogView.findViewById(R.id.habit_reminder_view_displaytime);
+//                        final TimePicker timePicker = dialogView.findViewById(R.id.habit_reminder_view_timepicker);
+//                        final TextView _custom_text = dialogView.findViewById(R.id.habit_reminder_view_customtext);
+//                        final ImageView save_btn = dialogView.findViewById(R.id.habit_reminder_view_save);
+//
+//                        // to determine what should be displayed on timePicker and time indicate field
+//                        if (reminder_flag[0]){ // if the flag is true which indicates active reminder
+//                            Calendar c = Calendar.getInstance();
+//                            // display time and timePicker based on the chosen hours and minutes
+//                            c.set(Calendar.HOUR_OF_DAY, chosen_hours[0]);
+//                            c.set(Calendar.MINUTE, chosen_minutes[0]);
+//                            timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
+//                            timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
+//                            reminder_switch.setChecked(true); // set the switch checked as the reminder is active
+//                            reminder_displayTime.setText(format("%d:%d",chosen_hours[0],chosen_minutes[0])); // set the text based on the chosen timing
+//
+//                        }else{ // if the flag is false which indicates inactive reminder
+//                            // set the minutes and hours based on the current time
+//                            if (Build.VERSION.SDK_INT <= 23) {
+//                                minutes = timePicker.getCurrentMinute(); // before api level 23
+//                                hours = timePicker.getCurrentHour(); // before api level 23
+//                            }else{
+//                                minutes = timePicker.getMinute(); // after api level 23
+//                                hours  = timePicker.getHour(); // after api level 23
+//                            }
+//                            reminder_switch.setChecked(false); // set the switch unchecked as the reminder is inactive
+//                            reminder_displayTime.setText(format("%d:%d",hours,minutes)); // set the text based on the chosen timing
+//                        }
+//
+//                        // leave the custom text input field as blank if nothing has been filled and recorded down
+//                        // or set the custom text based on the chosen custom text
+//                        if (custom_text[0] != ""){
+//                            _custom_text.setText(custom_text[0]);
+//                        }
+//
+//                        // set onTimeChangedListener on timePicker
+//                        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//                            @Override
+//                            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//
+//                                if (Build.VERSION.SDK_INT <= 23) {
+//                                    minutes = timePicker.getCurrentMinute(); // before api level 23
+//                                    hours = timePicker.getCurrentHour(); // before api level 23
+//                                }else{
+//                                    minutes = timePicker.getMinute(); // after api level 23
+//                                    hours  = timePicker.getHour(); // after api level 23
+//                                }
+//                                reminder_displayTime.setText(format("%d:%d",hours,minutes)); // update the text based on the chosen timing
+//                            }
+//                        });
+//
+//                        // set onClickListener on save button
+//                        save_btn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                if (reminder_switch.isChecked()){ // if switch is switched, turn the reminder active
+//                                    // set the text on habit_reminder_indicate_text based on chosen timing
+//                                    habit_reminder_indicate_text.setText((format("%d:%d",hours,minutes)));
+//                                    if (_custom_text.getText().toString() != ""){
+//                                        // update the chosen custom text if it is not blank
+//                                        custom_text[0] = _custom_text.getText().toString();
+//                                    }
+//                                    reminder_flag[0] = true; // turn on the flag
+//                                    chosen_hours[0] = hours; // record down the chosen hours
+//                                    chosen_minutes[0] = minutes; // record down the chosen minutes
+//
+//                                }else{ // if switch is unchecked, turn the reminder inactive
+//                                    reminder_flag[0] = false; // turn off thr flag
+//                                    habit_reminder_indicate_text.setText("NONE"); // set "None" on habit_reminder_indicate_text
+//                                    custom_text[0] = ""; // reset the custom text as nothing
+//                                }
+//
+//                                alertDialog.dismiss(); // dismiss the dialog (set reminder)
+//                            }
+//                        });
+//
+//                        // set onClickListener on close button
+//                        close_btn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                alertDialog.dismiss(); // dismiss the dialog (set reminder)
+//                            }
+//                        });
+//
+//                        alertDialog.show(); // show the alert dialog (set reminder)
+//                    }
+//                });
+//
+//                // set onClickListener on close button
+//                Button buttonClose = dialogView.findViewById(R.id.habit_close);
+//                buttonClose.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        alertDialog.dismiss(); // dismiss the add_habit dialog
+//                    }
+//                });
+//
+//                // set onClickListener on create button
+//                Button buttonOk = dialogView.findViewById(R.id.create_habit);
+//                buttonOk.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String name = habit_name.getText().toString(); // retrieve the title of the habit from the input field
+//                        if (name.equalsIgnoreCase("")){
+//                            // set Error Message if the user never input the habit title
+//                            habit_name.setError("Please enter habit name");
+//                            return;
+//                        }
+//
+//                        int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
+//                        int cnt = Integer.parseInt(menu_count.getText().toString()); // retrieve the count of the habit from the input field
+//
+//                        Date date = new Date(); // call the date function
+//                        HabitReminder hr = null;
+//                        if (reminder_flag[0]){ // set a reminder if the reminder is in active
+//                            int id = getUniqueHabitReminderID(); // retrieve the unique habitReminder ID
+//                            String txt = custom_text[0]; // retrieve the custom text
+//                            setReminder(name, chosen_minutes[0], chosen_hours[0], id, txt); // set the reminder
+//                            hr = new HabitReminder(name, id, chosen_minutes[0], chosen_hours[0], txt); // set a new habitReminder object
+//                        }
+//
+//                        HabitGroup hg = null;
+//                        if (_grp_name[0] != null){ // set a new habitGroup object if the user chooses something for the group name
+//                            hg = new HabitGroup(_grp_id[0], _grp_name[0]);
+//                        }
+//
+//                        // create a habit object
+//                        Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
+//
+//                        // insert the habit into SQLiteDatabase
+//                        long habitID = habit_dbHandler.insertHabit(habit, user.getUID());
+//                        // The insert process is success if habit id returned is not equal to 1
+//
+//                        if (habitID != -1){ // if habitID returned is legit
+//                            habit.setHabitID(habitID); // set the id to the habit
+//                            habitAdapter._habitList.addItem(habit); // add the habit into the adapter list
+//                            habitAdapter.notifyDataSetChanged(); // notify the data set has changed
+//                            writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase
+//
+//                            Log.d(TAG, "onClick: "+habit.getHabitID());
+//                            // toast a message to alert the habit has been created
+//                            Toast.makeText(HabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        alertDialog.dismiss(); // dismiss the add_habit dialog
+//                    }
+//                });
+//
+//                alertDialog.show(); // show the add_habit dialog
+//
                 break;
 
         }
@@ -978,7 +975,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void onItemClick(final int position) {
         // Editing habit
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
-
+        if (habit.getHabitReminder()!=null){
+            Log.d(TAG, "onItemClick: "+habit.getHabitReminder().getMessage());
+        }
         Log.d(TAG, "Editing habit " + habit.getTitle());
 
         // Create an alert dialog for habitView

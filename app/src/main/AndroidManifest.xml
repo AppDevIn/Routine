@@ -41,6 +41,13 @@
 
         <activity android:name=".RegisterActivity" />
 
+        <activity android:name=".AddHabitActivity" />
+
+        <activity android:name=".HabitGroupActivity" />
+
+        <activity android:name=".HabitReminderActivity" />
+
+
         <activity
             android:name=".HabitActivity">
             <intent-filter>

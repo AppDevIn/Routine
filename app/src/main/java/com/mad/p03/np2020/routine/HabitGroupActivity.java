@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
 import com.mad.p03.np2020.routine.Adapter.OnItemClickListener;
+import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.HabitGroupWorker;
@@ -48,6 +49,8 @@ public class HabitGroupActivity extends AppCompatActivity {
     private Button create_grp;
     private TextView curr_grp;
 
+    private Habit habit;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,15 @@ public class HabitGroupActivity extends AppCompatActivity {
         user = new User();
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+        Intent intent = getIntent();
+        if (intent.hasExtra("recorded_habit")){
+            habit = deserializeFromJson(intent.getExtras().getString("recorded_habit"));
+            if (habit.getGroup() != null){
+                curr_grp.setText(habit.getGroup().getGrp_name());
+            }
+        }else{
+            curr_grp.setText("NONE");
+        }
 
         // inflate habitGroup RecyclerView
         habitGroupRecyclerView = findViewById(R.id.habit_recycler_view);
@@ -81,10 +93,12 @@ public class HabitGroupActivity extends AppCompatActivity {
 
                 // retrieve the group of the holder
                 HabitGroup chosen_grp = groupAdapter._habitGroupList.get(position);
+                habit.setGroup(chosen_grp);
+                Log.d(TAG, "onItemClick: "+chosen_grp.getGrp_name() +" " +chosen_grp.getGrp_id());
 
-                Intent activityName = new Intent(HabitGroupActivity.this, HabitActivity.class);
+                Intent activityName = new Intent(HabitGroupActivity.this, AddHabitActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString("chosenHabitGroup",habitGroup_serializeToJson(chosen_grp));
+                extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
                 startActivity(activityName);
@@ -97,7 +111,11 @@ public class HabitGroupActivity extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(HabitGroupActivity.this, HabitActivity.class);
+
+                Intent activityName = new Intent(HabitGroupActivity.this, AddHabitActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("recorded_habit", habit_serializeToJson(habit));
+                activityName.putExtras(extras);
 
                 startActivity(activityName);
             }
@@ -108,10 +126,10 @@ public class HabitGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // cancel the existing group
-
-                Intent activityName = new Intent(HabitGroupActivity.this, HabitActivity.class);
+                habit.setGroup(null);
+                Intent activityName = new Intent(HabitGroupActivity.this, AddHabitActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString("chosenHabitGroup","null");
+                extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
                 startActivity(activityName);
@@ -122,6 +140,7 @@ public class HabitGroupActivity extends AppCompatActivity {
         create_grp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
                 // create an alert dialog (create group)
                 AlertDialog.Builder builder = new AlertDialog.Builder(HabitGroupActivity.this);
                 ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -165,6 +184,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                         alertDialog.dismiss(); // dismiss the dialog (create group)
                     }
                 });
+                alertDialog.show();
             }
 
         });
@@ -218,5 +238,34 @@ public class HabitGroupActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Log.i(TAG,"Object serialize");
         return gson.toJson(habitGroup);
+    }
+
+    /**
+     *
+     * This method is used to deserialize to single object. (from Json)
+     *
+     * @param jsonString This parameter is used to get json string
+     *
+     * @return String This returns the deserialized Habit object.
+     *
+     * */
+    private Habit deserializeFromJson(String jsonString) {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonString, Habit.class);
+    }
+
+    /**
+     *
+     * This method is used to serialize a single object. (into Json String)
+     *
+     * @param habit This parameter is used to get the habit object
+     *
+     * @return String This returns the serialized object.
+     *
+     * */
+    public String habit_serializeToJson(Habit habit) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habit);
     }
 }
