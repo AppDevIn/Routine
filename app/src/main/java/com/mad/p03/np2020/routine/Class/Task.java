@@ -147,7 +147,7 @@ public class Task {
         String name = "";
         String id = "";
         String sectionID = "";
-        int position = 0;
+
 
         try {
             //Make the string to object
@@ -157,12 +157,12 @@ public class Task {
 
             name = jsonObject.getString("name");
             id = jsonObject.getString("id");
-            sectionID = jsonObject.getString("id");
-            position = jsonObject.getInt("position");
+            sectionID = jsonObject.getString("sectionID");
+
 
 
             //Return back the object
-            return new Task(name, position, sectionID, id);
+            return new Task(name, 0, sectionID, id);
 
 
         } catch (JSONException e) {
