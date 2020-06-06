@@ -157,9 +157,12 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         TaskDBHelper taskDBHelper = new TaskDBHelper(this);
         for (int i = 0; i < mTaskList.size(); i++) {
             mTaskList.get(i).setPosition(i);
+            mTaskList.get(i).executeFirebaseUpload(this);
             taskDBHelper.updatePosition(mTaskList.get(i));
 
         }
+
+
     }
 
     /**

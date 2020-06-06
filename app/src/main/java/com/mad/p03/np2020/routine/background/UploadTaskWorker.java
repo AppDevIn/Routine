@@ -47,12 +47,14 @@ public class UploadTaskWorker extends Worker {
         String Name =  getInputData().getString(Task.COLUMN_NAME);
         String ID =  getInputData().getString(Task.COLUMN_TASK_ID);
         String sectionID =  getInputData().getString(Section.COLUMN_SECTION_ID);
+        int position=  getInputData().getInt(Task.COLUMN_POSITION, 0);
+        boolean isCheck =  getInputData().getBoolean(Task.COLUMN_CHECKED, false);
 
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("task").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(sectionID).child(String.valueOf(ID));
 
         //Setting value using object
-        mDatabase.setValue(new Task(Name, sectionID));
+        mDatabase.setValue(new Task(Name,position,sectionID,ID,isCheck));
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 

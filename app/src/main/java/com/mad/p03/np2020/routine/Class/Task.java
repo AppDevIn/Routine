@@ -323,6 +323,8 @@ public class Task {
                 .putString(Task.COLUMN_NAME, getName())
                 .putString(Section.COLUMN_SECTION_ID, getSectionID())
                 .putString(Task.COLUMN_TASK_ID, getTaskID())
+                .putInt(Task.COLUMN_POSITION, getPosition())
+                .putBoolean(Task.COLUMN_CHECKED, isChecked())
                 .build();
 
         //Create the request
