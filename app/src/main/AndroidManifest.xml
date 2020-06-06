@@ -47,6 +47,7 @@
 
         <activity android:name=".HabitReminderActivity" />
 
+        <activity android:name=".HabitViewActivity" />
 
         <activity
             android:name=".HabitActivity">

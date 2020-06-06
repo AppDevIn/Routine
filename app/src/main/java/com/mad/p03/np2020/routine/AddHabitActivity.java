@@ -217,7 +217,6 @@ public class AddHabitActivity extends AppCompatActivity {
                     }
                 }
 
-                Log.d(TAG, "onClick: "+hr.getMessage());
                 // create a habit object
                 Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
 
