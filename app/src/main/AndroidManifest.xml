@@ -24,7 +24,7 @@
         <activity android:name=".CardActivity"
         android:theme="@style/AppTheme"/>
 
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".FocusActivity" />
 
         <activity android:name=".HabitActivity"
                 android:exported="true"/>
@@ -33,14 +33,16 @@
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
 
-        <activity android:name=".FocusActivity" />
+<!--        <activity android:name=".FocusActivity" />-->
 
         <activity android:name=".Settings"
                 android:exported="true"/>
 
         <activity android:name=".MainActivity"/>
 
-        <activity android:name=".TaskActivity"/>
+        <activity android:name=".TaskActivity"
+            android:fitsSystemWindows="true"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".RegisterActivity" />
 

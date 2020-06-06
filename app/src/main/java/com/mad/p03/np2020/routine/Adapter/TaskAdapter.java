@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 
 import com.mad.p03.np2020.routine.Class.Section;
@@ -30,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @author Jeyavishnu
  * @since 03-06-2020
  */
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter {
+public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter{
 
     private final String TAG = "TaskAdapter";
 
@@ -107,12 +108,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull final TaskViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final TaskViewHolder holder, final int position) {
 
         Log.d(TAG, "onBindViewHolder: Running");
 
         holder.mListName.setText(mTaskList.get(position).getName());
+        holder.mCheckBox.setChecked(mTaskList.get(position).isChecked());
 
+        //Check if the box has been changed
+        holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mTaskList.get(position).setChecked(b);
+            }
+        });
 
 
     }
@@ -178,7 +187,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //TODO: Move to the card layout
     }
-
 
 
     /**

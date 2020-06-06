@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -68,7 +69,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         Log.d(TAG, "Creating GUI");
 
         //To set to Full screen
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         //Get the Section Object
@@ -103,13 +104,12 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         mEdTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showKeyboard(view);
+                showKeyboard(findViewById(R.id.cdAdd));
             }
         });
 
 
         TaskDBHelper.setMyDatabaseListener(this);
-
 
 
     }
@@ -278,6 +278,9 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
      */
     private void showKeyboard(View view) {
         Log.i(TAG, "Show soft keyboard");
+
+        view.requestFocus();
+
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert mgr != null;
         mgr.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);

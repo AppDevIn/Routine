@@ -83,7 +83,7 @@ public class Task {
                     + COLUMN_POSITION + " INTEGER,"
                     + COLUMN_SECTION_ID + " TEXT,"
                     + COLUMN_NAME + " TEXT,"
-                    + COLUMN_CHECKED + " BOOLEAN,"
+                    + COLUMN_CHECKED + " INTEGER,"
                     + COLUMN_REMIND_DATE + " TEXT,"
                     + COLUMN_DUE_DATE + " TEXT,"
                     + COLUMN_NOTES + " TEXT,"
@@ -104,12 +104,13 @@ public class Task {
         setTaskID(UUID.randomUUID().toString());
     }
 
-    public Task(String name, int position, String sectionID, String taskID ) {
+    public Task(String name, int position, String sectionID, String taskID, boolean checked ) {
 
         this.mName = name;
         this.mSectionID = sectionID;
         this.mTaskID = taskID;
         this.mPosition = position;
+        this.checked = checked;
     }
 
 
@@ -127,8 +128,8 @@ public class Task {
                 cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_POSITION)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_SECTION_ID)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_TASK_ID))
-
+                cursor.getString(cursor.getColumnIndex(COLUMN_TASK_ID)),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_CHECKED)) == 1
         );
     }
 
@@ -147,6 +148,7 @@ public class Task {
         String name = "";
         String id = "";
         String sectionID = "";
+        boolean checked = false;
 
 
         try {
@@ -158,11 +160,12 @@ public class Task {
             name = jsonObject.getString("name");
             id = jsonObject.getString("id");
             sectionID = jsonObject.getString("sectionID");
+            checked = Boolean.parseBoolean(jsonObject.getString("checked"));
 
 
 
             //Return back the object
-            return new Task(name, 0, sectionID, id);
+            return new Task(name, 0, sectionID, id,checked);
 
 
         } catch (JSONException e) {
@@ -246,6 +249,10 @@ public class Task {
      */
     public void setPosition(int position) {
         mPosition = position;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     /**
