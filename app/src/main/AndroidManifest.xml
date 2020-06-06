@@ -30,7 +30,7 @@
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
 
-        <activity android:name=".FocusActivity" />
+        <activity android:name=".LoginActivity" />
 
         <activity android:name=".Settings"
                 android:exported="true"/>
@@ -42,7 +42,7 @@
         <activity android:name=".RegisterActivity" />
 
         <activity
-            android:name=".LoginActivity">
+            android:name=".FocusActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
