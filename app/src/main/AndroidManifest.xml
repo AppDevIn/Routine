@@ -39,10 +39,10 @@
 
         <activity android:name=".TaskActivity"/>
 
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity" />
 
         <activity
-            android:name=".LoginActivity">
+            android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
