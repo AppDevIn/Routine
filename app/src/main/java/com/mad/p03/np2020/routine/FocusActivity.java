@@ -282,6 +282,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 
     /**
      *

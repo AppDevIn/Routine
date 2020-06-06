@@ -40,9 +40,12 @@
 
         <activity android:name=".MainActivity"/>
 
-        <activity android:name=".TaskActivity"/>
+        <activity android:name=".TaskActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:fitsSystemWindows="true"
+            />
 
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity" />
 
         <activity android:name=".AddHabitActivity" />
 
