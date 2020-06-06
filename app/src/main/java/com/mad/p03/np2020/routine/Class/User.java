@@ -81,7 +81,6 @@ public class User implements Parcelable {
     private String mUID;
     private String mEmailAddr;
     private String mPassword;
-    private Date mDateOfBirth;
     private List<Section> mSectionList = new ArrayList<>();
     private String mPPID;
     private List<Label> mListLabel = new ArrayList<>();
@@ -324,14 +323,12 @@ public class User implements Parcelable {
      * @param UID The unique ID of the user
      * @param name The name of the user
      * @param password The password of the user
-     * @param dob The date of birth the user
      * @param Email The email of the user
      */
-    public User(String UID, String name, String password, Date dob, String Email) {
+    public User(String UID, String name, String password, String Email) {
         this.mUID = UID;
         this.mName = name;
         this.mPassword = password;
-        this.mDateOfBirth = dob;
         this.mEmailAddr = Email;
     }
 
@@ -435,34 +432,6 @@ public class User implements Parcelable {
     }
 
     /**
-     *
-     * This method is to check if the Date of Birth is empty and if it's in the right
-     * format (DD/MM/YYYY) and set it into the object
-     *
-     * @param dateOfBirth This parameter take in the Date of birth of the user
-     *                    and set it
-     * @throws FormatException On input given must follow the Date format (DD/MM/YYYY)
-     */
-    public void setDateOfBirth(String dateOfBirth) throws FormatException {
-        if (!dateOfBirth.isEmpty()) {
-            String DOBPATTERN = "[0-9]+[0-9]+/+[0-9]+[0-9]+/[0-9]+[0-9][0-9]+[0-9]";
-            if (dateOfBirth.trim().matches(DOBPATTERN)) {
-                //Get the date from String
-                mDateOfBirth = stringToDate(dateOfBirth);
-
-            } else {
-
-                //Error message for DOB when it does match DD/MM/YYYY
-                throw new FormatException("Text doesn't meet DOB (DD/MM/YYYY) requirement");
-            }
-        } else {
-            //Error message for empty text
-            throw new FormatException("Text is empty");
-        }
-
-    }
-
-    /**
      * This method is used to set the
      * user unique ID into the object
      *
@@ -512,39 +481,6 @@ public class User implements Parcelable {
     /**@return String This return the password of the user */
     public String getPassword() {
         return mPassword;
-    }
-
-    /**
-     *
-     * This method convert the date into string and
-     * returns it
-     *
-     * @return String This return the date of birth of the user */
-    public String getDateOfBirth() {
-
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return mDateOfBirth == null ? null : dateFormat.format(mDateOfBirth);
-    }
-
-
-    /**
-     * To convert string to date
-     * The function has 2 possible returns
-     * <p>
-     * if Successfully changed a Date object will be return
-     * else null will be returned
-     *
-     * @param DOB is a String that is provided by the user
-     */
-
-    private Date stringToDate(String DOB) {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy");
-        try {
-            return sdf.parse(DOB);
-        } catch (ParseException ex) {
-            Log.e("Exception", "Date unable to change reason: " + ex.getLocalizedMessage());
-            return null;
-        }
     }
 
 
