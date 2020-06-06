@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -93,7 +94,14 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
 
-        mUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        try {
+            mUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }catch (NullPointerException e){
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
 
 
 
