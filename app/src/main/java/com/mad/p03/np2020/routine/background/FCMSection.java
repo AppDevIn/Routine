@@ -186,6 +186,14 @@ public class FCMSection extends FirebaseMessagingService {
 
     private void updateTask(RemoteMessage remoteMessage){
         Log.d(TAG, "updateTask: " + remoteMessage);
+        Task task =  Task.fromJSON(remoteMessage.getData().toString());
+        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+
+        //Delete the old row
+        taskDBHelper.delete(task.getTaskID());
+
+        task.addTask(this);
+
     }
 
 
