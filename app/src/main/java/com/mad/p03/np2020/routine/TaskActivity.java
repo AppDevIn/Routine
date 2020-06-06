@@ -215,8 +215,11 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + task );
 
-        //Adding into the local list
-        mTaskList.add(task);
+        if(mSection.getID().equals(task.getSectionID())){
+            //Adding into the local list
+            mTaskList.add(task);
+
+        }
 
         //Informing the adapter and view of the new item
         mTaskAdapter.notifyItemInserted(mTaskList.size());
