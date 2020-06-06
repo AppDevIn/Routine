@@ -14,7 +14,7 @@ All in one Productivity App
 
 1. Jeyavishnu, S10192836C
 2. Lee Quan sheng, S10198298G
-3. Pritheev, [Student ID]
+3. Pritheev, S10193030K
 4. Wai Hou Man, S10197636F
 
 
