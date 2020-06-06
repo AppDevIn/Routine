@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.mad.p03.np2020.routine.Adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.database.MyDatabaseListener;
+import com.mad.p03.np2020.routine.database.SectionDBHelper;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 
@@ -65,6 +67,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         setContentView(R.layout.activity_task);
         Log.d(TAG, "Creating GUI");
 
+        //To set to Full screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         //Get the Section Object
@@ -80,7 +84,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTaskAdapter = new TaskAdapter(mSection.getTaskList(this), this);
+        mTaskAdapter = new TaskAdapter(mTaskList, this);
         mRecyclerView.setAdapter(mTaskAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -105,6 +109,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
 
         TaskDBHelper.setMyDatabaseListener(this);
+
+
 
     }
 
@@ -142,11 +148,18 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
     /**
      * Not implemented yet
+     * The order of the task is
+     * saved
      */
     @Override
     protected void onStop() {
         super.onStop();
+        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+        for (int i = 0; i < mTaskList.size(); i++) {
+            mTaskList.get(i).setPosition(i);
+            taskDBHelper.updatePosition(mTaskList.get(i));
 
+        }
     }
 
     /**
