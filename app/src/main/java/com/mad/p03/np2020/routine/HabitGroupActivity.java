@@ -52,6 +52,8 @@ public class HabitGroupActivity extends AppCompatActivity {
 
     private Habit habit;
 
+    private String action;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,10 @@ public class HabitGroupActivity extends AppCompatActivity {
             curr_grp.setText("NONE");
         }
 
+        if (intent.hasExtra("action")){
+            action = intent.getExtras().getString("action");
+        }
+
         // inflate habitGroup RecyclerView
         habitGroupRecyclerView = findViewById(R.id.habit_recycler_view);
         habitGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -100,12 +106,17 @@ public class HabitGroupActivity extends AppCompatActivity {
                 habit.setGroup(chosen_grp);
                 Log.d(TAG, "onItemClick: "+chosen_grp.getGrp_name() +" " +chosen_grp.getGrp_id());
 
-                Intent activityName = new Intent(HabitGroupActivity.this, AddHabitActivity.class);
+                Intent activityName = new Intent(HabitGroupActivity.this, HabitAddActivity.class);
+                if (action.equals("edit")){
+                    activityName = new Intent(HabitGroupActivity.this, HabitEditActivity.class);
+                }
+
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
                 startActivity(activityName);
+
 
 
             }
@@ -115,13 +126,16 @@ public class HabitGroupActivity extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent activityName = new Intent(HabitGroupActivity.this, AddHabitActivity.class);
+                Intent activityName = new Intent(HabitGroupActivity.this, HabitAddActivity.class);
+                if (action.equals("edit")){
+                    activityName = new Intent(HabitGroupActivity.this, HabitEditActivity.class);
+                }
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
                 startActivity(activityName);
+
             }
         });
 
@@ -131,7 +145,12 @@ public class HabitGroupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // cancel the existing group
                 habit.setGroup(null);
-                Intent activityName = new Intent(HabitGroupActivity.this, AddHabitActivity.class);
+
+                Intent activityName = new Intent(HabitGroupActivity.this, HabitAddActivity.class);
+                if (action.equals("edit")){
+                    activityName = new Intent(HabitGroupActivity.this, HabitEditActivity.class);
+                }
+
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);

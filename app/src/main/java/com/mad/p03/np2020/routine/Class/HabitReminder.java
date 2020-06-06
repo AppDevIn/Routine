@@ -119,4 +119,12 @@ public class HabitReminder {
     public void setHours(int hours) {
         this.hours = hours;
     }
+
+    public boolean isIdentical(HabitReminder habitReminder){
+        return this.message.equals(habitReminder.message) &&
+                this.hours == habitReminder.getHours() &&
+                this.minutes == habitReminder.getMinutes() &&
+                this.custom_text.equals(habitReminder.getCustom_text()) &&
+                this.id == habitReminder.getId();
+    }
 }

@@ -38,6 +38,8 @@ public class HabitReminderActivity extends AppCompatActivity {
     private boolean isModified;
     private String initial_customText;
 
+    private String action;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,10 @@ public class HabitReminderActivity extends AppCompatActivity {
             }
         }else{
             reminder = null;
+        }
+
+        if (intent.hasExtra("action")){
+            action = intent.getExtras().getString("action");
         }
 
         // to determine what should be displayed on timePicker and time indicate field
@@ -133,7 +139,11 @@ public class HabitReminderActivity extends AppCompatActivity {
                     if (isModified){
                         habit.setHabitReminder(new HabitReminder(habit.getTitle(),minutes, hours, chosen_txt));
                     }
-                    Intent activityName = new Intent(HabitReminderActivity.this, AddHabitActivity.class);
+                    Intent activityName = new Intent(HabitReminderActivity.this, HabitAddActivity.class);
+                    if (action.equals("edit")){
+                        activityName = new Intent(HabitReminderActivity.this, HabitEditActivity.class);
+                    }
+
                     Bundle extras = new Bundle();
                     extras.putString("recorded_habit", habit_serializeToJson(habit));
                     activityName.putExtras(extras);
@@ -141,7 +151,11 @@ public class HabitReminderActivity extends AppCompatActivity {
                     startActivity(activityName);
 
                 }else{ // if switch is unchecked, turn the reminder inactive
-                    Intent activityName = new Intent(HabitReminderActivity.this, AddHabitActivity.class);
+                    Intent activityName = new Intent(HabitReminderActivity.this, HabitAddActivity.class);
+                    if (action.equals("edit")){
+                        activityName = new Intent(HabitReminderActivity.this, HabitEditActivity.class);
+                    }
+
                     habit.setHabitReminder(null);
                     Bundle extras = new Bundle();
                     extras.putString("recorded_habit", habit_serializeToJson(habit));
@@ -157,7 +171,11 @@ public class HabitReminderActivity extends AppCompatActivity {
         close_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(HabitReminderActivity.this, AddHabitActivity.class);
+                Intent activityName = new Intent(HabitReminderActivity.this, HabitAddActivity.class);
+                if (action.equals("edit")){
+                    activityName = new Intent(HabitReminderActivity.this, HabitEditActivity.class);
+                }
+
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
@@ -167,20 +185,6 @@ public class HabitReminderActivity extends AppCompatActivity {
 
     }
 
-    /**
-     *
-     * This method is used to serialize a single object. (into Json String)
-     *
-     * @param habitReminder This parameter is used to get the habitReminder object
-     *
-     * @return String This returns the serialized object.
-     *
-     * */
-    public String habitReminder_serializeToJson(HabitReminder habitReminder) {
-        Gson gson = new Gson();
-        Log.i(TAG,"Object serialize");
-        return gson.toJson(habitReminder);
-    }
 
     /**
      *

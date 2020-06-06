@@ -186,7 +186,11 @@ public class HabitViewActivity extends AppCompatActivity {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent activityName = new Intent(HabitViewActivity.this, HabitEditActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("recorded_habit", habit_serializeToJson(habit));
+                activityName.putExtras(extras);
+                startActivity(activityName);
             }
         });
 

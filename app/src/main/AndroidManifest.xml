@@ -41,13 +41,15 @@
 
         <activity android:name=".LoginActivity" />
 
-        <activity android:name=".AddHabitActivity" />
+        <activity android:name=".HabitAddActivity" />
 
         <activity android:name=".HabitGroupActivity" />
 
         <activity android:name=".HabitReminderActivity" />
 
         <activity android:name=".HabitViewActivity" />
+
+        <activity android:name=".HabitEditActivity" />
 
         <activity
             android:name=".HabitActivity">
