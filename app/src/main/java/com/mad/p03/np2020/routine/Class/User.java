@@ -425,7 +425,7 @@ public class User implements Parcelable {
 
                 //Error message for password when password doesn't
                 //have digit, lower and upper case, special character and min 8 letter
-                throw new FormatException("Text doesn't meet strong password requirement");
+                throw new FormatException("Needs to be alphanumeric, special\n character and the length of 8");
             }
         } else {
             //Error message for empty text
