@@ -19,6 +19,13 @@ public class HabitReminder {
     /**This method is an empty constructor for habitReminder*/
     public HabitReminder() { }
 
+    public HabitReminder(String message, int minutes, int hours, String custom_text) {
+        this.message = message;
+        this.minutes = minutes;
+        this.hours = hours;
+        this.custom_text = custom_text;
+    }
+
     /**This method is a constructor for habitReminder*/
     public HabitReminder(String message, int id, int minutes, int hours, String custom_text) {
         this.message = message;

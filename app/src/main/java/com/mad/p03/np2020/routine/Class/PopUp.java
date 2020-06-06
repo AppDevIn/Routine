@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,6 +20,8 @@ import android.widget.TimePicker;
 import com.mad.p03.np2020.routine.R;
 
 import java.util.Calendar;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  *
@@ -89,6 +92,15 @@ public class PopUp extends Activity {
 
         final Calendar calendar = Calendar.getInstance();
 
+        Log.v(TAG, "Timer Button Clicked");
+        Intent intent = new Intent(PopUp.this, CardNotification.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
+        //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, 10000, pendingIntent );
+
         //Button onClickListener
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +152,7 @@ public class PopUp extends Activity {
         SetTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Timer Button Clicked");
                 Intent intent = new Intent(PopUp.this, CardNotification.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
                 //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
@@ -219,6 +232,9 @@ public class PopUp extends Activity {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+
+
 
 
 

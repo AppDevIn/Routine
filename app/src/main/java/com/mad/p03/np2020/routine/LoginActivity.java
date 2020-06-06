@@ -271,7 +271,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
 
                             //Storing user details into object to put into intent
-                            User user = new User(UID, name, pwd, d, email);
+                            User user = new User(UID, name, pwd, email);
                             userDatabase.insertUser(user);
 
                             //TODO Get All User Routine Data

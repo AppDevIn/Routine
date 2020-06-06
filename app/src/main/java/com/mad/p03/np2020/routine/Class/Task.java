@@ -41,6 +41,7 @@ public class Task {
     private String mName;
     private String mTaskID;
     private String mSectionID;
+    private int mPosition;
     private boolean checked;
     private Date remindDate;
     private Date dueDate;
@@ -66,6 +67,8 @@ public class Task {
     public static final String COLUMN_DUE_DATE = "DueDate";
     /**Column name for table,  the notes to this task*/
     public static final String COLUMN_NOTES = "Notes";
+    /**Used to identify the order the sections are in*/
+    public static final String COLUMN_POSITION = "position";
     /**Column name for table,  the foreign key for the task */
     public static final String COLUMN_SECTION_ID = "SectionID";
 
@@ -77,6 +80,7 @@ public class Task {
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_TASK_ID + " TEXT PRIMARY KEY,"
+                    + COLUMN_POSITION + " INTEGER,"
                     + COLUMN_SECTION_ID + " TEXT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_CHECKED + " BOOLEAN,"
@@ -100,11 +104,12 @@ public class Task {
         setTaskID(UUID.randomUUID().toString());
     }
 
-    public Task(String name,String sectionID, String taskID) {
+    public Task(String name, int position, String sectionID, String taskID ) {
 
         this.mName = name;
         this.mSectionID = sectionID;
         this.mTaskID = taskID;
+        this.mPosition = position;
     }
 
 
@@ -120,6 +125,7 @@ public class Task {
 
         return new Task(
                 cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_POSITION)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_SECTION_ID)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_TASK_ID))
 
@@ -142,6 +148,7 @@ public class Task {
         String id = "";
         String sectionID = "";
 
+
         try {
             //Make the string to object
             JSONObject jsonObject = new JSONObject(json);
@@ -150,10 +157,12 @@ public class Task {
 
             name = jsonObject.getString("name");
             id = jsonObject.getString("id");
-            sectionID = jsonObject.getString("id");
+            sectionID = jsonObject.getString("sectionID");
+
+
 
             //Return back the object
-            return new Task(name, sectionID, id);
+            return new Task(name, 0, sectionID, id);
 
 
         } catch (JSONException e) {
@@ -209,6 +218,12 @@ public class Task {
         return mSectionID;
     }
 
+    /**@return int This return the current order of the task*/
+    public int getPosition() {
+        return mPosition;
+    }
+
+
     /**
      *
      * This method is used to set
@@ -221,6 +236,17 @@ public class Task {
         mTaskID = taskID;
     }
 
+    /**
+     *
+     * This method is used to set
+     * the taskID of this task
+     *
+     * @param position int This is used to set the order
+     *                 where the list is at now
+     */
+    public void setPosition(int position) {
+        mPosition = position;
+    }
 
     /**
      *

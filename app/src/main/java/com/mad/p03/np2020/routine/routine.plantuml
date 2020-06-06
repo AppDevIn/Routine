@@ -381,7 +381,7 @@ title __ROUTINE's Class Diagram__\n
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnKeyListener
   com.mad.p03.np2020.routine.LoginActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.LoginActivity o-- com.mad.p03.np2020.routine.database.UserDBHelper : userDatabase
-  
+
 
   com.mad.p03.np2020.routine.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.NotesFragment -up-|> androidx.fragment.app.Fragment

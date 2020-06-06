@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 
 import java.util.ArrayList;
@@ -137,7 +139,7 @@ public class TaskDBHelper extends DBHelper {
         // Select All Query
 
         String selectQuery = "SELECT  * FROM " + Task.TABLE_NAME + " WHERE " + Task.COLUMN_SECTION_ID + "='" + sectionID +"' ORDER BY " +
-                Task.COLUMN_TASK_ID + " DESC;";
+                Task.COLUMN_POSITION + " ASC;";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -189,6 +191,30 @@ public class TaskDBHelper extends DBHelper {
 
         db.close();
     }
+
+    /**
+     *
+     * This method will update the position of the given
+     * row based on the ID
+     *
+     * @param task The object that needs to be updates
+     */
+    public void updatePosition(Task task){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Task.COLUMN_POSITION, task.getPosition());
+        db.update(
+                Task.TABLE_NAME,
+                updateValues,
+                Task.COLUMN_TASK_ID + " = ?",
+                new String[]{task.getTaskID()}
+        );
+
+        db.close();
+    }
+
 
     /**
      *

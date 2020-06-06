@@ -1,8 +1,28 @@
 package com.mad.p03.np2020.routine.Class;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.background.HabitWorker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -79,7 +99,18 @@ public class Habit {
      */
     public static final String DROP_HABITS_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
-    
+
+    // set values for period section
+    public static final int[] period_buttonIDS = new int[]{R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
+    public static final String[] period_textList = new String[]{"DAY", "WEEK", "MONTH", "YEAR"};
+    public static final int[] period_countList = new int[]{1, 7, 30, 365};
+
+    // set values for color section
+    public static final int[]  color_buttonIDS = new int[]{R.id.lightcoral_btn, R.id.slightdesblue_btn, R.id.fadepurple_btn, R.id.cyangreen_btn};
+    public static final int[]  color_schemeIDS = new int[]{R.color.colorLightCoral, R.color.colorSlightDesBlue, R.color.colorFadePurple, R.color.colorCyanGreen};
+    public static final String[]  colorList = new String[]{"lightcoral", "slightdesblue", "fadepurple", "cyangreen"};
+    private static final String TAG = "HabitClass";
+
     private long habitID;
     private String title;
     private int occurrence;
@@ -92,6 +123,15 @@ public class Habit {
 
     /**This method is an empty constructor for habit*/
     public Habit() { }
+
+    /**This method is a constructor for habit*/
+    public Habit(String title, int occurrence, int count, int period, String holder_color) {
+        this.title = title;
+        this.occurrence = occurrence;
+        this.count = count;
+        this.period = period;
+        this.holder_color = holder_color;
+    }
 
     /**This method is a constructor for habit*/
     public Habit(long habitID, String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
@@ -419,4 +459,6 @@ public class Habit {
          * */
         public Integer size() { return this.habitList.size(); }
     }
+
+
 }

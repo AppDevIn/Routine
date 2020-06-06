@@ -18,7 +18,7 @@ public class CardNotification extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle("Test")
                 .setContentText("This is a test")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 
