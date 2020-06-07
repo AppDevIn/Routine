@@ -25,7 +25,7 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ## Roles and contributions of each member
 
-1. Jeyavishnuu (Project Manager and Feature Developer )
+1. Jeyavishnuu (Project Manager and Feature Developer)
 
 2. Lee Quan Sheng (UX/UI Designer and Feature Developer)
 
