@@ -145,7 +145,7 @@ All in one Productivity App
 
 18. [HabitViewActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitViewActivity.java)
    ​    
-  
+
 ### Pritheev Roshan
 
 1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardActivity.java)
@@ -175,12 +175,23 @@ All in one Productivity App
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.jpg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Class.svg)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/habitActivity.png)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
+![BlankViewModel](Documentation/images/BlankViewModel.png)
+![MainActivity](Documentation/images/MainActivity.png)
+![NavBarHelper](Documentation/images/NavBarHelper.png)
+![TaskActivity](Documentation/images/TaskActivity.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/FocusActivity.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/HabitActivity.png)
+![HabitAddActivity](Documentation/images/HabitAddActivity.png)
+![HabitEditActivity](Documentation/images/HabitEditActivity.png)
+![HabitGroupActivity](Documentation/images/HabitGroupActivity.png)
+![HabitReminderActivity](Documentation/images/HabitReminderActivity.png)
+![HabitViewActivity](Documentation/images/HabitViewActivity.png)
+![Home](Documentation/images/Home.png)
+![HabitEditActivity](Documentation/images/RegisterActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/LoginActivityClass.png)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/home.png)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/register.png)
+
+
+
 
 
 
@@ -204,15 +215,27 @@ All in one Productivity App
 
 
 
-### Home
+#### Home
+
+| ![addHome](Documentation/images/addHome.png?lastModify=1591566248) | ![moveHome](Documentation/images/moveHome.png?lastModify=1591566248) | ![deleteHome](Documentation/images/deleteHome.png?lastModify=1591566248) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Press the floating button to add task**                    | **Press and hold to move**                                   | **Swipe to the end of the screen to delete**                 |
 
 
 
-<img src="Documentation/images/home.png" alt="drawing" width="200"/>
+### Task
+
+| <img src="Documentation/images/SwipeTask.png" alt="drawing" width="1600px"/> | <img src="Documentation/images/HoldMoveTask.png" alt="drawing" width="1500px"/> | <img src="Documentation/images/addTask.png" alt="drawing"/> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- |
+| **Swipe to right to delete**                                 | **Press and hold to move**                                   | **Clicked on the textbox to add task**                      |
 
 
 
-#### Task
+#### Task Info
+
+| ![setTaskNote](Documentation/images/setTaskNote.png) | ![taskSetTime](Documentation/images/taskSetTime.png)  | ![taskSetDatee](Documentation/images/taskSetDatee.png) | ![taskSetDate](Documentation/images/taskSetDate.png) |
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **Click the circle button to add notes**             | **Click the circle button and bell icon to add time** |   **Click the circle button  and text to add date**    | **Chose the data to add the date**                   |
 
 #### Habit Tracker
 
