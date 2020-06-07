@@ -7,6 +7,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Not Implemented 
+ */
 public class Settings extends AppCompatActivity {
 
     Button systemButton;
