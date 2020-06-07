@@ -150,4 +150,33 @@ public class HabitGroupDBHelper extends DBHelper {
         db.close(); //close the db connection
     }
 
+    /**
+     *
+     * This method is used to insert the group to the group column in the SQLiteDatabase from firebase.
+     *
+     * @return long This will return the id for the habitGroup after the habitGroup is inserted to the habitGroup column.
+     * */
+    public void insertGroupFromFirebase(HabitGroup habitGroup){
+        Log.d(TAG, "insertGroup: " + habitGroup.getGrp_name());
+
+        // put the values
+        ContentValues values = new ContentValues();
+        values.put(HabitGroup.COLUMN_ID, habitGroup.getGrp_id());
+        values.put(HabitGroup.COLUMN_GROUP_NAME, habitGroup.getGrp_name());
+
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // insert the habitGroup
+        long id =  db.insert(HabitGroup.TABLE_NAME, null, values);
+        if (id == -1){ // if id is equal to 1, there is error inserting the habitGroup
+            Log.d(TAG, "insertGroup: " + "Error");
+        }else{ // if id is not equal to 1, there is no error inserting the habitGroup
+            Log.d(TAG, "insertGroup: " + "Successful");
+        }
+
+        db.close(); // close the db connection
+
+    }
+
 }

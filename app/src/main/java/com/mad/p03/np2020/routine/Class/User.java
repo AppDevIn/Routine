@@ -256,7 +256,7 @@ public class User implements Parcelable {
                     }
 
 
-                    habitDBHelper.insertHabit(habit, getUID());
+                    habitDBHelper.insertHabitFromFirebase(habit, getUID());
                     Log.d(TAG, "reading Habit Lines");
 
                 }
@@ -295,7 +295,7 @@ public class User implements Parcelable {
                     Log.d(TAG, "onDataChange: "+habitGroup.getGrp_id());
                     Log.d(TAG, "onDataChange: "+habitGroup.getGrp_name());
 
-                    habitGroupDBHelper.insertGroup(habitGroup);
+                    habitGroupDBHelper.insertGroupFromFirebase(habitGroup);
 
                     Log.d(TAG, "reading HabitGroup Lines");
                 }
