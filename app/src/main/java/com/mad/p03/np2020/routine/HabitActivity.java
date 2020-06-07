@@ -52,6 +52,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     //User
     private User user;
 
+    //FAB
+    private FloatingActionButton add_habit;
+
     /**
      *
      * This method will be called when the start of the HabitActivity.
@@ -85,7 +88,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // initialise the notification channel
         initialiseHabitNotificationChannel();
 
-        FloatingActionButton add_habit = findViewById(R.id.add_habit);
+        add_habit = findViewById(R.id.add_habit);
         // set onClickListener on add_habit button
         add_habit.setOnClickListener(this);
 
@@ -200,6 +203,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
      * */
     @Override
     public void onItemClick(final int position) {
+        // This will be triggered when the recycler view holder is clicked
+
         // Editing habit
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         Log.d(TAG, "Editing habit " + habit.getTitle());

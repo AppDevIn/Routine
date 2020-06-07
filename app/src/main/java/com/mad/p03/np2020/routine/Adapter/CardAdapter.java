@@ -11,7 +11,6 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.CardViewHolder;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -25,7 +24,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     private final String TAG = "CardAdapter";
 
-    private ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<String> data = new ArrayList<>();
 
     public CardAdapter(ArrayList<String> input) {
 
@@ -38,15 +37,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_layout, parent, false);
         final CardViewHolder holder = new CardViewHolder(item);
+        Log.v(TAG, "ViewHolder created");
         return holder;
     }
 
     public void onBindViewHolder(CardViewHolder holder, int position){
         holder.stepItem.setText(data.get(position));
         Log.v(TAG, data.get(position));
+        Log.v(TAG, "View bound to holder");
     }
 
     public int getItemCount(){
+        Log.v(TAG, "List item count is : " + data.size());
         return data.size();
     }
 }
