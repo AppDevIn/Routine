@@ -54,7 +54,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     TextView mTxtListName;
     EditText mEdTask;
     List<Task> mTaskList;
-    Button btnBack;
+
 
     /**
      *
@@ -89,7 +89,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         mTxtListName = findViewById(R.id.edSectioName);
         mConstraintLayout = findViewById(R.id.taskLayout);
         mEdTask = findViewById(R.id.edTask);
-        btnBack = findViewById(R.id.btnBack);
+
 
 
         //Set to listen for the editor
@@ -140,14 +140,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(TaskActivity.this, Home.class));
-            }
-        });
-
     }
 
     /**
@@ -175,9 +167,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             task.executeUpdateFirebase(this);
 
         }
-
-        finish();
-
 
     }
 
