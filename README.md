@@ -252,13 +252,9 @@ If the user clicks on the
 
 #### Focus
 
-| ![Focus Main](Documentation/images/focusPage.png) | ![Focus Task Input](Documentation/images/focusTaskInput.png)  | ![Focus History](Documentation/images/focusHistory.png) | ![Focus History](Documentation/images/focusHistoryView.png) |
+| ![Focus Main](Documentation/images/focusPage.png) | ![Focus Task Input](Documentation/images/focusTaskInput.png)  | ![Focus History](Documentation/images/focusHistoryView.png)| ![Focus Main](Documentation/images/focusComplete.png) |
 | ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
-| **Click the timer button to set timer**             | **Set Task Input to set timer** |   **View Focus History (Empty)**    | **View Focus History (Filled)**                   |
-
-| ![Focus Main](Documentation/images/focusComplete.png) | ![Focus Task Input](Documentation/images/FocusFail.png)  | ![Focus History](Documentation/images/focusFiinish.png) | ![Focus History](Documentation/images/focusNoti.png) |
-| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
-| **In Progress Focus**             | **Fail Focus** |   **Completed Focus**    | **Notification Focus**                   |
+| **Click the timer button to set timer**             | **Set Task Input to set timer** |   **Click recent icon to View Focus History ** | **Your Focus has started** |
 
 
 
