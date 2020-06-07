@@ -41,9 +41,9 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:textSize="20sp"
                 android:textColor="@color/black"
-
-                android:text="@string/holder" />
-
+                android:imeOptions="actionDone"
+                android:text="@string/holder" android:maxLines="1"
+                android:inputType="text"/>
 
 
                 </LinearLayout>
