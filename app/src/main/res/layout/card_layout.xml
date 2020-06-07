@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_section"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:padding="10dp"
@@ -19,34 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
-
-        <EditText
-            android:id="@+id/id_edit_text"
-            android:layout_width="281dp"
-            android:layout_height="58dp"
-            android:layout_weight="1"
-            android:autofillHints="Enter Card Name"
-            android:inputType="text"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.198"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.128" />
-
-        <ImageButton
-            android:id="@+id/notifyButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/notification_bell"
-            android:contentDescription="@string/NotificationDescription"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.55"
-            app:layout_constraintStart_toEndOf="@+id/id_edit_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.215" />
 
         <Button
             android:id="@+id/stepFragment"
@@ -86,6 +58,34 @@
             app:layout_constraintHorizontal_bias="0.976"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/id_edit_text" />
+
+        <EditText
+            android:id="@+id/id_edit_text"
+            android:layout_width="281dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:autofillHints="Enter Card Name"
+            android:inputType="text"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.198"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.128" />
+
+        <ImageButton
+            android:id="@+id/notifyButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/notification_bell"
+            android:contentDescription="@string/NotificationDescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.55"
+            app:layout_constraintStart_toEndOf="@+id/id_edit_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.215" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
