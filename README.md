@@ -206,7 +206,7 @@ Documentation/images/HabitAddActivity.png
 
 #### Home
 
-| ![addHome](file:///Users/jeyavishnu/personal/Current/Routine/Documentation/images/addHome.png?lastModify=1591566248) | ![moveHome](file:///Users/jeyavishnu/personal/Current/Routine/Documentation/images/moveHome.png?lastModify=1591566248) | ![deleteHome](file:///Users/jeyavishnu/personal/Current/Routine/Documentation/images/deleteHome.png?lastModify=1591566248) |
+| ![addHome](Documentation/images/addHome.png?lastModify=1591566248) | ![moveHome](Documentation/images/moveHome.png?lastModify=1591566248) | ![deleteHome](Documentation/images/deleteHome.png?lastModify=1591566248) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **Press the floating button to add task**                    | **Press and hold to move**                                   | **Swipe to the end of the screen to delete**                 |
 
@@ -222,7 +222,7 @@ Documentation/images/HabitAddActivity.png
 
 #### Task Info
 
-| ![setTaskNote](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/setTaskNote.png) | ![taskSetTime](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/taskSetTime.png) | ![taskSetDatee](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/taskSetDatee.png) | ![taskSetDate](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/taskSetDate.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | :----------------------------------------------------------: | ------------------------------------------------------------ |
-| **Click the circle button to add notes**                     | **Click the circle button and bell icon to add time**        |      **Click the circle button  and text to add date**       | **Chose the data to add the date**                           |
+| ![setTaskNote](Documentation/images/setTaskNote.png) | ![taskSetTime](Documentation/images/taskSetTime.png)  | ![taskSetDatee](Documentation/images/taskSetDatee.png) | ![taskSetDate](Documentation/images/taskSetDate.png) |
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **Click the circle button to add notes**             | **Click the circle button and bell icon to add time** |   **Click the circle button  and text to add date**    | **Chose the data to add the date**                   |
 
