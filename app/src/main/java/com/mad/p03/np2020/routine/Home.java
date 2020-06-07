@@ -37,6 +37,7 @@ import com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
 import com.mad.p03.np2020.routine.database.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
@@ -288,6 +289,8 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             sectionDBHelper.updatePosition(mSectionList.get(i));
 
         }
+
+
     }
 
     /**

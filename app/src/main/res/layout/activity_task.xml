@@ -7,11 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".TaskActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <!--        android:ems="10"-->
-    <!--        android:inputType="textPersonName"-->
 
-    <TextView
+
+        <TextView
         android:id="@+id/edSectioName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,7 +45,7 @@
 
         android:padding="10dp"
 
-        app:layout_constraintBottom_toTopOf="@+id/cdAdd"
+        app:layout_constraintBottom_toTopOf="@id/cdAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edSectioName">
@@ -54,6 +56,7 @@
         android:id="@+id/cdAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
@@ -90,6 +93,8 @@
                     android:ems="10"
                     android:inputType="textPersonName"
 
+                    android:imeOptions="actionDone"
+
                     android:fontFamily="@font/montserrat_regular"
                     android:textSize="20sp"
                     android:textColor="@color/black"
@@ -104,6 +109,6 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

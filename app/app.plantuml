@@ -245,7 +245,7 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.DividerItemDecoration {
+    class com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration {
     }
   }
   
@@ -533,7 +533,7 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Class.Section .up.|> java.io.Serializable
   com.mad.p03.np2020.routine.Class.User .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
+  com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnFocusChangeListener
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnLongClickListener
