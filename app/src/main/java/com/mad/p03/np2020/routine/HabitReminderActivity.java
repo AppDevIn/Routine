@@ -117,7 +117,7 @@ public class HabitReminderActivity extends AppCompatActivity {
             timePicker.setCurrentHour(c.get(Calendar.HOUR_OF_DAY));
             timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
             reminder_switch.setChecked(true); // set the switch checked as the reminder is active
-            reminder_displayTime.setText(format("%d:%d",reminder.getHours(),reminder.getMinutes())); // set the text based on the chosen timing
+            reminder_displayTime.setText(format("%02d:%02d",reminder.getHours(),reminder.getMinutes())); // set the text based on the chosen timing
 
             // leave the custom text input field as blank if nothing has been filled and recorded down
             // or set the custom text based on the chosen custom text
@@ -135,7 +135,7 @@ public class HabitReminderActivity extends AppCompatActivity {
                 hours  = timePicker.getHour(); // after api level 23
             }
             reminder_switch.setChecked(false); // set the switch unchecked as the reminder is inactive
-            reminder_displayTime.setText(format("%d:%d",hours,minutes)); // set the text based on the chosen timing
+            reminder_displayTime.setText(format("%02d:%02d",hours,minutes)); // set the text based on the chosen timing
         }
 
         initial_customText = customText.getText().toString();
@@ -152,7 +152,7 @@ public class HabitReminderActivity extends AppCompatActivity {
                     minutes = timePicker.getMinute(); // after api level 23
                     hours  = timePicker.getHour(); // after api level 23
                 }
-                reminder_displayTime.setText(format("%d:%d",hours,minutes)); // update the text based on the chosen timing
+                reminder_displayTime.setText(format("%02d:%02d",hours,minutes)); // update the text based on the chosen timing
                 isModified = true;
             }
         });

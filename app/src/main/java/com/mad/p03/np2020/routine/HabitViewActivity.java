@@ -239,6 +239,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
                 startActivity(activityName);
+                finish();
             }
         });
 
