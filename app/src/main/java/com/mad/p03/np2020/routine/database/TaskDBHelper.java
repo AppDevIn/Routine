@@ -193,18 +193,89 @@ public class TaskDBHelper extends DBHelper {
     }
 
     /**
-     *
      * This method will update the position of the given
      * row based on the ID
-     *
-     * @param task The object that needs to be updates
+     * @param ID
+     * @param name
      */
-    public void updatePosition(Task task){
+    public void update(String ID, String name){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+
+        ContentValues updateValues = new ContentValues();
+        if(name != null)
+            updateValues.put(Task.COLUMN_NAME, name);
+        db.update(
+                Task.TABLE_NAME,
+                updateValues,
+                Task.COLUMN_TASK_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
+    /**
+     * This method will update the position of the given
+     * row based on the ID
+     * @param ID
+     * @param position
+     */
+    public void update(String ID, int position){
+
+        Log.d(TAG, "update(): Updating position " + position);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Task.COLUMN_POSITION, position);
+
+        db.update(
+                Task.TABLE_NAME,
+                updateValues,
+                Task.COLUMN_TASK_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
+
+    /**
+     * This method will update the position of the given
+     * row based on the ID
+     * @param ID
+     * @param checked
+     */
+    public void update(String ID,boolean checked){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues updateValues = new ContentValues();
-        updateValues.put(Task.COLUMN_POSITION, task.getPosition());
+        updateValues.put(Task.COLUMN_CHECKED, checked);
+        db.update(
+                Task.TABLE_NAME,
+                updateValues,
+                Task.COLUMN_TASK_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
+    public void update(Task task){
+
+        Log.d(TAG, "update: Updating using object task");
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Task.COLUMN_NAME, task.getName());
+        updateValues.put(Task.COLUMN_CHECKED, task.isChecked());
         db.update(
                 Task.TABLE_NAME,
                 updateValues,

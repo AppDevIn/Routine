@@ -113,7 +113,7 @@ All in one Productivity App
 
 2. [HabitGroupAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HabitGroupAdapter.java)
 
-3. [OnItemClickListener.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/OnItemClickListener.java)
+3. [OnItemClickListener.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/OnItemClickListener.java)
 
 4. [HabitWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/HabitWorker.java)
 
@@ -134,7 +134,35 @@ All in one Productivity App
 12. [HabitGroupHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/HabitGroupHolder.java)
 
 13. [HabitActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitActivity.java)
+
+14. [HabitAddActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitAddActivity.java)
+
+15. [HabitEditActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitEditActivity.java)
+
+16. [HabitGroupActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitGroupActivity.java)
+
+17. [HabitReminderActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitReminderActivity.java)
+
+18. [HabitViewActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitViewActivity.java)
    ​    
+  
+### Pritheev Roshan
+
+1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardActivity.java)
+
+2.[PopUp.java](app/src/main/java/com/mad/p03/np2020/routine/Class/PopUp.java)
+
+3.[CardAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/CardAdapter.java)
+
+4.[CardViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardViewHolder.java)
+
+5.[CardNotification.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardNotification.java)
+
+6.[NotesFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Class/NotesFragment.java)
+
+7.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Class/StepsFragment.java)
+
+8.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Settings.java)
 
 ## Story Mapping 
 

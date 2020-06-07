@@ -31,27 +31,28 @@
 
     </RelativeLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/habit_menu"
-        android:layout_above="@+id/btm"
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNavViewBar"
+        android:layout_below="@id/habit_menu"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="9dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="match_parent"/>
-
+        android:layout_marginBottom="0dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/add_habit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/my_recycler_view"
 
+        android:layout_alignParentRight="true"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="70dp"
 
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 

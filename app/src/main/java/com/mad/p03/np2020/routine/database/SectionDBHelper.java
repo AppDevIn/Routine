@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.Class.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +29,11 @@ public class SectionDBHelper extends DBHelper{
     private static MyDatabaseListener mMyDatabaseListener;
 
     private final String TAG = "SectionDatabase";
+    Context mContext;
 
     public SectionDBHelper(Context context) {
         super(context);
+        mContext = context;
     }
 
 
@@ -209,6 +212,14 @@ public class SectionDBHelper extends DBHelper{
                 new String[]{ID} // The args will be replaced by ?
                 );
         mMyDatabaseListener.onDataDelete(ID);
+
+
+        db.delete(
+                Task.TABLE_NAME,  // The table to delete from
+                Task.COLUMN_SECTION_ID + " = ?", //The condition
+                new String[]{ID} // The args will be replaced by ?
+        );
+
         db.close();
     }
 

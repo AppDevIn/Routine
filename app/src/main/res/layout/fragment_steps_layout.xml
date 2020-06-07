@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="544dp"
-    tools:context=".StepsFragment">
+    tools:context=".Fragment.StepsFragment">
 
     <EditText
         android:inputType="text"

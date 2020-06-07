@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.PopUp;
+import com.mad.p03.np2020.routine.Fragment.NotesFragment;
+import com.mad.p03.np2020.routine.Fragment.StepsFragment;
 
 /**
 *
@@ -46,12 +49,15 @@ public class CardActivity extends AppCompatActivity {
     //Used to set if Notes Fragment visible or not
     boolean noteStatus = false;
 
+    TextView cardName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_layout);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        cardName = findViewById(R.id.id_edit_text);
 
         //Used to initialize stepAddButton with an id from view
         stepAddButton = findViewById(R.id.stepAdd);
@@ -128,6 +134,7 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CardActivity.this, PopUp.class);
+                intent.putExtra("CardName", cardName.getText().toString());
                 startActivity(intent);
             }
         });

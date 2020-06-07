@@ -28,8 +28,8 @@
 
         <Button
             android:id="@+id/habit_group_view_cancel"
-            android:layout_width="74dp"
-            android:layout_height="31dp"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="90dp"
@@ -38,7 +38,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:letterSpacing="0.1"
             android:src="@drawable/menu_addhabit"
-            android:text="CANCEL"
+            android:text="REMOVE"
             android:textColor="@color/colorWhite" />
 
 

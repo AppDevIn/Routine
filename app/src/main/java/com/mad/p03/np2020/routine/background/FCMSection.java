@@ -83,6 +83,7 @@ public class FCMSection extends FirebaseMessagingService {
             case "SectionDelete": deleteSectionSQL(remoteMessage); ;break;
             case "TaskAdd": addTaskSQL(remoteMessage); ;break;
             case "TaskDelete": deleteTaskSQL(remoteMessage); ;break;
+            case "UpdateTask": updateTask(remoteMessage); ;break;
 
         }
 
@@ -181,6 +182,19 @@ public class FCMSection extends FirebaseMessagingService {
             taskDBHelper.delete(id);
             Log.d(TAG, "Task ID " + id + " , has been deleted");
         }
+    }
+
+    private void updateTask(RemoteMessage remoteMessage){
+        Log.d(TAG, "updateTask: " + remoteMessage);
+        Task task =  Task.fromJSON(remoteMessage.getData().toString());
+        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+
+        //Delete the old row
+        assert task != null;
+        taskDBHelper.update(task);
+
+
+
     }
 
 

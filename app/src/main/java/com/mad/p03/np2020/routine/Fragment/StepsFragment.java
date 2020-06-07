@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.Fragment;
 
 import android.os.Bundle;
 
@@ -13,9 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.mad.p03.np2020.routine.R;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /*
  *

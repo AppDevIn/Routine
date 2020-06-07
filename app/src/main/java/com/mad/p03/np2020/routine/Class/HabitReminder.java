@@ -119,4 +119,21 @@ public class HabitReminder {
     public void setHours(int hours) {
         this.hours = hours;
     }
+
+    /**
+     *
+     * This method is used to check whether two habitReminder is identical
+     *
+     * @param habitReminder This parameter is used to get the
+     *              the habitReminder
+     *
+     * @return boolean This will return true if two objects is identical and false if they're not
+     * */
+    public boolean isIdentical(HabitReminder habitReminder){
+        return this.message.equals(habitReminder.message) &&
+                this.hours == habitReminder.getHours() &&
+                this.minutes == habitReminder.getMinutes() &&
+                this.custom_text.equals(habitReminder.getCustom_text()) &&
+                this.id == habitReminder.getId();
+    }
 }

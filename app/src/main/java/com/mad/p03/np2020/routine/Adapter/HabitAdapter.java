@@ -2,14 +2,12 @@ package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -19,6 +17,7 @@ import androidx.work.WorkManager;
 
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
@@ -158,9 +157,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         }
 
         if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_tick); // replace the add button as a tick button
+            holder.addBtn.setImageResource(R.drawable.habit_tick_white); // replace the add button as a tick button
         }else{ // if habit count < habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_add); // set the add button
+            holder.addBtn.setImageResource(R.drawable.habit_add_white); // set the add button
         }
 
     }

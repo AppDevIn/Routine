@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="544dp"
-    tools:context=".NotesFragment">
+    tools:context=".Fragment.NotesFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
