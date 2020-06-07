@@ -112,11 +112,11 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 7. [LoginActivity.java](app/src/main/java/com/mad/p03/np2020/routine/LoginActivity.java)
 
-8. [HistoryFragment.java](app/src/main/java/com/mad/p03/np2020/routine/HistoryFragment.java)
+8. [HistoryFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/HistoryFragment.java)
 
 9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
 
-10. [BoundService.java](app/src/main/java/com/mad/p03/np2020/routine/Class/BoundService.java)
+10.[BoundService.java](app/src/main/java/com/mad/p03/np2020/routine/background/BoundService.java)
 
 
    ​    
