@@ -137,6 +137,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
                 mTaskList.get(position).setChecked(b);
                 mTaskDBHelper.update(mTaskList.get(position).getTaskID(), b);
 
+                mTaskList.get(position).executeUpdateFirebase(null);
+
             }
         });
 
