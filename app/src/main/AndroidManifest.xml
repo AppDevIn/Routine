@@ -49,7 +49,11 @@
 
         <activity android:name=".Home" />
 
-        <activity android:name=".AddHabitActivity" />
+        <activity android:name=".HabitAddActivity" />
+
+        <activity android:name=".HabitEditActivity" />
+
+        <activity android:name=".HabitViewActivity" />
 
         <activity android:name=".HabitGroupActivity" />
 
