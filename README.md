@@ -145,7 +145,7 @@ All in one Productivity App
 
 18. [HabitViewActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitViewActivity.java)
    ​    
-  
+
 ### Pritheev Roshan
 
 1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardActivity.java)
@@ -179,8 +179,8 @@ All in one Productivity App
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/habitActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/LoginActivityClass.png)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/home.png)
-![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/register.png)
+
+
 
 
 
