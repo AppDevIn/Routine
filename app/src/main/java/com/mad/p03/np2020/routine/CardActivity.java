@@ -112,6 +112,7 @@ public class CardActivity extends AppCompatActivity {
                     Log.d(TAG, "onEditorAction: " + textView.getText());
                     mTask.setName(textView.getText().toString());
                     mTaskDBHelper.update(mTask.getTaskID(), mTask.getName(), null);
+                    mTask.executeUpdateFirebase(CardActivity.this);
                     showNewEntry(textView);
                 }
 
@@ -211,6 +212,6 @@ public class CardActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: Updating");
-       mTask.executeUpdateFirebase(this);
+
     }
 }
