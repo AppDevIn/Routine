@@ -27,59 +27,61 @@ All in one Productivity App
 
 ### Jeyavishnu
 
-1. [FCM.java](app/src/main/java/com/mad/p03/np2020/routine/background/FCMSection.java)
+1. [FCMSection.java](app/src/main/java/com/mad/p03/np2020/routine/background/FCMSection.java)
 
-2. DeleteSectionWorker.java
+2. [DeleteSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/DeleteSectionWorker.java)
 
-3. DeleteTaskWorker
+3. [DeleteTaskWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/DeleteTaskWorker.java)
 
-4. UploadSectionWorker
+4. [UploadSectionWorker.java]((app/src/main/java/com/mad/p03/np2020/routine/background/UploadSectionWorker.java))
 
-5. UploadTaskWorker
+5. [UploadTaskWorker.java](com/mad/p03/np2020/routine/background/UploadTaskWorker.java)
 
-6. UploadDataWorker
+6. [UploadDataWorker.java]((app/src/main/java/com/mad/p03/np2020/routine/background/UploadDataWorker.java))
 
-7. HomeItemTouchHelperAdapter
+7. [HomeItemTouchHelperAdapter.java]((app/src/main/java/com/mad/p03/np2020/routine/Interface/HomeItemTouchHelperAdapter.java))
 
-8. HomePageAdapter
+8. [HomePageAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HomePageAdapter.java)
 
-9. MyHomeItemTouchHelper
+9. [MyHomeItemTouchHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MyHomeItemTouchHelper.java)
 
-10. MySpinnerColorAdapter
+10. [MySpinnerColorAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MySpinnerColorAdapter.java)
 
-11. MySpinnerIconsAdapter
+11. [MySpinnerIconsAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MySpinnerIconsAdapter.java)
 
-12. MySpinnerIconsAdapter
+13. [MyTaskTouchHelper.java]((app/src/main/java/com/mad/p03/np2020/routine/Adapter/MyTaskTouchHelper.java))
 
-13. MyTaskTouchHelper
+15. [TaskTouchHelperAdapter.java](com/mad/p03/np2020/routine/Interface/TaskTouchHelperAdapter.java)
 
-14. OnSectionListener
+16. [TaskAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/TaskAdapter.java)
 
-15. TaskTouchHelperAdapter
+18. [SectionDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/SectionDBHelper.java)
 
-16. TaskAdapter
+19. [UserDBHelper.java]((app/src/main/java/com/mad/p03/np2020/routine/database/UserDBHelper.java))
 
-18. SectionDBHelper
+20. [TaskDBHelper.java]((app/src/main/java/com/mad/p03/np2020/routine/database/TaskDBHelper.java))
 
-19. UserDBHelper
+21. [DBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/DBHelper.java)
 
-20. TaskDBHelper
+22. [MyHomeViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/TaskViewHolder.java)
 
-21. DBHelper
+23. [TaskViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/MyHomeViewHolder.java)
 
-22. MyHomeViewHolder
+24. [Task.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Section.java)
 
-23. TaskViewHolder
+24. [Section.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Task.java)
 
-24. [Task](app/src/main/java/com/mad/p03/np2020/routine/Class/Section.java)
+25. [TaskActivity.java](app/src/main/java/com/mad/p03/np2020/routine/TaskActivity.java)
 
-24. [Section](app/src/main/java/com/mad/p03/np2020/routine/Class/Task.java)
+26. [Home.java](app/src/main/java/com/mad/p03/np2020/routine/Home.java)
 
-25. [TaskActivity](app/src/main/java/com/mad/p03/np2020/routine/TaskActivity.java)
+25. [GetTaskSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/GetTaskSectionWorker.java)
 
-26. [Home](app/src/main/java/com/mad/p03/np2020/routine/Home.java)
+26. [MyDatabaseListener.java](com/mad/p03/np2020/routine/Interface/MyDatabaseListener.java)
 
-   ​    
+27. [OnFirebaseAuth.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/OnFirebaseAuth.java)
+
+   
 
 ### Quan Sheng and Jeya
 
