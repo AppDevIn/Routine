@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.util.List;
 
@@ -44,6 +47,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     private Context mContext;
     private List<Task> mTaskList;
     private LifecycleOwner mOwner;
+    private TaskDBHelper mTaskDBHelper;
 
 
     //Listener
@@ -64,6 +68,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         this.mOwner = owner;
         mTaskList = taskList;
+
 
 
         Log.d(TAG, "TaskAdapter: " + mTaskList);
@@ -99,7 +104,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_items, parent, false);
 
         mContext = parent.getContext();
-
+        mTaskDBHelper = new TaskDBHelper(parent.getContext());
         return new TaskViewHolder(view, mItemTouchHelper, this);
     }
 
@@ -126,6 +131,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mTaskList.get(position).setChecked(b);
+                mTaskDBHelper.update(mTaskList.get(position).getTaskID(), b);
+
             }
         });
 
@@ -141,9 +148,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         holder.mListName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                mTaskList.get(position).setName(holder.mListName.getText().toString());
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                    Log.d(TAG, "onEditorAction: " + textView.getText());
+                    mTaskList.get(position).setName(holder.mListName.getText().toString());
+                    mTaskDBHelper.update(mTaskList.get(position).getTaskID(),mTaskList.get(position).getName());
+                    showNewEntry(holder.mListName);
+                }
+
                 return false;
+
             }
         });
 
@@ -249,6 +269,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
 
     }
+
+    /**
+     * Upon calling this method, the keyboard will retract
+     * and the recyclerview will scroll to the last item
+     */
+    private void showNewEntry(View view){
+
+        //auto hide keyboard after entry
+        InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 
 
 
