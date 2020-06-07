@@ -46,6 +46,7 @@
     <string name="ArrowDescription">Arrow Buttons</string>
     <string name="SetNotification"><b>Set a time</b></string>
     <string name="SetTimer">Set Timer</string>
+    <string name="SelectDate">Select a date</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
