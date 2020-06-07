@@ -92,8 +92,8 @@
 
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:imeOptions="actionSend|flagNoEnterAction"
 
+                    android:imeOptions="actionDone"
 
                     android:fontFamily="@font/montserrat_regular"
                     android:textSize="20sp"
