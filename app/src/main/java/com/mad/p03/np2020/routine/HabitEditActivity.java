@@ -271,7 +271,7 @@ public class HabitEditActivity extends AppCompatActivity {
      * */
     public Habit recordCurrentHabit(){
         Habit _habit = habit;
-        
+
         String name = habit_name.getText().toString(); // retrieve the title of the habit from the input field
         int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
 
