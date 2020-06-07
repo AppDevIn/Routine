@@ -77,6 +77,13 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         Log.d(TAG, "onCreate(): " + mSection.toString());
 
 
+        //init of the recycler view
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+
 
         //Find the id
         mTxtListName = findViewById(R.id.edSectioName);
@@ -118,12 +125,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         //Find all the date from SQLite
         mTaskList = mSection.getTaskList(this);
 
-        mRecyclerView = findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(layoutManager);
-
+        //Adding the adapter
         mTaskAdapter = new TaskAdapter(mTaskList, this);
         mRecyclerView.setAdapter(mTaskAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
