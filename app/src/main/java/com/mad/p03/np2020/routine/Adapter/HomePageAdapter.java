@@ -186,6 +186,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
         //Move to new activity
         Intent intent = new Intent(mContext, TaskActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intent.putExtra("section", mSectionList.get(position)); // Add the object
         mContext.startActivity(intent); //Start the activity
     }
