@@ -21,7 +21,10 @@ import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -64,11 +67,22 @@ public class PopUp extends Activity {
     //Used for minutes timer
     TextView TimerRight;
 
+    Calendar dateInitializer = Calendar.getInstance();
+
     //Initializing hours variable
-    public int hours = 0;
+    public int hours = dateInitializer.get(dateInitializer.HOUR_OF_DAY);
 
     //Initializing minutes variable
-    public int minutes = 0;
+    public int minutes = dateInitializer.get(dateInitializer.MINUTE);
+
+    //Initializing year variable
+    public int Year = dateInitializer.get(dateInitializer.YEAR);
+
+    //Initializing month variable
+    public int Month = dateInitializer.get(dateInitializer.MONTH);
+
+    //Initializing day variable
+    public int Day = dateInitializer.get(dateInitializer.DAY_OF_MONTH);
 
     //Used for CardName to pass through intent
     String CardName;
@@ -293,9 +307,19 @@ public class PopUp extends Activity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        String dateString = String.valueOf(Year) + "-" + String.valueOf(Month) + "-" + String.valueOf(Day) + " " + String.valueOf(hours) + ":" + String.valueOf(minutes) + ":0";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM--dd HH:mm:ss");
 
-
-
-
+        try {
+            Date setDate = dateFormat.parse(dateString);
+            Log.v(TAG, setDate.toString());
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }
