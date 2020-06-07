@@ -113,7 +113,7 @@ All in one Productivity App
 
 2. [HabitGroupAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HabitGroupAdapter.java)
 
-3. [OnItemClickListener.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/OnItemClickListener.java)
+3. [OnItemClickListener.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/OnItemClickListener.java)
 
 4. [HabitWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/HabitWorker.java)
 
@@ -134,6 +134,16 @@ All in one Productivity App
 12. [HabitGroupHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/HabitGroupHolder.java)
 
 13. [HabitActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitActivity.java)
+
+14. [HabitAddActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitAddActivity.java)
+
+15. [HabitEditActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitEditActivity.java)
+
+16. [HabitGroupActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitGroupActivity.java)
+
+17. [HabitReminderActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitReminderActivity.java)
+
+18. [HabitViewActivity.java](app/src/main/java/com/mad/p03/np2020/routine/HabitViewActivity.java)
    ​    
   
 ### Pritheev Roshan

@@ -413,6 +413,7 @@ public class Habit {
         return 0;
     }
 
+
     public static class HabitList {
 
         private ArrayList<Habit> habitList;
@@ -459,6 +460,4 @@ public class Habit {
          * */
         public Integer size() { return this.habitList.size(); }
     }
-
-
 }
