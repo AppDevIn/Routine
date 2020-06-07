@@ -371,7 +371,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
                     i++;
                 }
                 catch (Exception e){
-                    Log.e(TAG, "startUpAnimation: ", e);
+
 
                     textView.setText(R.string.register);
                    this.cancel();
