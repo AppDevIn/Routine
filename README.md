@@ -12,7 +12,7 @@ All in one Productivity App
 
 ## Team Members
 
-1. Jeyavishnu, S10192836C
+1. Jeyavishnu, S10192836C 
 2. Lee Quan sheng, S10198298G
 3. Pritheev, S10193030K
 4. Wai Hou Man, S10197636F
@@ -24,6 +24,15 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 
 ## Roles and contributions of each member
+
+1. Jeyavishnuu (Project Manager and Feature Developer)
+
+2. Lee Quan Sheng (UX/UI Designer and Feature Developer)
+
+2. Wai Hou Man (Project Planner and Feature Developer)
+
+4. Pritheev Roshan (UX/UI Designer and Feature Developer)
+
 
 ### Jeyavishnu
 
