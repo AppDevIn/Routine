@@ -20,7 +20,7 @@ All in one Productivity App
 
 
 ## Description of app
-
+Routine is an all-in-one app consisting of many popular productivity features integrated into one appication to give our users the convenience of not having to use multiple apps for the different features. With many modern productivity tools being designed for computer use, application versions of the tools are not optimised for use in mobile phones. As everyone always has a handphone with them all thye time, we felt that designing a productivity tool optimised for mobile use would allow users to be more efficient in carrying out tasks. Thus, we set out to solve the problem and Routine was created.
 
 
 ## Roles and contributions of each member
@@ -106,6 +106,9 @@ All in one Productivity App
 8. [HistoryFragment.java](app/src/main/java/com/mad/p03/np2020/routine/HistoryFragment.java)
 
 9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
+
+10. [BoundService.java](app/src/main/java/com/mad/p03/np2020/routine/Class/BoundService.java)
+
 
    ​    
 
@@ -243,22 +246,36 @@ All in one Productivity App
 
 Functionality: Helps to keep track of your habits on a period goal basis.
 
-<img src="Documentation/images/routinedemo_1.png" alt="drawing" width="200"/>
-This shows your today's habit. 
+<img src="Documentation/images/routinedemo.png" alt="drawing" width="200"/>
+This shows your today's habits.
 
 
-<img src="Documentation/images/routinedemo_2.png" alt="drawing" width="200"/>
-If the user clicks on the 
+| ![addCount](Documentation/images/routinedemo_1.png) | ![addHabit](Documentation/images/routinedemo_2.png) | ![viewHabit](Documentation/images/routinedemo_3.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Press the add button on the habit to check in**            | **Press the floating button to add habit**                   | **Press on the habit to view the habit**                 |
+
+| ![add/decrease count](Documentation/images/routinedemo_4.png) | ![modifyCount](Documentation/images/routinedemo_5.png) | ![deleteHabit](Documentation/images/routinedemo_7.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Press the add or "reset" button to respectively add or decrease the count by 1 on the habit view**    | **Click on the number sign to modify habit count  on the habit view**                  | **Press the delete button on the habit view to delete the habit**                 |
+
+| ![editHabit](Documentation/images/routinedemo_6.png) | ![addHabit](Documentation/images/routinedemo_8.png) | ![viewHabit](Documentation/images/routinedemo_9.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Click on the modify button on the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
+
+| ![editHabit](Documentation/images/routinedemo_6.png) | ![addReminder](Documentation/images/routinedemo_8.png) | ![turnTimePicker](Documentation/images/routinedemo_9.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Click on the modify button on the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
+
+| ![addGroup](Documentation/images/routinedemo_10.png) | ![createGroup](Documentation/images/routinedemo_11.png) | ![deleteGroup](Documentation/images/routinedemo_12.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Click on the group indicate text to assign a group to the habit**            | **Press the "create group" button to create a group**                   | **Press the "cancel" button to delete a group**                 |
+
 
 #### Focus
 
-| ![Focus Main](Documentation/images/focusPage.png) | ![Focus Task Input](Documentation/images/focusTaskInput.png)  | ![Focus History](Documentation/images/focusHistory.png) | ![Focus History](Documentation/images/focusHistoryView.png) |
+| ![Focus Main](Documentation/images/focusPage.png) | ![Focus Task Input](Documentation/images/focusTaskInput.png)  | ![Focus History](Documentation/images/focusComplete.png)| ![Focus Main](Documentation/images/focusHistoryView.png) |
 | ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
-| **Click the timer button to set timer**             | **Set Task Input to set timer** |   **View Focus History (Empty)**    | **View Focus History (Filled)**                   |
-
-| ![Focus Main](Documentation/images/focusComplete.png) | ![Focus Task Input](Documentation/images/FocusFail.png)  | ![Focus History](Documentation/images/focusFiinish.png) | ![Focus History](Documentation/images/focusNoti.png) |
-| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
-| **In Progress Focus**             | **Fail Focus** |   **Completed Focus**    | **Notification Focus**                   |
+| **Click the timer button to set timer**             | **Set Task Input to set timer** |   **Your Focus has started** | **Click recent icon to View Focus History** |
 
 
 

@@ -422,6 +422,11 @@ public class Habit {
     }
 
 
+    /**
+     *
+     * Model used to manage the habitList
+     *
+     */
     public static class HabitList {
 
         private ArrayList<Habit> habitList;
