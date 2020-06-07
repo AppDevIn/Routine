@@ -214,9 +214,21 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Login 
 
+![login](Documentation/images/login.png)
+
+1. Type in your email and password and click on the login button
+2. Click on the register button to register
+
 
 
 ### Register 
+
+![register](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/register.png)
+
+1. Enter the name should not be empty
+2. Enter Email with @ and .com
+3. Enter password must have alpha numeric, special and length og 8
+4. Press register to create account in firebase
 
 
 
