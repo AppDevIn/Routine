@@ -191,7 +191,9 @@ public class HabitEditActivity extends AppCompatActivity {
                 if (!habit.getTitle().equals(habit_name.getText().toString())){
                     Log.d(TAG, "HabitReminder: Update habit title");
                     habit.modifyTitle(habit_name.getText().toString()); // modify the title
-                    habit.getHabitReminder().setMessage(habit_name.getText().toString());
+                    if (habit.getHabitReminder() != null){
+                        habit.getHabitReminder().setMessage(habit_name.getText().toString());
+                    }
                 }
 
                 // update habit occurrence if modified
