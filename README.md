@@ -248,6 +248,13 @@ This shows your today's habit.
 <img src="Documentation/images/routinedemo_2.png" alt="drawing" width="200"/>
 If the user clicks on the 
 
+#### Focus
+
+| ![Focus Main](Documentation/images/focusPage.png) | ![Focus Task Input](Documentation/images/focusTaskInput.png)  | ![Focus History](Documentation/images/focusHistory.png) | ![Focus History](Documentation/images/focusHistoryView.png) |
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **Click the timer button to set timer**             | **Set Task Input to set timer** |   **View Focus History (Empty)**    | **View Focus History (Filled)**                   |
+
+
 
 
 
