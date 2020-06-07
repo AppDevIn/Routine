@@ -8,8 +8,8 @@
 
     <androidx.appcompat.widget.AppCompatCheckedTextView
         android:id="@+id/checkedTextView"
-        android:layout_width="285dp"
-        android:layout_height="49dp"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:gravity="center_vertical"
         android:padding="5dp"
