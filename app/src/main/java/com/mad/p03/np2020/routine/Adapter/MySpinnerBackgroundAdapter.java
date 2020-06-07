@@ -13,6 +13,9 @@ import com.mad.p03.np2020.routine.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * Not implemented
+ */
 public class MySpinnerBackgroundAdapter extends BaseAdapter {
 
     private Integer[] mBackground;

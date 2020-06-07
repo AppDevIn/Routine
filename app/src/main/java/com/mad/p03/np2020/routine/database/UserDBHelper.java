@@ -11,7 +11,15 @@ import com.mad.p03.np2020.routine.Class.User;
 import androidx.annotation.NonNull;
 
 
-//This database is just the cache for online data
+/**
+ *
+ * This is the database that is used create the user table
+ * in the database
+ *
+ *
+ * @author Jeyavishnu
+ * @since 03-06-2020
+ */
 public class UserDBHelper extends DBHelper {
 
     private final String TAG = "UserDatebase";
