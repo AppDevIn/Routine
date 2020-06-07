@@ -20,6 +20,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/habit_today"
@@ -40,9 +41,8 @@
             <Button
                 android:id="@+id/habit_close"
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="2dp"
                 android:layout_toEndOf="@id/habit_Vertical_divider"
                 android:background="@drawable/habit_btn_background2"
                 android:fontFamily="@font/montserrat_regular"
@@ -52,19 +52,20 @@
                 android:textColor="@color/colorWhite" />
 
             <Button
+                android:id="@+id/create_habit"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toEndOf="@id/habit_close"
                 android:background="@drawable/habit_btn_background"
                 android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/colorWhite"
-                android:layout_toEndOf="@id/habit_close"
-                android:layout_marginStart="10dp"
-                android:id="@+id/create_habit"
-                android:text="SAVE"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:src="@drawable/menu_addhabit"
-                android:layout_centerVertical="true"
                 android:letterSpacing="0.1"
-                />
+                android:src="@drawable/menu_addhabit"
+                android:text="SAVE"
+                android:textColor="@color/colorWhite" />
 
         </RelativeLayout>
 
@@ -130,7 +131,7 @@
                 android:background="@drawable/habit_btn_background"
                 android:id="@+id/daily_period"
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_height="30dp"
                 android:text="DAILY"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/colorBlack" />
@@ -139,7 +140,7 @@
                 android:background="@drawable/habit_btn_background"
                 android:id="@+id/weekly_period"
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_height="30dp"
                 android:text="WEEKLY"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/colorBlack" />
@@ -148,7 +149,7 @@
                 android:background="@drawable/habit_btn_background"
                 android:id="@+id/monthly_period"
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_height="30dp"
                 android:text="MONTHLY"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/colorBlack" />
@@ -157,7 +158,7 @@
                 android:background="@drawable/habit_btn_background"
                 android:id="@+id/yearly_period"
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_height="30dp"
                 android:text="YEARLY"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/colorBlack" />
@@ -338,7 +339,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
-            android:text="SET A REMINDER:"
+            android:text="SET A DAILY REMINDER:"
             android:letterSpacing="0.1"/>
 
         <LinearLayout
