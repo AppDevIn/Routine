@@ -105,6 +105,9 @@ All in one Productivity App
 
 9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
 
+10. [BoundService.java](app/src/main/java/com/mad/p03/np2020/routine/background/BoundService.java)
+
+
    ​    
 
 ### Wai Hou Man
