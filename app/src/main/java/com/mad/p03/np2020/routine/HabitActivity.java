@@ -1,10 +1,14 @@
 package com.mad.p03.np2020.routine;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +18,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +58,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     //User
     private User user;
 
+    //FAB
+    private FloatingActionButton add_habit;
+
     /**
      *
      * This method will be called when the start of the HabitActivity.
@@ -85,7 +94,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // initialise the notification channel
         initialiseHabitNotificationChannel();
 
-        FloatingActionButton add_habit = findViewById(R.id.add_habit);
+        setAppCompateButton();
+
+        add_habit = findViewById(R.id.add_habit);
         // set onClickListener on add_habit button
         add_habit.setOnClickListener(this);
 
@@ -231,6 +242,12 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         //To set setOnNavigationItemSelectedListener
         NavBarHelper  navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
+
+    private void setAppCompateButton(){
+        if (Build.VERSION.SDK_INT <= 21){
+        }
     }
 
 }
