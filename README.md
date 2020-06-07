@@ -226,7 +226,7 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Register 
 
-![register](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/register.png)
+![register](Documentation/images/register.png)
 
 1. Enter the name should not be empty
 2. Enter Email with @ and .com
