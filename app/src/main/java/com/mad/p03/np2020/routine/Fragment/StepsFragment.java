@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 /**
  *
- * CardActivity class used to manage card activities
+ * StepsFragment class for checklist
  *
  * @author Pritheev
  * @since 02-06-2020
