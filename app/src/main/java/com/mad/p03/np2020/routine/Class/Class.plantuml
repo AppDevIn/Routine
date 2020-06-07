@@ -5,9 +5,13 @@ title __CLASS's Class Diagram__\n
   namespace com.mad.p03.np2020.routine {
     namespace Class {
       class com.mad.p03.np2020.routine.Class.AlarmReceiver {
+          {static} - TAG : String
           - channelId : String
+          {static} - habitDBHelper : HabitDBHelper
           + capitalise()
           + onReceive()
+          + re_registerAlarm()
+          + setReminder()
       }
     }
   }
@@ -15,22 +19,8 @@ title __CLASS's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Class {
-      class com.mad.p03.np2020.routine.Adapter.CardAdapter {
-          ~ data : ArrayList<String>
-          + CardAdapter()
-          + getItemCount()
-          + onBindViewHolder()
-          + onCreateViewHolder()
-      }
-    }
-  }
-  
-
-  namespace com.mad.p03.np2020.routine {
-    namespace Class {
-      class com.mad.p03.np2020.routine.ViewHolder.CardViewHolder {
-          ~ stepItem : CheckedTextView
-          + CardViewHolder()
+      class com.mad.p03.np2020.routine.Class.CardNotification {
+          + onReceive()
       }
     }
   }
@@ -96,6 +86,13 @@ title __CLASS's Class Diagram__\n
           {static} + CREATE_HABITS_TABLE : String
           {static} + DROP_HABITS_TABLE : String
           {static} + TABLE_NAME : String
+          {static} + colorList : String[]
+          {static} + color_buttonIDS : int[]
+          {static} + color_schemeIDS : int[]
+          {static} + period_buttonIDS : int[]
+          {static} + period_countList : int[]
+          {static} + period_textList : String[]
+          {static} - TAG : String
           - count : int
           - habitID : long
           - holder_color : String
@@ -103,6 +100,7 @@ title __CLASS's Class Diagram__\n
           - period : int
           - time_created : String
           - title : String
+          + Habit()
           + Habit()
           + Habit()
           + Habit()
@@ -181,11 +179,13 @@ title __CLASS's Class Diagram__\n
           - minutes : int
           + HabitReminder()
           + HabitReminder()
+          + HabitReminder()
           + getCustom_text()
           + getHours()
           + getId()
           + getMessage()
           + getMinutes()
+          + isIdentical()
           + setCustom_text()
           + setHours()
           + setId()
@@ -222,7 +222,28 @@ title __CLASS's Class Diagram__\n
   namespace com.mad.p03.np2020.routine {
     namespace Class {
       class com.mad.p03.np2020.routine.Class.PopUp {
+          + Day : int
+          + Month : int
+          + Year : int
+          + buttonPressed : boolean
+          + hours : int
+          + minutes : int
+          ~ DownArrowLeft : ImageButton
+          ~ DownArrowRight : ImageButton
+          ~ SetTimer : Button
+          ~ TimerLeft : TextView
+          ~ TimerRight : TextView
+          ~ UpArrowLeft : ImageButton
+          ~ UpArrowRight : ImageButton
+          ~ date : String
+          ~ dateInitializer : Calendar
+          - DisplayDate : TextView
+          {static} - TAG : String
+          - dateSetListener : OnDateSetListener
+          + timeToText()
           # onCreate()
+          # onStop()
+          - createNotificationChannel()
       }
     }
   }
@@ -287,6 +308,7 @@ title __CLASS's Class Diagram__\n
           {static} + COLUMN_DUE_DATE : String
           {static} + COLUMN_NAME : String
           {static} + COLUMN_NOTES : String
+          {static} + COLUMN_POSITION : String
           {static} + COLUMN_REMIND_DATE : String
           {static} + COLUMN_SECTION_ID : String
           {static} + COLUMN_TASK_ID : String
@@ -295,36 +317,40 @@ title __CLASS's Class Diagram__\n
           {static} + TABLE_NAME : String
           {static} - TAG : String
           - checked : boolean
+          - dirty : boolean
           - dueDate : Date
           - mLabelList : List<Label>
           - mLabels : String
           - mName : String
           - mNotes : String
+          - mPosition : int
           - mSectionID : String
           - mSteps : List<Steps>
           - mTaskID : String
-          - remindDate : Date
-          + Task()
+          - remindDate : String
           + Task()
           + Task()
           + addTask()
           + deleteTask()
           + executeFirebaseDelete()
           + executeFirebaseUpload()
+          + executeUpdateFirebase()
           {static} + fromCursor()
-          {static} + fromJSON()
+          {static} + fromMap()
+          + getDateRemindDate()
           + getDueDate()
           + getName()
           + getNotes()
+          + getPosition()
           + getRemindDate()
           + getSectionID()
           + getTaskID()
           + isChecked()
           + setChecked()
-          + setDueDate()
+          + setName()
           + setNotes()
+          + setPosition()
           + setRemindDate()
-          + setSectionID()
           + setTaskID()
           + stringToDate()
           + toString()
@@ -344,9 +370,8 @@ title __CLASS's Class Diagram__\n
           {static} + SQL_CREATE_ENTRIES : String
           {static} + SQL_DELETE_ENTRIES : String
           {static} + TABLE_NAME : String
-          ~ mAuth : FirebaseUser
           - TAG : String
-          - mDateOfBirth : Date
+          - mAuth : FirebaseUser
           - mEmailAddr : String
           - mFocusList : ArrayList<Focus>
           - mListLabel : List<Label>
@@ -359,34 +384,29 @@ title __CLASS's Class Diagram__\n
           + User()
           + User()
           + User()
-          + addFocus()
           + addFocusList()
-          + addSection()
-          + changeName()
           + clearFocusList()
           + describeContents()
-          + digestPassword()
+          + executeFirebaseUserUpload()
+          + getAllSectionAndTask()
           + getAuth()
-          + getDateOfBirth()
           + getEmailAdd()
           + getName()
           + getPassword()
           + getUID()
           + getmFocusList()
           + readFocusFirebase()
-          + resetPwd()
+          + readHabitGroup_Firebase()
+          + readHabit_Firebase()
           + setAuth()
-          + setDateOfBirth()
           + setEmailAdd()
           + setName()
-          + setPPID()
           + setPassword()
           + setUID()
           + setmFocusList()
           + writeToParcel()
           # User()
           ~ User()
-          - stringToDate()
       }
     }
   }
@@ -401,17 +421,21 @@ title __CLASS's Class Diagram__\n
   
 
   com.mad.p03.np2020.routine.Class.AlarmReceiver -up-|> android.content.BroadcastReceiver
-  com.mad.p03.np2020.routine.Adapter.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.ViewHolder.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Class.AlarmReceiver o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : habitList
+  com.mad.p03.np2020.routine.Class.CardNotification -up-|> android.content.BroadcastReceiver
   com.mad.p03.np2020.routine.Class.Focus .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitGroup : group
   com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitReminder : habitReminder
   com.mad.p03.np2020.routine.Class.Habit +-down- com.mad.p03.np2020.routine.Class.Habit.HabitList
   com.mad.p03.np2020.routine.Class.ItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
   com.mad.p03.np2020.routine.Class.PopUp -up-|> android.app.Activity
+  com.mad.p03.np2020.routine.Class.PopUp o-- com.mad.p03.np2020.routine.Class.Task : mTask
   com.mad.p03.np2020.routine.Class.Section .up.|> java.io.Serializable
+  com.mad.p03.np2020.routine.Class.Task .up.|> java.io.Serializable
   com.mad.p03.np2020.routine.Class.User .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habitDBHelper
+  com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.HabitGroupDBHelper : habitGroupDBHelper
 
 
 right footer

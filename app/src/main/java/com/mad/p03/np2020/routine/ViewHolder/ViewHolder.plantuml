@@ -4,6 +4,27 @@ title __VIEWHOLDER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
+      class com.mad.p03.np2020.routine.ViewHolder.CardViewHolder {
+          + stepItem : CheckedTextView
+          + CardViewHolder()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace ViewHolder {
+      class com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration {
+          - space : int
+          + DividerItemDecoration()
+          + getItemOffsets()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace ViewHolder {
       class com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder {
           + Task : TextView
           + date : TextView
@@ -50,8 +71,9 @@ title __VIEWHOLDER's Class Diagram__\n
           + mImgBackGround : ImageView
           + mTextViewListName : TextView
           + mimgIcon : ImageView
-          ~ mGestureDetector : GestureDetector
-          ~ mTouchHelper : ItemTouchHelper
+          {static} - TAG : String
+          - mGestureDetector : GestureDetector
+          - mTouchHelper : ItemTouchHelper
           + MyHomeViewHolder()
           + onDown()
           + onFling()
@@ -70,8 +92,9 @@ title __VIEWHOLDER's Class Diagram__\n
       class com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder {
           + mCheckBox : CheckBox
           + mListName : TextView
-          ~ mGestureDetector : GestureDetector
-          ~ mItemTouchHelper : ItemTouchHelper
+          {static} - TAG : String
+          - mGestureDetector : GestureDetector
+          - mItemTouchHelper : ItemTouchHelper
           + TaskViewHolder()
           + onDown()
           + onFling()
@@ -85,6 +108,8 @@ title __VIEWHOLDER's Class Diagram__\n
   }
   
 
+  com.mad.p03.np2020.routine.ViewHolder.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
   com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder o-- com.mad.p03.np2020.routine.Adapter.FocusAdapter : adapter
@@ -93,7 +118,7 @@ title __VIEWHOLDER's Class Diagram__\n
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.View.OnTouchListener
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Adapter.OnSectionListener : mOnSectionListener
+  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter : mHomeItemTouchHelperAdapter
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.GestureDetector.OnGestureListener
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.View.OnTouchListener
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder

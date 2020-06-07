@@ -1,32 +1,21 @@
 package com.mad.p03.np2020.routine;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.OnLifecycleEvent;
-import androidx.lifecycle.ProcessLifecycleOwner;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,22 +31,40 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
+import com.mad.p03.np2020.routine.background.BoundService;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.database.FocusDBHelper;
-import com.mad.p03.np2020.routine.Class.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
+import static java.lang.String.valueOf;
 
 
 /**
@@ -72,31 +79,49 @@ import static java.lang.String.*;
 public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
 
 
-    /**Button for timer*/
-    private Button focusButton;
+    /**
+     * Button for timer
+     */
+    public Button focusButton;
 
-    /**Timer for minutes and seconds*/
+    /**
+     * Timer for minutes and seconds
+     */
     private int tmins, tsecs = 0;
 
-    /**This button state is used to track the timer button next state*/
+    /**
+     * This button state is used to track the timer button next state
+     */
     private String BUTTON_STATE = "EnterTask";
 
-    /**This button is to submit the task that user key*/
+    /**
+     * This button is to submit the task that user key
+     */
     private ImageButton taskSubmit; //
 
-    /**EditText for User to enter in the task*/
+    /**
+     * EditText for User to enter in the task
+     */
     private EditText taskInput; //
 
-    /**TextView on the display of the timer*/
+    /**
+     * TextView on the display of the timer
+     */
     private TextView min, sec, semicolon, textDisplay;
 
-    /**Used to track the timer left for Focus*/
+    /**
+     * Used to track the timer left for Focus
+     */
     private long mTimeLeftInMillis = 0;
 
-    /**Button to control the timer*/
+    /**
+     * Button to control the timer
+     */
     private ImageView minup, mindown, secup, secdown, mface;
 
-    /**Button used for event control the timer*/
+    /**
+     * Button used for event control the timer
+     */
     private boolean bupmin, bdownmin, bupsec, bdownsec;
 
     private Handler repeatUpdateHandler = new Handler(); //For long touch view
@@ -107,7 +132,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private String dateTimeTask, currentTask, mCompletion;
     private final String TAG = "Focus";
 
-    /**Notification channel ID is set to channel 1*/
+    /**
+     * Notification channel ID is set to channel 1
+     */
     private static final String CHANNEL_1_ID = "channel1";
 
     final String title = "You have an ongoing Focus";
@@ -122,12 +149,19 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     //Local Database
     FocusDBHelper focusDBHelper;
 
+    //Power Manager
+    PowerManager pm;
+
+    //BoundService
+    BoundService boundService;
+    boolean mServiceBound = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_focus);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
@@ -180,54 +214,32 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
+    }
 
-        mInstance = this;
-        // addObserver
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-
-        FocusActivity.getInstance().setOnVisibilityChangeListener(new ValueChangeListener() {
-            @Override
-            public void onChanged(Boolean value) {
-                Log.d("isAppInBackground", String.valueOf(value));
-                if(value){
-                    if (BUTTON_STATE.equals("Fail")) {
-                        createNotification(); //Notification pushed
-                        eCountDownTimer = new CountDownTimer(10000, 1000) { //timer countdown start
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                Log.v(TAG, "Time left for user to entry before auto destroy: " + millisUntilFinished);
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                focusButton.callOnClick(); //Simulates the button onclick to assume the failure of the task after 10 seconds
-                                Log.v(TAG, "Destroyed");
-                            }
-                        }.start();
-                    }
-                }
-            }
-        });
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     /**
-     *
      * Initialization the focusActivity
-     *
+     * <p>
      * Initialize minutes, seconds back to zero
      * Get Firebase Data
      * Get Local Database Data
      * Initialize object
+     *
      */
     private void initialization() {
         Log.v(TAG, "Database does not exist");
+
         focusDBHelper = new FocusDBHelper(FocusActivity.this);
-        if(focusDBHelper.isTableExists("FOCUS_TABLE")){
+        if (focusDBHelper.isTableExists("FOCUS_TABLE")) {
             Log.v(TAG, "Database Exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
             user.setmFocusList(focusDBHelper.getAllData());
             FirebaseDatabase();
-        }else{
+        } else {
             Log.v(TAG, "Database does not exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
             FirebaseDatabase();
@@ -242,14 +254,41 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         //Add it to LocalDatabase List
         Log.v(TAG, "Local database: " + focusDBHelper.getAllData().toString());
+
+        mInstance = this;
+        // addObserver of user
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+
+        FocusActivity.getInstance().setOnVisibilityChangeListener(new ValueChangeListener() {
+            @Override
+            public void onChanged(Boolean value) {
+                Log.d("isAppInBackground", String.valueOf(value));
+
+                if (value) {
+                    if (BUTTON_STATE.equals("Fail")) {
+                        if (Build.VERSION.SDK_INT >= 20) {
+                            if (pm.isInteractive()) {
+                                userQuitApp();
+                            }
+                        } else {
+                            if (pm.isScreenOn()) {
+                                userQuitApp();
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     //
     //This function is to track the button state so that it can show its respective view
+
     /**
      * Type of button state: Running, Fail, Success, Reset
-     * @Param BUTTON_STATE Running, Fail, Success Reset
      *
+     * @Param BUTTON_STATE Running, Fail, Success Reset
+     * <p>
      * This is used to trace the button state to display the respective view
      */
     private void focusTime() {
@@ -312,8 +351,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
-     *
      * Write to local Database
      *
      * @Param Focus passed in the new focus object to local database
@@ -326,10 +363,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
 
     /**
-     *
-     *
      * Used for update button sequencing (timer)
-     *
      */
     private void timeRunner() { //Timer running
         BUTTON_STATE = "Running";
@@ -343,12 +377,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
-     *
      * Update each view to a fail view
-     *
+     * <p>
      * If timer doesnt hit 0, user clicks on button_state on Give Up
-     *
      */
     private void timerFail() { //Give up
         BUTTON_STATE = "Fail";
@@ -361,11 +392,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Update each view to a success view
-     *
+     * <p>
      * If timer hits 0, it will execute
-     *
      */
     private void timerSuccess() { //Timer hits 0
         BUTTON_STATE = "Success";
@@ -378,9 +407,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Reset the text of the timer
-     *
+     * <p>
      * Will be executed when the task has ended
      */
     private void timerReset() { //Resetting to state
@@ -406,10 +434,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
 
     /**
-     *
-     *
      * Update the text of the timer
-     *
+     * <p>
      * Will be executed every click on the increment or decrement button
      */
     private void updateCountDownText() {
@@ -475,11 +501,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Event State onFocusChange
-     *
+     * <p>
      * Used detect if user click on outside of keyboard so it can automatically hide keyboard
-     *
      */
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -493,9 +517,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Event State onLongClick
-     *
      */
     @Override
     public boolean onLongClick(View v) {
@@ -518,10 +540,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Event State touchRelease
-     *
+     * <p>
      * The event onTouch used to stop increment/decrement timer continuously when the button is onRelease
+     *
      * @Param
      */
     public boolean touchRelease(boolean btimer, MotionEvent event) { //On release hold of timer
@@ -556,9 +578,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Event State onTouch
-     *
+     * <p>
      * The event onTouch used to increment/decrement timer continuously when the button is onhold
      */
     @Override
@@ -582,7 +603,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Event State onPause
      * If user exited the app, notification is pushed
      * Within 10 seconds, it will automatically count as fail
@@ -590,25 +610,27 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     @Override
     protected void onPause() {
         super.onPause();
-
-
     }
 
     /**
-     *
      * Event State onResume
      */
     @Override
     protected void onResume() {
         super.onResume();
+        Log.v(TAG, "On Resume Activity  " + BUTTON_STATE);
         if (eCountDownTimer != null) {
+            Log.v(TAG, "On CountDown");
             eCountDownTimer.cancel();
+            eCountDownTimer = null;
+            if(!BUTTON_STATE.equals("Reset")) {
+                StartTimer(mTimeLeftInMillis);
+            }
             Log.v(TAG, "Resume");
         }
     }
 
     /**
-     *
      * Open History Fragment
      */
     public void openHistory() { //Open history tab
@@ -617,7 +639,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+        fragmentTransaction.replace(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
 
     }
 
@@ -627,12 +649,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Decrement time of user preferences
      *
-     * @return int return back the decremented time
      * @param tChill used to passed in the current value of the time
-     * @param type used to passed to the type of the time (Minutes, Hours, Seconds)
+     * @param type   used to passed to the type of the time (Minutes, Hours, Seconds)
+     * @return int return back the decremented time
      */
     public int decrement(int tChill, String type) { //Increment method for timer
         if (type.equals("min")) {
@@ -648,12 +669,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Increment time of user preferences
      *
-     * @return int return back the decremented time
      * @param tChill used to passed in the current value of the time
-     * @param type used to passed to the type of the time (Minutes, Hours, Seconds)
+     * @param type   used to passed to the type of the time (Minutes, Hours, Seconds)
+     * @return int return back the decremented time
      */
     public int increment(int tChill, String type) { //Decrement method for timer
         if (type.equals("min")) {
@@ -669,8 +689,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * Start Timer for Focus task activity
+     *
      * @param TimeLeftInMillis used to passed in the time set on the activity to count down the timer
      */
     private void StartTimer(long TimeLeftInMillis) {
@@ -693,58 +713,28 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }.start();
     }
 
-    /**
-     *
-     * Create Notification
+    /***
+     * Event Handles when user quit the app
      */
-    private void createNotification() {
-        Log.e(TAG, "Notification is pushed");
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) { //API level for Kitkat
-            Log.e(TAG, "Notification is pushed for kitkat level");
-
-            Intent intent = new Intent(this, FocusActivity.class);
-            PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            Notification noti = new Notification.Builder(FocusActivity.this).setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.focus).setContentIntent(pIntent).build();
-            if (notificationManager != null) {
-                notificationManager.notify(0, noti);
-            } else {
-                Log.e(TAG, "Notification manager is a nullpointer");
+    public void userQuitApp() {
+        mCountDownTimer.cancel();
+        boundService.createNotification(); //Notification pushed
+        eCountDownTimer = new CountDownTimer(10000, 1000) { //timer countdown start
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.v(TAG, "Time left for user to entry before auto destroy: " + millisUntilFinished);
             }
-            Log.v("Notification", "Pushed");
-        } else {//API level for other than kitkat
-            Log.e(TAG, "Notification is pushed for higher than kitkat level");
 
-            //Creation Channel
-            NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH);
-            channel.setDescription("Focus");
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            assert manager != null;
-            manager.createNotificationChannel(channel);
-            sendChannel1();
-        }
-
+            @Override
+            public void onFinish() {
+                focusButton.callOnClick(); //Simulates the button onclick to assume the failure of the task after 10 seconds
+                Log.v(TAG, "Destroyed");
+            }
+        }.start();
     }
 
     /**
-     *
-     * Send notification to channel 1, used for api above 24
-     */
-    private void sendChannel1() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Intent intent = new Intent(this, FocusActivity.class);
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.focus).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
-        assert notificationManager != null;
-        notificationManager.notify(1, notification);
-
-    }
-
-    /**
-     *
      * Set Reference Data from firebase based on the UID
      */
     private void FirebaseDatabase() { //Firebase Reference
@@ -760,15 +750,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
     /**
      * Writing new Focus activity data to Google Firebase
-     *
+     * <p>
      * The OneTimeWorkRequest is used to set condition if there is network connectivity
      */
     private void writeDataFirebase(Focus focus) {
@@ -790,6 +774,14 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                         .build();
 
         WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, BoundService.class);
+        startService(intent);
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
 
@@ -827,6 +819,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     /**
      * Serialize a single object.
+     *
      * @return String this returns the custom object class as a string
      */
     public String serializeToJson(Focus myClass) {
@@ -836,13 +829,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * To set the bottom nav to listen to item changes
      * and chose the item that have been selected
      *
      * @param bottomNavigationView The botomNav that needs to be set to listen
      */
-    private void bottomNavInit(BottomNavigationView bottomNavigationView){
+    private void bottomNavInit(BottomNavigationView bottomNavigationView) {
 
         //To have the highlight
         Menu menu = bottomNavigationView.getMenu();
@@ -850,7 +842,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         menuItem.setChecked(true);
 
         //To set setOnNavigationItemSelectedListener
-        NavBarHelper  navBarHelper = new NavBarHelper(this);
+        NavBarHelper navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
     }
 
@@ -875,17 +867,39 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     public interface ValueChangeListener {
         void onChanged(Boolean value);
     }
+
     private ValueChangeListener visibilityChangeListener;
+
     public void setOnVisibilityChangeListener(ValueChangeListener listener) {
         this.visibilityChangeListener = listener;
     }
+
     private void isAppInBackground(Boolean isBackground) {
         if (null != visibilityChangeListener) {
             visibilityChangeListener.onChanged(isBackground);
         }
     }
+
     private static FocusActivity mInstance;
+
     public static FocusActivity getInstance() {
         return mInstance;
     }
+
+    //Bound Services
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mServiceBound = false;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            BoundService.MyBinder myBinder = (BoundService.MyBinder) service;
+            boundService = myBinder.getService();
+            boundService.setmContext(FocusActivity.this);
+            mServiceBound = true;
+        }
+
+    };
 }
