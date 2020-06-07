@@ -267,6 +267,25 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+    public void update(Task task){
+
+        Log.d(TAG, "update: Updating using object task");
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Task.COLUMN_NAME, task.getName());
+        updateValues.put(Task.COLUMN_CHECKED, task.isChecked());
+        db.update(
+                Task.TABLE_NAME,
+                updateValues,
+                Task.COLUMN_TASK_ID + " = ?",
+                new String[]{task.getTaskID()}
+        );
+
+        db.close();
+    }
+
 
     /**
      *
