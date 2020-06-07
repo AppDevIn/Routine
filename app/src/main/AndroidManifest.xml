@@ -28,7 +28,9 @@
 
         <activity android:name=".Home" />
 
-        <activity android:name=".FocusActivity"/>
+        <activity android:name=".FocusActivity"
+            android:launchMode="singleTask"
+            />
         
         <activity android:name=".Class.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
