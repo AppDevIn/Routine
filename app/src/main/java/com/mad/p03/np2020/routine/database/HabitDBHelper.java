@@ -194,6 +194,7 @@ public class HabitDBHelper extends DBHelper{
             habitList.addItem(habit);;
             res.moveToNext(); // move to the next result
         }
+        db.close();
 
         return habitList;
     }
@@ -332,6 +333,8 @@ public class HabitDBHelper extends DBHelper{
             return true;
         }
 
+        db.close();
+
         return false;
 
     }
@@ -364,6 +367,8 @@ public class HabitDBHelper extends DBHelper{
         if (reminder_message != null){ //check if habit reminder is null, if not set the object
             reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
         }
+
+        db.close();
 
         return reminder;
 
@@ -412,6 +417,8 @@ public class HabitDBHelper extends DBHelper{
         if (group_name != null) {// check if habit group is null, if not set the object
             group = new HabitGroup(group_id, group_name);
         }
+
+        db.close();
 
         return new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
 
