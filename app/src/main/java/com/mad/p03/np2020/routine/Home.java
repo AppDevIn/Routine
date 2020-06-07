@@ -6,7 +6,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +44,8 @@ import com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
+import com.mad.p03.np2020.routine.background.DeleteTaskWorker;
+import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
 import com.mad.p03.np2020.routine.database.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
 
@@ -168,9 +176,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: Done Running");
-                            Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onComplete(): UID: " + mUID);
+//                            Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(Home.this, "Never subscribe yet", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onComplete(): Never Subscribe yet");
+//                            Toast.makeText(Home.this, "Never subscribe yet", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -290,6 +300,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         }
 
+        finish();
 
     }
 
