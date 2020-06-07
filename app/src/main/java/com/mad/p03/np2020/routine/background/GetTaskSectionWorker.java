@@ -31,6 +31,13 @@ public class GetTaskSectionWorker extends Worker {
          mTaskDBHelper = new TaskDBHelper(context);
          mSectionDBHelper = new SectionDBHelper(context);
     }
+    /**
+     *
+     * To do background processing, to listen to section and task data
+     * in firebase
+     *
+     * @return Result This is tell what happen to the background work
+     */
 
     @NonNull
     @Override
@@ -51,6 +58,10 @@ public class GetTaskSectionWorker extends Worker {
 
     }
 
+    /**
+     * This will add all update, delete and see the is new data if there is it will
+     * be updated
+     */
     private void startListenSection(){
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").
                 child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -102,6 +113,10 @@ public class GetTaskSectionWorker extends Worker {
         });
     }
 
+    /**
+     * This will add all update, delete and see the is new data if there is it will
+     * be updated
+     */
     private void startListenTask(){
 
         DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("task").

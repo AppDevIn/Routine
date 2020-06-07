@@ -113,6 +113,11 @@ public class Section implements Serializable {
     }
 
 
+    /**
+     * Create the section object from a json object
+     * @param json The json you want to convert to object
+     * @return This will return the section object
+     */
     public static Section fromJSON(String json){
 
         int color = 0;
@@ -146,6 +151,12 @@ public class Section implements Serializable {
 
     }
 
+    /**
+     * Create a object from the DatasnapShot from
+     * firebase
+     * @param snapshot The snap you want to convert to object
+     * @return This will return the section object
+     */
     public static Section fromDataSnapShot(DataSnapshot snapshot){
         
         
@@ -161,6 +172,11 @@ public class Section implements Serializable {
 
     }
 
+    /**
+     * Create object from cursor from SQLite
+     * @param cursor The cursor you want to convert to object
+     * @return This will return the section
+     */
     public static Section fromCursor(Cursor cursor){
 
         return new Section(
@@ -197,7 +213,7 @@ public class Section implements Serializable {
     public int getPosition() {
         return position;
     }
-
+    /**@return String This return the UID of the user */
     public String getUID() {
         return mUID;
     }
