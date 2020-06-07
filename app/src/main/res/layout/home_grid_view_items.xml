@@ -23,7 +23,7 @@
 
 
 
-        android:translationZ="0dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -40,7 +40,7 @@
         android:src="@drawable/amazon"
 
         android:layout_marginTop="16dp"
-        android:translationZ="100dp"
+
 
         android:contentDescription="@string/TO_DO_LIST_Description"
 
@@ -61,7 +61,7 @@
         android:textColor="@color/black"
 
         android:textSize="18sp"
-        android:translationZ="100dp"
+        
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/todoIcon"
         app:layout_constraintStart_toStartOf="@+id/todoIcon"
