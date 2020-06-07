@@ -49,6 +49,7 @@ public class Task {
     private String mLabels;
     private List<Steps> mSteps;
     private List<Label> mLabelList;
+    private boolean dirty = false;
 
     private final static String TAG = "Task Model";
 
@@ -101,7 +102,7 @@ public class Task {
         this.mName = name;
         this.mSectionID = sectionID;
 
-        setTaskID(UUID.randomUUID().toString());
+        this.mTaskID = UUID.randomUUID().toString();
     }
 
     public Task(String name, int position, String sectionID, String taskID, boolean checked ) {
@@ -237,6 +238,7 @@ public class Task {
      *                 of this task
      */
     public void setTaskID(String taskID) {
+        dirty = true;
         mTaskID = taskID;
     }
 
@@ -249,14 +251,17 @@ public class Task {
      *                 where the list is at now
      */
     public void setPosition(int position) {
+//        dirty = true;
         mPosition = position;
     }
 
     public void setChecked(boolean checked) {
+        dirty = true;
         this.checked = checked;
     }
 
     public void setName(String name) {
+        dirty = true;
         mName = name;
     }
 
@@ -354,6 +359,61 @@ public class Task {
                 });
 
     }
+
+
+    /**
+     *
+     * Upload the task info to firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner LifecycleOwner to be used to observe my upload
+     */
+    public void executeUpdateFirebase(LifecycleOwner owner){
+        if(dirty) {
+
+
+            Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
+
+            //Setting condition
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
+
+
+            //Adding data which will be received from the worker
+            @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                    .putString(Task.COLUMN_NAME, getName())
+                    .putString(Section.COLUMN_SECTION_ID, getSectionID())
+                    .putString(Task.COLUMN_TASK_ID, getTaskID())
+                    .putInt(Task.COLUMN_POSITION, getPosition())
+                    .putBoolean(Task.COLUMN_CHECKED, isChecked())
+                    .build();
+
+            //Create the request
+            OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                    Builder(UploadTaskWorker.class)
+                    .setConstraints(constraints)
+                    .setInputData(firebaseSectionData)
+                    .build();
+
+            //Enqueue the request
+            WorkManager.getInstance().enqueue(uploadTask);
+
+
+            Log.d(TAG, "executeFirebaseUpload(): Put in queue");
+
+            WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
+                    .observe(owner, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            Log.d(TAG, "Task upload state: " + workInfo.getState());
+                        }
+                    });
+        }
+    }
+
 
     /**
      * Delete the task from firebase
