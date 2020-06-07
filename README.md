@@ -204,13 +204,25 @@ All in one Productivity App
 
 
 
-### Home
+#### Home
+
+| ![addHome](file:///Users/jeyavishnu/personal/Current/Routine/Documentation/images/addHome.png?lastModify=1591566248) | ![moveHome](file:///Users/jeyavishnu/personal/Current/Routine/Documentation/images/moveHome.png?lastModify=1591566248) | ![deleteHome](file:///Users/jeyavishnu/personal/Current/Routine/Documentation/images/deleteHome.png?lastModify=1591566248) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Press the floating button to add task**                    | **Press and hold to move**                                   | **Swipe to the end of the screen to delete**                 |
 
 
 
-<img src="Documentation/images/home.png" alt="drawing" width="200"/>
+### Task
+
+| <img src="Documentation/images/SwipeTask.png" alt="drawing" width="1600px"/> | <img src="Documentation/images/HoldMoveTask.png" alt="drawing" width="1500px"/> | <img src="Documentation/images/addTask.png" alt="drawing"/> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- |
+| **Swipe to right to delete**                                 | **Press and hold to move**                                   | **Clicked on the textbox to add task**                      |
 
 
 
-#### Task
+#### Task Info
+
+| ![setTaskNote](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/setTaskNote.png) | ![taskSetTime](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/taskSetTime.png) | ![taskSetDatee](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/taskSetDatee.png) | ![taskSetDate](/Users/jeyavishnu/personal/Current/Routine/Documentation/images/taskSetDate.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | :----------------------------------------------------------: | ------------------------------------------------------------ |
+| **Click the circle button to add notes**                     | **Click the circle button and bell icon to add time**        |      **Click the circle button  and text to add date**       | **Chose the data to add the date**                           |
 
