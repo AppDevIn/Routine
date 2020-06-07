@@ -42,7 +42,7 @@
 
         <activity android:name=".TaskActivity"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
 
         <activity android:name=".RegisterActivity" />
 
