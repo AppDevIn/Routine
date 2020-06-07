@@ -15,7 +15,7 @@ title __CLASS's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Class {
-      class com.mad.p03.np2020.routine.Class.CardAdapter {
+      class com.mad.p03.np2020.routine.Adapter.CardAdapter {
           ~ data : ArrayList<String>
           + CardAdapter()
           + getItemCount()
@@ -28,7 +28,7 @@ title __CLASS's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Class {
-      class com.mad.p03.np2020.routine.Class.CardViewHolder {
+      class com.mad.p03.np2020.routine.ViewHolder.CardViewHolder {
           ~ stepItem : CheckedTextView
           + CardViewHolder()
       }
@@ -401,8 +401,8 @@ title __CLASS's Class Diagram__\n
   
 
   com.mad.p03.np2020.routine.Class.AlarmReceiver -up-|> android.content.BroadcastReceiver
-  com.mad.p03.np2020.routine.Class.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Class.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Adapter.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.ViewHolder.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.Class.Focus .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitGroup : group
   com.mad.p03.np2020.routine.Class.Habit o-- com.mad.p03.np2020.routine.Class.HabitReminder : habitReminder

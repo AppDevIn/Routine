@@ -22,7 +22,12 @@
         android:windowSoftInputMode="adjustPan">
 
         <activity android:name=".CardActivity"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".RegisterActivity" />
 
@@ -42,8 +47,6 @@
 
         <activity android:name=".TaskActivity"/>
 
-        <activity android:name=".RegisterActivity" />
-
         <activity android:name=".AddHabitActivity" />
 
         <activity android:name=".HabitGroupActivity" />
@@ -53,10 +56,7 @@
 
         <activity
             android:name=".Home">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <service
             android:name=".background.FCMSection"

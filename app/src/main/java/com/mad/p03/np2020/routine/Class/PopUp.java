@@ -61,11 +61,20 @@ public class PopUp extends Activity {
     //Initializing minutes variable
     public int minutes = 0;
 
+    String CardName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
+
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle.getString("CardName") != null)
+        {
+            CardName = bundle.getString("CardName");
+        }
 
         createNotificationChannel();
 
@@ -92,14 +101,16 @@ public class PopUp extends Activity {
 
         final Calendar calendar = Calendar.getInstance();
 
+
         Log.v(TAG, "Timer Button Clicked");
         Intent intent = new Intent(PopUp.this, CardNotification.class);
+        intent.putExtra("CardName", CardName);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
         //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, 10000, pendingIntent );
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
 
         //Button onClickListener
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +163,9 @@ public class PopUp extends Activity {
         SetTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                calendar.set(calendar.HOUR, hours);
+                calendar.set(calendar.MINUTE, minutes);
+                calendar.set(calendar.SECOND, 0);
                 Log.v(TAG, "Timer Button Clicked");
                 Intent intent = new Intent(PopUp.this, CardNotification.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);

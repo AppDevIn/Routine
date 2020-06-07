@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Class;
+package com.mad.p03.np2020.routine.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,8 +6,17 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.mad.p03.np2020.routine.ViewHolder.CardViewHolder;
 
+import java.util.ArrayList;
+/**
+ *
+ * CardActivity class used to manage card activities
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
     ArrayList<String> data;
 

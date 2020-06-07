@@ -148,7 +148,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.HistoryFragment {
+    class com.mad.p03.np2020.routine.Fragment.HistoryFragment {
         {static} - FOCUS_DATABASE : String
         - TAG : String
         {static} - USER_GET : String
@@ -171,7 +171,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    interface com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener {
+    interface com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener {
         {abstract} + onFragmentInteraction()
     }
   }
@@ -250,7 +250,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.NotesFragment {
+    class com.mad.p03.np2020.routine.Fragment.NotesFragment {
         + NotesFragment()
         {static} + newInstance()
         + onCreate()
@@ -307,7 +307,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.StepsFragment {
+    class com.mad.p03.np2020.routine.Fragment.StepsFragment {
         ~ TAG : String
         ~ arrayAdapter : ArrayAdapter<String>
         ~ listView : ListView
@@ -352,7 +352,7 @@ title __ROUTINE's Class Diagram__\n
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnFocusChangeListener
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnLongClickListener
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnTouchListener
-  com.mad.p03.np2020.routine.FocusActivity .up.|> com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener
+  com.mad.p03.np2020.routine.FocusActivity .up.|> com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener
   com.mad.p03.np2020.routine.FocusActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
   com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.Class.User : user
@@ -366,11 +366,11 @@ title __ROUTINE's Class Diagram__\n
   com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Adapter.HabitAdapter : habitAdapter
   com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
   com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.HistoryFragment -up-|> androidx.fragment.app.Fragment
-  com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener : mListener
-  com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.HistoryFragment +-down- com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener
+  com.mad.p03.np2020.routine.Fragment.HistoryFragment -up-|> androidx.fragment.app.Fragment
+  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener : mListener
+  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Fragment.HistoryFragment +-down- com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener
   com.mad.p03.np2020.routine.Home .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
   com.mad.p03.np2020.routine.Home -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.Adapter.HomePageAdapter : mHomePageAdapter
@@ -384,13 +384,13 @@ title __ROUTINE's Class Diagram__\n
 
 
   com.mad.p03.np2020.routine.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.NotesFragment -up-|> androidx.fragment.app.Fragment
+  com.mad.p03.np2020.routine.Fragment.NotesFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.RegisterActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.RegisterActivity o-- com.mad.p03.np2020.routine.Class.User : mUser
   com.mad.p03.np2020.routine.RegisterActivity +-down- com.mad.p03.np2020.routine.RegisterActivity.RequestFirebase
   com.mad.p03.np2020.routine.RegisterActivity.RequestFirebase -up-|> android.os.AsyncTask
   com.mad.p03.np2020.routine.Settings -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.StepsFragment -up-|> androidx.fragment.app.Fragment
+  com.mad.p03.np2020.routine.Fragment.StepsFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener
   com.mad.p03.np2020.routine.TaskActivity .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
   com.mad.p03.np2020.routine.TaskActivity -up-|> androidx.appcompat.app.AppCompatActivity
