@@ -118,7 +118,7 @@ title __VIEWHOLDER's Class Diagram__\n
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.View.OnTouchListener
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter : mHomeItemTouchHelperAdapter
+  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Interface.HomeItemTouchHelperAdapter : mHomeItemTouchHelperAdapter
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.GestureDetector.OnGestureListener
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.View.OnTouchListener
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder

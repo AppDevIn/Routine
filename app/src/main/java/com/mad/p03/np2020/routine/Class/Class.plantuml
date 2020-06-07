@@ -20,6 +20,7 @@ title __CLASS's Class Diagram__\n
   namespace com.mad.p03.np2020.routine {
     namespace Class {
       class com.mad.p03.np2020.routine.Class.CardNotification {
+          {static} - TAG : String
           + onReceive()
       }
     }
@@ -100,6 +101,7 @@ title __CLASS's Class Diagram__\n
           - period : int
           - time_created : String
           - title : String
+          + Habit()
           + Habit()
           + Habit()
           + Habit()
@@ -225,9 +227,10 @@ title __CLASS's Class Diagram__\n
           + Day : int
           + Month : int
           + Year : int
-          + buttonPressed : boolean
+          + dateSet : boolean
           + hours : int
           + minutes : int
+          + timeSet : boolean
           ~ DownArrowLeft : ImageButton
           ~ DownArrowRight : ImageButton
           ~ SetTimer : Button
@@ -274,6 +277,7 @@ title __CLASS's Class Diagram__\n
           + executeFirebaseSectionDelete()
           + executeFirebaseSectionUpload()
           {static} + fromCursor()
+          {static} + fromDataSnapShot()
           {static} + fromJSON()
           + getBackgroundColor()
           + getBmiIcon()
@@ -281,6 +285,7 @@ title __CLASS's Class Diagram__\n
           + getName()
           + getPosition()
           + getTaskList()
+          + getUID()
           + setName()
           + setPosition()
           + toString()
@@ -319,23 +324,22 @@ title __CLASS's Class Diagram__\n
           - checked : boolean
           - dirty : boolean
           - dueDate : Date
-          - mLabelList : List<Label>
-          - mLabels : String
           - mName : String
           - mNotes : String
           - mPosition : int
           - mSectionID : String
-          - mSteps : List<Steps>
           - mTaskID : String
           - remindDate : String
           + Task()
           + Task()
           + addTask()
           + deleteTask()
+          + equals()
           + executeFirebaseDelete()
           + executeFirebaseUpload()
           + executeUpdateFirebase()
           {static} + fromCursor()
+          {static} + fromDataSnapShot()
           {static} + fromMap()
           + getDateRemindDate()
           + getDueDate()

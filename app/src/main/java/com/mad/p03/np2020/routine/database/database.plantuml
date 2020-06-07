@@ -47,6 +47,7 @@ title __DATABASE's Class Diagram__\n
           + getHabit()
           + getReminder()
           + insertHabit()
+          + insertHabitFromFirebase()
           + isReminderExisted()
           + onCreate()
           + onDowngrade()
@@ -66,19 +67,10 @@ title __DATABASE's Class Diagram__\n
           + deleteAllHabitGroups()
           + getAllGroups()
           + insertGroup()
+          + insertGroupFromFirebase()
           + onCreate()
           + onDowngrade()
           + onUpgrade()
-      }
-    }
-  }
-  
-
-  namespace com.mad.p03.np2020.routine {
-    namespace database {
-      interface com.mad.p03.np2020.routine.Interface.MyDatabaseListener {
-          {abstract} + onDataAdd()
-          {abstract} + onDataDelete()
       }
     }
   }

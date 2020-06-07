@@ -4,6 +4,28 @@ title __INTERFACE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Interface {
+      interface com.mad.p03.np2020.routine.Interface.HomeItemTouchHelperAdapter {
+          {abstract} + onItemClicked()
+          {abstract} + onItemMove()
+          {abstract} + onItemSwiped()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Interface {
+      interface com.mad.p03.np2020.routine.Interface.MyDatabaseListener {
+          {abstract} + onDataAdd()
+          {abstract} + onDataDelete()
+          {abstract} + onDataUpdate()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Interface {
       interface com.mad.p03.np2020.routine.Interface.OnFirebaseAuth {
           {abstract} + OnSignUpFailure()
           {abstract} + OnSignUpSuccess()
@@ -16,6 +38,17 @@ title __INTERFACE's Class Diagram__\n
     namespace Interface {
       interface com.mad.p03.np2020.routine.Interface.OnItemClickListener {
           {abstract} + onItemClick()
+      }
+    }
+  }
+  
+
+  namespace com.mad.p03.np2020.routine {
+    namespace Interface {
+      interface com.mad.p03.np2020.routine.Interface.TaskTouchHelperAdapter {
+          {abstract} + onItemClicked()
+          {abstract} + onItemMove()
+          {abstract} + onItemSwiped()
       }
     }
   }
