@@ -6,6 +6,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -66,7 +71,7 @@ import static java.lang.String.*;
  */
 
 
-public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleOwner, LifecycleObserver {
 
 
     /**Button for timer*/
@@ -178,7 +183,33 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
 
+        mInstance = this;
+        // addObserver
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
+        FocusActivity.getInstance().setOnVisibilityChangeListener(new ValueChangeListener() {
+            @Override
+            public void onChanged(Boolean value) {
+                Log.d("isAppInBackground", String.valueOf(value));
+                if(value){
+                    if (BUTTON_STATE.equals("Fail")) {
+                        createNotification(); //Notification pushed
+                        eCountDownTimer = new CountDownTimer(10000, 1000) { //timer countdown start
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                Log.v(TAG, "Time left for user to entry before auto destroy: " + millisUntilFinished);
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                focusButton.callOnClick(); //Simulates the button onclick to assume the failure of the task after 10 seconds
+                                Log.v(TAG, "Destroyed");
+                            }
+                        }.start();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -280,12 +311,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 writeToDatabase(focus);
                 break;
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
     }
 
     /**
@@ -508,6 +533,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         return false;
     }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
     class RptUpdater implements Runnable {
         public void run() {
             if (bupmin) {
@@ -563,21 +593,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     protected void onPause() {
         super.onPause();
 
-        if (BUTTON_STATE.equals("Fail")) {
-            createNotification(); //Notification pushed
-            eCountDownTimer = new CountDownTimer(10000, 1000) { //timer countdown start
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    Log.v(TAG, "Time left for user to entry before auto destroy: " + millisUntilFinished);
-                }
 
-                @Override
-                public void onFinish() {
-                    focusButton.callOnClick(); //Simulates the button onclick to assume the failure of the task after 10 seconds
-                    Log.v(TAG, "Destroyed");
-                }
-            }.start();
-        }
     }
 
     /**
@@ -607,14 +623,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
-    /**
-     *
-     * Decrement time of user preferences
-     *
-     * @return int return back the decremented time
-     * @param tChill used to passed in the current value of the time
-     * @param type used to passed to the type of the time (Minutes, Hours, Seconds)
-     */
     @Override
     public void onFragmentInteraction() {
         onBackPressed();
@@ -692,11 +700,15 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Create Notification
      */
     private void createNotification() {
+        Log.e(TAG, "Notification is pushed");
+
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) { //API level for Kitkat
+            Log.e(TAG, "Notification is pushed for kitkat level");
+
             Intent intent = new Intent(this, FocusActivity.class);
-            PendingIntent pIntent = PendingIntent.getActivity(FocusActivity.this, (int) System.currentTimeMillis(), intent, 0);
+            PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            Notification noti = new Notification.Builder(FocusActivity.this).setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground).setContentIntent(pIntent).build();
+            Notification noti = new Notification.Builder(FocusActivity.this).setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.focus).setContentIntent(pIntent).build();
             if (notificationManager != null) {
                 notificationManager.notify(0, noti);
             } else {
@@ -704,6 +716,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             }
             Log.v("Notification", "Pushed");
         } else {//API level for other than kitkat
+            Log.e(TAG, "Notification is pushed for higher than kitkat level");
+
             //Creation Channel
             NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, "Channel 1", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("Focus");
@@ -721,11 +735,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void sendChannel1() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), FocusActivity.class);
+        Intent intent = new Intent(this, FocusActivity.class);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
         assert notificationManager != null;
         notificationManager.notify(1, notification);
@@ -741,6 +755,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
         myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
         Log.i(TAG, "checks for myRef: " + myRef);
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 
     /**
@@ -830,6 +856,27 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         NavBarHelper  navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
     }
+
+    /***
+     * Application is put into a life cycle event to track the application service
+     *
+     */
+
+    // Adding some callbacks for test and log
+    public interface ValueChangeListener {
+        void onChanged(Boolean value);
+    }
+
+    private ValueChangeListener visibilityChangeListener;
+    public void setOnVisibilityChangeListener(ValueChangeListener listener) {
+        this.visibilityChangeListener = listener;
+    }
+
+    private static FocusActivity mInstance;
+    public static FocusActivity getInstance() {
+        return mInstance;
+    }
+
 
 
 }

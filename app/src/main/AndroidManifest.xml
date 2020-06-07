@@ -33,7 +33,9 @@
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
 
-        <activity android:name=".FocusActivity" />
+        <activity android:name=".FocusActivity"
+            android:launchMode="singleTop"
+            />
 
         <activity android:name=".Settings"
                 android:exported="true"/>
@@ -45,7 +47,7 @@
             android:fitsSystemWindows="true"
             />
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Home" />
 
         <activity android:name=".AddHabitActivity" />
 
@@ -55,7 +57,7 @@
 
 
         <activity
-            android:name=".Home">
+            android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
