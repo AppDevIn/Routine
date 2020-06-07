@@ -4,21 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.TextView;
 
 
 import com.mad.p03.np2020.routine.CardActivity;
-import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.Interface.TaskTouchHelperAdapter;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
@@ -41,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @author Jeyavishnu
  * @since 03-06-2020
  */
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter{
+public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements TaskTouchHelperAdapter {
 
     private final String TAG = "TaskAdapter";
 
@@ -137,6 +131,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
                 mTaskList.get(position).setChecked(b);
                 mTaskDBHelper.update(mTaskList.get(position).getTaskID(), b);
 
+                mTaskList.get(position).executeUpdateFirebase(null);
+
             }
         });
 
@@ -206,6 +202,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         //Move to the card layout
         Intent intent = new Intent(mContext, CardActivity.class);
         intent.putExtra("task", mTaskList.get(position));
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         mContext.startActivity(intent);
 
     }

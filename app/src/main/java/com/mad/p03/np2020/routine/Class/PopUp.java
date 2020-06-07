@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
@@ -47,7 +48,7 @@ public class PopUp extends Activity {
     //Initializing variables
 
     //TAG for logging
-    private static final String TAG = "CardNotification Setter";
+    private static final String TAG = "CardNotification PopUp";
 
     //Used for Date Display
     private TextView DisplayDate;
@@ -83,11 +84,11 @@ public class PopUp extends Activity {
     //Initializing minutes variable
     public int minutes = dateInitializer.get(dateInitializer.MINUTE);
 
+    //Initializing task variable
     Task mTask;
+
+    //Date variable to store date as a string
     String date;
-
-
-
 
     //Initializing year variable
     public int Year = dateInitializer.get(dateInitializer.YEAR);
@@ -98,16 +99,18 @@ public class PopUp extends Activity {
     //Initializing day variable
     public int Day = dateInitializer.get(dateInitializer.DAY_OF_MONTH);
 
+    //Used to check if date is set on notification setter
+    public boolean dateSet = false;
 
-    //Used to check if set timer button is pressed
-    public boolean buttonPressed = false;
+    //USed to check if time is set on notification setter
+    public boolean timeSet = false;
 
     /**
      * This is to initialize the variables with ids form views
      *
      * and call listeners for buttons
      *
-     * @param savedInstanceState
+     * @param savedInstanceState Set the bundle data to this content
      */
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -115,13 +118,10 @@ public class PopUp extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
 
-
+        //Bundle to get intent from CardActivity
         Bundle bundle = getIntent().getExtras();
 
-
-
         mTask = (Task) getIntent().getSerializableExtra("task");
-
 
         //Create a notification channel for Routine to use for card notifications
         createNotificationChannel();
@@ -150,14 +150,20 @@ public class PopUp extends Activity {
         //Identifying minutes timer text view
         TimerRight = findViewById(R.id.timerRight);
 
+        //Initializing a calender
         final Calendar calendar = Calendar.getInstance();
 
-
+        /**
+         *
+         * Creates intent and passes CardName to card notification
+         *
+         * for setting a notification
+         *
+         */
         Log.v(TAG, "Timer Button Clicked");
         Intent intent = new Intent(PopUp.this, CardNotification.class);
         intent.putExtra("CardName", mTask.getName());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
-        //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -166,11 +172,13 @@ public class PopUp extends Activity {
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Hour increasing button pressed");
                 //Add 1 to hours when button clicked
                 hours += 1;
 
                 //Setting text of hours
                 TimerLeft.setText(timeToText(hours, 24));
+                timeSet = true;
             }
         });
 
@@ -178,11 +186,13 @@ public class PopUp extends Activity {
         DownArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Hour decreasing button pressed");
                 //Remove 1 to hours when button clicked
                 hours -= 1;
 
                 //Setting text of hours
                 TimerLeft.setText(timeToText(hours, 24));
+                timeSet = true;
             }
         });
 
@@ -190,11 +200,13 @@ public class PopUp extends Activity {
         UpArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Minute increasing button pressed");
                 //Add 1 to minutes when button clicked
                 minutes += 1;
 
                 //Setting text of minutes
                 TimerRight.setText(timeToText(minutes, 60));
+                timeSet = true;
             }
         });
 
@@ -202,21 +214,28 @@ public class PopUp extends Activity {
         DownArrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Minute decreasing button pressed");
                 //Remove 1 to minutes when button clicked
-                minutes -= 1;
+                minutes = 1;
 
                 //Setting text of minutes
                 TimerRight.setText(timeToText(minutes, 60));
+                timeSet = true;
             }
         });
 
-        //
+        //Notification setter onClickListener
         SetTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.set(calendar.HOUR, hours);
-                calendar.set(calendar.MINUTE, minutes);
-                calendar.set(calendar.SECOND, 0);
+                /**
+                 *
+                 * Intent to open BroadcastReceiver class, CardNotification
+                 *
+                 * Initializing calendar with current selected time and date
+                 *
+                 */
+
                 Log.v(TAG, "Timer Button Clicked");
                 Intent intent = new Intent(PopUp.this, CardNotification.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
@@ -235,14 +254,28 @@ public class PopUp extends Activity {
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-                alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent );
+                alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+
+                Log.v(TAG, "Alarm Set");
+
+                if (timeSet == true && dateSet == true)
+                {
+                    Log.v(TAG, "Stopping Pop Up");
+                    finish();
+                }
+                else
+                {
+                    Log.v(TAG, "Error! Time and date must be selected!");
+                    Toast.makeText(getApplicationContext(), "You must select a time or date to set time!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-
+        //Date selector onClickListener
         DisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Date selector pressed");
                 Calendar cal = Calendar.getInstance();
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
@@ -254,14 +287,17 @@ public class PopUp extends Activity {
             }
         });
 
+        //Date picker dialog listener
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
+                Log.v(TAG, "Date Set");
                 Year = year;
                 Month = month;
                 Day = day;
-               date = day + "/" + month + "/" + year;
+                date = day + "/" + month + "/" + year;
                 DisplayDate.setText(date);
+                dateSet = true;
             }
         };
 
@@ -278,11 +314,19 @@ public class PopUp extends Activity {
         int width = dm.widthPixels;
 
         //Setting layout to 60% width and 40% height
-        getWindow().setLayout((int) (width*.6), (int) (height*.4));
+        getWindow().setLayout((int) (width*.7), (int) (height*.6));
 
     }
 
-    //Function to set text to 24 hour format
+    /**
+     * Function to set text to 24 hour format
+     *
+     * @param time to take in time value such as hours or minutes
+     * @param limit to specify limit such as 24 for hours and 60 for minutes
+     *
+     * @return returns time in a string format modified for textview
+     * such as a 0 in front for values less than 10
+     */
     public String timeToText(int time, int limit)
     {
         //initializing timer
@@ -320,6 +364,11 @@ public class PopUp extends Activity {
         return timer;
     }
 
+    /**
+     *
+     * Creates a notification channel that Routine can use for card related notifications
+     *
+     */
     private void createNotificationChannel()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

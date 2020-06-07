@@ -74,9 +74,11 @@ public class HabitAddActivity extends AppCompatActivity {
     //User
     private User user;
 
+    // Period and Color
     private int[] period;
     private String[] color;
 
+    // Habit
     private Habit habit;
 
     /**
@@ -179,6 +181,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 extras.putString("action", "add");
                 activityName.putExtras(extras);
                 startActivity(activityName);
+                finish();
             }
         });
 
@@ -193,6 +196,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 extras.putString("action", "add");
                 activityName.putExtras(extras);
                 startActivity(activityName);
+                finish();
             }
         });
 
@@ -201,7 +205,6 @@ public class HabitAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go back to habit activity
-
                 Intent activityName = new Intent(HabitAddActivity.this, HabitActivity.class);
                 activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
@@ -322,7 +325,7 @@ public class HabitAddActivity extends AppCompatActivity {
         }
 
         if (habit.getHabitReminder() != null){
-            habit_reminder_indicate_text.setText((format("%d:%d",habit.getHabitReminder().getHours(),habit.getHabitReminder().getMinutes()))); // set the timing on the TextView
+            habit_reminder_indicate_text.setText((format("%02d:%02d",habit.getHabitReminder().getHours(),habit.getHabitReminder().getMinutes()))); // set the timing on the TextView
         }
     }
 

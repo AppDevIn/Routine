@@ -97,7 +97,7 @@ title __VIEWHOLDER's Class Diagram__\n
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.GestureDetector.OnGestureListener
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.View.OnTouchListener
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder o-- com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
+  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder o-- com.mad.p03.np2020.routine.Interface.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
 
 
 right footer

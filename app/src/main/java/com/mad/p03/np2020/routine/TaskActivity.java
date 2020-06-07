@@ -8,17 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -26,8 +22,7 @@ import com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
-import com.mad.p03.np2020.routine.database.MyDatabaseListener;
-import com.mad.p03.np2020.routine.database.SectionDBHelper;
+import com.mad.p03.np2020.routine.Interface.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 
@@ -54,7 +49,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     TextView mTxtListName;
     EditText mEdTask;
     List<Task> mTaskList;
-    Button btnBack;
+
 
     /**
      *
@@ -89,7 +84,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         mTxtListName = findViewById(R.id.edSectioName);
         mConstraintLayout = findViewById(R.id.taskLayout);
         mEdTask = findViewById(R.id.edTask);
-        btnBack = findViewById(R.id.btnBack);
+
 
 
         //Set to listen for the editor
@@ -140,14 +135,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(TaskActivity.this, Home.class));
-            }
-        });
-
     }
 
     /**
@@ -158,6 +145,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         super.onResume();
         Log.d(TAG, "GUI in the foreground and interactive");
     }
+
+
 
     /**
      *
@@ -172,12 +161,9 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             mTaskList.get(i).setPosition(i);
             Task task = mTaskList.get(i);
             taskDBHelper.update(task.getTaskID(),task.getPosition());
-            task.executeUpdateFirebase(this);
+
 
         }
-
-        finish();
-
 
     }
 
@@ -270,6 +256,28 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
                 break;
             }
         }
+    }
+
+    @Override
+    public void onDataUpdate(Object object) {
+
+        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+        Task task = (Task) object;
+
+        for (int position = 0; position < mTaskList.size(); position++) {
+
+
+            if(mTaskList.get(position).getTaskID().equals(task.getTaskID())){
+
+                mTaskList.remove(position);
+                mTaskList.add(position, task);
+
+                mTaskAdapter.notifyItemChanged(position);
+                break;
+            }
+        }
+
+
     }
 
 

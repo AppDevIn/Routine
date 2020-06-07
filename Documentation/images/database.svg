@@ -79,7 +79,7 @@ title __DATABASE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace database {
-      interface com.mad.p03.np2020.routine.database.MyDatabaseListener {
+      interface com.mad.p03.np2020.routine.Interface.MyDatabaseListener {
           {abstract} + onDataAdd()
           {abstract} + onDataDelete()
       }

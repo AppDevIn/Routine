@@ -12,11 +12,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mad.p03.np2020.routine.CardActivity;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
-/*
+/**
  *
  * CardActivity class used to manage card activities
  *
@@ -28,7 +29,8 @@ public class NotesFragment extends Fragment
 {
 
     Task mTask;
-    //Empty constructor
+
+    //Constructor
     public NotesFragment(Task task) {
         mTask = task;
     }
@@ -75,6 +77,8 @@ public class NotesFragment extends Fragment
 
                 TaskDBHelper taskDBHelper = new TaskDBHelper(view.getContext());
                 taskDBHelper.update(mTask.getTaskID(),null, mTask.getNotes());
+
+                mTask.executeUpdateFirebase(null);
 
                 return false;
             }

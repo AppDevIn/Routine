@@ -1,19 +1,13 @@
 package com.mad.p03.np2020.routine.ViewHolder;
 
-import android.content.DialogInterface;
-import android.text.method.Touch;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
-import com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter;
+import com.mad.p03.np2020.routine.Interface.TaskTouchHelperAdapter;
 import com.mad.p03.np2020.routine.R;
 
 import androidx.annotation.NonNull;

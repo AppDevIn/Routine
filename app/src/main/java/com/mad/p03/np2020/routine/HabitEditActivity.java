@@ -135,7 +135,7 @@ public class HabitEditActivity extends AppCompatActivity {
         final HabitReminder habitReminder = habit.getHabitReminder();
 
         if (habitReminder != null){ // if habitReminder object is not null, set text based on its reminder timing on the TextView
-            habit_reminder_indicate_text.setText((format("%d:%d",habitReminder.getHours(),habitReminder.getMinutes()))); // set the timing on the TextView
+            habit_reminder_indicate_text.setText((format("%02d:%02d",habitReminder.getHours(),habitReminder.getMinutes()))); // set the timing on the TextView
         }else{
             habit_reminder_indicate_text.setText("NONE");
         }
@@ -147,7 +147,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 // go the habit group activity
                 Intent activityName = new Intent(HabitEditActivity.this, HabitGroupActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString("recorded_habit", habit_serializeToJson(habit));
+                extras.putString("recorded_habit", habit_serializeToJson(recordCurrentHabit()));
                 extras.putString("action", "edit");
                 activityName.putExtras(extras);
                 startActivity(activityName);
@@ -162,7 +162,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 // got to habit reminder activity
                 Intent activityName = new Intent(HabitEditActivity.this, HabitReminderActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString("recorded_habit", habit_serializeToJson(habit));
+                extras.putString("recorded_habit", habit_serializeToJson(recordCurrentHabit()));
                 extras.putString("action", "edit");
                 activityName.putExtras(extras);
                 startActivity(activityName);
@@ -180,7 +180,6 @@ public class HabitEditActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(initial_habit));
                 activityName.putExtras(extras);
-                activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
                 finish();
             }
@@ -251,7 +250,6 @@ public class HabitEditActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
-                activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
                 finish();
             }
@@ -263,6 +261,27 @@ public class HabitEditActivity extends AppCompatActivity {
     protected void onStop() {
         Log.d(TAG, "onStop: ");
         super.onStop();
+    }
+
+    /**
+     *
+     * This method is used to record the current habit based on the input field
+     *
+     * @return Habit This will return the habit
+     * */
+    public Habit recordCurrentHabit(){
+        Habit _habit = habit;
+
+        String name = habit_name.getText().toString(); // retrieve the title of the habit from the input field
+        int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
+
+        _habit.setTitle(name);
+        _habit.setOccurrence(occur);
+        _habit.setPeriod(period[0]);
+        _habit.setHolder_color(color[0]);
+
+        return _habit;
+
     }
 
     /**
