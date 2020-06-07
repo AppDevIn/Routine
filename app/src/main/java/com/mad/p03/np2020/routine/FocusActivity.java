@@ -83,6 +83,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Button for timer
      */
     public Button focusButton;
+    ImageButton imageButton;
 
     /**
      * Timer for minutes and seconds
@@ -168,7 +169,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         initialization(); //Process of data
 
         //ImageButton
-        ImageButton imageButton = findViewById(R.id.history);
+        imageButton = findViewById(R.id.history);
         focusButton = findViewById(R.id.start);
         taskSubmit = findViewById(R.id.taskSubmit);
 
