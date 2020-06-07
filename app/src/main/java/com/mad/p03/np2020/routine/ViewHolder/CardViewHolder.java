@@ -9,7 +9,7 @@ import com.mad.p03.np2020.routine.R;
 
 /**
  *
- * CardActivity class used to manage card activities
+ * CardViewHolder class for viewholder of recyclerview
  *
  * @author Pritheev
  * @since 02-06-2020

@@ -23,7 +23,7 @@ import java.util.Date;
 
 /**
  *
- * Bound Service Class Activity
+ * Bound Service Class Activity to manage background services
  *
  * @author Lee Quan Sheng
  * @since 08-06-2020

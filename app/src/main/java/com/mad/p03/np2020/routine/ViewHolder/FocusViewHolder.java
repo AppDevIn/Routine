@@ -18,6 +18,7 @@ import com.mad.p03.np2020.routine.R;
 
 /**
  *
+ * ViewHolder used to manage the recyclerViewAdapter
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020

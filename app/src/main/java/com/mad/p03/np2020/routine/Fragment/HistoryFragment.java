@@ -28,7 +28,7 @@ import java.util.Locale;
 
 /**
  *
- * Model used to manage the section
+ * History fragment used to manage the fragment of Focus layout section
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020

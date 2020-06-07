@@ -42,7 +42,7 @@ import java.util.Date;
 
 /**
  *
- * Login Activity for user
+ * Login activity used to manage the login layout section
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020

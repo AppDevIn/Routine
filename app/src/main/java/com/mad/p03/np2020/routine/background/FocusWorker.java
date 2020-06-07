@@ -17,7 +17,8 @@ import com.mad.p03.np2020.routine.Class.Focus;
 
 /**
  *
- * Model used to manage the section
+ * The worker delete and update the data in firebase task node from
+ * the background which extends the Worker.
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020
