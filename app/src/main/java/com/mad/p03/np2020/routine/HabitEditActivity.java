@@ -150,6 +150,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 extras.putString("action", "edit");
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });
@@ -164,6 +165,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 extras.putString("action", "edit");
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });
@@ -173,10 +175,12 @@ public class HabitEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go back to habit view activity
+                Habit initial_habit = habit_dbHandler.getHabit(habit);
                 Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
                 Bundle extras = new Bundle();
-                extras.putString("recorded_habit", habit_serializeToJson(habit));
+                extras.putString("recorded_habit", habit_serializeToJson(initial_habit));
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });
@@ -190,7 +194,9 @@ public class HabitEditActivity extends AppCompatActivity {
                 if (!habit.getTitle().equals(habit_name.getText().toString())){
                     Log.d(TAG, "HabitReminder: Update habit title");
                     habit.modifyTitle(habit_name.getText().toString()); // modify the title
-                    habit.getHabitReminder().setMessage(habit_name.getText().toString());
+                    if (habit.getHabitReminder() != null){
+                        habit.getHabitReminder().setMessage(habit_name.getText().toString());
+                    }
                 }
 
                 // update habit occurrence if modified
@@ -244,6 +250,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });

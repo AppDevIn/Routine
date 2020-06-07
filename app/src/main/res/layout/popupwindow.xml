@@ -120,8 +120,8 @@
 
     <Button
         android:id="@+id/setTimer"
-        android:layout_width="87dp"
-        android:layout_height="38dp"
+        android:layout_width="101dp"
+        android:layout_height="44dp"
         android:layout_marginTop="84dp"
         android:background="@drawable/rounded_white_rectangle"
         android:text="@string/SetTimer"

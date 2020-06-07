@@ -283,7 +283,7 @@ public class User implements Parcelable {
         habitGroupDBHelper.deleteAllHabitGroups();
 
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habitGroup").addValueEventListener(new ValueEventListener() {
+        myRef.child("habitGroup").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // to retrieve the data from each snapshot and insert them into SQLiteDatabase

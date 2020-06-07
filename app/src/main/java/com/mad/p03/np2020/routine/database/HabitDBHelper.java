@@ -194,6 +194,7 @@ public class HabitDBHelper extends DBHelper{
             habitList.addItem(habit);;
             res.moveToNext(); // move to the next result
         }
+        db.close();
 
         return habitList;
     }
@@ -332,6 +333,8 @@ public class HabitDBHelper extends DBHelper{
             return true;
         }
 
+        db.close();
+
         return false;
 
     }
@@ -365,7 +368,61 @@ public class HabitDBHelper extends DBHelper{
             reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
         }
 
+        db.close();
+
         return reminder;
+
+    }
+
+    /**
+     *
+     * This method is used to get a specific reminder existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return the habitReminder object, and return null if no result found.
+     * */
+    public Habit getHabit(Habit habit){
+        Log.d(TAG, "getHabit: ");
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
+        if (res != null){
+            res.moveToFirst(); //Only getting the first value
+        }
+
+        long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
+        String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
+        int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
+        int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
+        int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
+        String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
+        String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
+
+        int reminder_id = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_ID));
+        int reminder_hours = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_HOURS));
+        int reminder_minutes = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MINUTES));
+        String reminder_message = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES));
+        String reminder_customText = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT));
+
+        HabitReminder reminder = null;
+        if (reminder_message != null){ //check if habit reminder is null, if not set the object
+            reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
+        }
+
+        long group_id = res.getLong(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_ID));
+        String group_name = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_NAME));
+        HabitGroup group = null;
+        if (group_name != null) {// check if habit group is null, if not set the object
+            group = new HabitGroup(group_id, group_name);
+        }
+
+        db.close();
+
+        return new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
+
+
 
     }
 }

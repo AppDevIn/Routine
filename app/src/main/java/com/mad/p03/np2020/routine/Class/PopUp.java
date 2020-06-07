@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,7 +18,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
@@ -48,9 +46,13 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class PopUp extends Activity {
     //Initializing variables
 
+    //TAG for logging
     private static final String TAG = "CardNotification Setter";
 
+    //Used for Date Display
     private TextView DisplayDate;
+
+    //Used for Date Picker Pop Up
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     //Used for hours add button
@@ -97,11 +99,22 @@ public class PopUp extends Activity {
     public int Day = dateInitializer.get(dateInitializer.DAY_OF_MONTH);
 
 
+    //Used to check if set timer button is pressed
+    public boolean buttonPressed = false;
+
+    /**
+     * This is to initialize the variables with ids form views
+     *
+     * and call listeners for buttons
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
+
 
         Bundle bundle = getIntent().getExtras();
 
@@ -110,8 +123,10 @@ public class PopUp extends Activity {
         mTask = (Task) getIntent().getSerializableExtra("task");
 
 
+        //Create a notification channel for Routine to use for card notifications
         createNotificationChannel();
 
+        //Identifying date display view
         DisplayDate = (TextView) findViewById(R.id.datePicker);
 
         //Identifying hours add button
@@ -146,7 +161,6 @@ public class PopUp extends Activity {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
 
         //Button onClickListener
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +210,7 @@ public class PopUp extends Activity {
             }
         });
 
+        //
         SetTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,13 +220,25 @@ public class PopUp extends Activity {
                 Log.v(TAG, "Timer Button Clicked");
                 Intent intent = new Intent(PopUp.this, CardNotification.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
-                //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR, hours);
+                cal.set(Calendar.MINUTE, minutes);
+                cal.set(Calendar.SECOND, 0);
+
+                if (System.currentTimeMillis() > cal.getTimeInMillis()){
+                    // increment one day to prevent setting for past alarm
+                    cal.add(Calendar.DATE, 1);
+                }
+
+                long timeInMillis = cal.getTime().getTime();
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
+                alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent );
             }
         });
+
 
         DisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -308,6 +335,9 @@ public class PopUp extends Activity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
     @Override
     protected void onStop() {
@@ -332,14 +362,6 @@ public class PopUp extends Activity {
         catch (ParseException  e) {
             e.printStackTrace();
         }
-
-//        Date currentTime = Calendar.getInstance().getTime();
-//        Log.d(TAG, "onStop: " + currentTime);
-//        mTask.setRemindDate(currentTime);
-//        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
-//        taskDBHelper.update(mTask.getTaskID(), mTask.getRemindDate());
-//
-//        mTask.executeUpdateFirebase(null);
     }
 
 

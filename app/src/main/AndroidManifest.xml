@@ -24,7 +24,7 @@
         <activity android:name=".CardActivity"
         android:theme="@style/AppTheme"/>
 
-        <activity android:name=".FocusActivity" />
+        <activity android:name=".RegisterActivity" />
 
         <activity android:name=".LoginActivity"
         android:theme="@style/AppTheme">
@@ -49,22 +49,29 @@
         <activity android:name=".MainActivity"/>
 
         <activity android:name=".TaskActivity"
+            android:windowSoftInputMode="adjustResize"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            />
 
 
         <activity android:name=".HabitAddActivity" />
+
+        <activity android:name=".HabitEditActivity" />
+
+        <activity android:name=".HabitViewActivity" />
 
         <activity android:name=".HabitGroupActivity" />
 
         <activity android:name=".HabitReminderActivity" />
 
-        <activity android:name=".HabitViewActivity" />
 
-        <activity android:name=".HabitEditActivity" />
-
-        <activity android:name=".Home" />
-
+        <activity
+            android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <service
             android:name=".background.FCMSection"
             android:exported="false">
