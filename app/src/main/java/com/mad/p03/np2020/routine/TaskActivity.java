@@ -159,6 +159,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             mTaskList.get(i).setPosition(i);
             Task task = mTaskList.get(i);
             taskDBHelper.update(task.getTaskID(),task.getPosition());
+            task.executeUpdateFirebase(this);
 
         }
 
