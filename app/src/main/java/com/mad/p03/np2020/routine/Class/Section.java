@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.database.DataSnapshot;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
@@ -145,6 +146,21 @@ public class Section implements Serializable {
 
     }
 
+    public static Section fromDataSnapShot(DataSnapshot snapshot){
+        
+        
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String name = snapshot.child("name").getValue(String.class);
+        int icon = snapshot.child("bmiIcon").getValue(Integer.class) == null ? 0 : snapshot.child("bmiIcon").getValue(Integer.class);
+        int color = snapshot.child("backgroundColor").getValue(Integer.class) == null ? 0 : snapshot.child("backgroundColor").getValue(Integer.class);
+        String id = snapshot.child("id").getValue(String.class);
+
+        return new Section(name, color, icon, id, 0, UID);
+
+
+
+    }
+
     public static Section fromCursor(Cursor cursor){
 
         return new Section(
@@ -180,6 +196,10 @@ public class Section implements Serializable {
     /**@return int This return the position the section arranged in the recycler view*/
     public int getPosition() {
         return position;
+    }
+
+    public String getUID() {
+        return mUID;
     }
 
     /**
@@ -218,6 +238,8 @@ public class Section implements Serializable {
 
         SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
         sectionDBHelper.delete(getID());
+
+        
     }
 
     /**

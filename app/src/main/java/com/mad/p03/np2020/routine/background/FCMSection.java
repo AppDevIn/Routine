@@ -79,9 +79,9 @@ public class FCMSection extends FirebaseMessagingService {
 
         //Depending on the reason different functions run
         switch (Objects.requireNonNull(remoteMessage.getData().get("for"))){
-            case "SectionAdd": addSectionSQL(remoteMessage); break;
+//            case "SectionAdd": addSectionSQL(remoteMessage); break;
             case "SectionDelete": deleteSectionSQL(remoteMessage); ;break;
-            case "TaskAdd": addTaskSQL(remoteMessage); ;break;
+//            case "TaskAdd": addTaskSQL(remoteMessage); ;break;
             case "TaskDelete": deleteTaskSQL(remoteMessage); ;break;
             case "UpdateTask": updateTask(remoteMessage); ;break;
 

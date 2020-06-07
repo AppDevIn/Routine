@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
 import com.mad.p03.np2020.routine.background.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.background.UploadTaskWorker;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
@@ -21,6 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
@@ -47,13 +50,9 @@ public class Task implements Serializable {
     private int mPosition=0;
     private boolean checked;
     private String remindDate = "";
-    private Date dueDate;
     private String mNotes = "";
-    private String mLabels;
-    private List<Steps> mSteps;
-    private List<Label> mLabelList;
     private boolean dirty = false;
-
+    private Date dueDate;
     private final static String TAG = "Task Model";
 
     /**The table name for this model*/
@@ -142,6 +141,18 @@ public class Task implements Serializable {
         );
     }
 
+    public static Task fromDataSnapShot(DataSnapshot task){
+        String name = task.child("name").getValue(String.class);
+        int position = task.child("position").getValue(Integer.class) == null ? 0 : task.child("position").getValue(Integer.class);
+        String sectionID = task.child("sectionID").getValue(String.class);
+        String ID = task.child("taskID").getValue(String.class);
+        boolean checked = task.child("checked").getValue(Boolean.class) == null ? false : task.child("checked").getValue(Boolean.class);
+        String notes = task.child("notes").getValue(String.class);
+        String remindDate = task.child("remindDate").getValue(String.class);;
+
+        return new Task(name, position, sectionID, ID, checked, notes, remindDate);
+    }
+
     /**
      *
      * This is used to create task object using
@@ -216,10 +227,6 @@ public class Task implements Serializable {
         }
     }
 
-    /**@return Date This return the date the task is going to be due*/
-    public Date getDueDate() {
-        return dueDate;
-    }
 
     /**@return String This return a string of notes for this task*/
     public String getNotes() {
@@ -247,6 +254,10 @@ public class Task implements Serializable {
         return mPosition;
     }
 
+    /**@return Date This return the date the task is going to be due*/
+    public Date getDueDate() {
+        return dueDate;
+    }
 
     /**
      *
@@ -500,6 +511,34 @@ public class Task implements Serializable {
 
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        Task task = (Task) obj;
+
+        //Test
+//        boolean isTask = this.mTaskID.equals(task.getTaskID());
+//        boolean isNotes =  (this.mNotes.equals(task.getNotes()) || task.mNotes == null);
+//        boolean hasChecked = this.isChecked() == task.isChecked();
+//        boolean isName = this.getName().equals(task.getName());
+//        boolean isRemindDate =  this.getRemindDate().equals(task.getRemindDate());
+
+        boolean sameNotes = false;
+
+        if(task != null){
+            if(task.mNotes != null){
+                sameNotes = this.mNotes.equals(task.getNotes());
+            }
+            boolean isSame = this.mTaskID.equals(task.getTaskID()) &&
+                    sameNotes &&
+                    this.isChecked() == task.isChecked() &&
+                    this.getName().equals(task.getName()) &&
+                    this.getRemindDate().equals(task.getRemindDate());
+            return (isSame);
+        }else{
+            return false;
+        }
+    }
 
     @NonNull
     @Override
