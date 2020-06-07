@@ -28,8 +28,8 @@ import com.mad.p03.np2020.routine.database.TaskDBHelper;
 *
 * CardActivity class used to manage card activities
 *
-* @author Pritheev
-* @since 02-06-2020
+* @author Pritheev and Jeyavishn
+* @since 08-06-2020
 *
  */
 
