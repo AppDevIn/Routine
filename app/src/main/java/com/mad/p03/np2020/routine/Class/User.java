@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadDataWorker;
 import com.mad.p03.np2020.routine.database.FocusDBHelper;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
@@ -219,7 +220,7 @@ public class User implements Parcelable {
         habitDBHelper.deleteAllHabit();
 
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habit").addValueEventListener(new ValueEventListener() {
+        myRef.child("habit").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // to retrieve the data from each snapshot and insert them into SQLiteDatabase
@@ -306,6 +307,24 @@ public class User implements Parcelable {
             }
         });
 
+    }
+
+
+    public void getAllSectionAndTask(){
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+
+        //Create the request
+        OneTimeWorkRequest getSectionTask = new OneTimeWorkRequest.
+                Builder(GetTaskSectionWorker.class)
+                .setConstraints(constraints)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(getSectionTask);
     }
 
     public User() {
