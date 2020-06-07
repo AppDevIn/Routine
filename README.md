@@ -241,12 +241,30 @@ All in one Productivity App
 
 Functionality: Helps to keep track of your habits on a period goal basis.
 
-<img src="Documentation/images/routinedemo_1.png" alt="drawing" width="200"/>
-This shows your today's habit. 
+<img src="Documentation/images/routinedemo.png" alt="drawing" width="200"/>
+This shows your today's habits.
 
 
-<img src="Documentation/images/routinedemo_2.png" alt="drawing" width="200"/>
-If the user clicks on the 
+| ![addCount](Documentation/images/routinedemo_1.png) | ![addHabit](Documentation/images/routinedemo_2.png) | ![viewHabit](Documentation/images/routinedemo_3.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Press the add button on the habit to check in**            | **Press the floating button to add habit**                   | **Press on the habit to view the habit**                 |
+
+| ![add/decrease count](Documentation/images/routinedemo_4.png) | ![modifyCount](Documentation/images/routinedemo_5.png) | ![deleteHabit](Documentation/images/routinedemo_7.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Press the add or "reset" button to respectively add or decrease the count by 1 on the habit view**    | **Click on the number sign to modify habit count  on the habit view**                  | **Press the delete button on the habit view to delete the habit**                 |
+
+| ![editHabit](Documentation/images/routinedemo_6.png) | ![addHabit](Documentation/images/routinedemo_8.png) | ![viewHabit](Documentation/images/routinedemo_9.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Click on the modify button on the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
+
+| ![editHabit](Documentation/images/routinedemo_6.png) | ![addReminder](Documentation/images/routinedemo_8.png) | ![turnTimePicker](Documentation/images/routinedemo_9.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Click on the modify button on the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
+
+| ![addGroup](Documentation/images/routinedemo_10.png) | ![createGroup](Documentation/images/routinedemo11.png) | ![deleteGroup](Documentation/images/routinedemo_12.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
+| **Click on the group indicate text to assign a group to the habit**            | **Press the "create group" button to create a group**                   | **Press the "cancel" button to delete a group**                 |
+
 
 
 
