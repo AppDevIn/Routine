@@ -123,6 +123,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         Log.d(TAG, "onBindViewHolder: Running");
 
+
+
         holder.mListName.setText(mTaskList.get(position).getName());
         holder.mCheckBox.setChecked(mTaskList.get(position).isChecked());
 
@@ -135,16 +137,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
             }
         });
-
-        holder.mListName.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                view.setClickable(true);
-
-                return false;
-            }
-        });
-
 
         holder.mListName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
