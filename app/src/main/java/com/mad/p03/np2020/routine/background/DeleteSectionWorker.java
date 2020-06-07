@@ -51,6 +51,7 @@ public class DeleteSectionWorker extends Worker {
         FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section").child(String.valueOf(ID)).removeValue();
 
 
+
         return Result.success();
     }
 }
