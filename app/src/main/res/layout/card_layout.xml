@@ -92,13 +92,8 @@
 
     <RelativeLayout
         android:id="@+id/fragmentContainer"
-<<<<<<< HEAD
         android:layout_width="0dp"
         android:layout_height="559dp"
-=======
-        android:layout_width="412dp"
-        android:layout_height="569dp"
->>>>>>> aa531d191acb833f8e42c8c4626bdadc3888918e
         android:background="@color/white"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
