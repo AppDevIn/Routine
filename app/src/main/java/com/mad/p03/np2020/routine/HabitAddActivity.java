@@ -203,7 +203,6 @@ public class HabitAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go back to habit activity
-
                 Intent activityName = new Intent(HabitAddActivity.this, HabitActivity.class);
                 activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
