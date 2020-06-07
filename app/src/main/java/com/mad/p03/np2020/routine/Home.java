@@ -6,13 +6,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,10 +38,9 @@ import com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
-import com.mad.p03.np2020.routine.background.DeleteTaskWorker;
-import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
-import com.mad.p03.np2020.routine.database.MyDatabaseListener;
+import com.mad.p03.np2020.routine.Interface.MyDatabaseListener;
 import com.mad.p03.np2020.routine.database.SectionDBHelper;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.util.List;
 
@@ -346,6 +339,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         }
     }
 
+    @Override
+    public void onDataUpdate(Object object) {
+
+
+    }
 
 
     /**

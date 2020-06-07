@@ -6,13 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.Interface.MyDatabaseListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.BlockingDeque;
 
 import androidx.annotation.Nullable;
 
@@ -336,6 +334,9 @@ public class TaskDBHelper extends DBHelper {
                 Task.COLUMN_TASK_ID + " = ?",
                 new String[]{task.getTaskID()}
         );
+
+        if (mMyDatabaseListener != null)
+            mMyDatabaseListener.onDataUpdate(task);
 
         db.close();
     }

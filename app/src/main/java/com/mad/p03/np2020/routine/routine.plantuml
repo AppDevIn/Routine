@@ -371,7 +371,7 @@ title __ROUTINE's Class Diagram__\n
   com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener : mListener
   com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
   com.mad.p03.np2020.routine.Fragment.HistoryFragment +-down- com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener
-  com.mad.p03.np2020.routine.Home .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
+  com.mad.p03.np2020.routine.Home .up.|> com.mad.p03.np2020.routine.Interface.MyDatabaseListener
   com.mad.p03.np2020.routine.Home -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.Adapter.HomePageAdapter : mHomePageAdapter
   com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.database.SectionDBHelper : mSectionDBHelper
@@ -392,7 +392,7 @@ title __ROUTINE's Class Diagram__\n
   com.mad.p03.np2020.routine.Settings -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.Fragment.StepsFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener
-  com.mad.p03.np2020.routine.TaskActivity .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
+  com.mad.p03.np2020.routine.TaskActivity .up.|> com.mad.p03.np2020.routine.Interface.MyDatabaseListener
   com.mad.p03.np2020.routine.TaskActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.TaskActivity o-- com.mad.p03.np2020.routine.Class.Section : mSection
   com.mad.p03.np2020.routine.TaskActivity o-- com.mad.p03.np2020.routine.Adapter.TaskAdapter : mTaskAdapter
