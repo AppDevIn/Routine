@@ -150,6 +150,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 extras.putString("action", "edit");
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });
@@ -164,6 +165,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 extras.putString("action", "edit");
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });
@@ -178,6 +180,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(initial_habit));
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });
@@ -247,6 +250,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
+                finish();
                 startActivity(activityName);
             }
         });

@@ -143,6 +143,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
+                finish();
                 startActivity(activityName);
             }
         });
@@ -160,6 +161,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
+                finish();
                 startActivity(activityName);
 
             }
@@ -182,6 +184,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
+                finish();
                 startActivity(activityName);
             }
         });
