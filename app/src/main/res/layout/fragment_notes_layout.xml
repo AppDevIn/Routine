@@ -12,17 +12,18 @@
         android:padding="10dp">
 
         <EditText
-            android:padding="3dp"
+            android:id="@+id/notes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#50c5c5c5"
+            android:cursorVisible="true"
+            android:gravity="top|left"
+            android:hint="@string/NotesHint"
             android:inputType="textMultiLine"
             android:minLines="7"
-            android:hint="@string/NotesHint"
-            android:gravity="top|left"
-            android:cursorVisible="true"
-            android:scrollbars="vertical"
 
-            android:background="#50c5c5c5" />
+            android:padding="3dp"
+            android:scrollbars="vertical" />
 
     </RelativeLayout>
 
