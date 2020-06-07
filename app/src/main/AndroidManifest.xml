@@ -26,17 +26,10 @@
 
         <activity android:name=".RegisterActivity" />
 
-        <activity android:name=".LoginActivity"
-        android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Home" />
 
-        <activity android:name=".RegisterActivity"
-                android:exported="true"/>
-
+        <activity android:name=".FocusActivity"/>
+        
         <activity android:name=".Class.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
