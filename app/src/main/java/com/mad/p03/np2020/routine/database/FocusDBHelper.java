@@ -87,6 +87,7 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         cv.put(Focus.COLUMN_TASK_DATE, focus.getmDateTime());
 
         long insert = db.insert(Focus.FOCUS_TABLE, null, cv); //if insert is -1 means fail
+        db.close();
         if (insert == -1) return false;
         else return true;
     }
@@ -105,6 +106,7 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         String queryString = "DELETE FROM " + Focus.FOCUS_TABLE + " WHERE " + Focus.COLUMN_TASK_fbID + " = " + "'" + focus.getFbID() + "'";
 
         Cursor cursor = db.rawQuery(queryString, null);
+        db.close();
 
         if(cursor.moveToFirst()){
             return true;
@@ -182,9 +184,11 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         try (Cursor cursor = mDatabase.rawQuery(query, null)) {
             if(cursor!=null) {
                 if(cursor.getCount()>0) {
+                    mDatabase.close();
                     return true;
                 }
             }
+            mDatabase.close();
             return false;
         }
     }
