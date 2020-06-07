@@ -256,6 +256,9 @@ If the user clicks on the
 | ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
 | **Click the timer button to set timer**             | **Set Task Input to set timer** |   **View Focus History (Empty)**    | **View Focus History (Filled)**                   |
 
+| ![Focus Main](Documentation/images/focusComplete.png) | ![Focus Task Input](Documentation/images/focusFail.png)  | ![Focus History](Documentation/images/focusFinish.png) | ![Focus History](Documentation/images/focusNoti.png) |
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **In Progress Focus**             | **Fail Focus** |   **Completed Focus**    | **Notification Focus**                   |
 
 
 
