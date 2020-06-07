@@ -177,10 +177,21 @@ All in one Productivity App
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.jpg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Class.svg)
+![BlankViewModel](Documentation/images/BlankViewModel.png)
+![MainActivity](Documentation/images/MainActivity.png)
+![NavBarHelper](Documentation/images/NavBarHelper.png)
+![TaskActivity](Documentation/images/TaskActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/FocusActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/HabitActivity.png)
-Documentation/images/HabitAddActivity.png
+![HabitAddActivity](Documentation/images/HabitAddActivity.png)
+![HabitEditActivity](Documentation/images/HabitEditActivity.png)
+![HabitGroupActivity](Documentation/images/HabitGroupActivity.png)
+![HabitReminderActivity](Documentation/images/HabitReminderActivity.png)
+![HabitViewActivity](Documentation/images/HabitViewActivity.png)
+![Home](Documentation/images/Home.png)
+![HabitEditActivity](Documentation/images/RegisterActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/LoginActivityClass.png)
+
 
 
 
@@ -227,4 +238,25 @@ Documentation/images/HabitAddActivity.png
 | ![setTaskNote](Documentation/images/setTaskNote.png) | ![taskSetTime](Documentation/images/taskSetTime.png)  | ![taskSetDatee](Documentation/images/taskSetDatee.png) | ![taskSetDate](Documentation/images/taskSetDate.png) |
 | ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
 | **Click the circle button to add notes**             | **Click the circle button and bell icon to add time** |   **Click the circle button  and text to add date**    | **Chose the data to add the date**                   |
+
+#### Habit Tracker
+
+Functionality: Helps to keep track of your habits on a period goal basis.
+
+<img src="Documentation/images/routinedemo_1.png" alt="drawing" width="200"/>
+This shows your today's habit. 
+
+
+<img src="Documentation/images/routinedemo_2.png" alt="drawing" width="200"/>
+If the user clicks on the 
+
+#### Focus
+
+| ![Focus Main](Documentation/images/focusPage.png) | ![Focus Task Input](Documentation/images/focusTaskInput.png)  | ![Focus History](Documentation/images/focusHistory.png) | ![Focus History](Documentation/images/focusHistoryView.png) |
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **Click the timer button to set timer**             | **Set Task Input to set timer** |   **View Focus History (Empty)**    | **View Focus History (Filled)**                   |
+
+
+
+
 

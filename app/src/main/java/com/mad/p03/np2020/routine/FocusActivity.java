@@ -640,7 +640,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.replace(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+        fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
 
     }
 
