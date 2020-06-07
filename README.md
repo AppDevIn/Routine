@@ -20,7 +20,7 @@ All in one Productivity App
 
 
 ## Description of app
-
+Routine is an all-in-one app consisting of many popular productivity features integrated into one appication to give our users the convenience of not having to use multiple apps for the different features. With many modern productivity tools being designed for computer use, application versions of the tools are not optimised for use in mobile phones. As everyone always has a handphone with them all thye time, we felt that designing a productivity tool optimised for mobile use would allow users to be more efficient in carrying out tasks. Thus, we set out to solve the problem and Routine was created.
 
 
 ## Roles and contributions of each member
@@ -106,6 +106,9 @@ All in one Productivity App
 8. [HistoryFragment.java](app/src/main/java/com/mad/p03/np2020/routine/HistoryFragment.java)
 
 9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
+
+10. [BoundService.java](app/src/main/java/com/mad/p03/np2020/routine/Class/BoundService.java)
+
 
    ​    
 

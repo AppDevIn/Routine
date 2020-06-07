@@ -106,12 +106,13 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         String queryString = "DELETE FROM " + Focus.FOCUS_TABLE + " WHERE " + Focus.COLUMN_TASK_fbID + " = " + "'" + focus.getFbID() + "'";
 
         Cursor cursor = db.rawQuery(queryString, null);
-        db.close();
 
         if(cursor.moveToFirst()){
+            db.close();
             return true;
         }
         else{
+            db.close();
             return false;
         }
     }

@@ -21,7 +21,7 @@ import com.mad.p03.np2020.routine.database.TaskDBHelper;
  *
  * NotesFragment class for notes
  *
- * @author Pritheev
+ * @author Pritheev and Jeyavishnu
  * @since 02-06-2020
  *
  */
@@ -58,6 +58,16 @@ public class NotesFragment extends Fragment
 
     }
 
+    /**
+     *
+     *
+     * This is where you set the notes and update the sql and firebase
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -1,5 +1,8 @@
 package com.mad.p03.np2020.routine.Class;
 
+/**
+ * Not implemented
+ */
 public class Steps{
 
     private String mName;

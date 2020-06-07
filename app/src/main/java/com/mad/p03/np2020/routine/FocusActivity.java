@@ -739,7 +739,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Set Reference Data from firebase based on the UID
      */
     private void FirebaseDatabase() { //Firebase Reference
-        user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
+//        user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
         myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
         Log.i(TAG, "checks for myRef: " + myRef);
