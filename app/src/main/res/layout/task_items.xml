@@ -31,8 +31,9 @@
 
 
 
-
-            <EditText
+<!--        android:imeOptions="actionDone"-->
+<!--        android:inputType="text"-->
+            <TextView
                 android:id="@+id/txtListName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -43,9 +44,8 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:textSize="20sp"
                 android:textColor="@color/black"
-                android:imeOptions="actionDone"
                 android:text="@string/holder" android:maxLines="1"
-                android:inputType="text"/>
+                android:autofillHints="" />
 
 
                 </LinearLayout>

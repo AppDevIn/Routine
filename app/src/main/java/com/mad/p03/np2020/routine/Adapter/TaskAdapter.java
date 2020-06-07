@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import com.mad.p03.np2020.routine.CardActivity;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.R;
@@ -138,26 +140,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
             }
         });
 
-        holder.mListName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-
-
-                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                        event.getAction() == KeyEvent.ACTION_DOWN &&
-                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-
-                    Log.d(TAG, "onEditorAction: " + textView.getText());
-                    mTaskList.get(position).setName(holder.mListName.getText().toString());
-                    mTaskDBHelper.update(mTaskList.get(position).getTaskID(),mTaskList.get(position).getName());
-                    showNewEntry(holder.mListName);
-                }
-
-                return false;
-
-            }
-        });
 
 
     }
@@ -221,7 +203,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         Log.d(TAG, "onClick(): You have clicked on " + position + " task");
 
 
-        //TODO: Move to the card layout
+        //Move to the card layout
+        Intent intent = new Intent(mContext, CardActivity.class);
+        intent.putExtra("task", mTaskList.get(position));
+        mContext.startActivity(intent);
+
     }
 
 
@@ -261,19 +247,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
 
     }
-
-    /**
-     * Upon calling this method, the keyboard will retract
-     * and the recyclerview will scroll to the last item
-     */
-    private void showNewEntry(View view){
-
-        //auto hide keyboard after entry
-        InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert imm != null;
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
 
 
 

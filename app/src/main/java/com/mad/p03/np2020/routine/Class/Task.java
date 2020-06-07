@@ -11,10 +11,13 @@ import com.mad.p03.np2020.routine.database.TaskDBHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
@@ -35,17 +38,17 @@ import androidx.work.WorkManager;
  * @author Jeyavishnu
  * @since 04-06-2020
  */
-public class Task {
+public class Task implements Serializable {
 
     //Member variable
-    private String mName;
-    private String mTaskID;
-    private String mSectionID;
-    private int mPosition;
+    private String mName="";
+    private String mTaskID="";
+    private String mSectionID="";
+    private int mPosition=0;
     private boolean checked;
-    private Date remindDate;
+    private String remindDate = "";
     private Date dueDate;
-    private String mNotes;
+    private String mNotes = "";
     private String mLabels;
     private List<Steps> mSteps;
     private List<Label> mLabelList;
@@ -105,13 +108,16 @@ public class Task {
         this.mTaskID = UUID.randomUUID().toString();
     }
 
-    public Task(String name, int position, String sectionID, String taskID, boolean checked ) {
-
+    public Task(String name, int position, String sectionID, String taskID, boolean checked, String notes, String remindDate )  {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.mName = name;
         this.mSectionID = sectionID;
         this.mTaskID = taskID;
         this.mPosition = position;
         this.checked = checked;
+        this.mNotes = notes;
+        this.remindDate = remindDate;
+
     }
 
 
@@ -130,7 +136,9 @@ public class Task {
                 cursor.getInt(cursor.getColumnIndex(COLUMN_POSITION)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_SECTION_ID)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_TASK_ID)),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_CHECKED)) == 1
+                cursor.getInt(cursor.getColumnIndex(COLUMN_CHECKED)) == 1,
+                cursor.getString(cursor.getColumnIndex(COLUMN_NOTES)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_REMIND_DATE))
         );
     }
 
@@ -141,37 +149,39 @@ public class Task {
      * convert it into json object and extract the
      * information needed for the object
      *
-     * @param json The string of data in json format
+     * @param data The string of data in json format
      * @return Task Return back a task object
      */
-    public static Task fromJSON(String json){
+    public static Task fromMap(Map<String, String> data){
 
         String name = "";
         String id = "";
         String sectionID = "";
         boolean checked = false;
+        String notes = "";
+        String remindDate = "Sun Jun 07 13:15:51 GMT+08:00 2020";
 
 
         try {
-            //Make the string to object
-            JSONObject jsonObject = new JSONObject(json);
+
 
             //Get the values from the object
 
-            name = jsonObject.getString("name");
-            id = jsonObject.getString("id");
-            sectionID = jsonObject.getString("sectionID");
-            checked = Boolean.parseBoolean(jsonObject.getString("checked"));
+            name = data.get("name");
+            id = data.get("id");
+            sectionID = data.get("sectionID");
+//            notes = jsonObject.getString("notes");
+            checked = Boolean.parseBoolean(data.get("checked"));
 
 
 
             //Return back the object
-            return new Task(name, 0, sectionID, id,checked);
+            return new Task(name, 0, sectionID, id,checked, notes, remindDate);
 
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "fromJSON: ", e);
+            Log.e(TAG, "fromMap: ", e);
         }
 
 
@@ -192,8 +202,18 @@ public class Task {
     }
 
     /**@return Date This return the data that I need to remind about the task*/
-    public Date getRemindDate() {
+    public String getRemindDate() {
         return remindDate;
+    }
+
+    /**@return Date This return the data that I need to remind about the task*/
+    public Date getDateRemindDate() {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return dateFormat.parse(remindDate);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     /**@return Date This return the date the task is going to be due*/
@@ -226,7 +246,6 @@ public class Task {
     public int getPosition() {
         return mPosition;
     }
-
 
 
     /**
@@ -263,6 +282,16 @@ public class Task {
     public void setName(String name) {
         dirty = true;
         mName = name;
+    }
+
+    public void setNotes(String notes) {
+        dirty = true;
+        mNotes = notes;
+    }
+
+    public void setRemindDate(String remindDate) {
+        dirty = true;
+        this.remindDate = remindDate;
     }
 
     /**
@@ -331,10 +360,12 @@ public class Task {
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString(Task.COLUMN_NAME, getName())
-                .putString(Section.COLUMN_SECTION_ID, getSectionID())
+                .putString(Task.COLUMN_SECTION_ID, getSectionID())
                 .putString(Task.COLUMN_TASK_ID, getTaskID())
                 .putInt(Task.COLUMN_POSITION, getPosition())
                 .putBoolean(Task.COLUMN_CHECKED, isChecked())
+                .putString(Task.COLUMN_NOTES, getNotes())
+                .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
                 .build();
 
         //Create the request
@@ -372,8 +403,6 @@ public class Task {
      */
     public void executeUpdateFirebase(LifecycleOwner owner){
         if(dirty) {
-
-
             Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
 
             //Setting condition
@@ -385,10 +414,12 @@ public class Task {
             //Adding data which will be received from the worker
             @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                     .putString(Task.COLUMN_NAME, getName())
-                    .putString(Section.COLUMN_SECTION_ID, getSectionID())
+                    .putString(Task.COLUMN_SECTION_ID, getSectionID())
                     .putString(Task.COLUMN_TASK_ID, getTaskID())
                     .putInt(Task.COLUMN_POSITION, getPosition())
                     .putBoolean(Task.COLUMN_CHECKED, isChecked())
+                    .putString(Task.COLUMN_NOTES, getNotes())
+                    .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
                     .build();
 
             //Create the request
@@ -404,13 +435,17 @@ public class Task {
 
             Log.d(TAG, "executeFirebaseUpload(): Put in queue");
 
-            WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
-                    .observe(owner, new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(WorkInfo workInfo) {
-                            Log.d(TAG, "Task upload state: " + workInfo.getState());
-                        }
-                    });
+            if(owner != null) {
+
+
+                WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
+                        .observe(owner, new Observer<WorkInfo>() {
+                            @Override
+                            public void onChanged(WorkInfo workInfo) {
+                                Log.d(TAG, "Task Delete state: " + workInfo.getState());
+                            }
+                        });
+            }
         }
     }
 
@@ -450,14 +485,17 @@ public class Task {
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
 
+        if(owner != null) {
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(deleteTask.getId())
-                .observe(owner, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        Log.d(TAG, "Task Delete state: " + workInfo.getState());
-                    }
-                });
+
+            WorkManager.getInstance().getWorkInfoByIdLiveData(deleteTask.getId())
+                    .observe(owner, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            Log.d(TAG, "Task Delete state: " + workInfo.getState());
+                        }
+                    });
+        }
 
 
     }

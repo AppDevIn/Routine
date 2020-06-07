@@ -4,17 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.PopUp;
+import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.Fragment.NotesFragment;
 import com.mad.p03.np2020.routine.Fragment.StepsFragment;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 /**
 *
@@ -49,13 +57,24 @@ public class CardActivity extends AppCompatActivity {
     //Used to set if Notes Fragment visible or not
     boolean noteStatus = false;
 
+    Task mTask;
+
     TextView cardName;
+
+    TaskDBHelper mTaskDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_layout);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        //Get the Section Object
+        mTask = (Task) getIntent().getSerializableExtra("task");
+        Log.d(TAG, "onCreate(): " + mTask.toString());
+
+
 
         cardName = findViewById(R.id.id_edit_text);
 
@@ -71,10 +90,42 @@ public class CardActivity extends AppCompatActivity {
         //Used to initialize notesFragment with an id from view
         notesFragment = findViewById(R.id.notesFragment);
 
+
+        cardName.setText(String.valueOf(mTask.getName()));
+
+        mTaskDBHelper = new TaskDBHelper(this);
+
+
+        mTask = mTaskDBHelper.getTask(mTask.getTaskID());
+
+
+        cardName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                    Log.d(TAG, "onEditorAction: " + textView.getText());
+                    mTask.setName(textView.getText().toString());
+                    mTaskDBHelper.update(mTask.getTaskID(), mTask.getName(), null);
+                    showNewEntry(textView);
+                }
+
+                return false;
+
+            }
+        });
+
         //To open steps fragment when steps button clicked
         stepFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.v(TAG, "Steps Fragment Opened");
 
                 //Assign false to false to allow it to meet condition of if statement
                 stepStatus = false;
@@ -105,6 +156,8 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Log.v(TAG, "Notes Fragment Opened");
+
                 //Assign false to false to allow it to meet condition of if statement
                 noteStatus = false;
 
@@ -118,7 +171,7 @@ public class CardActivity extends AppCompatActivity {
                 if (!noteStatus)
                 {
                     //Creating an instance of the notes fragment class
-                    NotesFragment noteFrag = new NotesFragment();
+                    NotesFragment noteFrag = new NotesFragment(mTask);
 
                     //Replacing FragmentContainer in CardLayout with notes fragment view
                     fragmentTransaction.replace(R.id.fragmentContainer, noteFrag);
@@ -133,12 +186,31 @@ public class CardActivity extends AppCompatActivity {
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Notification Button Pressed");
                 Intent intent = new Intent(CardActivity.this, PopUp.class);
-                intent.putExtra("CardName", cardName.getText().toString());
+                intent.putExtra("task", mTask);
                 startActivity(intent);
             }
         });
 
     }
 
+    /**
+     * Upon calling this method, the keyboard will retract
+     * and the recyclerview will scroll to the last item
+     */
+    private void showNewEntry(View view){
+
+        //auto hide keyboard after entry
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: Updating");
+       mTask.executeUpdateFirebase(this);
+    }
 }

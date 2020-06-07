@@ -143,6 +143,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
+                finish();
                 startActivity(activityName);
             }
         });
@@ -160,6 +161,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
+                finish();
                 startActivity(activityName);
 
             }
@@ -182,6 +184,7 @@ public class HabitGroupActivity extends AppCompatActivity {
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);
 
+                finish();
                 startActivity(activityName);
             }
         });
@@ -202,6 +205,9 @@ public class HabitGroupActivity extends AppCompatActivity {
                 final Button cancelBtn = dialogView.findViewById(R.id.group_cancel);
                 final Button saveBtn = dialogView.findViewById(R.id.group_save);
                 final EditText name = dialogView.findViewById(R.id.creating_group_name);
+
+                name.requestFocus();
+                alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
                 // setonClickListener on cancel button
                 cancelBtn.setOnClickListener(new View.OnClickListener() {

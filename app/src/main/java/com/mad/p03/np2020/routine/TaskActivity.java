@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,6 +54,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     TextView mTxtListName;
     EditText mEdTask;
     List<Task> mTaskList;
+    Button btnBack;
 
     /**
      *
@@ -68,32 +71,25 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         setContentView(R.layout.activity_task);
         Log.d(TAG, "Creating GUI");
 
-        //To set to Full screen
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
         //Get the Section Object
         mSection = (Section) getIntent().getSerializableExtra("section");
         Log.d(TAG, "onCreate(): " + mSection.toString());
 
-        //Find all the date from SQLite
-        mTaskList = mSection.getTaskList(this);
 
+        //init of the recycler view
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTaskAdapter = new TaskAdapter(mTaskList, this);
-        mRecyclerView.setAdapter(mTaskAdapter);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
 
         //Find the id
         mTxtListName = findViewById(R.id.edSectioName);
         mConstraintLayout = findViewById(R.id.taskLayout);
         mEdTask = findViewById(R.id.edTask);
+        btnBack = findViewById(R.id.btnBack);
 
 
         //Set to listen for the editor
@@ -125,6 +121,16 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         super.onStart();
         Log.d(TAG, "GUI ready");
 
+
+        //Find all the date from SQLite
+        mTaskList = mSection.getTaskList(this);
+
+        //Adding the adapter
+        mTaskAdapter = new TaskAdapter(mTaskList, this);
+        mRecyclerView.setAdapter(mTaskAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
         mTxtListName.setText(mSection.getName());
         mConstraintLayout.setBackgroundColor(mSection.getBackgroundColor());
 
@@ -134,6 +140,13 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TaskActivity.this, Home.class));
+            }
+        });
 
     }
 
@@ -162,6 +175,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             task.executeUpdateFirebase(this);
 
         }
+
+        finish();
 
 
     }

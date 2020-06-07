@@ -184,6 +184,7 @@ public class HabitReminderActivity extends AppCompatActivity {
                     extras.putString("recorded_habit", habit_serializeToJson(habit));
                     activityName.putExtras(extras);
 
+                    finish();
                     startActivity(activityName);
 
                 }else{ // if switch is unchecked, turn the reminder inactive
@@ -198,6 +199,7 @@ public class HabitReminderActivity extends AppCompatActivity {
                     extras.putString("recorded_habit", habit_serializeToJson(habit));
                     activityName.putExtras(extras);
 
+                    finish();
                     startActivity(activityName);
                 }
 
@@ -214,6 +216,7 @@ public class HabitReminderActivity extends AppCompatActivity {
                     activityName = new Intent(HabitReminderActivity.this, HabitEditActivity.class);
                 }
 
+                finish();
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);

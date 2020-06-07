@@ -89,6 +89,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set onClickListener on add_habit button
         add_habit.setOnClickListener(this);
 
+        //Bottom Navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         habitRecyclerView = findViewById(R.id.my_recycler_view);
         habitRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -100,16 +110,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
-
-        //Bottom Navigation
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
-        bottomNavInit(bottomNavigationView);
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     /** This method is used to initialise the habit notification channel. */

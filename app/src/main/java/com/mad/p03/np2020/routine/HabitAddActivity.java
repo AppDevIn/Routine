@@ -201,8 +201,11 @@ public class HabitAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go back to habit activity
+
                 Intent activityName = new Intent(HabitAddActivity.this, HabitActivity.class);
+                activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
+                finish();
             }
         });
 
@@ -257,8 +260,11 @@ public class HabitAddActivity extends AppCompatActivity {
                     Toast.makeText(HabitAddActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                 }
 
+
                 Intent activityName = new Intent(HabitAddActivity.this, HabitActivity.class);
+                activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
+                finish();
 
             }
         });

@@ -283,6 +283,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //TODO Get All User Routine Data
                             user.readHabit_Firebase(context);
                             user.readHabitGroup_Firebase(context);
+                            user.getAllSectionAndTask();
 
                             Intent intent = new Intent(LoginActivity.this, Home.class);
                             intent.putExtra("user", user);

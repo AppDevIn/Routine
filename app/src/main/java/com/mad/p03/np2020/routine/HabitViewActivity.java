@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -133,7 +134,9 @@ public class HabitViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent activityName = new Intent(HabitViewActivity.this, HabitActivity.class);
+                activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
+                finish();
             }
         });
 
@@ -176,7 +179,6 @@ public class HabitViewActivity extends AppCompatActivity {
                 View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_view_modifycnt_dialog, viewGroup, false); // inflate the view
                 builder.setView(dialogView); //set view to the builder
                 final AlertDialog alertDialog = builder.create(); // build the alert dialog
-                alertDialog.show(); // show the alert dialog (modify count)
 
                 // initialise the widgets
                 final TextView dialog_title = dialogView.findViewById(R.id.habit_view_dialog_title);
@@ -187,6 +189,9 @@ public class HabitViewActivity extends AppCompatActivity {
                 // set text on the input fields based on the habit
                 dialog_title.setText(habit.getTitle());
                 dialog_cnt.setHint(cnt.getText().toString());
+
+                dialog_cnt.requestFocus();
+                alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
                 // set onClickListener on the cancel button
                 cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +224,8 @@ public class HabitViewActivity extends AppCompatActivity {
                         alertDialog.dismiss(); // dismiss the alert dialog (modify count)
                     }
                 });
+
+                alertDialog.show(); // show the alert dialog (modify count)
             }
         });
 
@@ -263,7 +270,9 @@ public class HabitViewActivity extends AppCompatActivity {
 
                         // go back to habit activity
                         Intent activityName = new Intent(HabitViewActivity.this, HabitActivity.class);
+                        activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(activityName);
+                        finish();
 
                     }
                 });

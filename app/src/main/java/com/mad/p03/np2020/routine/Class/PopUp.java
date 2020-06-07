@@ -20,11 +20,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  *
@@ -68,12 +77,17 @@ public class PopUp extends Activity {
     TextView TimerRight;
 
     Calendar dateInitializer = Calendar.getInstance();
-
     //Initializing hours variable
     public int hours = dateInitializer.get(dateInitializer.HOUR_OF_DAY);
 
     //Initializing minutes variable
     public int minutes = dateInitializer.get(dateInitializer.MINUTE);
+
+    Task mTask;
+    String date;
+
+
+
 
     //Initializing year variable
     public int Year = dateInitializer.get(dateInitializer.YEAR);
@@ -84,8 +98,6 @@ public class PopUp extends Activity {
     //Initializing day variable
     public int Day = dateInitializer.get(dateInitializer.DAY_OF_MONTH);
 
-    //Used for CardName to pass through intent
-    String CardName;
 
     //Used to check if set timer button is pressed
     public boolean buttonPressed = false;
@@ -106,10 +118,10 @@ public class PopUp extends Activity {
 
         Bundle bundle = getIntent().getExtras();
 
-        if (bundle.getString("CardName") != null)
-        {
-            CardName = bundle.getString("CardName");
-        }
+
+
+        mTask = (Task) getIntent().getSerializableExtra("task");
+
 
         //Create a notification channel for Routine to use for card notifications
         createNotificationChannel();
@@ -141,6 +153,13 @@ public class PopUp extends Activity {
         final Calendar calendar = Calendar.getInstance();
 
 
+        Log.v(TAG, "Timer Button Clicked");
+        Intent intent = new Intent(PopUp.this, CardNotification.class);
+        intent.putExtra("CardName", mTask.getName());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
+        //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
         //Button onClickListener
@@ -238,12 +257,10 @@ public class PopUp extends Activity {
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-
                 Year = year;
                 Month = month;
                 Day = day;
-
-                String date = day + "/" + month + "/" + year;
+               date = day + "/" + month + "/" + year;
                 DisplayDate.setText(date);
             }
         };
@@ -327,10 +344,20 @@ public class PopUp extends Activity {
 
         try {
             Date setDate = dateFormat.parse(dateString);
-            Log.v(TAG, setDate.toString());
+
+
+            mTask.setRemindDate(dateString);
+            TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+            Log.d(TAG, "onStop: " + mTask.getRemindDate().toString());
+            taskDBHelper.update(mTask.getTaskID(), mTask.getRemindDate());
+
+            mTask.executeUpdateFirebase(null);
+
         }
-        catch (ParseException e) {
+        catch (ParseException  e) {
             e.printStackTrace();
         }
     }
+
+
 }

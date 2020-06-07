@@ -26,16 +26,15 @@
 
         <activity android:name=".RegisterActivity" />
 
-        <activity android:name=".HabitActivity"
-                android:exported="true"/>
+        <activity android:name=".Home" />
 
+        <activity android:name=".FocusActivity"/>
+        
         <activity android:name=".Class.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
 
-        <activity android:name=".FocusActivity"
-            android:launchMode="singleTop"
-            />
+        <activity android:name=".HabitActivity" />
 
         <activity android:name=".Settings"
                 android:exported="true"/>
@@ -47,9 +46,12 @@
             android:fitsSystemWindows="true"
             />
 
-        <activity android:name=".Home" />
 
-        <activity android:name=".AddHabitActivity" />
+        <activity android:name=".HabitAddActivity" />
+
+        <activity android:name=".HabitEditActivity" />
+
+        <activity android:name=".HabitViewActivity" />
 
         <activity android:name=".HabitGroupActivity" />
 

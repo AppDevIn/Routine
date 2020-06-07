@@ -10,7 +10,9 @@ import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
 
 import androidx.annotation.Nullable;
 
@@ -123,6 +125,32 @@ public class TaskDBHelper extends DBHelper {
         return String.valueOf(id);
     }
 
+    public Task getTask(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.d(TAG, "getUser: Querying data");
+
+
+        //Get the data from sqlite
+        Cursor cursor =  db.rawQuery( "select * from " + Task.TABLE_NAME+ " where "+Task.COLUMN_TASK_ID+"='"+id+"'", null );
+
+        if (cursor != null)
+            cursor.moveToFirst(); //Only getting the first value
+
+        //Prepare a section object
+        assert cursor != null;
+        Task task = Task.fromCursor(cursor);
+        Log.d(TAG, "getAllSections(): Reading data" + task.toString() );
+
+
+        //Close the DB connection
+        db.close();
+
+        return task;
+
+    }
+
+
     /**
      *
      * This will get all the task from the database
@@ -198,15 +226,17 @@ public class TaskDBHelper extends DBHelper {
      * @param ID
      * @param name
      */
-    public void update(String ID, String name){
+    public void update(String ID, String name, String notes){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-
+        Log.d(TAG, "update(): Name or notes will be updated");
 
         ContentValues updateValues = new ContentValues();
         if(name != null)
             updateValues.put(Task.COLUMN_NAME, name);
+        if(notes != null)
+            updateValues.put(Task.COLUMN_NOTES, notes);
         db.update(
                 Task.TABLE_NAME,
                 updateValues,
@@ -266,6 +296,28 @@ public class TaskDBHelper extends DBHelper {
 
         db.close();
     }
+
+    public void update(String ID, String date){
+
+        Log.d(TAG, "update: Date updated: " + date);
+
+        Log.d(TAG, "update: Updating using object task");
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Task.COLUMN_REMIND_DATE, String.valueOf(date));
+
+        db.update(
+                Task.TABLE_NAME,
+                updateValues,
+                Task.COLUMN_TASK_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
 
     public void update(Task task){
 

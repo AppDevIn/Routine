@@ -9,6 +9,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -44,17 +47,21 @@ public class UploadTaskWorker extends Worker {
     @Override
     public Result doWork() {
 
+
+
         String Name =  getInputData().getString(Task.COLUMN_NAME);
         String ID =  getInputData().getString(Task.COLUMN_TASK_ID);
-        String sectionID =  getInputData().getString(Section.COLUMN_SECTION_ID);
-        int position=  getInputData().getInt(Task.COLUMN_POSITION, 0);
+        String sectionID =  getInputData().getString(Task.COLUMN_SECTION_ID);
+        String notes =  getInputData().getString(Task.COLUMN_NOTES);
+        String remindDate =  getInputData().getString(Task.COLUMN_REMIND_DATE);
+        int position =  getInputData().getInt(Task.COLUMN_POSITION, 0);
         boolean isCheck =  getInputData().getBoolean(Task.COLUMN_CHECKED, false);
 
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("task").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(sectionID).child(String.valueOf(ID));
 
         //Setting value using object
-        mDatabase.setValue(new Task(Name,0,sectionID,ID,isCheck));
+        mDatabase.setValue(new Task(Name,0,sectionID,ID,isCheck, notes, remindDate));
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 
