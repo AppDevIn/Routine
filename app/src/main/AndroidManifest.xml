@@ -22,7 +22,9 @@
         android:windowSoftInputMode="adjustPan">
 
         <activity android:name=".CardActivity"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/AppTheme">
+
+        </activity>
 
         <activity android:name=".FocusActivity" />
 
@@ -51,10 +53,6 @@
         <activity android:name=".TaskActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
-
-        <activity android:name=".LoginActivity" />
-
-        <activity android:name=".CardActivity" />
 
         <activity android:name=".HabitAddActivity" />
 

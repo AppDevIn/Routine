@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,13 +18,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.mad.p03.np2020.routine.R;
 
 import java.util.Calendar;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  *
@@ -38,9 +34,13 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class PopUp extends Activity {
     //Initializing variables
 
+    //TAG for logging
     private static final String TAG = "CardNotification Setter";
 
+    //Used for Date Display
     private TextView DisplayDate;
+
+    //Used for Date Picker Pop Up
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     //Used for hours add button
@@ -70,13 +70,25 @@ public class PopUp extends Activity {
     //Initializing minutes variable
     public int minutes = 0;
 
+    //Used for CardName to pass through intent
     String CardName;
 
+    //Used to check if set timer button is pressed
+    public boolean buttonPressed = false;
+
+    /**
+     * This is to initialize the variables with ids form views
+     *
+     * and call listeners for buttons
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popupwindow);
+
 
         Bundle bundle = getIntent().getExtras();
 
@@ -85,8 +97,10 @@ public class PopUp extends Activity {
             CardName = bundle.getString("CardName");
         }
 
+        //Create a notification channel for Routine to use for card notifications
         createNotificationChannel();
 
+        //Identifying date display view
         DisplayDate = (TextView) findViewById(R.id.datePicker);
 
         //Identifying hours add button
@@ -113,15 +127,7 @@ public class PopUp extends Activity {
         final Calendar calendar = Calendar.getInstance();
 
 
-        Log.v(TAG, "Timer Button Clicked");
-        Intent intent = new Intent(PopUp.this, CardNotification.class);
-        intent.putExtra("CardName", CardName);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
-        //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
 
         //Button onClickListener
         UpArrowLeft.setOnClickListener(new View.OnClickListener() {
@@ -171,22 +177,28 @@ public class PopUp extends Activity {
             }
         });
 
+        //
         SetTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.set(calendar.HOUR, hours);
-                calendar.set(calendar.MINUTE, minutes);
-                calendar.set(calendar.SECOND, 0);
-                Log.v(TAG, "Timer Button Clicked");
-                Intent intent = new Intent(PopUp.this, CardNotification.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
-                //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
+                buttonPressed = true;
             }
         });
+
+        if (buttonPressed == true)
+        {
+            calendar.set(calendar.HOUR, hours);
+            calendar.set(calendar.MINUTE, minutes);
+            calendar.set(calendar.SECOND, 0);
+            Log.v(TAG, "Timer Button Clicked");
+            Intent intent = new Intent(PopUp.this, CardNotification.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
+            //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
+        }
 
         DisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
