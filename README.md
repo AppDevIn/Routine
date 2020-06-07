@@ -179,6 +179,9 @@ All in one Productivity App
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/habitActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/focusActivityClass.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/LoginActivityClass.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Home.png)
+![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Register.png)
+
 
 
 
