@@ -263,7 +263,7 @@ This shows your today's habits.
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
 | **Click on the modify button on the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
 
-| ![addGroup](Documentation/images/routinedemo_10.png) | ![createGroup](Documentation/images/routinedemo11.png) | ![deleteGroup](Documentation/images/routinedemo_12.png) |
+| ![addGroup](Documentation/images/routinedemo_10.png) | ![createGroup](Documentation/images/routinedemo_11.png) | ![deleteGroup](Documentation/images/routinedemo_12.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
 | **Click on the group indicate text to assign a group to the habit**            | **Press the "create group" button to create a group**                   | **Press the "cancel" button to delete a group**                 |
 
