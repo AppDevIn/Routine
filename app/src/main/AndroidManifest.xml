@@ -29,6 +29,7 @@
         <activity android:name=".FocusActivity" />
 
         <activity android:name=".HabitActivity"
+        <activity android:name=".LoginActivity"
         android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,6 +54,10 @@
         <activity android:name=".TaskActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".LoginActivity" />
+
+        <activity android:name=".CardActivity" />
 
         <activity android:name=".HabitAddActivity" />
 

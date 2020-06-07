@@ -148,9 +148,9 @@ All in one Productivity App
   
 ### Pritheev Roshan
 
-1. [CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardActivity.java)
+1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardActivity.java)
 
-2. [PopUp.java](app/src/main/java/com/mad/p03/np2020/routine/Class/PopUp.java)
+2.[PopUp.java](app/src/main/java/com/mad/p03/np2020/routine/Class/PopUp.java)
 
 3.[CardAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/CardAdapter.java)
 
