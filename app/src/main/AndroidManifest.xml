@@ -35,9 +35,7 @@
         <activity android:name=".Class.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
-
-        <activity android:name=".LoginActivity" />
-
+        
         <activity android:name=".Settings"
                 android:exported="true"/>
 
