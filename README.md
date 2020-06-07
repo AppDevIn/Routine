@@ -105,9 +105,6 @@ All in one Productivity App
 
 9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
 
-10. [BoundService.java](app/src/main/java/com/mad/p03/np2020/routine/background/BoundService.java)
-
-
    ​    
 
 ### Wai Hou Man
@@ -178,10 +175,21 @@ All in one Productivity App
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Adapter.jpg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/Class.svg)
+![BlankViewModel](Documentation/images/BlankViewModel.png)
+![MainActivity](Documentation/images/MainActivity.png)
+![NavBarHelper](Documentation/images/NavBarHelper.png)
+![TaskActivity](Documentation/images/TaskActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/FocusActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/HabitActivity.png)
 ![HabitAddActivity](Documentation/images/HabitAddActivity.png)
+![HabitEditActivity](Documentation/images/HabitEditActivity.png)
+![HabitGroupActivity](Documentation/images/HabitGroupActivity.png)
+![HabitReminderActivity](Documentation/images/HabitReminderActivity.png)
+![HabitViewActivity](Documentation/images/HabitViewActivity.png)
+![Home](Documentation/images/Home.png)
+![HabitEditActivity](Documentation/images/RegisterActivity.png)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/LoginActivityClass.png)
+
 
 
 
