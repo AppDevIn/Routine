@@ -1,6 +1,5 @@
 package com.mad.p03.np2020.routine.Fragment;
 
-import android.database.DefaultDatabaseErrorHandler;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,17 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.mad.p03.np2020.routine.Adapter.CardAdapter;
 import com.mad.p03.np2020.routine.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -83,7 +78,6 @@ public class StepsFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
 
         }
     }
