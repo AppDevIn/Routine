@@ -162,21 +162,21 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Pritheev Roshan
 
-1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardActivity.java)
+1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/CardActivity.java)
 
 2.[PopUp.java](app/src/main/java/com/mad/p03/np2020/routine/Class/PopUp.java)
 
 3.[CardAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/CardAdapter.java)
 
-4.[CardViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardViewHolder.java)
+4.[CardViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/CardViewHolder.java)
 
 5.[CardNotification.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardNotification.java)
 
-6.[NotesFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Class/NotesFragment.java)
+6.[NotesFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/NotesFragment.java)
 
-7.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Class/StepsFragment.java)
+7.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/StepsFragment.java)
 
-8.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Settings.java)
+8.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Settings.java)
 
 ## Story Mapping 
 
