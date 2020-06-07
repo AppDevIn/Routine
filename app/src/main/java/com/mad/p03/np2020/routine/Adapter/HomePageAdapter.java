@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.Interface.HomeItemTouchHelperAdapter;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.TaskActivity;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
@@ -38,7 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @author Jeyavishnu
  * @since 02-06-2020
  */
-public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter{
+public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> implements HomeItemTouchHelperAdapter {
 
     private final String TAG = "HomeAdapter";
     private List<Section> mSectionList;
