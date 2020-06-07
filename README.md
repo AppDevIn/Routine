@@ -214,3 +214,17 @@ All in one Productivity App
 
 #### Task
 
+#### Habit Tracker
+
+Functionality: Helps to keep track of your habits on a period goal basis.
+
+<img src="Documentation/images/routinedemo_1.png" alt="drawing" width="200"/>
+This shows your today's habit. 
+
+
+<img src="Documentation/images/routinedemo_2.png" alt="drawing" width="200"/>
+If the user clicks on the 
+
+
+
+
