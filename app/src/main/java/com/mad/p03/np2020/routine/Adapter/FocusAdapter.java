@@ -29,6 +29,14 @@ import com.mad.p03.np2020.routine.database.FocusDBHelper;
 
 import java.util.List;
 
+/**
+ *
+ * Focus Adapter to handle the recyclerView Focus Activity
+ *
+ * @author Lee Quan Sheng
+ * @since 02-06-2020
+ */
+
 public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
     private List<Focus> focusList; //List of focus
