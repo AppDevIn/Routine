@@ -51,6 +51,9 @@ public class CardActivity extends AppCompatActivity {
     //Used to identify Steps Fragment
     Button stepFragment;
 
+    //Used to identify focusButton
+    Button focusButton;
+
     //Used to set if Steps Fragment visible or not
     boolean stepStatus = false;
 
@@ -88,6 +91,9 @@ public class CardActivity extends AppCompatActivity {
 
         //Used to initialize stepFragment with an id from view
         stepFragment = findViewById(R.id.stepFragment);
+
+        //Used to initialize focusButton with an id from view
+        focusButton = findViewById(R.id.focusButton);
 
         //Used to initialize notesFragment with an id from view
         notesFragment = findViewById(R.id.notesFragment);
@@ -183,6 +189,17 @@ public class CardActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Used for starting focus activity
+        focusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CardActivity.this, FocusActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         //Notification Button On Click Listener
         notifyButton.setOnClickListener(new View.OnClickListener() {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  *
- * CardActivity class used to manage card activities
+ * CardAdapter class for recyclerview adapter
  *
  * @author Pritheev
  * @since 02-06-2020

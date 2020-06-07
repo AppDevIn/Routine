@@ -38,7 +38,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  *
- * CardActivity class used to manage card activities
+ * PopUp class for notification setter pop up
  *
  * @author Pritheev
  * @since 02-06-2020

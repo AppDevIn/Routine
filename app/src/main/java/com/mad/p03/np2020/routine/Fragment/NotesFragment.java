@@ -19,7 +19,7 @@ import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
 /**
  *
- * CardActivity class used to manage card activities
+ * NotesFragment class for notes
  *
  * @author Pritheev and Jeyavishnu
  * @since 02-06-2020
