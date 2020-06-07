@@ -116,7 +116,7 @@
                 app:layout_constraintVertical_bias="0.186" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/systemButton"
                 android:layout_width="204dp"
                 android:layout_height="52dp"
                 android:background="@color/white"

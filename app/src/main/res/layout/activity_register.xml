@@ -28,7 +28,9 @@
             android:id="@+id/card_view"
             android:layout_width="389dp"
             android:layout_height="391dp"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="292dp"
+            android:layout_marginEnd="100dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -74,7 +76,6 @@
                 </EditText>
 
 
-
                 <TextView
                     android:id="@+id/txtPassword"
                     android:layout_width="wrap_content"
@@ -95,12 +96,12 @@
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="23dp"
 
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtPassword"
-
                     android:autofillHints=""
                     android:inputType="textWebPassword"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtPassword"
                     tools:ignore="LabelFor"
                     tools:layout_editor_absoluteX="44dp"
                     tools:layout_editor_absoluteY="312dp">
@@ -198,11 +199,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="128dp"
                     android:layout_marginTop="38dp"
-                    android:visibility="invisible"
                     android:fontFamily="@font/montserrat_regular"
                     android:text="@string/error_empty_email"
                     android:textColor="@color/ErrorColor"
                     android:textSize="14sp"
+                    android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edName">
 

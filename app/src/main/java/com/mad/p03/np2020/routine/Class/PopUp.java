@@ -339,7 +339,10 @@ public class PopUp extends Activity {
     protected void onStop() {
         super.onStop();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4887120f122aa72f97b9c7e280eeee60b42a64ad
         String dateString = String.valueOf(Year) + "-" + String.valueOf(Month) + "-" + String.valueOf(Day) + " " + String.valueOf(hours) + ":" + String.valueOf(minutes) + ":0";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

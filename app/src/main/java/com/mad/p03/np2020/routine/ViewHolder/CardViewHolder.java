@@ -4,6 +4,9 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.mad.p03.np2020.routine.R;
+
 /**
  *
  * CardActivity class used to manage card activities
@@ -13,10 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  */
 public class CardViewHolder extends RecyclerView.ViewHolder {
+
     public CheckedTextView stepItem;
 
     public CardViewHolder(View itemView){
         super(itemView);
-        stepItem = itemView.findViewById(android.R.id.text1);
+        stepItem = itemView.findViewById(R.id.checkedTextView);
     }
 }
