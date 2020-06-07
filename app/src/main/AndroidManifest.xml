@@ -55,10 +55,6 @@
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-        <activity android:name=".LoginActivity" />
-
-        <activity android:name=".CardActivity" />
-
         <activity android:name=".HabitAddActivity" />
 
         <activity android:name=".HabitGroupActivity" />
