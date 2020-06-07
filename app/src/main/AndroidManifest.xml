@@ -28,7 +28,7 @@
 
         <activity android:name=".FocusActivity" />
 
-        <activity android:name=".HabitActivity"
+        <activity android:name=".HabitActivity"/>
         <activity android:name=".LoginActivity"
         android:theme="@style/AppTheme">
             <intent-filter>
