@@ -190,9 +190,10 @@ public class FCMSection extends FirebaseMessagingService {
         TaskDBHelper taskDBHelper = new TaskDBHelper(this);
 
         //Delete the old row
-        taskDBHelper.delete(task.getTaskID());
+        assert task != null;
+        taskDBHelper.update(task);
 
-        task.addTask(this);
+
 
     }
 
