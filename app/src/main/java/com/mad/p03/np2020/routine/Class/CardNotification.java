@@ -31,7 +31,7 @@ public class CardNotification extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyCard")
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle(CardName)
-                .setContentText("This is a test")
+                .setContentText("You have a task due now!")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
