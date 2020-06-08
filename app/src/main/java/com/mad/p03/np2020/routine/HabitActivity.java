@@ -200,6 +200,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
      * */
     @Override
     public void onItemClick(final int position) {
+        // This will be triggered when the recycler view holder is clicked
+
         // Editing habit
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         Log.d(TAG, "Editing habit " + habit.getTitle());

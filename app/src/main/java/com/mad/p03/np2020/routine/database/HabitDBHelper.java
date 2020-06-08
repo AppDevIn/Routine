@@ -144,8 +144,6 @@ public class HabitDBHelper extends DBHelper{
      *
      * This method is used to retrieve all the habits based on the UID in the SQLiteDatabase.
      *
-//     * @param UID This parameter is the get the UID to refer which habit column is going to be referred.
-     *
      * @return ArrayList<Habit> This will return the habitList.
      * */
     public Habit.HabitList getAllHabits() {

@@ -74,9 +74,11 @@ public class HabitAddActivity extends AppCompatActivity {
     //User
     private User user;
 
+    // Period and Color
     private int[] period;
     private String[] color;
 
+    // Habit
     private Habit habit;
 
     /**
