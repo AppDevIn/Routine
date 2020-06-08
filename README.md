@@ -42,13 +42,13 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 3. [DeleteTaskWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/DeleteTaskWorker.java)
 
-4. [UploadSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadSectionWorker.java)
+4. [UploadSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadSectionWorker.java))
 
 5. [UploadTaskWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadTaskWorker.java)
 
-6. [UploadDataWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadDataWorker.java)
+6. [UploadDataWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadDataWorker.java))
 
-7. [HomeItemTouchHelperAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/HomeItemTouchHelperAdapter.java)
+7. [HomeItemTouchHelperAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/HomeItemTouchHelperAdapter.java))
 
 8. [HomePageAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HomePageAdapter.java)
 
@@ -285,7 +285,7 @@ This shows your today's habits.
 
 | ![addCount](Documentation/images/routinedemo_1.png) | ![addHabit](Documentation/images/routinedemo_2.png) | ![viewHabit](Documentation/images/routinedemo_3.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Press the add button on the habit to check in**            | **Press the floating button to add habit**                   | **Press on the habit to view the habit**                 |
+| **Press the add button on the habit to check in**            | **Press the floating button at the bottom right to add habit**                   | **Press on the habit to view the habit**                 |
 
 | ![add/decrease count](Documentation/images/routinedemo_4.png) | ![modifyCount](Documentation/images/routinedemo_5.png) | ![deleteHabit](Documentation/images/routinedemo_7.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
@@ -293,11 +293,8 @@ This shows your today's habits.
 
 | ![editHabit](Documentation/images/routinedemo_6.png) | ![addHabit](Documentation/images/routinedemo_8.png) | ![viewHabit](Documentation/images/routinedemo_9.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Click on the modify button on the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
+| **Click on the modify button at the bottom left of the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
 
-| ![editHabit](Documentation/images/routinedemo_6.png) | ![addReminder](Documentation/images/routinedemo_8.png) | ![turnTimePicker](Documentation/images/routinedemo_9.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Click on the modify button on the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
 
 | ![addGroup](Documentation/images/routinedemo_10.png) | ![createGroup](Documentation/images/routinedemo_11.png) | ![deleteGroup](Documentation/images/routinedemo_12.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
