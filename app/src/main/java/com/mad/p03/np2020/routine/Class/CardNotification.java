@@ -13,7 +13,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.mad.p03.np2020.routine.R;
 /**
  *
- * CardActivity class used to manage card activities
+ * CardNotification Class for setting notification
  *
  * @author Pritheev
  * @since 02-06-2020
