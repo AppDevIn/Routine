@@ -292,7 +292,7 @@ Storymap for HabitActivity and Calendar
 
 | ![addGroup](Documentation/images/routinedemo_10.png) | ![createGroup](Documentation/images/routinedemo_11.png) | ![deleteGroup](Documentation/images/routinedemo_12.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Click on the group indicate text to assign a group to the habit**            | **Press the "create group" button to create a group**                   | **Press the "cancel" button to delete a group**                 |
+| **Click on the group indicate text to assign a group to the habit**            | **Press the "create group" button to create a group**                   | **Press the "cancel" button to remove the current group**                 |
 
 
 #### Focus
