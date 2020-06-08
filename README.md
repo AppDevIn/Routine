@@ -42,13 +42,13 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 3. [DeleteTaskWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/DeleteTaskWorker.java)
 
-4. [UploadSectionWorker.java]((app/src/main/java/com/mad/p03/np2020/routine/background/UploadSectionWorker.java))
+4. [UploadSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadSectionWorker.java))
 
-5. [UploadTaskWorker.java](com/mad/p03/np2020/routine/background/UploadTaskWorker.java)
+5. [UploadTaskWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadTaskWorker.java)
 
-6. [UploadDataWorker.java]((app/src/main/java/com/mad/p03/np2020/routine/background/UploadDataWorker.java))
+6. [UploadDataWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadDataWorker.java))
 
-7. [HomeItemTouchHelperAdapter.java]((app/src/main/java/com/mad/p03/np2020/routine/Interface/HomeItemTouchHelperAdapter.java))
+7. [HomeItemTouchHelperAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/HomeItemTouchHelperAdapter.java))
 
 8. [HomePageAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HomePageAdapter.java)
 
