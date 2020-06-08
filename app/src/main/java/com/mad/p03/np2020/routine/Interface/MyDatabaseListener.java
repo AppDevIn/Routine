@@ -9,7 +9,20 @@ import com.mad.p03.np2020.routine.Class.Section;
  */
 public interface MyDatabaseListener {
 
+    /**
+     *
+     * @param object The object that got added
+     */
     public void onDataAdd(Object object);
+
+    /**
+     * @param ID The ID of the object you want delete
+     */
     public void onDataDelete(String ID);
+
+    /**
+     *
+     * @param object The object you want to update
+     */
     public void onDataUpdate(Object object);
 }

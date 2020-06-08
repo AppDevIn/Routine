@@ -39,7 +39,7 @@ import androidx.work.WorkManager;
  * Model used to manage the Task
  *
  * @author Jeyavishnu
- * @since 04-06-2020
+ * @since 08-06-2020
  */
 public class Task implements Serializable {
 
@@ -511,6 +511,15 @@ public class Task implements Serializable {
 
     }
 
+    /**
+     *
+     * This is override to compare between 2 objects
+     * this case in checks the variables of this object against
+     * the one in the parameter
+     *
+     * @param obj The object we comparing with
+     * @return return true if the variables match this object
+     */
     @Override
     public boolean equals(@Nullable Object obj) {
 

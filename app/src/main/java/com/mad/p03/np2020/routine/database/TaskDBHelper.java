@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
  * in the database
  *
  * @author Jeyavishnu
- * @since 03-06-2020
+ * @since 07-06-2020
  */
 public class TaskDBHelper extends DBHelper {
 
@@ -218,11 +218,15 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+
     /**
-     * This method will update the position of the given
-     * row based on the ID
-     * @param ID
-     * @param name
+     *
+     * This is to update the name and notes in the task with
+     * ID from the first parameter
+     *
+     * @param ID The task with this ID that will be updated
+     * @param name String The name you want to update too
+     * @param notes String The notes you update
      */
     public void update(String ID, String name, String notes){
 
@@ -245,11 +249,12 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+
     /**
      * This method will update the position of the given
      * row based on the ID
-     * @param ID
-     * @param position
+     * @param ID The task with this ID that will be updated
+     * @param position The position that need to be updated
      */
     public void update(String ID, int position){
 
@@ -274,10 +279,11 @@ public class TaskDBHelper extends DBHelper {
 
 
     /**
-     * This method will update the position of the given
-     * row based on the ID
-     * @param ID
-     * @param checked
+     *
+     * This to update the checked in SQL
+     *
+     * @param ID String The ID of the task you want to change
+     * @param checked bool if you want the task to be checked
      */
     public void update(String ID,boolean checked){
 
@@ -295,6 +301,15 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+    /**
+     *
+     * This is to update the date of the ID
+     * associated with the task in SQL
+     *
+     * @param ID String The ID of the task you want to change
+     * @param date String The date you want to change to please
+     *             put it in string with the date formatted
+     */
     public void update(String ID, String date){
 
         Log.d(TAG, "update: Date updated: " + date);
@@ -317,6 +332,12 @@ public class TaskDBHelper extends DBHelper {
     }
 
 
+    /**
+     * This method will update the position of the given
+     * row based on the ID will update the name, checked, notes
+     * and remindDate
+     * @param task The task you want to update
+     */
     public void update(Task task){
 
         Log.d(TAG, "update: Updating using object task");

@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Adapter;
+package com.mad.p03.np2020.routine.Interface;
 
 import com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder;
 
