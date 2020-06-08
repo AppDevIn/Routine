@@ -277,12 +277,6 @@ Storymap for HabitActivity and Calendar
 
 #### Habit Tracker
 
-Functionality: Helps to keep track of your habits on a period goal basis.
-
-<img src="Documentation/images/routinedemo.png" alt="drawing" width="200"/>
-This shows your today's habits.
-
-
 | ![addCount](Documentation/images/routinedemo_1.png) | ![addHabit](Documentation/images/routinedemo_2.png) | ![viewHabit](Documentation/images/routinedemo_3.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
 | **Press the add button on the habit to check in**            | **Press the floating button at the bottom right to add habit**                   | **Press on the habit to view the habit**                 |
