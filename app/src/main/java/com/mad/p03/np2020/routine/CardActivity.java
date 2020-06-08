@@ -125,6 +125,8 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Log.v(TAG, "Steps Fragment Opened");
+
                 //Assign false to false to allow it to meet condition of if statement
                 stepStatus = false;
 
@@ -154,6 +156,8 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Log.v(TAG, "Notes Fragment Opened");
+
                 //Assign false to false to allow it to meet condition of if statement
                 noteStatus = false;
 
@@ -182,6 +186,7 @@ public class CardActivity extends AppCompatActivity {
         notifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Notification Button Pressed");
                 Intent intent = new Intent(CardActivity.this, PopUp.class);
                 intent.putExtra("task", mTask);
                 startActivity(intent);
