@@ -22,7 +22,8 @@
         android:windowSoftInputMode="adjustPan">
 
         <activity android:name=".CardActivity"
-        android:theme="@style/AppTheme"/>
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme" />
 
         <activity android:name=".RegisterActivity" />
 
@@ -68,10 +69,6 @@
         <activity android:name=".HabitGroupActivity" />
 
         <activity android:name=".HabitReminderActivity" />
-
-        
-
-
 
         <service
             android:name=".background.FCMSection"
