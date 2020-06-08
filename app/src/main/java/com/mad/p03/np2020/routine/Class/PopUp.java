@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
@@ -87,8 +88,6 @@ public class PopUp extends Activity {
     String date;
 
 
-
-
     //Initializing year variable
     public int Year = dateInitializer.get(dateInitializer.YEAR);
 
@@ -99,8 +98,11 @@ public class PopUp extends Activity {
     public int Day = dateInitializer.get(dateInitializer.DAY_OF_MONTH);
 
 
-    //Used to check if set timer button is pressed
-    public boolean buttonPressed = false;
+    //Used to check if date is set on notification setter
+    public boolean dateSet = false;
+
+    //USed to check if time is set on notification setter
+    public boolean timeSet = false;
 
     /**
      * This is to initialize the variables with ids form views
@@ -171,6 +173,7 @@ public class PopUp extends Activity {
 
                 //Setting text of hours
                 TimerLeft.setText(timeToText(hours, 24));
+                timeSet = true;
             }
         });
 
@@ -183,6 +186,7 @@ public class PopUp extends Activity {
 
                 //Setting text of hours
                 TimerLeft.setText(timeToText(hours, 24));
+                timeSet = true;
             }
         });
 
@@ -195,6 +199,7 @@ public class PopUp extends Activity {
 
                 //Setting text of minutes
                 TimerRight.setText(timeToText(minutes, 60));
+                timeSet = true;
             }
         });
 
@@ -207,6 +212,7 @@ public class PopUp extends Activity {
 
                 //Setting text of minutes
                 TimerRight.setText(timeToText(minutes, 60));
+                timeSet = true;
             }
         });
 
@@ -235,7 +241,18 @@ public class PopUp extends Activity {
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-                alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent );
+                alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+
+                Log.v(TAG, "Alarm Set");
+
+                if (timeSet == true && dateSet == true)
+                {
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "You must select a time or date to set time!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -260,8 +277,9 @@ public class PopUp extends Activity {
                 Year = year;
                 Month = month;
                 Day = day;
-               date = day + "/" + month + "/" + year;
+                date = day + "/" + month + "/" + year;
                 DisplayDate.setText(date);
+                dateSet = true;
             }
         };
 
@@ -278,7 +296,7 @@ public class PopUp extends Activity {
         int width = dm.widthPixels;
 
         //Setting layout to 60% width and 40% height
-        getWindow().setLayout((int) (width*.6), (int) (height*.4));
+        getWindow().setLayout((int) (width*.7), (int) (height*.6));
 
     }
 
