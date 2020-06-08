@@ -20,6 +20,14 @@ import androidx.annotation.Nullable;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+/**
+ *
+ * This is to listen to changes and addition task and section
+ *
+ *
+ * @author Jeyavishnu
+ * @since 08-06-2020
+ */
 public class GetTaskSectionWorker extends Worker {
     TaskDBHelper mTaskDBHelper;
     SectionDBHelper mSectionDBHelper;
