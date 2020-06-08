@@ -195,24 +195,31 @@ public class PopUp extends Activity {
         SetTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonPressed = true;
+                calendar.set(calendar.HOUR, hours);
+                calendar.set(calendar.MINUTE, minutes);
+                calendar.set(calendar.SECOND, 0);
+                Log.v(TAG, "Timer Button Clicked");
+                Intent intent = new Intent(PopUp.this, CardNotification.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR, hours);
+                cal.set(Calendar.MINUTE, minutes);
+                cal.set(Calendar.SECOND, 0);
+
+                if (System.currentTimeMillis() > cal.getTimeInMillis()){
+                    // increment one day to prevent setting for past alarm
+                    cal.add(Calendar.DATE, 1);
+                }
+
+                long timeInMillis = cal.getTime().getTime();
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent );
             }
         });
 
-        if (buttonPressed == true)
-        {
-            calendar.set(calendar.HOUR, hours);
-            calendar.set(calendar.MINUTE, minutes);
-            calendar.set(calendar.SECOND, 0);
-            Log.v(TAG, "Timer Button Clicked");
-            Intent intent = new Intent(PopUp.this, CardNotification.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(PopUp.this, 0, intent, 0);
-            //PendingIntent pendingIntent = PendingIntent().getBroadcast(PopUp.this, 0, intent, 0);
-
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent );
-        }
 
         DisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,6 +238,10 @@ public class PopUp extends Activity {
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
+
+                Year = year;
+                Month = month;
+                Day = day;
 
                 String date = day + "/" + month + "/" + year;
                 DisplayDate.setText(date);
@@ -312,7 +323,7 @@ public class PopUp extends Activity {
         super.onStop();
 
         String dateString = String.valueOf(Year) + "-" + String.valueOf(Month) + "-" + String.valueOf(Day) + " " + String.valueOf(hours) + ":" + String.valueOf(minutes) + ":0";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM--dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
             Date setDate = dateFormat.parse(dateString);
