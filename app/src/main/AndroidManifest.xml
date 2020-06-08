@@ -22,13 +22,14 @@
         android:windowSoftInputMode="adjustPan">
 
         <activity android:name=".CardActivity"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"/>
 
-        </activity>
+        <activity android:name=".RegisterActivity" />
 
-        <activity android:name=".RegisterActivity"
-                android:exported="true"/>
+        <activity android:name=".Home" />
 
+        <activity android:name=".FocusActivity"/>
+        
         <activity android:name=".Class.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
@@ -36,9 +37,7 @@
         <activity android:name=".HabitActivity" />
 
         <activity android:name=".Settings"
-                android:exported="true">
-
-        </activity>
+                android:exported="true"/>
 
         <activity android:name=".MainActivity"/>
 
