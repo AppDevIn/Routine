@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 /**
  *
- * Model used to manage the section
+ * This created to handle the Focus Data in SQLiteDatabase
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020
