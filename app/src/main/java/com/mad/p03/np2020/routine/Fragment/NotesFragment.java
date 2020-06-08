@@ -17,7 +17,7 @@ import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.TaskDBHelper;
 
-/*
+/**
  *
  * CardActivity class used to manage card activities
  *
@@ -29,7 +29,8 @@ public class NotesFragment extends Fragment
 {
 
     Task mTask;
-    //Empty constructor
+
+    //Constructor
     public NotesFragment(Task task) {
         mTask = task;
     }

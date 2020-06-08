@@ -14,11 +14,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.PopUp;
-import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.Fragment.NotesFragment;
 import com.mad.p03.np2020.routine.Fragment.StepsFragment;
@@ -57,10 +57,13 @@ public class CardActivity extends AppCompatActivity {
     //Used to set if Notes Fragment visible or not
     boolean noteStatus = false;
 
+    //Initializing task variable for storing data
     Task mTask;
 
-    TextView cardName;
+    //Initializing name of card
+    EditText cardName;
 
+    //Initializing database helper for task
     TaskDBHelper mTaskDBHelper;
 
     @Override
@@ -69,13 +72,12 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.card_layout);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
         //Get the Section Object
         mTask = (Task) getIntent().getSerializableExtra("task");
         Log.d(TAG, "onCreate(): " + mTask.toString());
 
 
-
+        //Used to initialize cardName with an id from the view
         cardName = findViewById(R.id.id_edit_text);
 
         //Used to initialize stepAddButton with an id from view
@@ -90,19 +92,18 @@ public class CardActivity extends AppCompatActivity {
         //Used to initialize notesFragment with an id from view
         notesFragment = findViewById(R.id.notesFragment);
 
-
+        //Setting cardName from current value stored in database
         cardName.setText(String.valueOf(mTask.getName()));
 
+        //Creating an instance of task database Helper class
         mTaskDBHelper = new TaskDBHelper(this);
-
 
         mTask = mTaskDBHelper.getTask(mTask.getTaskID());
 
-
+        //On Action Listener for cardName
         cardName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-
 
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         actionId == EditorInfo.IME_ACTION_DONE ||
