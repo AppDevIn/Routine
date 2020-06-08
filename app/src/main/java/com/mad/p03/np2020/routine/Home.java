@@ -106,7 +106,10 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
 
+        if(mUser != null){
+            mUser.getAllSectionAndTask();
 
+        }
 
         try {
             mUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -300,7 +303,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         }
 
-        finish();
+
 
     }
 

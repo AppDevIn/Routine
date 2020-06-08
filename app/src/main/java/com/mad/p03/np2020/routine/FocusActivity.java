@@ -69,7 +69,7 @@ import static java.lang.String.*;
  */
 
 
-public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleOwner, LifecycleObserver {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
 
 
     /**Button for timer*/
@@ -736,9 +736,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Intent intent = new Intent(this, FocusActivity.class);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
+        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.focus).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
         assert notificationManager != null;
         notificationManager.notify(1, notification);
 
@@ -860,21 +859,33 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      *
      */
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onEnterForeground() {
+        Log.d("AppController", "Foreground");
+        isAppInBackground(false);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onEnterBackground() {
+        Log.d("AppController", "Background");
+        isAppInBackground(true);
+    }
+
     // Adding some callbacks for test and log
     public interface ValueChangeListener {
         void onChanged(Boolean value);
     }
-
     private ValueChangeListener visibilityChangeListener;
     public void setOnVisibilityChangeListener(ValueChangeListener listener) {
         this.visibilityChangeListener = listener;
     }
-
+    private void isAppInBackground(Boolean isBackground) {
+        if (null != visibilityChangeListener) {
+            visibilityChangeListener.onChanged(isBackground);
+        }
+    }
     private static FocusActivity mInstance;
     public static FocusActivity getInstance() {
         return mInstance;
     }
-
-
-
 }

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_section"
         android:layout_width="0dp"
-        android:layout_height="144dp"
+        android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

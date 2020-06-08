@@ -328,6 +328,8 @@ public class TaskDBHelper extends DBHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(Task.COLUMN_NAME, task.getName());
         updateValues.put(Task.COLUMN_CHECKED, task.isChecked());
+        updateValues.put(Task.COLUMN_NOTES, task.getNotes());
+        updateValues.put(Task.COLUMN_REMIND_DATE, task.getRemindDate());
         db.update(
                 Task.TABLE_NAME,
                 updateValues,
