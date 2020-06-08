@@ -42,13 +42,13 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 3. [DeleteTaskWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/DeleteTaskWorker.java)
 
-4. [UploadSectionWorker.java]((app/src/main/java/com/mad/p03/np2020/routine/background/UploadSectionWorker.java))
+4. [UploadSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadSectionWorker.java)
 
-5. [UploadTaskWorker.java](com/mad/p03/np2020/routine/background/UploadTaskWorker.java)
+5. [UploadTaskWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadTaskWorker.java)
 
-6. [UploadDataWorker.java]((app/src/main/java/com/mad/p03/np2020/routine/background/UploadDataWorker.java))
+6. [UploadDataWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/UploadDataWorker.java)
 
-7. [HomeItemTouchHelperAdapter.java]((app/src/main/java/com/mad/p03/np2020/routine/Interface/HomeItemTouchHelperAdapter.java))
+7. [HomeItemTouchHelperAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/HomeItemTouchHelperAdapter.java)
 
 8. [HomePageAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/HomePageAdapter.java)
 
@@ -58,25 +58,25 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 11. [MySpinnerIconsAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MySpinnerIconsAdapter.java)
 
-13. [MyTaskTouchHelper.java]((app/src/main/java/com/mad/p03/np2020/routine/Adapter/MyTaskTouchHelper.java))
+13. [MyTaskTouchHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MyTaskTouchHelper.java)
 
-15. [TaskTouchHelperAdapter.java](com/mad/p03/np2020/routine/Interface/TaskTouchHelperAdapter.java)
+15. [TaskTouchHelperAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/TaskTouchHelperAdapter.java)
 
 16. [TaskAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/TaskAdapter.java)
 
-18. [SectionDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/SectionDBHelper.java)
+17. [SectionDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/SectionDBHelper.java)
 
-19. [UserDBHelper.java]((app/src/main/java/com/mad/p03/np2020/routine/database/UserDBHelper.java))
+18. [UserDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/UserDBHelper.java)
 
-20. [TaskDBHelper.java]((app/src/main/java/com/mad/p03/np2020/routine/database/TaskDBHelper.java))
+19. [TaskDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/TaskDBHelper.java)
 
-21. [DBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/DBHelper.java)
+20. [DBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/DBHelper.java)
 
-22. [MyHomeViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/TaskViewHolder.java)
+21. [MyHomeViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/TaskViewHolder.java)
 
-23. [TaskViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/MyHomeViewHolder.java)
+22. [TaskViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/MyHomeViewHolder.java)
 
-24. [Task.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Section.java)
+23. [Task.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Section.java)
 
 24. [Section.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Task.java)
 
@@ -86,7 +86,7 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 25. [GetTaskSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/GetTaskSectionWorker.java)
 
-26. [MyDatabaseListener.java](com/mad/p03/np2020/routine/Interface/MyDatabaseListener.java)
+26. [MyDatabaseListener.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/MyDatabaseListener.java)
 
 27. [OnFirebaseAuth.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/OnFirebaseAuth.java)
 
@@ -162,25 +162,34 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Pritheev Roshan
 
-1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardActivity.java)
+1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/CardActivity.java)
 
 2.[PopUp.java](app/src/main/java/com/mad/p03/np2020/routine/Class/PopUp.java)
 
 3.[CardAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/CardAdapter.java)
 
-4.[CardViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardViewHolder.java)
+4.[CardViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/CardViewHolder.java)
 
 5.[CardNotification.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardNotification.java)
 
-6.[NotesFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Class/NotesFragment.java)
+6.[NotesFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/NotesFragment.java)
 
-7.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Class/StepsFragment.java)
+7.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/StepsFragment.java)
 
-8.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Settings.java)
+8.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Settings.java)
 
 ## Story Mapping 
+
+
+Storymap for Account Management, Side Navigation Bar, Manage Section
 ![Storymap for Account Management, Side Navigation Bar, Manage Section](Documentation/images/storymap_1.png)
+
+
+Storymap for Manage Task and FocusActivity
 ![Storymap for Manage Task and FocusActivity](Documentation/images/storymap_2.png)
+
+
+Storymap for HabitActivity and Calendar
 ![Storymap for HabitActivity and Calendar](Documentation/images/storymap_3.png)
 
 
