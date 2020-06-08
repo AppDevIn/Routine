@@ -335,12 +335,10 @@ public class PopUp extends Activity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
 
 
