@@ -23,6 +23,8 @@
     <color name="colorPureWhiteGrey">#f3f3f5</color>
     <color name="colorUnsaturatedGrey">#f2f2f2</color>
     <color name="chineseRed">#A33400</color>
+    <color name="background">#FCFFE9</color>
+
 
 <!--    Colors for the ToDoList-->
     <color name="superiorityBlue">#6CA6C1</color>

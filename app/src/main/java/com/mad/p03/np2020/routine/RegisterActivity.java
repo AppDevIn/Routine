@@ -360,6 +360,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
                 // When timer is finished
                 // Execute your code here'
                 Log.d(TAG, "onFinish: Done with Register animation");
+                textView.setText(R.string.register);
 
             }
 
@@ -371,7 +372,6 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
                     i++;
                 }
                 catch (Exception e){
-
 
                     textView.setText(R.string.register);
                    this.cancel();

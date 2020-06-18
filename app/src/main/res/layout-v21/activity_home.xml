@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
-    android:background="@color/registerColor">
+    android:background="@color/background">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -67,7 +67,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
 
-        android:backgroundTint="@color/colorHistory"
+        android:backgroundTint="@color/registerColor"
 
         app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
         app:layout_constraintEnd_toEndOf="parent"
