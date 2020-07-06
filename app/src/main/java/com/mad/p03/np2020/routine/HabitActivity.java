@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,6 +25,7 @@ import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
+import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
 /**
@@ -68,7 +69,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         Log.d(TAG, "onCreate: ");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_habit);
+        setContentView(R.layout.habit_activity);
 
         // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -92,6 +93,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set onClickListener on add_habit button
         add_habit.setOnClickListener(this);
 
+        habitRecyclerView = findViewById(R.id.my_recycler_view);
+        habitRecyclerView.setLayoutManager(new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.HORIZONTAL, false)); //Setting the layout manager with the column of 2
+        habitRecyclerView.addItemDecoration(new DividerItemDecoration(25));
+
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
@@ -101,9 +106,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-
-        habitRecyclerView = findViewById(R.id.my_recycler_view);
-        habitRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // initialise the habitAdapter
         habitAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(),user.getUID());

@@ -93,6 +93,7 @@
     <string name="error_password_empty">Password cannot be empty</string>
     <string name="register">Register</string>
     <string name="error_name_empty">Name cannot be empty</string>
+    <string name="habit_tracker">Habit Tracker</string>
 
 </resources>
 

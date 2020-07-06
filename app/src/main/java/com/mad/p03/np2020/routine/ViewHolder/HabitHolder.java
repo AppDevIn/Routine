@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.ViewHolder;
 
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,8 +36,8 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     /** Shown as the add count button on the habit holder*/
     public ImageButton addBtn;
     /** The layout of the habit holder*/
-    public RelativeLayout habit_row;
-
+//    public RelativeLayout habit_row;
+    public ImageView habit_row;
     /**
      *
      * This method is used to
@@ -51,12 +52,13 @@ public class HabitHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         this.mTitle = itemView.findViewById(R.id.habitTitle);
-        this.mCount = itemView.findViewById(R.id.habitCount);
-        this.mCount2 = itemView.findViewById(R.id.habitCount2);
-        this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
-        this.addBtn = itemView.findViewById(R.id.addCnt);
-        this.mPeriod = itemView.findViewById(R.id.habit_period);
-        this.habit_row = itemView.findViewById(R.id.habit_row);
+        habit_row = itemView.findViewById(R.id.habit_backgroud);
+//        this.mCount = itemView.findViewById(R.id.habitCount);
+//        this.mCount2 = itemView.findViewById(R.id.habitCount2);
+//        this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
+//        this.addBtn = itemView.findViewById(R.id.addCnt);
+//        this.mPeriod = itemView.findViewById(R.id.habit_period);
+//        this.habit_row = itemView.findViewById(R.id.habit_row);
 
         //set an onclick listener when the holder is clicked
         itemView.setOnClickListener(new View.OnClickListener() {

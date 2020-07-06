@@ -39,9 +39,9 @@
         android:layout_above="@+id/bottomNavViewBar"
         android:layout_below="@id/habit_menu"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="-3dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_habit"
