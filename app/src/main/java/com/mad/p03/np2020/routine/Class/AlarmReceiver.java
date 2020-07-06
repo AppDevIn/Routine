@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.database.HabitDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 
 import java.util.Calendar;
 

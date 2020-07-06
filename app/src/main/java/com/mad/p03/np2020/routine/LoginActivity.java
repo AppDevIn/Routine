@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -9,11 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,19 +19,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.Class.User;
-import com.mad.p03.np2020.routine.database.UserDBHelper;
+import com.mad.p03.np2020.routine.controller.Home;
+import com.mad.p03.np2020.routine.controller.RegisterActivity;
+import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

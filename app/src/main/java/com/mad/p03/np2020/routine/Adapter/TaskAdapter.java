@@ -5,21 +5,18 @@ import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
 
-import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder;
-import com.mad.p03.np2020.routine.database.TaskDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
 import java.util.List;
 

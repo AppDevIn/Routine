@@ -31,7 +31,7 @@ import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.HabitGroupWorker;
-import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
 
 public class HabitGroupActivity extends AppCompatActivity {
 

@@ -1,6 +1,5 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.controller;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,8 +30,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Class.User;
 
 import com.mad.p03.np2020.routine.Interface.OnFirebaseAuth;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.RegisterFirebaseUser;
-import com.mad.p03.np2020.routine.database.UserDBHelper;
+import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
 
 /**

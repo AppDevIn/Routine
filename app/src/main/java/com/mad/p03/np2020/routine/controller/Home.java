@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,10 +39,17 @@ import com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.LoginActivity;
+import com.mad.p03.np2020.routine.NavBarHelper;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
-import com.mad.p03.np2020.routine.database.MyDatabaseListener;
-import com.mad.p03.np2020.routine.database.SectionDBHelper;
+import com.mad.p03.np2020.routine.DAL.MyDatabaseListener;
+import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -68,6 +77,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     Spinner mSpinnerColor, mSpinnerIcons;
     CardView mCardViewPopUp;
     Button mBtnAdd, mBtnCancel;
+    TextView mTxtDate;
     FloatingActionButton mImgAdd;
     List<Section> mSectionList;
     SectionDBHelper mSectionDBHelper;
@@ -119,7 +129,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mCardViewPopUp = findViewById(R.id.cardViewPopUp);
         mBtnAdd = findViewById(R.id.btnAdd);
         mBtnCancel = findViewById(R.id.btnCancel);
-
+        mTxtDate = findViewById(R.id.title);
 
 
         //Get all the section data from SQL
@@ -207,6 +217,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
         mImgAdd.setImageResource(R.drawable.ic_add_black_24dp);
+
+        //TODO: Set the date below the title
+        setTxtDate(mTxtDate);
     }
 
     /**
@@ -391,8 +404,24 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         menuItem.setChecked(true);
 
         //To set setOnNavigationItemSelectedListener
-        NavBarHelper  navBarHelper = new NavBarHelper(this);
+        NavBarHelper navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
+
+    private void setTxtDate(TextView textView){
+
+        //Date format that I want example(WEDNESDAY, 29 APRIL)
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM");
+
+        //Get the current date and time
+        Date date = new Date(System.currentTimeMillis());
+        String dateValue = formatter.format(date).toString().toUpperCase();
+        Log.i(TAG, "setTxtDate: " + dateValue);
+
+        //Set it to the text
+        textView.setText(dateValue);
     }
 
 

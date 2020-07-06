@@ -2,14 +2,12 @@ package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -22,7 +20,7 @@ import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.database.HabitDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 
 /**
  *

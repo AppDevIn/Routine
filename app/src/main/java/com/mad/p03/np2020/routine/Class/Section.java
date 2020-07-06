@@ -10,8 +10,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.background.UploadSectionWorker;
-import com.mad.p03.np2020.routine.database.SectionDBHelper;
-import com.mad.p03.np2020.routine.database.TaskDBHelper;
+import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

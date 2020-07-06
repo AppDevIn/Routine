@@ -1,14 +1,11 @@
-package com.mad.p03.np2020.routine.database;
+package com.mad.p03.np2020.routine.DAL;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.mad.p03.np2020.routine.Class.User;
-import androidx.annotation.NonNull;
 
 
 //This database is just the cache for online data

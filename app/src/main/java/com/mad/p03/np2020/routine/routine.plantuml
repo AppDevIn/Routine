@@ -178,7 +178,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.Home {
+    class com.mad.p03.np2020.routine.controller.Home {
         ~ TAG : String
         ~ mBackgrounds : Integer[]
         ~ mBtnAdd : Button
@@ -260,7 +260,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.RegisterActivity {
+    class com.mad.p03.np2020.routine.controller.RegisterActivity {
         {static} ~ TAG : String
         ~ mBack : Button
         ~ mEdInput : EditText
@@ -292,7 +292,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.RegisterActivity.RequestFirebase {
+    class com.mad.p03.np2020.routine.controller.RegisterActivity.RequestFirebase {
         ~ auth : FirebaseAuth
         # doInBackground()
     }
@@ -371,11 +371,11 @@ title __ROUTINE's Class Diagram__\n
   com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener : mListener
   com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
   com.mad.p03.np2020.routine.HistoryFragment +-down- com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener
-  com.mad.p03.np2020.routine.Home .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
-  com.mad.p03.np2020.routine.Home -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.Adapter.HomePageAdapter : mHomePageAdapter
-  com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.database.SectionDBHelper : mSectionDBHelper
-  com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.Class.User : mUser
+  com.mad.p03.np2020.routine.controller.Home .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
+  com.mad.p03.np2020.routine.controller.Home -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.controller.Home o-- com.mad.p03.np2020.routine.Adapter.HomePageAdapter : mHomePageAdapter
+  com.mad.p03.np2020.routine.controller.Home o-- com.mad.p03.np2020.routine.database.SectionDBHelper : mSectionDBHelper
+  com.mad.p03.np2020.routine.controller.Home o-- com.mad.p03.np2020.routine.Class.User : mUser
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnFocusChangeListener
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnKeyListener
@@ -385,10 +385,10 @@ title __ROUTINE's Class Diagram__\n
 
   com.mad.p03.np2020.routine.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.NotesFragment -up-|> androidx.fragment.app.Fragment
-  com.mad.p03.np2020.routine.RegisterActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.RegisterActivity o-- com.mad.p03.np2020.routine.Class.User : mUser
-  com.mad.p03.np2020.routine.RegisterActivity +-down- com.mad.p03.np2020.routine.RegisterActivity.RequestFirebase
-  com.mad.p03.np2020.routine.RegisterActivity.RequestFirebase -up-|> android.os.AsyncTask
+  com.mad.p03.np2020.routine.controller.RegisterActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.controller.RegisterActivity o-- com.mad.p03.np2020.routine.Class.User : mUser
+  com.mad.p03.np2020.routine.controller.RegisterActivity +-down- com.mad.p03.np2020.routine.controller.RegisterActivity.RequestFirebase
+  com.mad.p03.np2020.routine.controller.RegisterActivity.RequestFirebase -up-|> android.os.AsyncTask
   com.mad.p03.np2020.routine.Settings -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.StepsFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener

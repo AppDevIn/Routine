@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.database;
+package com.mad.p03.np2020.routine.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.util.Log;
 import com.mad.p03.np2020.routine.background.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.background.UploadTaskWorker;
-import com.mad.p03.np2020.routine.database.TaskDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

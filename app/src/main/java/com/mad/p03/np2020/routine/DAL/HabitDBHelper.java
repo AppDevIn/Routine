@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.database;
+package com.mad.p03.np2020.routine.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;

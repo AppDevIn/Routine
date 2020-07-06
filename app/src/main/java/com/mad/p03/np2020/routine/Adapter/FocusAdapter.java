@@ -25,7 +25,7 @@ import com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.database.FocusDBHelper;
+import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
 import java.util.List;
 

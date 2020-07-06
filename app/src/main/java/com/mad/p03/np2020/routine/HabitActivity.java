@@ -54,13 +54,12 @@ import com.mad.p03.np2020.routine.Class.HabitReminder;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.background.HabitGroupWorker;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.database.HabitDBHelper;
-import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import static java.lang.String.format;
 

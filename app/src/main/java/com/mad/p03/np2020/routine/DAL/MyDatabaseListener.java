@@ -1,6 +1,4 @@
-package com.mad.p03.np2020.routine.database;
-
-import com.mad.p03.np2020.routine.Class.Section;
+package com.mad.p03.np2020.routine.DAL;
 
 /**
  * 

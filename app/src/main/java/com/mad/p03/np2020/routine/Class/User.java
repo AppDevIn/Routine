@@ -14,8 +14,6 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,15 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.background.UploadDataWorker;
-import com.mad.p03.np2020.routine.database.FocusDBHelper;
-import com.mad.p03.np2020.routine.database.HabitDBHelper;
-import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
+import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 

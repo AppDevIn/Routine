@@ -44,7 +44,7 @@
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".controller.RegisterActivity" />
 
         <activity android:name=".AddHabitActivity" />
 
@@ -54,7 +54,7 @@
 
 
         <activity
-            android:name=".Home">
+            android:name=".controller.Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
