@@ -60,6 +60,55 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/habit_indicator_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/montserrat_regular"
+
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+
+
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.031" />
+
+    <ImageView
+        android:id="@+id/habit_indicator_prev"
+        android:layout_width="50dp"
+        android:layout_height="37dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="264dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.40"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/habit_indicator_next"
+        android:layout_width="50dp"
+        android:layout_height="37dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="264dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/back" />
+
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_habit"
         android:layout_width="wrap_content"

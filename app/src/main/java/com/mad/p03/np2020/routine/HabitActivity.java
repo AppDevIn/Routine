@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -56,6 +58,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     //FAB
     private FloatingActionButton add_habit;
 
+    private ImageView prev_indicator, next_indicator;
+
+    private TextView indicator_num;
+
     /**
      *
      * This method will be called when the start of the HabitActivity.
@@ -89,13 +95,54 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // initialise the notification channel
         initialiseHabitNotificationChannel();
 
-        add_habit = findViewById(R.id.add_habit);
-        // set onClickListener on add_habit button
-        add_habit.setOnClickListener(this);
 
         habitRecyclerView = findViewById(R.id.my_recycler_view);
         habitRecyclerView.setLayoutManager(new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.HORIZONTAL, false)); //Setting the layout manager with the column of 2
         habitRecyclerView.addItemDecoration(new DividerItemDecoration(25));
+
+        prev_indicator = findViewById(R.id.habit_indicator_prev);
+        next_indicator = findViewById(R.id.habit_indicator_next);
+        indicator_num = findViewById(R.id.habit_indicator_number);
+
+        prev_indicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String num = indicator_num.getText().toString();
+                if (!num.equals("1")){
+                    int n = Integer.parseInt(num)-1;
+                    indicator_num.setText(String.valueOf(n));
+                    n--;
+
+                    int position = n*4;
+                    Log.d(TAG, "ayyyy1: " +position);
+                    habitRecyclerView.scrollToPosition(position);
+                }
+            }
+        });
+
+//        next_indicator.setRotation(180);
+        next_indicator.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+
+                  String num = indicator_num.getText().toString();
+                  int n = Integer.parseInt(num);
+                  int position = (n) *4;
+                  int arr_size = habitAdapter._habitList.size();
+                  Log.d(TAG, position+"onClick: "+arr_size);
+                  if (position+1 <= arr_size){
+                      Log.d(TAG, "ayyy: "+position);
+                      n++;
+                      indicator_num.setText(String.valueOf(n));
+
+                      habitRecyclerView.scrollToPosition(position+3);
+                  }
+              }
+          });
+
+
+        add_habit = findViewById(R.id.add_habit);
+        add_habit.setOnClickListener(this);
 
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
