@@ -122,7 +122,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                     n--;
 
                     int position = n*4;
-                    Log.d(TAG, "ayyyy1: " +position);
                     habitRecyclerView.scrollToPosition(position);
                 }
             }
@@ -137,9 +136,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                   int n = Integer.parseInt(num);
                   int position = (n) *4;
                   int arr_size = habitAdapter._habitList.size();
-                  Log.d(TAG, position+"onClick: "+arr_size);
+
                   if (position+1 <= arr_size){
-                      Log.d(TAG, "ayyy: "+position);
                       n++;
                       indicator_num.setText(String.valueOf(n));
 
@@ -152,9 +150,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_habit = findViewById(R.id.add_habit);
         add_habit.setOnClickListener(this);
 
-
-
-
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
@@ -166,8 +161,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
 
         // initialise the habitAdapter
-        Habit.HabitList habitArrayList = habit_dbHandler.getAllHabits(); //13
-        initDummyList(habitArrayList); //3 dummies
+        Habit.HabitList habitArrayList = habit_dbHandler.getAllHabits();
+        initDummyList(habitArrayList);
         habitAdapter = new HabitAdapter(this, habitArrayList,user.getUID());
 
         // set adapter to the recyclerview
@@ -301,13 +296,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initDummyList (Habit.HabitList habitList){
-        Log.d(TAG, "initDummyList: dummyy");
         int size = habitList.size();
 
         int dummy_size = 4-(size % 4);
         if (dummy_size == 4) {return;}
 
-        Log.d(TAG, "initDummyList: "+dummy_size);
         for (int i = 0; i<dummy_size; i++){
             habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
         }
