@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.controller;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -22,6 +24,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -148,15 +152,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-        //Recycler view setup
-        mGridView.setLayoutManager(new GridLayoutManager(Home.this,2)); //Setting the layout manager with the column of 2
-        mGridView.addItemDecoration(new DividerItemDecoration(25));
-
-
-        // Initialize any value
-        mHomePageAdapter = new HomePageAdapter(mSectionList, this);
-        mGridView.setAdapter(mHomePageAdapter);
-
         //Declaring a custom adapter
         mSpinnerColor.setAdapter(new MySpinnerColorAdapter( mColors)); // For the color
         mSpinnerIcons.setAdapter(new MySpinnerIconsAdapter(mBackgrounds)); //For the background
@@ -164,11 +159,13 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //Set the cursor to the start
         mEditAddList.setSelection(0);
 
-        //Setting up touchhelper
-        ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        mHomePageAdapter.setTouchHelper(itemTouchHelper);
-        itemTouchHelper.attachToRecyclerView(mGridView);
+
+        if(mSectionList.size() != 0){
+            listUI();
+        }else{
+            emptyListUI();
+        }
+
 
         //Subscribing to the topic to listen to
         FirebaseMessaging.getInstance().subscribeToTopic(mUID)
@@ -343,6 +340,10 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
                 break;
             }
         }
+
+        if(mSectionList.size() == 0){
+            emptyListUI();
+        }
     }
 
 
@@ -422,6 +423,78 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //Set it to the text
         textView.setText(dateValue);
+    }
+
+    private void emptyListUI(){
+
+        //IDs
+        TextView mTextViewListName = findViewById(R.id.listName);
+        CardView emptyUI = findViewById(R.id.emptyUI);
+        FloatingActionButton floatingActionButton = findViewById(R.id.todoIcon);
+
+        //Make it Gone
+        mGridView.setVisibility(View.GONE);
+        mImgAdd.setVisibility(View.GONE);
+
+        //Make it visible
+        emptyUI.setVisibility(View.VISIBLE);
+
+        //For the TextView
+        mTextViewListName.setText("Add your first list");
+
+        //Setup drawable
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(getResources().getColor(R.color.colorprimary02));
+        shape.setCornerRadius(30);
+
+
+        //Set the drawable
+        emptyUI.setBackground(shape);
+
+
+        //set listener when the add button is pressed
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "onClick(): Adding new list clicked");
+
+                //Make the card view visible to the user
+                mCardViewPopUp.setVisibility(View.VISIBLE);
+                Log.d(TAG, "onClick(): Cardview is visible");
+
+                listUI();
+            }
+        });
+
+
+    }
+
+    private void listUI(){
+
+        //Make it visible
+        mGridView.setVisibility(View.VISIBLE);
+        mImgAdd.setVisibility(View.VISIBLE);
+
+        //Make the emptyUI go gone
+        findViewById(R.id.emptyUI).setVisibility(View.GONE);
+
+
+        //Recycler view setup
+        mGridView.setLayoutManager(new GridLayoutManager(Home.this,2)); //Setting the layout manager with the column of 2
+        mGridView.addItemDecoration(new DividerItemDecoration(25));
+
+
+        // Initialize any value
+        mHomePageAdapter = new HomePageAdapter(mSectionList, this);
+        mGridView.setAdapter(mHomePageAdapter);
+
+
+        //Setting up touchhelper
+        ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        mHomePageAdapter.setTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(mGridView);
     }
 
 

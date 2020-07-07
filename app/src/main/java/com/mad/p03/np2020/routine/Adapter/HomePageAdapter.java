@@ -106,7 +106,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         //For the TextView
         holder.mTextViewListName.setText(mSectionList.get(position).getName());
 
-        //For background
+
 
         //Setup drawable
         GradientDrawable shape = new GradientDrawable();
