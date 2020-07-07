@@ -133,9 +133,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         startUpUI();
 
-        mConstraintLayout.setBackgroundColor(mSection.getBackgroundColor());
-
-
         //Setting up touchhelper
         ItemTouchHelper.Callback callback = new MyTaskTouchHelper(mTaskAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
@@ -307,20 +304,25 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         Toolbar toolbar =  findViewById(R.id.toolbar);
 
 
-        //Set the date and the name of the icon
-        String htmlMessage = mSection.getName() + "\n" + getTxtDate();
+        //Create string that contains date and the name
+        String titleMessage = mSection.getName() + "\n" + getTxtDate();
 
-        //Set the text in the html format
-        txtTitle.setText(htmlMessage);
+        //Set the titleMessage
+        txtTitle.setText(titleMessage);
 
         //Set the icon
         imgIcon.setImageResource(mSection.getBmiIcon());
 
         //Create the shape of the toolbar
+
+        float radius[] = {0f,0f,0f,0f,50f,50f,50f,50f};
+
         GradientDrawable shape = new GradientDrawable();
         shape.setShape(GradientDrawable.RECTANGLE);
         shape.setColor(mSection.getBackgroundColor());
-        shape.setCornerRadius(30);
+        shape.setCornerRadii(radius);
+
+
 
         //Set the shape as the toolbar background
         toolbar.setBackground(shape);
