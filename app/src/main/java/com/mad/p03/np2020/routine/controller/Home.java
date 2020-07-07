@@ -448,7 +448,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         shape.setColor(getResources().getColor(R.color.colorprimary02));
         shape.setCornerRadius(30);
 
-
         //Set the drawable
         emptyUI.setBackground(shape);
 

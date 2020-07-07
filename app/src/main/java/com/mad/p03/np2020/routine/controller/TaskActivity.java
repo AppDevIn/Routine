@@ -1,20 +1,26 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -24,8 +30,13 @@ import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.Class.Task;
 import com.mad.p03.np2020.routine.DAL.MyDatabaseListener;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.R;
 
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +57,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     TaskAdapter mTaskAdapter;
     Section mSection;
     ConstraintLayout mConstraintLayout;
-    TextView mTxtListName;
     EditText mEdTask;
     List<Task> mTaskList;
 
@@ -88,7 +98,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
 
         //Find the id
-        mTxtListName = findViewById(R.id.edSectioName);
         mConstraintLayout = findViewById(R.id.taskLayout);
         mEdTask = findViewById(R.id.edTask);
 
@@ -122,7 +131,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         super.onStart();
         Log.d(TAG, "GUI ready");
 
-        mTxtListName.setText(mSection.getName());
+        startUpUI();
+
         mConstraintLayout.setBackgroundColor(mSection.getBackgroundColor());
 
 
@@ -287,4 +297,50 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         assert mgr != null;
         mgr.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
+
+
+    private void startUpUI(){
+
+        //IDs
+        TextView txtTitle = findViewById(R.id.title);
+        ImageView imgIcon = findViewById(R.id.todoIcon);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+
+
+        //Set the date and the name of the icon
+        String htmlMessage = mSection.getName() + "\n" + getTxtDate();
+
+        //Set the text in the html format
+        txtTitle.setText(htmlMessage);
+
+        //Set the icon
+        imgIcon.setImageResource(mSection.getBmiIcon());
+
+        //Create the shape of the toolbar
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(mSection.getBackgroundColor());
+        shape.setCornerRadius(30);
+
+        //Set the shape as the toolbar background
+        toolbar.setBackground(shape);
+
+    }
+
+    private String getTxtDate(){
+
+        //Date format that I want example(WEDNESDAY, 29 APRIL)
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM");
+
+        //Get the current date and time
+        Date date = new Date(System.currentTimeMillis());
+        String dateValue = formatter.format(date).toString();
+        Log.i(TAG, "setTxtDate: " + dateValue);
+
+        //return the date formatted
+        return dateValue;
+
+    }
+
 }

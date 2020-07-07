@@ -325,7 +325,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.TaskActivity {
+    class com.mad.p03.np2020.routine.controller.TaskActivity {
         ~ mConstraintLayout : ConstraintLayout
         ~ mEdTask : EditText
         ~ mRecyclerView : RecyclerView
@@ -391,10 +391,10 @@ title __ROUTINE's Class Diagram__\n
   com.mad.p03.np2020.routine.controller.RegisterActivity.RequestFirebase -up-|> android.os.AsyncTask
   com.mad.p03.np2020.routine.Settings -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.StepsFragment -up-|> androidx.fragment.app.Fragment
-  com.mad.p03.np2020.routine.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener
-  com.mad.p03.np2020.routine.TaskActivity .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
-  com.mad.p03.np2020.routine.TaskActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.TaskActivity o-- com.mad.p03.np2020.routine.Class.Section : mSection
-  com.mad.p03.np2020.routine.TaskActivity o-- com.mad.p03.np2020.routine.Adapter.TaskAdapter : mTaskAdapter
+  com.mad.p03.np2020.routine.controller.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener
+  com.mad.p03.np2020.routine.controller.TaskActivity .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
+  com.mad.p03.np2020.routine.controller.TaskActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.controller.TaskActivity o-- com.mad.p03.np2020.routine.Class.Section : mSection
+  com.mad.p03.np2020.routine.controller.TaskActivity o-- com.mad.p03.np2020.routine.Adapter.TaskAdapter : mTaskAdapter
 
 @enduml

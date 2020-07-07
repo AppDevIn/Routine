@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Class.Section;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.TaskActivity;
+import com.mad.p03.np2020.routine.controller.TaskActivity;
 import com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder;
 
 import java.util.List;
@@ -105,7 +105,6 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
         //For the TextView
         holder.mTextViewListName.setText(mSectionList.get(position).getName());
-
 
 
         //Setup drawable

@@ -40,7 +40,7 @@
 
         <activity android:name=".MainActivity"/>
 
-        <activity android:name=".TaskActivity"
+        <activity android:name=".controller.TaskActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
