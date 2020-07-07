@@ -84,8 +84,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.width = (int) (parent.getWidth() * 0.44);
-        Log.d(TAG, "ayyy: " + layoutParams.height);
-        Log.d(TAG, "ayyy: " + layoutParams.width);
         view.setLayoutParams(layoutParams);
 
         return new HabitHolder(view, mListener);
@@ -108,8 +106,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         // retrieve the habit object
         final Habit habit = _habitList.getItemAt(position);
 
+
         // set the background color of the holder based on its holder color value
-        switch (habit.getHolder_color()){
+        switch (habit.getHolder_color()) {
             case ("cyangreen"):
                 holder.habit_row.setBackgroundResource(R.drawable.habit_holder_cyangreen);
                 break;
@@ -129,6 +128,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
         // set text on TextView based on the object
         holder.mTitle.setText(habit.getTitle());
+        if (holder.mTitle.getText().toString().equals("DUMMY")){
+            holder.itemView.setVisibility(View.INVISIBLE);
+        }else{
+            holder.itemView.setVisibility(View.VISIBLE);
+        }
+
 //        holder.mCount.setText(String.valueOf(habit.getCount()));
 //        holder.mCount2.setText(String.valueOf(habit.getCount()));
 //        holder.mOccurrence.setText(String.valueOf(habit.getOccurrence()));

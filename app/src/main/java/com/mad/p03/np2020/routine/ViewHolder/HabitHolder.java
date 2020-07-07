@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
@@ -35,9 +36,9 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     public TextView mPeriod;
     /** Shown as the add count button on the habit holder*/
     public ImageButton addBtn;
-    /** The layout of the habit holder*/
-//    public RelativeLayout habit_row;
+    /** The background of the habit holder*/
     public ImageView habit_row;
+
     /**
      *
      * This method is used to
@@ -52,13 +53,12 @@ public class HabitHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         this.mTitle = itemView.findViewById(R.id.habitTitle);
-        habit_row = itemView.findViewById(R.id.habit_backgroud);
+        this.habit_row = itemView.findViewById(R.id.habit_backgroud);
 //        this.mCount = itemView.findViewById(R.id.habitCount);
 //        this.mCount2 = itemView.findViewById(R.id.habitCount2);
 //        this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
 //        this.addBtn = itemView.findViewById(R.id.addCnt);
 //        this.mPeriod = itemView.findViewById(R.id.habit_period);
-//        this.habit_row = itemView.findViewById(R.id.habit_row);
 
         //set an onclick listener when the holder is clicked
         itemView.setOnClickListener(new View.OnClickListener() {

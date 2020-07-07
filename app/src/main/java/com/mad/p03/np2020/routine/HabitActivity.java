@@ -30,6 +30,8 @@ import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
 import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
+import java.util.ArrayList;
+
 /**
  *
  * Habit activity used to manage the habit's layout section
@@ -97,7 +99,13 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
         habitRecyclerView = findViewById(R.id.my_recycler_view);
-        habitRecyclerView.setLayoutManager(new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.HORIZONTAL, false)); //Setting the layout manager with the column of 2
+        GridLayoutManager manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.HORIZONTAL, false){
+            @Override
+            public boolean canScrollHorizontally() {
+                return false;
+            }
+        };
+        habitRecyclerView.setLayoutManager(manager);
         habitRecyclerView.addItemDecoration(new DividerItemDecoration(25));
 
         prev_indicator = findViewById(R.id.habit_indicator_prev);
@@ -144,6 +152,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_habit = findViewById(R.id.add_habit);
         add_habit.setOnClickListener(this);
 
+
+
+
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
@@ -155,13 +166,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
 
         // initialise the habitAdapter
-        habitAdapter = new HabitAdapter(this, habit_dbHandler.getAllHabits(),user.getUID());
+        Habit.HabitList habitArrayList = habit_dbHandler.getAllHabits(); //13
+        initDummyList(habitArrayList); //3 dummies
+        habitAdapter = new HabitAdapter(this, habitArrayList,user.getUID());
 
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
+
+        indicator_num.setText("1");
     }
 
     /** This method is used to initialise the habit notification channel. */
@@ -283,6 +298,19 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         //To set setOnNavigationItemSelectedListener
         NavBarHelper  navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
+    private void initDummyList (Habit.HabitList habitList){
+        Log.d(TAG, "initDummyList: dummyy");
+        int size = habitList.size();
+
+        int dummy_size = 4-(size % 4);
+        if (dummy_size == 4) {return;}
+
+        Log.d(TAG, "initDummyList: "+dummy_size);
+        for (int i = 0; i<dummy_size; i++){
+            habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+        }
     }
 
 }
