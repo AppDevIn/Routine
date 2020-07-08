@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
+                app:layout_constraintGuide_percent="0.4" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/guideline2"
                 android:weightSum="2"
                 >
                 <LinearLayout
@@ -77,7 +77,6 @@
                     android:layout_weight="1"
                     android:weightSum="2"
                     android:baselineAligned="false"
-
                     >
 
                         <LinearLayout
@@ -86,12 +85,13 @@
                             android:layout_weight="1"
                             android:orientation="horizontal"
                             android:weightSum="1"
-
+                            android:padding="8dp"
+                            android:background="@drawable/card_linearlayout_background_normal"
                             tools:ignore="NestedWeights">
 
                             <ImageView
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="30dp"
                                 android:layout_weight="0.3"
                                 app:srcCompat="@drawable/card_img_check_normal"
                                 android:contentDescription="@string/description_check" />
@@ -115,6 +115,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="horizontal"
+                            android:padding="8dp"
+                            android:background="@drawable/card_linearlayout_background_normal"
                             android:weightSum="1">
 
                             <TextView
@@ -135,7 +137,7 @@
                             <ImageView
 
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_height="30dp"
                                 android:layout_weight="0.3"
                                 app:srcCompat="@drawable/card_img_target_normal"
                                 android:contentDescription="@string/description_focus" />
@@ -157,12 +159,15 @@
                         android:layout_weight="1"
                         android:orientation="horizontal"
                         android:weightSum="1"
-                        tools:ignore="NestedWeights">
+                        tools:ignore="NestedWeights"
+                        android:background="@drawable/card_linearlayout_background_normal"
+                        android:padding="8dp"
+                        >
 
                         <ImageView
 
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="30dp"
                             android:layout_weight="0.3"
                             app:srcCompat="@drawable/card_img_bell_normal"
                             android:contentDescription="@string/description_bel" />
@@ -187,6 +192,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:background="@drawable/card_linearlayout_background_normal"
                         android:weightSum="1">
 
 
@@ -208,7 +215,7 @@
                         <ImageView
 
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="30dp"
                             android:layout_weight="0.3"
                             app:srcCompat="@drawable/card_img_notes_normal"
                             android:contentDescription="@string/description_notes" />

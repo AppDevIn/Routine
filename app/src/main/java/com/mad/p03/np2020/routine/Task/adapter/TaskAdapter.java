@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.Task.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 
+import com.mad.p03.np2020.routine.Card.CardActivity;
 import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.R;
@@ -220,6 +222,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
 
         //TODO: Move to the card layout
+        mContext.startActivity(new Intent(mContext, CardActivity.class));
     }
 
 
