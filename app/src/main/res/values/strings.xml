@@ -93,6 +93,7 @@
     <string name="register">Register</string>
     <string name="error_name_empty">Name cannot be empty</string>
     <string name="homeTime">My Task List</string>
+    <string name="your_tasklist_is_empty">Your tasklist is empty</string>
 
 </resources>
 

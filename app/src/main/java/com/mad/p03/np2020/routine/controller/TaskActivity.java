@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 
 import com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper;
@@ -53,6 +54,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     private final String TAG = "Task";
 
     //Member variables
+    ViewSwitcher viewSwitcher;
     RecyclerView mRecyclerView;
     TaskAdapter mTaskAdapter;
     Section mSection;
@@ -79,27 +81,17 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
+        //Find the id
+        mConstraintLayout = findViewById(R.id.taskLayout);
+        mEdTask = findViewById(R.id.edTask);
+        viewSwitcher = findViewById(R.id.switcher);
+
         //Get the Section Object
         mSection = (Section) getIntent().getSerializableExtra("section");
         Log.d(TAG, "onCreate(): " + mSection.toString());
 
         //Find all the date from SQLite
         mTaskList = mSection.getTaskList(this);
-
-        mRecyclerView = findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        mTaskAdapter = new TaskAdapter(mTaskList, this);
-        mRecyclerView.setAdapter(mTaskAdapter);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-        //Find the id
-        mConstraintLayout = findViewById(R.id.taskLayout);
-        mEdTask = findViewById(R.id.edTask);
 
 
         //Set to listen for the editor
@@ -133,11 +125,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         startUpUI();
 
-        //Setting up touchhelper
-        ItemTouchHelper.Callback callback = new MyTaskTouchHelper(mTaskAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        initRecyclerView();
+
 
     }
 
@@ -219,6 +208,11 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     @Override
     public void onDataAdd(Object object) {
 
+        if(mTaskList.size() == 0){
+            viewSwitcher.reset();
+            viewSwitcher.showNext();
+        }
+
         Task task = (Task) object;
 
         Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + task );
@@ -243,6 +237,10 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
      */
     @Override
     public void onDataDelete(String ID) {
+
+        if(mTaskList.size() == 1){
+            viewSwitcher.showNext();
+        }
 
         Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
 
@@ -303,7 +301,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         ImageView imgIcon = findViewById(R.id.todoIcon);
         Toolbar toolbar =  findViewById(R.id.toolbar);
 
-
         //Create string that contains date and the name
         String titleMessage = mSection.getName() + "\n" + getTxtDate();
 
@@ -321,6 +318,14 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         shape.setShape(GradientDrawable.RECTANGLE);
         shape.setColor(mSection.getBackgroundColor());
         shape.setCornerRadii(radius);
+
+
+        //if empty display the image if not the recyclerview
+        if(mTaskList.size() == 0){
+            viewSwitcher.showNext();
+        }else{
+
+        }
 
 
 
@@ -344,5 +349,26 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         return dateValue;
 
     }
+
+    private void initRecyclerView(){
+
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        mTaskAdapter = new TaskAdapter(mTaskList, this);
+        mRecyclerView.setAdapter(mTaskAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //Setting up touchhelper
+        ItemTouchHelper.Callback callback = new MyTaskTouchHelper(mTaskAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+
 
 }

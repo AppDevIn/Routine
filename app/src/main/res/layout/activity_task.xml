@@ -24,6 +24,7 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             android:elevation="4dp"
+            android:padding="10dp"
             android:background="@color/superiorityBlue"
             >
 
@@ -70,20 +71,80 @@
         </androidx.appcompat.widget.Toolbar>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-
+        <ViewSwitcher
+            android:id="@+id/switcher"
             android:layout_width="0dp"
             android:layout_height="0dp"
-
-            android:padding="10dp"
-
             app:layout_constraintBottom_toTopOf="@id/cdAdd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        </androidx.recyclerview.widget.RecyclerView>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:padding="10dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_gravity="center"
+                >
+
+
+                <ImageView
+                    android:id="@+id/nothing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+
+                    android:src="@drawable/nothing"
+
+                    />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="@string/your_tasklist_is_empty"
+                    android:textAlignment="center"
+                    android:textColor="#929292"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+
+
+        </ViewSwitcher>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cdAdd"
