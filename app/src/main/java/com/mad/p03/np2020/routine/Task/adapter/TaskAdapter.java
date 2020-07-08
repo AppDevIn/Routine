@@ -221,8 +221,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         Log.d(TAG, "onClick(): You have clicked on " + position + " task");
 
 
-        //TODO: Move to the card layout
-        mContext.startActivity(new Intent(mContext, CardActivity.class));
+        //Move to the card layout
+        Intent intent = new Intent(mContext, CardActivity.class);
+        intent.putExtra("task", mTaskList.get(position)); // Add the object
+        mContext.startActivity(intent);
     }
 
 

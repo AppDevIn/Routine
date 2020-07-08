@@ -9,13 +9,14 @@
 
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/melon"
         app:contentInsetEnd="0dp"
         app:contentInsetLeft="0dp"
-        app:contentInsetRight="0dp"
 
+        app:contentInsetRight="0dp"
         app:contentInsetStart="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,190 +27,180 @@
             android:layout_height="match_parent">
 
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.4" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="60dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline2"
-                app:layout_constraintEnd_toEndOf="@+id/title"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/card_img_edit_noraml"
-                android:contentDescription="@string/description_edit" />
-
-            <TextView
+            <EditText
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
 
+
+                android:layout_marginTop="8dp"
                 android:layout_weight="0.8"
+                android:autofillHints=""
+                android:background="@null"
+                android:clickable="false"
+
+                android:focusable="false"
                 android:fontFamily="@font/montserrat_semibold"
+                android:imeOptions="actionDone"
+
+                android:inputType="text"
                 android:padding="10dp"
                 android:text="@string/holder"
-
                 android:textAlignment="center"
+
                 android:textColor="@color/black"
                 android:textSize="20sp"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="60dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/description_edit"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintEnd_toEndOf="@+id/title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/card_img_edit_noraml" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/guideline2"
                 android:weightSum="2"
-                >
+                app:layout_constraintTop_toBottomOf="@id/guideline2">
+
                 <LinearLayout
                     android:id="@+id/Layout2Container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
                     android:layout_weight="1"
-                    android:weightSum="2"
                     android:baselineAligned="false"
-                    >
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:weightSum="1"
-                            android:padding="8dp"
-                            android:background="@drawable/card_linearlayout_background_normal"
-                            tools:ignore="NestedWeights">
-
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_height="30dp"
-                                android:layout_weight="0.3"
-                                app:srcCompat="@drawable/card_img_check_normal"
-                                android:contentDescription="@string/description_check" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.7"
-                                android:layout_gravity="center"
-
-                                android:textSize="15sp"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textColor="#484848"
-
-                                android:text="@string/check_list" />
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:padding="8dp"
-                            android:background="@drawable/card_linearlayout_background_normal"
-                            android:weightSum="1">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.7"
-                                android:layout_gravity="center"
-
-                                android:textAlignment="center"
-
-                                android:textSize="15sp"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:textColor="#484848"
-
-                                android:text="@string/focus" />
-
-
-                            <ImageView
-
-                                android:layout_width="0dp"
-                                android:layout_height="30dp"
-                                android:layout_weight="0.3"
-                                app:srcCompat="@drawable/card_img_target_normal"
-                                android:contentDescription="@string/description_focus" />
-
-                        </LinearLayout>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_weight="1"
-                    android:weightSum="2"
-                    android:baselineAligned="false">
+                    android:weightSum="2">
 
                     <LinearLayout
+                        android:id="@+id/ll_check"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:weightSum="1"
-                        tools:ignore="NestedWeights"
                         android:background="@drawable/card_linearlayout_background_normal"
+                        android:orientation="horizontal"
                         android:padding="8dp"
-                        >
+                        android:weightSum="1"
+                        tools:ignore="NestedWeights">
 
                         <ImageView
-
                             android:layout_width="0dp"
                             android:layout_height="30dp"
                             android:layout_weight="0.3"
-                            app:srcCompat="@drawable/card_img_bell_normal"
-                            android:contentDescription="@string/description_bel" />
+                            android:contentDescription="@string/description_check"
+                            app:srcCompat="@drawable/card_img_check_normal" />
 
                         <TextView
-
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
                             android:layout_gravity="center"
+                            android:layout_weight="0.7"
 
-                            android:textSize="15sp"
                             android:fontFamily="@font/montserrat_regular"
+                            android:text="@string/check_list"
                             android:textColor="#484848"
 
-                            android:text="@string/schedule" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/ll_focus"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="@drawable/card_linearlayout_background_normal"
                         android:orientation="horizontal"
                         android:padding="8dp"
-                        android:background="@drawable/card_linearlayout_background_normal"
                         android:weightSum="1">
+
+                        <ImageView
+
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:contentDescription="@string/description_focus"
+                            app:srcCompat="@drawable/card_img_target_normal" />
 
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
                             android:layout_gravity="center"
+                            android:layout_weight="0.7"
 
-                            android:textAlignment="center"
-
-                            android:textSize="15sp"
                             android:fontFamily="@font/montserrat_regular"
+
+                            android:text="@string/focus"
+                            android:textAlignment="center"
                             android:textColor="#484848"
 
-                            android:text="@string/notes" />
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/ll_schedule"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_linearlayout_background_normal"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:weightSum="1"
+                        tools:ignore="NestedWeights">
+
+                        <ImageView
+
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:contentDescription="@string/description_bel"
+                            app:srcCompat="@drawable/card_img_bell_normal" />
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="@string/schedule"
+                            android:textColor="#484848"
+
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_notes"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_linearlayout_background_normal"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:weightSum="1">
 
 
                         <ImageView
@@ -217,8 +208,23 @@
                             android:layout_width="0dp"
                             android:layout_height="30dp"
                             android:layout_weight="0.3"
-                            app:srcCompat="@drawable/card_img_notes_normal"
-                            android:contentDescription="@string/description_notes" />
+                            android:contentDescription="@string/description_notes"
+                            app:srcCompat="@drawable/card_img_notes_normal" />
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+
+                            android:fontFamily="@font/montserrat_regular"
+
+                            android:text="@string/notes"
+                            android:textAlignment="center"
+                            android:textColor="#484848"
+
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -226,11 +232,33 @@
 
             </LinearLayout>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.4" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/toolMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="16sp"
+        android:text="@string/select_a_tool_to_get_started"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="#929292"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+        app:layout_constraintVertical_bias="0.399" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

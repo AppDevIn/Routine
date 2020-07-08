@@ -11,6 +11,7 @@ import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,23 +36,8 @@ import androidx.work.WorkManager;
  * @author Jeyavishnu
  * @since 04-06-2020
  */
-public class Task {
+public class Task implements Serializable {
 
-    //Member variable
-    private String mName;
-    private String mTaskID;
-    private String mSectionID;
-    private int mPosition;
-    private boolean checked;
-    private Date remindDate;
-    private Date dueDate;
-    private String mNotes;
-    private String mLabels;
-    private List<Steps> mSteps;
-    private List<Label> mLabelList;
-    private boolean dirty = false;
-
-    private final static String TAG = "Task Model";
 
     /**The table name for this model*/
     public static final String TABLE_NAME = "task";
@@ -95,6 +81,23 @@ public class Task {
      */
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    //Member variable
+    private String mName;
+    private String mTaskID;
+    private String mSectionID;
+    private int mPosition;
+    private boolean checked;
+    private Date remindDate;
+    private Date dueDate;
+    private String mNotes;
+    private String mLabels;
+    private List<Steps> mSteps;
+    private List<Label> mLabelList;
+    private boolean dirty = false;
+
+    private final static String TAG = "Task Model";
+
 
 
     public Task(String name, String sectionID) {
