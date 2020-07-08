@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -91,7 +90,7 @@ public class HabitViewActivity extends AppCompatActivity {
         closeBtn = findViewById(R.id.habit_view_close);
         editBtn = findViewById(R.id.habit_view_edit);
         deletebtn = findViewById(R.id.habit_view_delete);
-        occurrence = findViewById(R.id.habitOccurence);
+        occurrence = findViewById(R.id.habitOccurrence);
         cnt2 = findViewById(R.id.habitCount);
         period = findViewById(R.id.habit_period);
         habit_view_upper = findViewById(R.id.habit_view_upper);

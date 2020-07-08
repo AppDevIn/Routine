@@ -84,6 +84,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.width = (int) (parent.getWidth() * 0.44);
+        Log.d(TAG, "onCreateViewHolder: " + layoutParams.width);
         view.setLayoutParams(layoutParams);
 
         return new HabitHolder(view, mListener);
@@ -106,6 +107,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         // retrieve the habit object
         final Habit habit = _habitList.getItemAt(position);
 
+        if (habit.getTitle().toLowerCase().equals("dummy")){
+            holder.itemView.setVisibility(View.INVISIBLE);
+            return;
+        }else{
+            holder.itemView.setVisibility(View.VISIBLE);
+        }
 
         // set the background color of the holder based on its holder color value
         switch (habit.getHolder_color()) {
@@ -127,16 +134,14 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         }
 
         // set text on TextView based on the object
-        holder.mTitle.setText(habit.getTitle());
-        if (holder.mTitle.getText().toString().equals("DUMMY")){
-            holder.itemView.setVisibility(View.INVISIBLE);
-        }else{
-            holder.itemView.setVisibility(View.VISIBLE);
-        }
+        holder.mTitle.setText(capitalise(habit.getTitle()));
+        holder.mCount.setText(String.valueOf(habit.getCount()));
+        holder.mOccurrence.setText(String.valueOf(habit.getOccurrence()));
 
-//        holder.mCount.setText(String.valueOf(habit.getCount()));
-//        holder.mCount2.setText(String.valueOf(habit.getCount()));
-//        holder.mOccurrence.setText(String.valueOf(habit.getOccurrence()));
+        int progress = habit.calculateProgress();
+        holder.habit_progressBar.setProgress(progress);
+        holder.habit_progress.setText(String.valueOf(progress));
+
 //        holder.addBtn.setBackgroundColor(Color.TRANSPARENT);
 //        // set onClickListener on add button
 //        holder.addBtn.setOnClickListener(new View.OnClickListener() {
@@ -235,6 +240,25 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         Gson gson = new Gson();
         Log.i(TAG,"Object serialize");
         return gson.toJson(habit);
+    }
+
+    /**
+     *
+     * This method is used to format text by capitalising the first text of each split text
+     *
+     * @param text This parameter is used to get the text
+     *
+     * @return String This returns the formatted text
+     * */
+    public String capitalise(String text){
+        String txt = "";
+        String[] splited = text.split("\\s+");
+        for (String s: splited){
+            txt += s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase() + " ";
+        }
+        return txt;
+
+//        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
 }

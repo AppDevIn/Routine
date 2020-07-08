@@ -94,6 +94,7 @@
     <string name="register">Register</string>
     <string name="error_name_empty">Name cannot be empty</string>
     <string name="habit_tracker">Habit Tracker</string>
+    <string name="habit_divider">/</string>
 
 </resources>
 

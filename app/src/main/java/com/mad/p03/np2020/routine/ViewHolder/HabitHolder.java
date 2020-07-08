@@ -3,11 +3,10 @@ package com.mad.p03.np2020.routine.ViewHolder;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
@@ -28,8 +27,6 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     public TextView mTitle;
     /** Shown as habit count on the left ot the habit holder*/
     public TextView mCount;
-    /** Shown as habit count on the right of the habit holder*/
-    public TextView mCount2;
     /** Shown as habit occurrence on the habit holder*/
     public TextView mOccurrence;
     /** Shown as habit period on the habit holder*/
@@ -38,6 +35,10 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     public ImageButton addBtn;
     /** The background of the habit holder*/
     public ImageView habit_row;
+    /** The progress of the habit */
+    public TextView habit_progress;
+    /** The progress bar of the habit */
+    public ProgressBar habit_progressBar;
 
     /**
      *
@@ -53,10 +54,12 @@ public class HabitHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         this.mTitle = itemView.findViewById(R.id.habitTitle);
-        this.habit_row = itemView.findViewById(R.id.habit_backgroud);
-//        this.mCount = itemView.findViewById(R.id.habitCount);
-//        this.mCount2 = itemView.findViewById(R.id.habitCount2);
-//        this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
+        this.habit_row = itemView.findViewById(R.id.habit_background);
+        this.mCount = itemView.findViewById(R.id.habitCount);
+        this.mOccurrence = itemView.findViewById(R.id.habitOccurrence);
+        this.habit_progress = itemView.findViewById(R.id.habit_progress);
+        this.habit_progressBar = itemView.findViewById(R.id.habit_progressBar);
+
 //        this.addBtn = itemView.findViewById(R.id.addCnt);
 //        this.mPeriod = itemView.findViewById(R.id.habit_period);
 
