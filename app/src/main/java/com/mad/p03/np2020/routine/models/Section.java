@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.Home.models.UploadSectionWorker;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
@@ -360,10 +361,11 @@ public class Section implements Serializable {
 
     }
 
-    public List<Check> getCheckList(){
+    public List<Check> getCheckList(Context context){
 
-        List<Check> checkList = new ArrayList<>();
+        CheckDBHelper checkDBHelper = new CheckDBHelper(context);
 
+        return checkDBHelper.getSection(ID);
 
 
     }

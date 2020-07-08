@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
+import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
@@ -27,7 +28,7 @@ import androidx.annotation.Nullable;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 11;
+    static final int DATABASE_VERSION = 12;
 
     //Listener
     static MyDatabaseListener mMyDatabaseListener;
@@ -54,6 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Habit.CREATE_HABITS_TABLE); //Create habit database
         sqLiteDatabase.execSQL(HabitGroup.CREATE_GROUPS_TABLE); //Create habit group database
         sqLiteDatabase.execSQL(Focus.CREATE_SQL); //Create focus database
+        sqLiteDatabase.execSQL(Check.SQL_CREATE_ENTRIES); //Create focus database
     }
 
     /**
@@ -69,7 +71,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
-        sqLiteDatabase.execSQL(Section.SQL_DELETE_ENTRIES); // Delete existing user
+        sqLiteDatabase.execSQL(Section.SQL_DELETE_ENTRIES); // Delete existing section
+        sqLiteDatabase.execSQL(Check.SQL_DELETE_ENTRIES); // Delete existing check
         sqLiteDatabase.execSQL(Task.SQL_DELETE_ENTRIES);
         sqLiteDatabase.execSQL(User.SQL_DELETE_ENTRIES);
         sqLiteDatabase.execSQL(Habit.DROP_HABITS_TABLE);
