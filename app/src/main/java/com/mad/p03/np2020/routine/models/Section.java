@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -355,6 +356,14 @@ public class Section implements Serializable {
                         Log.d(TAG, "Section Delete state: " + workInfo.getState());
                     }
                 });
+
+
+    }
+
+    public List<Check> getCheckList(){
+
+        List<Check> checkList = new ArrayList<>();
+
 
 
     }

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
 import com.mad.p03.np2020.routine.HistoryFragment;
 import com.mad.p03.np2020.routine.NotesFragment;
 import com.mad.p03.np2020.routine.R;
@@ -61,6 +62,13 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
         //Set the title text the task name
         edTitle.setText(mTask.getName());
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        CheckListFragment fragment = new CheckListFragment();
+        fragmentTransaction.add(R.id.fragmentContainer, fragment);
+        fragmentTransaction.commit();
         
     }
 
@@ -79,6 +87,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
         //Doesn't have to be visible if a tool has been selected
         findViewById(R.id.toolMessage).setVisibility(View.GONE);
+
+        //Since there is tool selected the fragment can be visible
+        findViewById(R.id.fragmentContainer).setVisibility(View.VISIBLE);
 
         switch (view.getId()){
             case R.id.ll_check:
@@ -111,6 +122,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkList() {
+
+
+
     }
 
     //Reference
