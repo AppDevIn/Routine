@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
+import com.mad.p03.np2020.routine.Adapter.HabitCheckAdapter;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
@@ -48,8 +50,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     private static final String channelId = "001"; // notification channel ID for habitTracker
 
     // initialise recyclerview and adapter
-    private RecyclerView habitRecyclerView;
+    private RecyclerView habitRecyclerView, habitCheckRecyclerView;
     private HabitAdapter habitAdapter;
+    private HabitCheckAdapter habitCheckAdapter;
 
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
@@ -98,7 +101,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         initialiseHabitNotificationChannel();
 
 
-        habitRecyclerView = findViewById(R.id.my_recycler_view);
+        habitRecyclerView = findViewById(R.id.habit_recycler_view);
         GridLayoutManager manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.HORIZONTAL, false){
             @Override
             public boolean canScrollHorizontally() {
@@ -150,6 +153,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_habit = findViewById(R.id.add_habit);
         add_habit.setOnClickListener(this);
 
+        habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
+        habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
@@ -162,14 +168,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // initialise the habitAdapter
         Habit.HabitList habitArrayList = habit_dbHandler.getAllHabits();
-        initDummyList(habitArrayList);
-        habitAdapter = new HabitAdapter(this, habitArrayList,user.getUID());
+
+        habitAdapter = new HabitAdapter(this, initDummyList(habitArrayList), user.getUID());
 
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
+
+        habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList);
+        habitCheckRecyclerView.setAdapter(habitCheckAdapter);
 
         indicator_num.setText("1");
     }
@@ -295,15 +304,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
     }
 
-    private void initDummyList (Habit.HabitList habitList){
+    private Habit.HabitList initDummyList (Habit.HabitList habitList){
         int size = habitList.size();
 
         int dummy_size = 4-(size % 4);
-        if (dummy_size == 4) {return;}
+        if (dummy_size == 4) {return habitList;}
 
         for (int i = 0; i<dummy_size; i++){
             habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
         }
+
+        return habitList;
     }
 
 }
