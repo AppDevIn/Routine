@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.models.User;
 
 
 //This database is just the cache for online data

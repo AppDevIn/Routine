@@ -6,8 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
+import com.mad.p03.np2020.routine.models.Section;
+import com.mad.p03.np2020.routine.models.Task;
 
 import java.util.ArrayList;
 import java.util.List;

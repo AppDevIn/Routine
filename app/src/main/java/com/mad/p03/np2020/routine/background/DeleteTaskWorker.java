@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mad.p03.np2020.routine.Class.Section;
+import com.mad.p03.np2020.routine.models.Section;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;

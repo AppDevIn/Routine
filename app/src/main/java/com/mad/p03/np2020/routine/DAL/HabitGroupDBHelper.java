@@ -8,7 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.Class.HabitGroup;
+import com.mad.p03.np2020.routine.models.HabitGroup;
 
 import java.util.ArrayList;
 

@@ -84,7 +84,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadDataWorker {
+      class com.mad.p03.np2020.routine.Register.models.UploadDataWorker {
           + UploadDataWorker()
           + doWork()
       }
@@ -94,7 +94,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadSectionWorker {
+      class com.mad.p03.np2020.routine.Home.models.UploadSectionWorker {
           + UploadSectionWorker()
           + doWork()
       }
@@ -104,7 +104,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadTaskWorker {
+      class com.mad.p03.np2020.routine.Task.model.UploadTaskWorker {
           + UploadTaskWorker()
           + doWork()
       }
@@ -121,9 +121,9 @@ title __BACKGROUND's Class Diagram__\n
   com.mad.p03.np2020.routine.background.HabitGroupWorker o-- com.mad.p03.np2020.routine.Class.HabitGroup : habitGroupData
   com.mad.p03.np2020.routine.background.HabitWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.HabitWorker o-- com.mad.p03.np2020.routine.Class.Habit : habitData
-  com.mad.p03.np2020.routine.background.UploadDataWorker -up-|> androidx.work.Worker
-  com.mad.p03.np2020.routine.background.UploadSectionWorker -up-|> androidx.work.Worker
-  com.mad.p03.np2020.routine.background.UploadTaskWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Register.models.UploadDataWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Home.models.UploadSectionWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Task.model.UploadTaskWorker -up-|> androidx.work.Worker
 
 
 right footer

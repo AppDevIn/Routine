@@ -28,7 +28,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      interface com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter {
+      interface com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter {
       }
     }
   }
@@ -36,7 +36,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.HomePageAdapter {
+      class com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter {
       }
     }
   }
@@ -44,7 +44,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper {
+      class com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper {
       }
     }
   }
@@ -52,7 +52,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter {
+      class com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter {
       }
     }
   }
@@ -60,7 +60,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter {
+      class com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter {
       }
     }
   }
@@ -68,7 +68,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper {
+      class com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper {
       }
     }
   }
@@ -76,7 +76,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      interface com.mad.p03.np2020.routine.Adapter.OnItemClickListener {
+      interface com.mad.p03.np2020.routine.helpers.OnItemClickListener {
       }
     }
   }
@@ -92,7 +92,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.TaskAdapter {
+      class com.mad.p03.np2020.routine.Task.adapter.TaskAdapter {
       }
     }
   }
@@ -100,7 +100,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      interface com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter {
+      interface com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter {
       }
     }
   }
@@ -245,7 +245,7 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration {
+    class com.mad.p03.np2020.routine.helpers.DividerItemDecoration {
     }
   }
   
@@ -269,7 +269,7 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.controller.Home {
+    class com.mad.p03.np2020.routine.Home.Home {
     }
   }
   
@@ -293,7 +293,7 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.controller.RegisterActivity {
+    class com.mad.p03.np2020.routine.Register.RegisterActivity {
     }
   }
   
@@ -311,7 +311,7 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.controller.TaskActivity {
+    class com.mad.p03.np2020.routine.Task.TaskActivity {
     }
   }
   
@@ -342,7 +342,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
-      class com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder {
+      class com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder {
       }
     }
   }
@@ -350,7 +350,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
-      class com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder {
+      class com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder {
       }
     }
   }
@@ -406,7 +406,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadDataWorker {
+      class com.mad.p03.np2020.routine.Register.models.UploadDataWorker {
       }
     }
   }
@@ -414,7 +414,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadSectionWorker {
+      class com.mad.p03.np2020.routine.Home.models.UploadSectionWorker {
       }
     }
   }
@@ -422,7 +422,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadTaskWorker {
+      class com.mad.p03.np2020.routine.Task.model.UploadTaskWorker {
       }
     }
   }
@@ -506,20 +506,20 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Adapter.OnItemClickListener : mListener
+  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.helpers.OnItemClickListener : mListener
   com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.Adapter.OnItemClickListener : mListener
-  com.mad.p03.np2020.routine.Adapter.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter
-  com.mad.p03.np2020.routine.Adapter.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Adapter.OnSectionListener
-  com.mad.p03.np2020.routine.Adapter.HomePageAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
-  com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper o-- com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter : mAdapter
-  com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter -up-|> android.widget.BaseAdapter
-  com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter -up-|> android.widget.BaseAdapter
-  com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
-  com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper o-- com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
-  com.mad.p03.np2020.routine.Adapter.TaskAdapter .up.|> com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter
-  com.mad.p03.np2020.routine.Adapter.TaskAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.helpers.OnItemClickListener : mListener
+  com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter
+  com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Adapter.OnSectionListener
+  com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
+  com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper o-- com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter : mAdapter
+  com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter -up-|> android.widget.BaseAdapter
+  com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter -up-|> android.widget.BaseAdapter
+  com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
+  com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper o-- com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
+  com.mad.p03.np2020.routine.Task.adapter.TaskAdapter .up.|> com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter
+  com.mad.p03.np2020.routine.Task.adapter.TaskAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.BlankViewModel -up-|> androidx.lifecycle.ViewModel
   com.mad.p03.np2020.routine.CardActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.Class.AlarmReceiver -up-|> android.content.BroadcastReceiver
@@ -533,7 +533,7 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Class.Section .up.|> java.io.Serializable
   com.mad.p03.np2020.routine.Class.User .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
+  com.mad.p03.np2020.routine.helpers.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnFocusChangeListener
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnLongClickListener
@@ -543,7 +543,7 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
   com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.Class.User : user
   com.mad.p03.np2020.routine.HabitActivity .up.|> android.view.View.OnClickListener
-  com.mad.p03.np2020.routine.HabitActivity .up.|> com.mad.p03.np2020.routine.Adapter.OnItemClickListener
+  com.mad.p03.np2020.routine.HabitActivity .up.|> com.mad.p03.np2020.routine.helpers.OnItemClickListener
   com.mad.p03.np2020.routine.HabitActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter : groupAdapter
   com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.database.HabitGroupDBHelper : group_dbhandler
@@ -554,11 +554,11 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
   com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.HistoryFragment.OnFragmentInteractionListener : mListener
   com.mad.p03.np2020.routine.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.controller.Home .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
-  com.mad.p03.np2020.routine.controller.Home -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.controller.Home o-- com.mad.p03.np2020.routine.Adapter.HomePageAdapter : mHomePageAdapter
-  com.mad.p03.np2020.routine.controller.Home o-- com.mad.p03.np2020.routine.database.SectionDBHelper : mSectionDBHelper
-  com.mad.p03.np2020.routine.controller.Home o-- com.mad.p03.np2020.routine.Class.User : mUser
+  com.mad.p03.np2020.routine.Home.Home .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
+  com.mad.p03.np2020.routine.Home.Home -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Home.Home o-- com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter : mHomePageAdapter
+  com.mad.p03.np2020.routine.Home.Home o-- com.mad.p03.np2020.routine.database.SectionDBHelper : mSectionDBHelper
+  com.mad.p03.np2020.routine.Home.Home o-- com.mad.p03.np2020.routine.Class.User : mUser
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnFocusChangeListener
   com.mad.p03.np2020.routine.LoginActivity .up.|> android.view.View.OnKeyListener
@@ -566,28 +566,28 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.LoginActivity o-- com.mad.p03.np2020.routine.database.UserDBHelper : userDatabase
   com.mad.p03.np2020.routine.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.NotesFragment -up-|> androidx.fragment.app.Fragment
-  com.mad.p03.np2020.routine.controller.RegisterActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.controller.RegisterActivity o-- com.mad.p03.np2020.routine.Class.User : mUser
+  com.mad.p03.np2020.routine.Register.RegisterActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Register.RegisterActivity o-- com.mad.p03.np2020.routine.Class.User : mUser
   com.mad.p03.np2020.routine.Settings -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.StepsFragment -up-|> androidx.fragment.app.Fragment
-  com.mad.p03.np2020.routine.controller.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener
-  com.mad.p03.np2020.routine.controller.TaskActivity .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
-  com.mad.p03.np2020.routine.controller.TaskActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.controller.TaskActivity o-- com.mad.p03.np2020.routine.Class.Section : mSection
-  com.mad.p03.np2020.routine.controller.TaskActivity o-- com.mad.p03.np2020.routine.Adapter.TaskAdapter : mTaskAdapter
+  com.mad.p03.np2020.routine.Task.TaskActivity .up.|> android.widget.TextView.OnEditorActionListener
+  com.mad.p03.np2020.routine.Task.TaskActivity .up.|> com.mad.p03.np2020.routine.database.MyDatabaseListener
+  com.mad.p03.np2020.routine.Task.TaskActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Task.TaskActivity o-- com.mad.p03.np2020.routine.Class.Section : mSection
+  com.mad.p03.np2020.routine.Task.TaskActivity o-- com.mad.p03.np2020.routine.Task.adapter.TaskAdapter : mTaskAdapter
   com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder o-- com.mad.p03.np2020.routine.Adapter.FocusAdapter : adapter
   com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.HabitHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.View.OnTouchListener
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Adapter.OnSectionListener : mOnSectionListener
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.GestureDetector.OnGestureListener
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.View.OnTouchListener
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder o-- com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder .up.|> android.view.View.OnTouchListener
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Adapter.OnSectionListener : mOnSectionListener
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder .up.|> android.view.GestureDetector.OnGestureListener
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder .up.|> android.view.View.OnTouchListener
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder o-- com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
   com.mad.p03.np2020.routine.background.DeleteSectionWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.DeleteTaskWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.FCM -up-|> com.google.firebase.messaging.FirebaseMessagingService
@@ -597,9 +597,9 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.background.HabitGroupWorker o-- com.mad.p03.np2020.routine.Class.HabitGroup : habitGroupData
   com.mad.p03.np2020.routine.background.HabitWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.HabitWorker o-- com.mad.p03.np2020.routine.Class.Habit : habitData
-  com.mad.p03.np2020.routine.background.UploadDataWorker -up-|> androidx.work.Worker
-  com.mad.p03.np2020.routine.background.UploadSectionWorker -up-|> androidx.work.Worker
-  com.mad.p03.np2020.routine.background.UploadTaskWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Register.models.UploadDataWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Home.models.UploadSectionWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Task.model.UploadTaskWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.database.CardDBHelper -up-|> android.database.sqlite.SQLiteOpenHelper
   com.mad.p03.np2020.routine.database.DBHelper -up-|> android.database.sqlite.SQLiteOpenHelper
   com.mad.p03.np2020.routine.database.FocusDBHelper .up.|> android.os.Parcelable

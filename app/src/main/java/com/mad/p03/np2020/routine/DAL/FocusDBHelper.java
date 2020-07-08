@@ -10,7 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.models.Focus;
 
 import java.util.ArrayList;
 

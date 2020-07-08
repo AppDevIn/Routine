@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.mad.p03.np2020.routine.Class.PopUp;
+import com.mad.p03.np2020.routine.models.PopUp;
 
 /**
 *

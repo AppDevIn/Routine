@@ -20,10 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder;
 import com.mad.p03.np2020.routine.background.FocusWorker;
-import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 

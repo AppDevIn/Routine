@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
-import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.R;
 
 /**

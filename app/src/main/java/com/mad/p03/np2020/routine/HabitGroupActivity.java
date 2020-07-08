@@ -26,10 +26,10 @@ import androidx.work.WorkManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
-import com.mad.p03.np2020.routine.Adapter.OnItemClickListener;
-import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Class.HabitGroup;
-import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
+import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitGroup;
+import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.background.HabitGroupWorker;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
 

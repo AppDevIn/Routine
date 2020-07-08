@@ -46,7 +46,7 @@ title __VIEWHOLDER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
-      class com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder {
+      class com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder {
           + mImgBackGround : ImageView
           + mTextViewListName : TextView
           + mimgIcon : ImageView
@@ -67,7 +67,7 @@ title __VIEWHOLDER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
-      class com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder {
+      class com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder {
           + mCheckBox : CheckBox
           + mListName : TextView
           ~ mGestureDetector : GestureDetector
@@ -90,14 +90,14 @@ title __VIEWHOLDER's Class Diagram__\n
   com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder o-- com.mad.p03.np2020.routine.Adapter.FocusAdapter : adapter
   com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.HabitHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.View.OnTouchListener
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Adapter.OnSectionListener : mOnSectionListener
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.GestureDetector.OnGestureListener
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder .up.|> android.view.View.OnTouchListener
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder o-- com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder .up.|> android.view.View.OnTouchListener
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder o-- com.mad.p03.np2020.routine.Adapter.OnSectionListener : mOnSectionListener
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder .up.|> android.view.GestureDetector.OnGestureListener
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder .up.|> android.view.View.OnTouchListener
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder o-- com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
 
 
 right footer

@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.mad.p03.np2020.routine.controller.Home;
+import com.mad.p03.np2020.routine.Home.Home;
 
 import androidx.annotation.NonNull;
 

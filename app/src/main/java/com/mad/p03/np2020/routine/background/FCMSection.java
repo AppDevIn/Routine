@@ -5,8 +5,8 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.models.Section;
+import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 

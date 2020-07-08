@@ -29,7 +29,7 @@
         <activity android:name=".HabitActivity"
                 android:exported="true"/>
 
-        <activity android:name=".Class.PopUp"
+        <activity android:name=".models.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
 
@@ -40,11 +40,11 @@
 
         <activity android:name=".MainActivity"/>
 
-        <activity android:name=".controller.TaskActivity"
+        <activity android:name=".Task.TaskActivity"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
-        <activity android:name=".controller.RegisterActivity" />
+        <activity android:name=".Register.RegisterActivity" />
 
         <activity android:name=".AddHabitActivity" />
 
@@ -54,7 +54,7 @@
 
 
         <activity
-            android:name=".controller.Home">
+            android:name=".Home.Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -68,7 +68,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:enabled="true" android:name=".Class.AlarmReceiver"
+        <receiver android:enabled="true" android:name=".models.AlarmReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -78,7 +78,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".Class.CardNotification"/>
+        <receiver android:name=".models.CardNotification"/>
 
 
     </application>

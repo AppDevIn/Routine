@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Adapter.OnItemClickListener;
+import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
 import com.mad.p03.np2020.routine.R;
 
 /**

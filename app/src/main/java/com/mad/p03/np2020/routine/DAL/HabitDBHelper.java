@@ -8,9 +8,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Class.HabitGroup;
-import com.mad.p03.np2020.routine.Class.HabitReminder;
+import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitGroup;
+import com.mad.p03.np2020.routine.models.HabitReminder;
 
 /**
  *

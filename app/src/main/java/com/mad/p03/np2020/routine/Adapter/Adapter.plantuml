@@ -60,7 +60,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      interface com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter {
+      interface com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter {
           {abstract} + onItemMove()
           {abstract} + onItemSwiped()
       }
@@ -70,7 +70,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.HomePageAdapter {
+      class com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter {
           - TAG : String
           - mContext : Context
           - mItemTouchHelper : ItemTouchHelper
@@ -95,7 +95,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper {
+      class com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper {
           + MyHomeItemTouchHelper()
           + clearView()
           + getMovementFlags()
@@ -111,7 +111,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter {
+      class com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter {
           - mColors : Integer[]
           + MySpinnerColorAdapter()
           + getCount()
@@ -125,7 +125,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter {
+      class com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter {
           - mIcons : Integer[]
           + MySpinnerIconsAdapter()
           + getCount()
@@ -139,7 +139,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper {
+      class com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper {
           + MyTaskTouchHelper()
           + clearView()
           + getMovementFlags()
@@ -155,7 +155,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      interface com.mad.p03.np2020.routine.Adapter.OnItemClickListener {
+      interface com.mad.p03.np2020.routine.helpers.OnItemClickListener {
           {abstract} + onItemClick()
       }
     }
@@ -173,7 +173,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.TaskAdapter {
+      class com.mad.p03.np2020.routine.Task.adapter.TaskAdapter {
           - TAG : String
           - mContext : Context
           - mItemTouchHelper : ItemTouchHelper
@@ -196,7 +196,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      interface com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter {
+      interface com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter {
           {abstract} + onItemClicked()
           {abstract} + onItemMove()
           {abstract} + onItemSwiped()
@@ -211,20 +211,20 @@ title __ADAPTER's Class Diagram__\n
   com.mad.p03.np2020.routine.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Adapter.OnItemClickListener : mListener
+  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.helpers.OnItemClickListener : mListener
   com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.Adapter.OnItemClickListener : mListener
-  com.mad.p03.np2020.routine.Adapter.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter
-  com.mad.p03.np2020.routine.Adapter.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Adapter.OnSectionListener
-  com.mad.p03.np2020.routine.Adapter.HomePageAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
-  com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper o-- com.mad.p03.np2020.routine.Adapter.HomeItemTouchHelperAdapter : mAdapter
-  com.mad.p03.np2020.routine.Adapter.MySpinnerColorAdapter -up-|> android.widget.BaseAdapter
-  com.mad.p03.np2020.routine.Adapter.MySpinnerIconsAdapter -up-|> android.widget.BaseAdapter
-  com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
-  com.mad.p03.np2020.routine.Adapter.MyTaskTouchHelper o-- com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
-  com.mad.p03.np2020.routine.Adapter.TaskAdapter .up.|> com.mad.p03.np2020.routine.Adapter.TaskTouchHelperAdapter
-  com.mad.p03.np2020.routine.Adapter.TaskAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.helpers.OnItemClickListener : mListener
+  com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter
+  com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Adapter.OnSectionListener
+  com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
+  com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper o-- com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter : mAdapter
+  com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter -up-|> android.widget.BaseAdapter
+  com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter -up-|> android.widget.BaseAdapter
+  com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
+  com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper o-- com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
+  com.mad.p03.np2020.routine.Task.adapter.TaskAdapter .up.|> com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter
+  com.mad.p03.np2020.routine.Task.adapter.TaskAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
 
 
 right footer

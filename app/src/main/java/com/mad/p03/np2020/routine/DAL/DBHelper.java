@@ -5,12 +5,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.mad.p03.np2020.routine.Class.Focus;
-import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Class.HabitGroup;
-import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.Task;
-import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
+import com.mad.p03.np2020.routine.models.Focus;
+import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitGroup;
+import com.mad.p03.np2020.routine.models.Section;
+import com.mad.p03.np2020.routine.models.Task;
+import com.mad.p03.np2020.routine.models.User;
 
 import androidx.annotation.Nullable;
 

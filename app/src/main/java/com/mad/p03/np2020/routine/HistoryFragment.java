@@ -19,8 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
-import com.mad.p03.np2020.routine.Class.ItemDecoration;
-import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.models.ItemDecoration;
+import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
 import java.util.Locale;
