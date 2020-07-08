@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.mad.p03.np2020.routine.HistoryFragment;
 import com.mad.p03.np2020.routine.NotesFragment;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.StepsFragment;
@@ -111,4 +112,15 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
     private void checkList() {
     }
+
+    //Reference
+//    public void openHistory() { //Open history tab
+//        HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDBHelper);
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+//
+//    }
 }
