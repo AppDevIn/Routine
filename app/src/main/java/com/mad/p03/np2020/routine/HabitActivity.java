@@ -168,6 +168,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // initialise the habitAdapter
         Habit.HabitList habitArrayList = habit_dbHandler.getAllHabits();
+        Habit.HabitList d_habitArrayList = habit_dbHandler.getAllHabits();
+
+        habitCheckAdapter = new HabitCheckAdapter(this, d_habitArrayList);
+        habitCheckRecyclerView.setAdapter(habitCheckAdapter);
 
         habitAdapter = new HabitAdapter(this, initDummyList(habitArrayList), user.getUID());
 
@@ -176,9 +180,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
-
-        habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList);
-        habitCheckRecyclerView.setAdapter(habitCheckAdapter);
 
         indicator_num.setText("1");
     }
