@@ -17,6 +17,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -108,6 +110,16 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
 
         TaskDBHelper.setMyDatabaseListener(this);
+
+
+        //*************For View Switcher********************
+        // Declare in and out animations and load them using AnimationUtils class
+        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
+
+        // set the animation type to ViewSwitcher
+        viewSwitcher.setInAnimation(in);
+        viewSwitcher.setOutAnimation(out);
 
 
     }
