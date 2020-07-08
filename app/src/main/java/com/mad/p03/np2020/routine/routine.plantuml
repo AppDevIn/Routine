@@ -9,7 +9,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.CardActivity {
+    class com.mad.p03.np2020.routine.Card.CardActivity {
         ~ TAG : String
         ~ noteStatus : boolean
         ~ notesFragment : Button
@@ -346,7 +346,7 @@ title __ROUTINE's Class Diagram__\n
 
 
   com.mad.p03.np2020.routine.BlankViewModel -up-|> androidx.lifecycle.ViewModel
-  com.mad.p03.np2020.routine.CardActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Card.CardActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.helpers.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnFocusChangeListener

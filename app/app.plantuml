@@ -119,7 +119,7 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.CardActivity {
+    class com.mad.p03.np2020.routine.Card.CardActivity {
     }
   }
   
@@ -521,7 +521,7 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Task.adapter.TaskAdapter .up.|> com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter
   com.mad.p03.np2020.routine.Task.adapter.TaskAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.BlankViewModel -up-|> androidx.lifecycle.ViewModel
-  com.mad.p03.np2020.routine.CardActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Card.CardActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.Class.AlarmReceiver -up-|> android.content.BroadcastReceiver
   com.mad.p03.np2020.routine.Class.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Class.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
