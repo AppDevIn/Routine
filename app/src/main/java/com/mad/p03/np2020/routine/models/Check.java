@@ -1,14 +1,30 @@
 package com.mad.p03.np2020.routine.models;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
+import com.mad.p03.np2020.routine.Card.models.DeleteCheckWorker;
+import com.mad.p03.np2020.routine.Card.models.UploadCheckWorker;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
-import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
+import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
 
 import java.util.UUID;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+
 public class Check {
+
+
 
     /**The table name of this class in SQL*/
     public static final String TABLE_NAME = "CheckList";
@@ -44,10 +60,13 @@ public class Check {
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
+    private final String TAG = "Check";
+
     //Member variable
     private String mName, mID;
     private Boolean mChecked;
     private int mPosition;
+    private boolean dirty = false;
 
 
     public static Check fromCursor(Cursor cursor){
@@ -74,10 +93,6 @@ public class Check {
         mPosition = position;
     }
 
-    public void setPosition(int position) {
-        mPosition = position;
-    }
-
     public String getName() {
         return mName;
     }
@@ -86,21 +101,30 @@ public class Check {
         return mID;
     }
 
+    public int getPosition() {
+        return mPosition;
+    }
+
     public Boolean isChecked() {
         return mChecked;
     }
 
     public void setChecked(Boolean checked) {
         mChecked = checked;
+        dirty = true;
     }
 
     public void setName(String name) {
         mName = name;
+        dirty = true;
     }
 
-    public int getPosition() {
-        return mPosition;
+    public void setPosition(int position) {
+        mPosition = position;
+        dirty = true;
     }
+
+
 
     /**
      *
@@ -128,5 +152,156 @@ public class Check {
 
         CheckDBHelper checkDBHelper = new CheckDBHelper(context);
         checkDBHelper.delete(getID());
+    }
+
+    /**
+     *
+     * Upload the check info to firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner LifecycleOwner to be used to observe my upload
+     */
+    public void executeUpdateFirebase(LifecycleOwner owner, String sectionID){
+        if(dirty) {
+
+            Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
+
+
+            //Setting condition
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
+
+
+            //Adding data which will be received from the worker
+            @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                    .putString(Check.COLUMN_NAME, getName())
+                    .putString(Section.COLUMN_SECTION_ID, sectionID)
+                    .putString(Check.COLUMN_Check_ID, getID())
+                    .putInt(Check.COLUMN_POSITION, getPosition())
+                    .putBoolean(Check.COLUMN_CHECKED, isChecked())
+                    .build();
+
+            //Create the request
+            OneTimeWorkRequest uploadCheck = new OneTimeWorkRequest.
+                    Builder(UploadCheckWorker.class)
+                    .setConstraints(constraints)
+                    .setInputData(firebaseSectionData)
+                    .build();
+
+            //Enqueue the request
+            WorkManager.getInstance().enqueue(uploadCheck);
+
+
+            Log.d(TAG, "executeFirebaseUpload(): Put in queue");
+
+            WorkManager.getInstance().getWorkInfoByIdLiveData(uploadCheck.getId())
+                    .observe(owner, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            Log.d(TAG, "Task upload state: " + workInfo.getState());
+                        }
+                    });
+            dirty = false;
+        }
+    }
+
+    /**
+     *
+     * Upload the task info to firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner LifecycleOwner to be used to observe my upload
+     */
+    public void executeFirebaseUpload(LifecycleOwner owner, String sectionID){
+
+        Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                .putString(Check.COLUMN_NAME, getName())
+                .putString(Section.COLUMN_SECTION_ID, sectionID)
+                .putString(Check.COLUMN_Check_ID, getID())
+                .putInt(Check.COLUMN_POSITION, getPosition())
+                .putBoolean(Check.COLUMN_CHECKED, isChecked())
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest uploadCheck = new OneTimeWorkRequest.
+                Builder(UploadCheckWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseSectionData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadCheck);
+
+
+        Log.d(TAG, "executeFirebaseUpload(): Put in queue");
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(uploadCheck.getId())
+                .observe(owner, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        Log.d(TAG, "Task upload state: " + workInfo.getState());
+                    }
+                });
+
+    }
+
+
+    /**
+     * Delete the check from firebase
+     * when internet connectivity is present
+     *
+     * It will be done in the background
+     *
+     * @param owner to be used to observe my upload
+     */
+    public void executeFirebaseDelete(LifecycleOwner owner, String sectionID){
+
+        Log.d(TAG, "executeFirebaseDelete(): Preparing to delete, on ID: " + getID());
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
+                .putString("ID", getID())
+                .putString(Section.COLUMN_SECTION_ID, sectionID)
+                .build();
+
+        //Create the request
+        OneTimeWorkRequest deleteTask = new OneTimeWorkRequest.
+                Builder(DeleteCheckWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseSectionData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(deleteTask);
+
+        Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
+
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(deleteTask.getId())
+                .observe(owner, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        Log.d(TAG, "Task Delete state: " + workInfo.getState());
+                    }
+                });
     }
 }

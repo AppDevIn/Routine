@@ -18,6 +18,7 @@ import com.mad.p03.np2020.routine.models.Check;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,12 +29,14 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
     private List<Check> mCheckList;
     private Context mContext;
     private CheckDBHelper mCheckDBHelper;
-    private String mTaskID;
+    private String mSectionID;
     private ItemTouchHelper mItemTouchHelper;
+    private LifecycleOwner mOwner;
 
-    public CheckAdapter(List<Check> checkList, String taskID) {
+    public CheckAdapter(List<Check> checkList, String sectionID, LifecycleOwner owner) {
         mCheckList = checkList;
-        mTaskID = taskID;
+        mSectionID = sectionID;
+        mOwner = owner;
     }
 
     @NonNull
@@ -78,15 +81,6 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
             }
         });
 
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                removeCheck(position);
-                return false;
-            }
-        });
-
     }
 
     @Override
@@ -102,10 +96,10 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
     public void addItem(Check check, Context context){
 
         //TODO: Add to the SQLite
-        check.addCheck(context, mTaskID);
+        check.addCheck(context, mSectionID);
 
         //TODO: Add from firebase
-//        check.executeFirebaseUpload(mOwner);
+        check.executeFirebaseUpload(mOwner, mSectionID);
 
 
         Log.d(TAG, "New Task added, " + check.toString());
@@ -121,7 +115,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
         Check check = mCheckList.get(position);
 
         //Delete from firebase
-//        check.executeFirebaseDelete(mOwner);
+        check.executeFirebaseDelete(mOwner, mSectionID);
 
         //Delete from SQL
         check.deleteTask(mContext);

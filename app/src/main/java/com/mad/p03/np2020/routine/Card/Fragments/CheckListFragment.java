@@ -78,7 +78,7 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
             Check check = mCheckLst.get(i);
             Log.d(TAG, "onStop: Updating " + check.getName());
             checkDBHelper.update(check.getID(),check.getPosition());
-//            check.executeUpdateFirebase(this);
+            check.executeUpdateFirebase(this, mTaskID);
 
         }
     }
@@ -148,7 +148,7 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        checkAdapter = new CheckAdapter(mCheckLst, mTaskID);
+        checkAdapter = new CheckAdapter(mCheckLst, mTaskID, this);
         mRecyclerView.setAdapter(checkAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

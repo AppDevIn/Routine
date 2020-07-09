@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-import com.mad.p03.np2020.routine.background.DeleteTaskWorker;
+import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 

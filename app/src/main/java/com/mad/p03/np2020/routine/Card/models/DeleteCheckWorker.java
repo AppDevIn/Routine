@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.background;
+package com.mad.p03.np2020.routine.Card.models;
 
 import android.content.Context;
 import android.util.Log;
@@ -20,9 +20,9 @@ import androidx.work.WorkerParameters;
  * @since 02-06-2020
  *
  */
-public class DeleteTaskWorker extends Worker {
+public class DeleteCheckWorker extends Worker {
 
-    public DeleteTaskWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public DeleteCheckWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
@@ -48,7 +48,7 @@ public class DeleteTaskWorker extends Worker {
 
         Log.d("TaskDelete", "doWork: " + ID);
 
-        FirebaseDatabase.getInstance().getReference().child("task").child(UID).child(sectionID).child(ID).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("check").child(UID).child(sectionID).child(ID).removeValue();
 
 
         return Result.success();
