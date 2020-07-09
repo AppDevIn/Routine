@@ -40,6 +40,8 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     /** The progress bar of the habit */
     public ProgressBar habit_progressBar;
 
+    public ImageView habit_finished;
+
     /**
      *
      * This method is used to
@@ -59,6 +61,7 @@ public class HabitHolder extends RecyclerView.ViewHolder {
         this.mOccurrence = itemView.findViewById(R.id.habitOccurrence);
         this.habit_progress = itemView.findViewById(R.id.habit_progress);
         this.habit_progressBar = itemView.findViewById(R.id.habit_progressBar);
+        this.habit_finished = itemView.findViewById(R.id.habit_finished);
 
 //        this.addBtn = itemView.findViewById(R.id.addCnt);
 //        this.mPeriod = itemView.findViewById(R.id.habit_period);

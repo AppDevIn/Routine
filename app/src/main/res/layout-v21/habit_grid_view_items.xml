@@ -29,8 +29,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
+    <ImageView
+        tools:visibility="invisible"
+        android:id="@+id/habit_finished"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="31dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/habitCount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/habit_finished" />
 
     <ProgressBar
+        tools:visibility="visible"
         android:id="@+id/habit_progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="31dp"

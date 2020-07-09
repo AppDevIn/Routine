@@ -141,6 +141,13 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         int progress = habit.calculateProgress();
         holder.habit_progressBar.setProgress(progress);
         holder.habit_progress.setText(String.valueOf(progress));
+        if (progress == 100){
+            holder.habit_progressBar.setVisibility(View.INVISIBLE);
+            holder.habit_finished.setVisibility(View.VISIBLE);
+        }else{
+            holder.habit_progressBar.setVisibility(View.VISIBLE);
+            holder.habit_finished.setVisibility(View.INVISIBLE);
+        }
 
 //        holder.addBtn.setBackgroundColor(Color.TRANSPARENT);
 //        // set onClickListener on add button
