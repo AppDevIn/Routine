@@ -116,7 +116,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
 
         //Set the drawable
-        holder.mImgBackGround.setBackground(shape);
+        holder.mBackGround.setBackground(shape);
 
         //Setting the image icon
         holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());

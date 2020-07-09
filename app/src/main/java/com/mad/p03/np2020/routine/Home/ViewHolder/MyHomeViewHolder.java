@@ -7,9 +7,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mad.p03.np2020.routine.Card.CardActivity;
 import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
 import com.mad.p03.np2020.routine.R;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     public TextView mTextViewListName;
-    public ImageView mImgBackGround;
+    public CardView mBackGround;
     public ImageView mimgIcon;
 
     //Listener
@@ -52,7 +55,7 @@ public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.On
         super(v);
         //Initialize variables
         mTextViewListName = v.findViewById(R.id.listName);
-        mImgBackGround = v.findViewById(R.id.backgroud);
+        mBackGround = v.findViewById(R.id.backgroud);
         mimgIcon = v.findViewById(R.id.todoIcon);
 
         this.mHomeItemTouchHelperAdapter = homeItemTouchHelperAdapter;

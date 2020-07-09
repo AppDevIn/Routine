@@ -92,7 +92,7 @@
     <string name="error_password_empty">Password cannot be empty</string>
     <string name="register">Register</string>
     <string name="error_name_empty">Name cannot be empty</string>
-    <string name="homeTime">My Task Listce </string>
+    <string name="homeTime">My Task List</string>
     <string name="your_tasklist_is_empty">Your tasklist is empty</string>
     <string name="description_bel">A bell icon</string>
     <string name="description_check">A check icon</string>
