@@ -48,17 +48,43 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
     @Override
     public void onBindViewHolder(@NonNull HabitCheckHolder holder, int position) {
         final Habit habit = habitList.getItemAt(position);
-        holder.title.setText(habit.getTitle().trim());
-        holder.item_checkbox.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: ");
-            }
-        });
+
+        holder.title.setText(capitalise(habit.getTitle().trim()));
+        holder.habit_count.setText(String.valueOf(habit.getCount()));
+        holder.habit_occurrence.setText(String.valueOf(habit.getOccurrence()));
+
+        int progress = habit.calculateProgress();
+        holder.habit_progressBar.setProgress(progress);
+        if (progress == 100){
+            holder.habit_progressBar.setVisibility(View.INVISIBLE);
+            holder.habit_finished.setVisibility(View.VISIBLE);
+        }else{
+            holder.habit_progressBar.setVisibility(View.VISIBLE);
+            holder.habit_finished.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public int getItemCount() {
         return habitList.size();
+    }
+
+    /**
+     *
+     * This method is used to format text by capitalising the first text of each split text
+     *
+     * @param text This parameter is used to get the text
+     *
+     * @return String This returns the formatted text
+     * */
+    public String capitalise(String text){
+        String txt = "";
+        String[] splited = text.split("\\s+");
+        for (String s: splited){
+            txt += s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase() + " ";
+        }
+        return txt;
+
+//        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 }

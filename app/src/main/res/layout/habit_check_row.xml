@@ -1,33 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
+    <androidx.cardview.widget.CardView
+        android:layout_centerHorizontal="true"
+        app:cardBackgroundColor="#f3f3f5"
+        app:cardCornerRadius="10dp"
+        android:id="@+id/habit_card"
+        android:layout_width="344dp"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        app:cardElevation="4dp">
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_weight="0.5"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+        <ProgressBar
+            android:layout_marginStart="20dp"
+            android:id="@+id/habit_check_progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="26dp"
+            android:layout_height="27dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/circle_shape"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="65"
+            android:progressDrawable="@drawable/circular_progress_bar" />
 
+
+        <ImageView
+            android:layout_marginTop="-2dp"
+            android:layout_marginStart="3dp"
+            android:visibility="visible"
+            android:id="@+id/habit_check_finished"
+            android:layout_width="61dp"
+            android:layout_height="55dp"
+            app:srcCompat="@drawable/habit_finished"
+            android:contentDescription="@string/background" />
 
         <TextView
+            android:layout_marginStart="70dp"
+            android:fontFamily="@font/montserrat_regular"
             android:gravity="center_vertical"
             android:id="@+id/to_do_title"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="5"
             android:text="Drink water"/>
 
+        <TextView
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="13sp"
+            android:textColor="@color/colorWhite"
+            android:letterSpacing="0.1"
+            android:id="@+id/habitCount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
-    </LinearLayout>
+        <TextView
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="13sp"
+            android:textColor="@color/colorWhite"
+            android:letterSpacing="0.1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:id="@+id/symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="/" />
+
+        <TextView
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="13sp"
+            android:textColor="@color/colorWhite"
+            android:letterSpacing="0.1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/habitOccurrence" />
+
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

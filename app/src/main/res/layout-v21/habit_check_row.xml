@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_centerHorizontal="true"
+        app:cardBackgroundColor="#f3f3f5"
+        app:cardCornerRadius="10dp"
+        android:id="@+id/habit_card"
+        android:layout_width="344dp"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:id="@+id/habit_check_progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="26dp"
+                android:layout_height="27dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circle_shape"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="65"
+                android:progressDrawable="@drawable/circular_progress_bar" />
+
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_marginTop="-2dp"
+                android:layout_marginStart="3dp"
+                android:visibility="invisible"
+                android:id="@+id/habit_check_finished"
+                android:layout_width="61dp"
+                android:layout_height="55dp"
+                app:srcCompat="@drawable/habit_finished"
+                android:contentDescription="@string/background" />
+
+            <TextView
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/habit_check_finished"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center_vertical"
+                android:id="@+id/to_do_title"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Drink water"/>
+
+            <TextView
+                android:layout_toStartOf="@id/h_divider"
+                android:gravity="center_vertical"
+                android:id="@+id/habit_check_Count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/montserrat_regular"
+                android:letterSpacing="0.1"
+                android:text="20"
+                android:textColor="@color/colorBlack"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_toStartOf="@id/habit_check_Occurrence"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="13sp"
+                android:textColor="@color/colorBlack"
+                android:letterSpacing="0.1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:id="@+id/h_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/divider" />
+
+            <TextView
+                android:layout_marginEnd="30dp"
+                android:gravity="center_vertical"
+                android:layout_alignParentEnd="true"
+                android:text="100"
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="13sp"
+                android:textColor="@color/colorBlack"
+                android:letterSpacing="0.1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/habit_check_Occurrence" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
