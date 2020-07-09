@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,6 +117,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
         // set the background color of the holder based on its holder color value
         switch (habit.getHolder_color()) {
+
             case ("cyangreen"):
                 holder.habit_row.setBackgroundResource(R.drawable.habit_holder_cyangreen);
                 break;
