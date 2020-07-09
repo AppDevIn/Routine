@@ -113,9 +113,10 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:horizontalSpacing="20dp"
-        android:numColumns="2"
         android:padding="10dp"
         android:verticalSpacing="20dp"
+
+        android:numColumns="2"
 
         app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
         app:layout_constraintEnd_toEndOf="parent"

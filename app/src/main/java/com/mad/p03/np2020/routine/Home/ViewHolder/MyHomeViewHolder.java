@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Card.CardActivity;
@@ -13,6 +15,7 @@ import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
 import com.mad.p03.np2020.routine.R;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     public TextView mTextViewListName;
-    public CardView mBackGround;
+    public LinearLayout mBackGround;
     public ImageView mimgIcon;
 
     //Listener
@@ -57,6 +60,7 @@ public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.On
         mTextViewListName = v.findViewById(R.id.listName);
         mBackGround = v.findViewById(R.id.backgroud);
         mimgIcon = v.findViewById(R.id.todoIcon);
+
 
         this.mHomeItemTouchHelperAdapter = homeItemTouchHelperAdapter;
         this.mTouchHelper = touchHelper;
