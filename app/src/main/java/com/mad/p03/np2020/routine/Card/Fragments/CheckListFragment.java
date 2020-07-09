@@ -7,10 +7,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.mad.p03.np2020.routine.Card.adapters.CheckAdapter;
 import com.mad.p03.np2020.routine.Card.models.MyCardTouchHelper;
@@ -41,6 +44,7 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
     CheckAdapter checkAdapter;
     RecyclerView mRecyclerView;
     EditText mEdCheck;
+    ViewSwitcher viewSwitcher;
 
     private final String TAG = "CheckFragment";
 
@@ -58,6 +62,25 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
     public void onStart() {
         super.onStart();
         initRecyclerView();
+
+
+        viewSwitcher = getView().findViewById(R.id.switcher);
+
+        //*************For View Switcher********************
+        // Declare in and out animations and load them using AnimationUtils class
+        Animation in = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        Animation out = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
+
+        //if empty display the image if not the recyclerview
+        if(mCheckLst.size() == 0){
+            viewSwitcher.showNext();
+        }else{
+
+        }
+
+        // set the animation type to ViewSwitcher
+        viewSwitcher.setInAnimation(in);
+        viewSwitcher.setOutAnimation(out);
 
         mEdCheck = getView().findViewById(R.id.edTask);
         mEdCheck.setOnEditorActionListener(this);
@@ -85,6 +108,11 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
 
     @Override
     public void onDataAdd(Check check) {
+        if(mCheckLst.size() == 0){
+            viewSwitcher.reset();
+            viewSwitcher.showNext();
+        }
+
 
         Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + check );
 
@@ -94,6 +122,10 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
 
     @Override
     public void onDataDelete(String ID) {
+
+        if(mCheckLst.size() == 1){
+            viewSwitcher.showNext();
+        }
 
         for (int position = 0; position < mCheckLst.size(); position++) {
 
