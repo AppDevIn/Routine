@@ -44,7 +44,7 @@
                 android:textSize="20sp"
                 android:textColor="@color/black"
 
-                android:text="@string/holder" 
+                android:text="@string/holder"
                 />
 
 

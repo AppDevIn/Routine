@@ -70,27 +70,6 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
             }
         });
 
-        holder.mListName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-
-
-                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                        event.getAction() == KeyEvent.ACTION_DOWN &&
-                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-
-                    Log.d(TAG, "onEditorAction: " + textView.getText());
-                    mCheckList.get(position).setName(holder.mListName.getText().toString());
-
-                    mCheckDBHelper.update(mCheckList.get(position).getID(),mCheckList.get(position).getName());
-                    showNewEntry(holder.mListName);
-                }
-
-                return false;
-
-            }
-        });
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
