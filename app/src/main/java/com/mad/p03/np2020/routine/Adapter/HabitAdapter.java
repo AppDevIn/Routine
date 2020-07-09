@@ -119,19 +119,19 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         switch (habit.getHolder_color()) {
 
             case ("cyangreen"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_cyangreen);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_cyangreen);
                 break;
 
             case ("lightcoral"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_lightcoral);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_lightcoral);
                 break;
 
             case ("fadepurple"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_fadepurple);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_fadepurple);
                 break;
 
             case ("slightdesblue"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_slightdesblue);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_slightdesblue);
                 break;
         }
 

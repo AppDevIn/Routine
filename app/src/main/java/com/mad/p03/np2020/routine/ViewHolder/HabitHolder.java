@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
@@ -34,7 +35,7 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     /** Shown as the add count button on the habit holder*/
     public ImageButton addBtn;
     /** The background of the habit holder*/
-    public ImageView habit_row;
+    public CardView habit_card;
     /** The progress of the habit */
     public TextView habit_progress;
     /** The progress bar of the habit */
@@ -56,7 +57,7 @@ public class HabitHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         this.mTitle = itemView.findViewById(R.id.habitTitle);
-        this.habit_row = itemView.findViewById(R.id.habit_background);
+        this.habit_card = itemView.findViewById(R.id.habit_card);
         this.mCount = itemView.findViewById(R.id.habitCount);
         this.mOccurrence = itemView.findViewById(R.id.habitOccurrence);
         this.habit_progress = itemView.findViewById(R.id.habit_progress);
