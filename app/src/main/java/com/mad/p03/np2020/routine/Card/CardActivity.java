@@ -102,6 +102,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void schedule() {
+        ScheduleDialog scheduleDialog = new ScheduleDialog();
+        scheduleDialog.show(getSupportFragmentManager(),"Schedule Dialog");
     }
 
     private void notes() {
