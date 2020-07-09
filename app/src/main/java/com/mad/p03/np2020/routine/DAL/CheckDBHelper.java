@@ -123,10 +123,11 @@ public class CheckDBHelper extends DBHelper{
      */
     public void update(String ID,boolean checked){
 
+        Log.d(TAG, "update: Updating the check status too " + checked);
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues updateValues = new ContentValues();
-        updateValues.put(Task.COLUMN_CHECKED, checked);
+        updateValues.put(Check.COLUMN_CHECKED, checked);
         db.update(
                 Check.TABLE_NAME,
                 updateValues,

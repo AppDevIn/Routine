@@ -63,6 +63,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
+                Log.d(TAG, "onCheckedChanged: The checked has been ticked");
                 mCheckList.get(position).setChecked(b);
                 mCheckDBHelper.update(mCheckList.get(position).getID(), b);
 

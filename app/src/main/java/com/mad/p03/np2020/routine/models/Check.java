@@ -65,7 +65,7 @@ public class Check {
     private Check(String name, String id, String checked){
         mName = name;
         mID = id;
-        mChecked = Boolean.parseBoolean(checked);
+        mChecked = checked.equals("1");
     }
 
 
