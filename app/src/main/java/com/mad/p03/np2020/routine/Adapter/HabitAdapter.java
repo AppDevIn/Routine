@@ -1,8 +1,6 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,7 @@ import androidx.work.WorkManager;
 
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
+import com.mad.p03.np2020.routine.Interface.HabitItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
@@ -39,7 +37,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
     final static String TAG = "HabitAdapter";
     private Context c;
-    private OnItemClickListener mListener;
+    private HabitItemClickListener mListener;
     private static View view;
     private HabitDBHelper dbHandler;
     private String UID;
@@ -62,7 +60,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
      *
      * @param listener This parameter reference the local Listener
      * */
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(HabitItemClickListener listener){
         this.mListener = listener;
     }
 

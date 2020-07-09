@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
+import com.mad.p03.np2020.routine.Interface.HabitItemClickListener;
 import com.mad.p03.np2020.routine.R;
 
 /**
@@ -53,7 +53,7 @@ public class HabitHolder extends RecyclerView.ViewHolder {
      * @param listener This parameter is used to get the listener interface.
      *
      * */
-    public HabitHolder(@NonNull View itemView, final OnItemClickListener listener) {
+    public HabitHolder(@NonNull View itemView, final HabitItemClickListener listener) {
         super(itemView);
 
         this.mTitle = itemView.findViewById(R.id.habitTitle);
@@ -74,7 +74,7 @@ public class HabitHolder extends RecyclerView.ViewHolder {
                 if (listener!=null){
                     int position = getAdapterPosition(); //this is to get the position of the holder
                     if (position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(position);
+                        listener.onHabitItemClick(position);
                         //this is to parse the position into the parameter so that we can utilise the position in other activity further on
                     }
                 }

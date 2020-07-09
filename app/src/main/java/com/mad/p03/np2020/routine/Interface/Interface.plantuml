@@ -36,7 +36,7 @@ title __INTERFACE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Interface {
-      interface com.mad.p03.np2020.routine.Interface.OnItemClickListener {
+      interface com.mad.p03.np2020.routine.Interface.HabitItemClickListener {
           {abstract} + onItemClick()
       }
     }

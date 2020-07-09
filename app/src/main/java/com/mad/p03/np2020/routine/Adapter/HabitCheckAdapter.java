@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,25 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.Interface.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitCheckHolder;
-
-import static java.lang.String.format;
 
 public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 
     final static String TAG = "ItemAdapter";
-    public Habit.HabitList habitList;
+    private Habit.HabitList habitList;
     Context c;
-    private OnItemClickListener mListener;
-    static View view;
+    private HabitCheckItemClickListener mListener;
+    private static View view;
 
-    public interface OnItemClickListener{
-        //implement an interface then i can retrieve the position from the parameter
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(HabitCheckItemClickListener listener){
         this.mListener = listener;
     }
 
@@ -42,12 +35,22 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
     @Override
     public HabitCheckHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_check_row,null);
-        return new HabitCheckHolder(view);
+        return new HabitCheckHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HabitCheckHolder holder, int position) {
         final Habit habit = habitList.getItemAt(position);
+
+        if (habit.getTitle().toLowerCase().equals("dummy")){
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            return;
+        }else{
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        }
 
         holder.title.setText(capitalise(habit.getTitle().trim()));
         holder.habit_count.setText(String.valueOf(habit.getCount()));
@@ -58,6 +61,8 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
         if (progress == 100){
             holder.habit_progressBar.setVisibility(View.INVISIBLE);
             holder.habit_finished.setVisibility(View.VISIBLE);
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
         }else{
             holder.habit_progressBar.setVisibility(View.VISIBLE);
             holder.habit_finished.setVisibility(View.INVISIBLE);

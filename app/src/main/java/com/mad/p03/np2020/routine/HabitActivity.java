@@ -19,6 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,11 +33,11 @@ import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Adapter.HabitCheckAdapter;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.User;
-import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
+import com.mad.p03.np2020.routine.Interface.HabitCheckItemClickListener;
+import com.mad.p03.np2020.routine.Interface.HabitItemClickListener;
 import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
+import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -43,7 +48,7 @@ import java.util.ArrayList;
  */
 
 
-public class HabitActivity extends AppCompatActivity implements View.OnClickListener, OnItemClickListener {
+public class HabitActivity extends AppCompatActivity implements View.OnClickListener, HabitItemClickListener, HabitCheckItemClickListener {
 
     private static final String TAG = "HabitTracker";
     private static final String SHARED_PREFS = "sharedPrefs"; // initialise sharedPrefs
@@ -66,6 +71,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     private ImageView prev_indicator, next_indicator;
 
     private TextView indicator_num;
+
 
     /**
      *
@@ -167,14 +173,13 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
 
         // initialise the habitAdapter
-        Habit.HabitList habitArrayList = habit_dbHandler.getAllHabits();
-        Habit.HabitList d_habitArrayList = habit_dbHandler.getAllHabits();
+        Habit.HabitList habitArrayList = initDummyList(habit_dbHandler.getAllHabits());
 
-        habitCheckAdapter = new HabitCheckAdapter(this, d_habitArrayList);
+        habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
+        habitCheckAdapter.setOnItemClickListener(this);
 
-        habitAdapter = new HabitAdapter(this, initDummyList(habitArrayList), user.getUID());
-
+        habitAdapter = new HabitAdapter(this, habitArrayList, user.getUID());
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
@@ -271,7 +276,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
      *
      * */
     @Override
-    public void onItemClick(final int position) {
+    public void onHabitItemClick(final int position) {
         // This will be triggered when the recycler view holder is clicked
 
         // Editing habit
@@ -283,6 +288,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         extras.putString("recorded_habit", habit_serializeToJson(habit));
         activityName.putExtras(extras);
         startActivity(activityName);
+
+    }
+
+    @Override
+    public void onHabitCheckItemClick(int position) {
+        final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
+        habit.addCount(); // add the count by 1
+        habitAdapter.notifyDataSetChanged(); // notify the data set has changed
+        habitCheckAdapter.notifyDataSetChanged();
+        habit_dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
+        writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
 
     }
 
@@ -306,6 +322,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private Habit.HabitList initDummyList (Habit.HabitList habitList){
+
         int size = habitList.size();
 
         int dummy_size = 4-(size % 4);
@@ -317,5 +334,48 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         return habitList;
     }
+
+    /**
+     *
+     * This method is used to send the work request
+     *  to the habitWorker(WorkManager) to do the writing firebase action
+     *  when the network is connected.
+     *  (This will be invoked when the count increases on the page of HabitTracker)
+     *
+     * @param habit This parameter is used to get the habit object
+     *
+     * @param UID This parameter is used to get the userID
+     *
+     * @param isDeletion This parameter is used to indicate whether it is deletion of habit to firebase
+     *
+     * */
+    public void writeHabit_Firebase(Habit habit, String UID, boolean isDeletion){
+        Log.i(TAG, "Uploading to Firebase");
+
+        // set constraint that the network must be connected
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        // put data in a data builder
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitData", habit_serializeToJson(habit))
+                .putBoolean("deletion", isDeletion)
+                .build();
+
+        // wrap the work request
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        // send the work request to the work manager
+        WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+
+
 
 }

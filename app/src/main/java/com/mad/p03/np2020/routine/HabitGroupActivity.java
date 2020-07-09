@@ -27,7 +27,7 @@ import androidx.work.WorkManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
-import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
+import com.mad.p03.np2020.routine.Interface.HabitItemClickListener;
 import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.HabitGroup;
 import com.mad.p03.np2020.routine.Class.User;
@@ -124,9 +124,9 @@ public class HabitGroupActivity extends AppCompatActivity {
         habitGroupRecyclerView.setAdapter(groupAdapter);
 
         // set OnItemClickListener on group adapter
-        groupAdapter.setOnItemClickListener(new OnItemClickListener() {
+        groupAdapter.setOnItemClickListener(new HabitItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onHabitItemClick(int position) {
                 // when a holder is clicked
 
                 // retrieve the group of the holder
