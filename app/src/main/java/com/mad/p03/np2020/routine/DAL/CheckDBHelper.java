@@ -62,7 +62,7 @@ public class CheckDBHelper extends DBHelper{
 
 
         //Get the data from sqlite
-        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " WHERE SectionID='"+sectionID+"'", null );
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " WHERE SectionID='"+sectionID+"' ORDER BY " + Check.COLUMN_POSITION + " ASC;", null );
 
         if (cursor.moveToFirst()){
             do {
@@ -188,6 +188,34 @@ public class CheckDBHelper extends DBHelper{
 
         db.close();
     }
+
+    /**
+     * This method will update the position of the given
+     * row based on the ID
+     * @param ID
+     * @param position
+     */
+    public void update(String ID, int position){
+
+        Log.d(TAG, "update(): Updating position " + position + " for " + ID);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Check.COLUMN_POSITION, position);
+
+        db.update(
+                Check.TABLE_NAME,
+                updateValues,
+                Check.COLUMN_Check_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
 
 
 }

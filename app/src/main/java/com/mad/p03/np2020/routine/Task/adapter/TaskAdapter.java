@@ -69,8 +69,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         this.mOwner = owner;
         mTaskList = taskList;
 
-
-
         Log.d(TAG, "TaskAdapter: " + mTaskList);
     }
 

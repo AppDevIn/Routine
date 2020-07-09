@@ -13,7 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Card.adapters.CheckAdapter;
+import com.mad.p03.np2020.routine.Card.models.MyCardTouchHelper;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
@@ -61,6 +63,24 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
         mEdCheck.setOnEditorActionListener(this);
 
         CheckDBHelper.setMyDatabaseListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        Log.d(TAG, "onStop()");
+
+        //Update the position of the list
+        CheckDBHelper checkDBHelper = new CheckDBHelper(getContext());
+        for (int i = 0; i < mCheckLst.size(); i++) {
+            mCheckLst.get(i).setPosition(i);
+            Check check = mCheckLst.get(i);
+            Log.d(TAG, "onStop: Updating " + check.getName());
+            checkDBHelper.update(check.getID(),check.getPosition());
+//            check.executeUpdateFirebase(this);
+
+        }
     }
 
     @Override
@@ -131,6 +151,12 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
         checkAdapter = new CheckAdapter(mCheckLst, mTaskID);
         mRecyclerView.setAdapter(checkAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //Setting up touchhelper
+        ItemTouchHelper.Callback callback = new MyCardTouchHelper(checkAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        checkAdapter.setMyTaskTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
     }
 

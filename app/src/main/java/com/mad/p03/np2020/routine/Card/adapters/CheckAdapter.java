@@ -2,31 +2,26 @@ package com.mad.p03.np2020.routine.Card.adapters;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Card.ViewHolder.MyCheckViewHolder;
+import com.mad.p03.np2020.routine.Card.models.CardTouchHelperAdapter;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
-import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder;
-import com.mad.p03.np2020.routine.models.CardViewHolder;
 import com.mad.p03.np2020.routine.models.Check;
-import com.mad.p03.np2020.routine.models.Task;
 
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
+public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implements CardTouchHelperAdapter {
 
     private final String TAG = "CardAdapter";
 
@@ -34,6 +29,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
     private Context mContext;
     private CheckDBHelper mCheckDBHelper;
     private String mTaskID;
+    private ItemTouchHelper mItemTouchHelper;
 
     public CheckAdapter(List<Check> checkList, String taskID) {
         mCheckList = checkList;
@@ -47,7 +43,19 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
 
         mContext = parent.getContext();
         mCheckDBHelper = new CheckDBHelper(parent.getContext());
-        return new MyCheckViewHolder(view);
+        return new MyCheckViewHolder(view, mItemTouchHelper, this);
+    }
+
+    /**
+     * This method is used to set the custom itemTouchHelper
+     * to the member variable
+     *
+     * @param itemTouchHelper The custom touche helper that will be used
+     *                        to controller to movie of the viewholder
+     */
+    public void setMyTaskTouchHelper(ItemTouchHelper itemTouchHelper) {
+        this.mItemTouchHelper = itemTouchHelper;
+
     }
 
     @Override
@@ -74,7 +82,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                removeTask(position);
+                removeCheck(position);
                 return false;
             }
         });
@@ -107,7 +115,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
      * The place to delete the task in the list
      * @param position The position from the data will be removed from
      */
-    public void removeTask(int position){
+    public void removeCheck(int position){
         Log.d(TAG, "Removing " + mCheckList.get(position));
 
         Check check = mCheckList.get(position);
@@ -118,6 +126,27 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> {
         //Delete from SQL
         check.deleteTask(mContext);
 
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Log.d(TAG, "onItemMove(): From: " + fromPosition + " To: " + toPosition);
+
+        Check fromCheck = mCheckList.get(fromPosition);
+        mCheckList.remove(fromCheck);
+        mCheckList.add(toPosition, fromCheck);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemSwiped(int position) {
+        Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
+        removeCheck(position);
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        /* Not Implemented */
     }
 
     /**

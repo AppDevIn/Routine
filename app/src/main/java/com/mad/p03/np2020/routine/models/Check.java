@@ -21,6 +21,8 @@ public class Check {
     public static final String COLUMN_NAME = "Name";
     /**Foreign Key ScheduleID*/
     public static final String COLUMN_SectionID = "SectionID";
+    /**Used to identify the order the sections are in*/
+    public static final String COLUMN_POSITION = "position";
 
 
     /**
@@ -33,6 +35,7 @@ public class Check {
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_CHECKED + " TEXT,"
                     + COLUMN_SectionID + " TEXT ,"
+                    + COLUMN_POSITION + " INTEGER,"
                     + "FOREIGN KEY (" + COLUMN_SectionID + ") REFERENCES  " + Section.TABLE_NAME + "(" + Section.COLUMN_SECTION_ID + "));";
 
     /**
@@ -44,6 +47,7 @@ public class Check {
     //Member variable
     private String mName, mID;
     private Boolean mChecked;
+    private int mPosition;
 
 
     public static Check fromCursor(Cursor cursor){
@@ -51,9 +55,10 @@ public class Check {
         return new Check(
                 cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_Check_ID)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CHECKED))
-        );
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CHECKED)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POSITION))
 
+        );
     }
 
     public Check(String name){
@@ -62,12 +67,16 @@ public class Check {
         mID = UUID.randomUUID().toString();
     }
 
-    private Check(String name, String id, String checked){
+    private Check(String name, String id, String checked, int position){
         mName = name;
         mID = id;
         mChecked = checked.equals("1");
+        mPosition = position;
     }
 
+    public void setPosition(int position) {
+        mPosition = position;
+    }
 
     public String getName() {
         return mName;
@@ -87,6 +96,10 @@ public class Check {
 
     public void setName(String name) {
         mName = name;
+    }
+
+    public int getPosition() {
+        return mPosition;
     }
 
     /**
