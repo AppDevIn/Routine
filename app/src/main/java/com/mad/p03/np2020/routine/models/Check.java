@@ -1,6 +1,12 @@
 package com.mad.p03.np2020.routine.models;
 
+import android.content.Context;
 import android.database.Cursor;
+
+import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+
+import java.util.UUID;
 
 public class Check {
 
@@ -36,7 +42,8 @@ public class Check {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     //Member variable
-    private String mName, mID, mChecked;
+    private String mName, mID;
+    private Boolean mChecked;
 
 
     public static Check fromCursor(Cursor cursor){
@@ -49,11 +56,16 @@ public class Check {
 
     }
 
+    public Check(String name){
+        mName = name;
+        mChecked = false;
+        mID = UUID.randomUUID().toString();
+    }
 
     private Check(String name, String id, String checked){
         mName = name;
         mID = id;
-        mChecked = checked;
+        mChecked = Boolean.parseBoolean(checked);
     }
 
 
@@ -65,7 +77,43 @@ public class Check {
         return mID;
     }
 
-    public String getChecked() {
+    public Boolean isChecked() {
         return mChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        mChecked = checked;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    /**
+     *
+     * This method is used to add
+     * the task data from SQL
+     * using the TaskDBHelper
+     *
+     * @param context To know from which state of the object the code is called from
+     */
+    public void addCheck(Context context, String sectionID){
+        CheckDBHelper checkDBHelper = new CheckDBHelper(context);
+
+        checkDBHelper.insertCheck(this, sectionID);
+    }
+
+    /**
+     *
+     * This method is used to delete
+     * the task data from SQL
+     * using the TaskDBHelper
+     *
+     * @param context To know from which state of the object the code is called from
+     */
+    public void deleteTask(Context context){
+
+        CheckDBHelper checkDBHelper = new CheckDBHelper(context);
+        checkDBHelper.delete(getID());
     }
 }

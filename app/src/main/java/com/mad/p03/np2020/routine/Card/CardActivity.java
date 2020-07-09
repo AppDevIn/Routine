@@ -66,10 +66,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        CheckListFragment fragment = new CheckListFragment();
+        CheckListFragment fragment = new CheckListFragment(mTask.getTaskID());
         fragmentTransaction.add(R.id.fragmentContainer, fragment);
         fragmentTransaction.commit();
-        
     }
 
     @Override
@@ -122,8 +121,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkList() {
-
-
 
     }
 

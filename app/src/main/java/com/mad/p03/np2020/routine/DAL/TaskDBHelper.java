@@ -91,7 +91,7 @@ public class TaskDBHelper extends DBHelper {
      */
     public String insertTask(Task task){
 
-        Log.d(TAG, "insertTask(): Preparing to insert the new user ");
+        Log.d(TAG, "insertTask(): Preparing to insert the new Section ");
 
         //Add values into the database
         // Gets the data repository in write mode

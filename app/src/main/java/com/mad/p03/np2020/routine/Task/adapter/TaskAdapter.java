@@ -260,9 +260,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         //Delete from SQL
         task.deleteTask(mContext);
 
-
-
-
     }
 
     /**
