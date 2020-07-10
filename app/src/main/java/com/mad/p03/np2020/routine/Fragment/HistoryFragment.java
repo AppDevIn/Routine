@@ -17,14 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/HistoryFragment.java
-import com.mad.p03.np2020.routine.models.ItemDecoration;
-import com.mad.p03.np2020.routine.models.User;
-=======
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Fragment/HistoryFragment.java
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
 import java.util.Arrays;

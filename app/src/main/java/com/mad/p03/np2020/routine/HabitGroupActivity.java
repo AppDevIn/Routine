@@ -33,8 +33,6 @@ import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.background.HabitGroupWorker;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
-<<<<<<< HEAD
-=======
 
 /**
  *
@@ -43,7 +41,6 @@ import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
  * @author Hou Man
  * @since 02-06-2020
  */
->>>>>>> master
 
 public class HabitGroupActivity extends AppCompatActivity {
 

@@ -5,21 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/DAL/DBHelper.java
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.models.Check;
-=======
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/DAL/DBHelper.java
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.models.User;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/DAL/DBHelper.java
-=======
-import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/DAL/DBHelper.java
 
 import androidx.annotation.Nullable;
 

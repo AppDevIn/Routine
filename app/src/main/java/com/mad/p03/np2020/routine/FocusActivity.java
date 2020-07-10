@@ -1,29 +1,9 @@
 package com.mad.p03.np2020.routine;
 
-<<<<<<< HEAD
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-=======
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
->>>>>>> master
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -68,12 +48,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-<<<<<<< HEAD
-import com.mad.p03.np2020.routine.models.Focus;
-import com.mad.p03.np2020.routine.background.FocusWorker;
-import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
-import com.mad.p03.np2020.routine.models.User;
-=======
 import com.mad.p03.np2020.routine.models.CircularProgressBar;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.User;
@@ -81,7 +55,6 @@ import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.background.BoundService;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
->>>>>>> master
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

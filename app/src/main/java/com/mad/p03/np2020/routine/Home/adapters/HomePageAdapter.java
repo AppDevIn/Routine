@@ -14,13 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Home/adapters/HomePageAdapter.java
 import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
 import com.mad.p03.np2020.routine.models.Section;
-=======
-import com.mad.p03.np2020.routine.models.Section;
-import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Home/adapters/HomePageAdapter.java
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.TaskActivity;
 import com.mad.p03.np2020.routine.Home.ViewHolder.MyHomeViewHolder;

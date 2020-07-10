@@ -27,19 +27,11 @@ import android.widget.TextView;
 
 
 import com.google.firebase.auth.FirebaseAuth;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Register/RegisterActivity.java
 import com.mad.p03.np2020.routine.models.User;
 
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth;
 import com.mad.p03.np2020.routine.R;
-=======
-import com.mad.p03.np2020.routine.Home.Home;
-import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.models.User;
-
-import com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Register/RegisterActivity.java
 import com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 

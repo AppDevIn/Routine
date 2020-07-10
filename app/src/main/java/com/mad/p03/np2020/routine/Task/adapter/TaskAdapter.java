@@ -8,20 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
 import android.widget.TextView;
 
 
 import com.mad.p03.np2020.routine.Card.CardActivity;
 import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
 import com.mad.p03.np2020.routine.models.Task;
-=======
-
-
-import com.mad.p03.np2020.routine.CardActivity;
-import com.mad.p03.np2020.routine.models.Task;
-import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
@@ -208,15 +200,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //Move to the card layout
         Intent intent = new Intent(mContext, CardActivity.class);
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
         intent.putExtra("task", mTaskList.get(position)); // Add the object
         mContext.startActivity(intent);
-=======
-        intent.putExtra("task", mTaskList.get(position));
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        mContext.startActivity(intent);
-
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
     }
 
 

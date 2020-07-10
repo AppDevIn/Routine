@@ -6,10 +6,7 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/model/UploadTaskWorker.java
 import com.mad.p03.np2020.routine.models.Section;
-=======
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/model/UploadTaskWorker.java
 import com.mad.p03.np2020.routine.models.Task;
 
 import androidx.annotation.NonNull;

@@ -27,15 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-<<<<<<< HEAD
-import com.mad.p03.np2020.routine.models.User;
-import com.mad.p03.np2020.routine.Home.Home;
-import com.mad.p03.np2020.routine.Register.RegisterActivity;
-=======
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Register.RegisterActivity;
 import com.mad.p03.np2020.routine.models.User;
->>>>>>> master
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
 import java.text.ParseException;

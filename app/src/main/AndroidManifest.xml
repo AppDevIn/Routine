@@ -21,14 +21,8 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize|adjustPan">
 
-<<<<<<< HEAD
         <activity android:name=".Card.CardActivity"
         android:theme="@style/AppTheme"/>
-=======
-        <activity android:name=".CardActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme" />
->>>>>>> master
 
         <activity android:name=".Register.RegisterActivity" />
 
@@ -43,14 +37,6 @@
         <activity android:name=".Home.Home"
                 android:exported="true"/>
 
-<<<<<<< HEAD
-=======
-        <activity android:name=".FocusActivity"
-            android:launchMode="singleTask"
-
-            />
-        
->>>>>>> master
         <activity android:name=".models.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
@@ -64,17 +50,10 @@
         <activity android:name=".MainActivity"/>
 
         <activity android:name=".Task.TaskActivity"
-<<<<<<< HEAD
-=======
-            android:windowSoftInputMode="adjustResize"
->>>>>>> master
             android:fitsSystemWindows="true"
             />
 
-<<<<<<< HEAD
         <activity android:name=".Register.RegisterActivity" />
-=======
->>>>>>> master
 
         <activity android:name=".HabitAddActivity" />
 
@@ -86,7 +65,6 @@
 
         <activity android:name=".HabitReminderActivity" />
 
-<<<<<<< HEAD
 
         <activity
             android:name=".Home.Home">
@@ -95,8 +73,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-=======
->>>>>>> master
         <service
             android:name=".background.FCMSection"
             android:exported="false">
@@ -105,12 +81,9 @@
             </intent-filter>
         </service>
 
-<<<<<<< HEAD
-=======
         <service android:name=".FocusActivity" />
         <service android:name=".background.BoundService" android:stopWithTask="false" />
 
->>>>>>> master
         <receiver android:enabled="true" android:name=".models.AlarmReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>

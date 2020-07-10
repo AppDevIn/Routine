@@ -18,7 +18,6 @@ import android.widget.ViewSwitcher;
 import com.mad.p03.np2020.routine.Card.adapters.CheckAdapter;
 import com.mad.p03.np2020.routine.Card.models.MyCardTouchHelper;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
-<<<<<<< HEAD
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
@@ -27,11 +26,6 @@ import com.mad.p03.np2020.routine.helpers.CheckDataListener;
 import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
-=======
-import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.helpers.CheckDataListener;
-import com.mad.p03.np2020.routine.models.Check;
->>>>>>> master
 
 import java.util.List;
 

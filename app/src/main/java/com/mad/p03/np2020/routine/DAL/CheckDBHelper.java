@@ -7,13 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.mad.p03.np2020.routine.helpers.CheckDataListener;
-<<<<<<< HEAD
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Section;
-=======
-import com.mad.p03.np2020.routine.models.Check;
->>>>>>> master
 import com.mad.p03.np2020.routine.models.Task;
 
 import java.util.ArrayList;
@@ -21,11 +17,7 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
-<<<<<<< HEAD
 public class CheckDBHelper extends DBHelper{
-=======
-public class CheckDBHelper extends DBHelper {
->>>>>>> master
 
     private final String TAG = "CheckDatabase";
 

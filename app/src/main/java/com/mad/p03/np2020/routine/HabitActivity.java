@@ -22,30 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
-<<<<<<< HEAD
-import com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter;
-import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
-import com.mad.p03.np2020.routine.models.AlarmReceiver;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitGroup;
-import com.mad.p03.np2020.routine.models.HabitReminder;
-import com.mad.p03.np2020.routine.models.User;
-import com.mad.p03.np2020.routine.background.HabitGroupWorker;
-import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
-import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import static java.lang.String.format;
-=======
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
->>>>>>> master
 
 /**
  *

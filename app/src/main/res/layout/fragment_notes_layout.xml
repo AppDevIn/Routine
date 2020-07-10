@@ -3,12 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="544dp"
-<<<<<<< HEAD
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".NotesFragment">
-=======
-    tools:context=".Fragment.NotesFragment">
->>>>>>> master
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -16,7 +12,6 @@
         app:cardElevation="4dp"
         android:layout_margin="10dp">
 
-<<<<<<< HEAD
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,21 +35,6 @@
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-=======
-        <EditText
-            android:id="@+id/notes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#50c5c5c5"
-            android:cursorVisible="true"
-            android:gravity="top|left"
-            android:hint="@string/NotesHint"
-            android:inputType="textMultiLine"
-            android:minLines="7"
-
-            android:padding="3dp"
-            android:scrollbars="vertical" />
->>>>>>> master
 
 
 </FrameLayout>

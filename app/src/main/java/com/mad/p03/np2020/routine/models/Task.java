@@ -4,12 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
 import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
-=======
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
 
 import com.google.firebase.database.DataSnapshot;
 import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
@@ -44,20 +41,6 @@ import androidx.work.WorkManager;
  */
 public class Task implements Serializable {
 
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
-=======
-    //Member variable
-    private String mName="";
-    private String mTaskID="";
-    private String mSectionID="";
-    private int mPosition=0;
-    private boolean checked;
-    private String remindDate = "";
-    private String mNotes = "";
-    private boolean dirty = false;
-    private Date dueDate;
-    private final static String TAG = "Task Model";
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
 
     /**The table name for this model*/
     public static final String TABLE_NAME = "task";

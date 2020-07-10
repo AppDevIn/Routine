@@ -6,11 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-<<<<<<< HEAD
     
-=======
-    android:background="@drawable/focus_image_background_success"
->>>>>>> master
     >
 
 
@@ -40,24 +36,13 @@
 
             android:scaleType="fitXY"
 
-<<<<<<< HEAD
             android:src="@drawable/amazon"
-=======
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
->>>>>>> master
 
 
 
-<<<<<<< HEAD
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-=======
-        android:layout_marginTop="16dp"
-
->>>>>>> master
 
             />
 
@@ -84,17 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/todoIcon"
             app:layout_constraintVertical_bias="0.01999998" />
 
-<<<<<<< HEAD
     </androidx.constraintlayout.widget.ConstraintLayout>
-=======
-        android:textSize="18sp"
-        
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/todoIcon"
-        app:layout_constraintStart_toStartOf="@+id/todoIcon"
-        app:layout_constraintTop_toBottomOf="@+id/todoIcon"
-        app:layout_constraintVertical_bias="0.01999998" />
->>>>>>> master
 
 
 </LinearLayout>

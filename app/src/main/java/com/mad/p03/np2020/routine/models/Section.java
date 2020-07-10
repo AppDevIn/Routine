@@ -8,11 +8,8 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/Section.java
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
-=======
 import com.google.firebase.database.DataSnapshot;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/Section.java
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.Home.models.UploadSectionWorker;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;

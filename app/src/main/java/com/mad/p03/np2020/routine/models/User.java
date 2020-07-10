@@ -20,10 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/User.java
-=======
 import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/User.java
 import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;

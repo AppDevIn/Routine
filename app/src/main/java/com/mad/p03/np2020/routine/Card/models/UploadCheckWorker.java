@@ -1,10 +1,7 @@
 package com.mad.p03.np2020.routine.Card.models;
 
 import android.content.Context;
-<<<<<<< HEAD
 import android.util.Log;
-=======
->>>>>>> master
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -58,11 +55,7 @@ public class UploadCheckWorker extends Worker {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("check").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(sectionID).child(String.valueOf(ID));
 
         //Setting value using object
-<<<<<<< HEAD
-        mDatabase.setValue(new Task(Name,0,sectionID,ID,isCheck));
-=======
-//        mDatabase.setValue(new Check(Name,0,sectionID,ID,isCheck));
->>>>>>> master
+        // mDatabase.setValue(new Task(Name,0,sectionID,ID,isCheck));
 
         return Result.success();
     }

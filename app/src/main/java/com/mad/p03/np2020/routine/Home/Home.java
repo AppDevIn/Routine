@@ -37,28 +37,17 @@ import com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter;
 import com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.LoginActivity;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
-=======
-import com.mad.p03.np2020.routine.LoginActivity;
-import com.mad.p03.np2020.routine.NavBarHelper;
-import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.models.Section;
-import com.mad.p03.np2020.routine.models.User;
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import java.text.SimpleDateFormat;
 import java.util.Date;
-=======
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import java.util.List;
 
 

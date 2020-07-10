@@ -2,11 +2,8 @@ package com.mad.p03.np2020.routine.Home.models;
 
 import android.annotation.SuppressLint;
 
-<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Home/models/MyHomeItemTouchHelper.java
 import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
 
-=======
->>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Home/models/MyHomeItemTouchHelper.java
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
