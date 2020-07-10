@@ -86,12 +86,13 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        //Doesn't have to be visible if a tool has been selected
-        findViewById(R.id.toolMessage).setVisibility(View.GONE);
+        if(view.getId() != R.id.imgEdit) {
+            //Doesn't have to be visible if a tool has been selected
+            findViewById(R.id.toolMessage).setVisibility(View.GONE);
 
-        //Since there is tool selected the fragment can be visible
-        findViewById(R.id.fragmentContainer).setVisibility(View.VISIBLE);
-
+            //Since there is tool selected the fragment can be visible
+            findViewById(R.id.fragmentContainer).setVisibility(View.VISIBLE);
+        }
         switch (view.getId()){
             case R.id.ll_check:
                 Log.i(TAG, "onClick: Check List is clicked");
