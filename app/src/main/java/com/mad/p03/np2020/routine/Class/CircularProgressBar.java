@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Class;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -8,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import com.mad.p03.np2020.routine.R;
 
@@ -24,7 +26,7 @@ public class CircularProgressBar extends View {
      * Start the progress at 12 o'clock
      */
     private int startAngle = -90;
-    private int color = Color.GREEN;
+    private int color = Color.DKGRAY;
     private RectF rectF;
     private Paint backgroundPaint;
     private Paint foregroundPaint;
@@ -32,6 +34,18 @@ public class CircularProgressBar extends View {
     public CircularProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        backgroundPaint.setColor(adjustAlpha(color, 0.3f));
+        foregroundPaint.setColor(color);
+        invalidate();
+        requestLayout();
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -93,5 +107,43 @@ public class CircularProgressBar extends View {
     public void setProgress(float progress) {
         this.progress = progress;
         invalidate();// Notify the view to redraw it self (the onDraw method is called)
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+        invalidate();
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+        invalidate();
+    }
+
+    public float getStrokeWidth() {
+        return strokeWidth;
+    }
+
+    public void setStrokeWidth(float strokeWidth) {
+        this.strokeWidth = strokeWidth;
+        backgroundPaint.setStrokeWidth(strokeWidth);
+        foregroundPaint.setStrokeWidth(strokeWidth);
+        invalidate();
+        requestLayout();//Because it should recalculate its bounds
+    }
+
+    public void setProgressWithAnimation(float progress) {
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(this, "progress", progress);
+        objectAnimator.setDuration(1500);
+        objectAnimator.setInterpolator(new DecelerateInterpolator());
+        objectAnimator.start();
     }
 }

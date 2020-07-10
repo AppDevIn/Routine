@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.Class;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.nfc.FormatException;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -14,8 +15,6 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,11 +27,7 @@ import com.mad.p03.np2020.routine.database.FocusDBHelper;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 import com.mad.p03.np2020.routine.database.HabitGroupDBHelper;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -42,7 +37,7 @@ import java.util.List;
  * @author Lee Quan Sheng and Jeyavishnu
  * @since 04-06-2020
  */
-public class User implements Parcelable {
+public class User extends AsyncTask<Context, Void, Void> implements Parcelable {
 
     /**
      * The table name for this model
@@ -224,7 +219,8 @@ public class User implements Parcelable {
      *
      * @param context set context to the current content
      */
-    public void readFocusFirebase(Context context) {
+    public void readFocusFirebase(Context context)
+    {
         myRef = FirebaseDatabase.getInstance().getReference().child("focusData").child(getUID());
         focusDBHelper = new FocusDBHelper(context);
 
@@ -378,6 +374,12 @@ public class User implements Parcelable {
     }
 
     public User() {
+    }
+
+    @Override
+    protected Void doInBackground(Context... contexts) {
+        readFocusFirebase(contexts[0]);
+        return null;
     }
 
     /**

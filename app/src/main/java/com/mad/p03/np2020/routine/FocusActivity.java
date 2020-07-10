@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -33,6 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
@@ -76,6 +78,11 @@ import static java.lang.String.valueOf;
 
 public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
 
+
+    //Fragment Variables
+    HistoryFragment fragmentFocus;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     public CircularProgressBar circularProgressBar;
     public CardView cdView;
@@ -234,6 +241,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         mface.startAnimation(translateAnimation);
         circularProgressBar.startAnimation(translateAnimation);
         circularProgressBar.setProgress(0);
+        circularProgressBar.setColor(Color.GREEN);
+        circularProgressBar.setMin(0);
+        circularProgressBar.setMax(100);
 
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
@@ -267,7 +277,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             Log.v(TAG, "Database does not exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
             FirebaseDatabase();
-            user.readFocusFirebase(this);
+            user.execute(this);
         }
 
         tmins = 0;
@@ -332,6 +342,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
             case "Reset": //Reset view where the view will become its initiate state
                 Log.v(TAG, "Button Reset Task is clicked");
+                circularProgressBar.setProgressWithAnimation(0);
+                circularProgressBar.setColor(Color.YELLOW);
                 textDisplay.setText(R.string.REST_STATUS);
                 timerReset();
                 BUTTON_STATE = "EnterTask";
@@ -340,7 +352,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             case "Running":
                 Log.v(TAG, "Button Running Task is clicked");
                 textDisplay.setText(R.string.PROCESS_STATUS);
-
+                circularProgressBar.setColor(Color.BLUE);
                 timeRunner();
                 long totaltime = (thours * 60 * 60) + (tmins * 60) + tsecs;
                 millisInput = totaltime * 1000;
@@ -352,6 +364,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
             case "Success":
                 Log.v(TAG, "Button Sucess Task is clicked");
+                circularProgressBar.setColor(Color.GREEN);
+                circularProgressBar.setProgressWithAnimation(100);
+                hour.setText("00");
+                min.setText("00");
+                sec.setText("00");
                 textDisplay.setText(R.string.SUCCESS_STATUS);
                 timerSuccess();
                 BUTTON_STATE = "Reset";
@@ -365,6 +382,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
             case "Fail":
                 Log.v(TAG, "Button Fail Task is clicked");
+                circularProgressBar.setColor(Color.RED);
+                hour.setText("00");
+                min.setText("00");
+                sec.setText("00");
                 textDisplay.setText(R.string.FAIL_STATUS);
                 timerFail();
                 mCountDownTimer.cancel(); //Pause timer
@@ -492,12 +513,16 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
 
         Log.v(TAG, "Counting down");
+        Log.v(TAG, String.valueOf(mTimeLeftInMillis));
+        Log.v(TAG, String.valueOf(millisInput));
+        long percentage = (long) ((float) mTimeLeftInMillis / millisInput *100);
 
         hour.setText(format(Locale.US, "%02d", hours));
         min.setText(format(Locale.US, "%02d", minutes));
         sec.setText(format(Locale.US, "%02d", seconds));
 
-        circularProgressBar.setProgress((mTimeLeftInMillis / millisInput) * 100);
+        circularProgressBar.setProgress(100- percentage);
+
 
     }
 
@@ -717,12 +742,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Open History Fragment
      */
     public void openHistory() { //Open history tab
-        HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDBHelper);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+
+        fragmentFocus = HistoryFragment.newInstance(user, focusDBHelper);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        Fragment fragmentA = getSupportFragmentManager().findFragmentByTag("HISTORY FRAGMENT");
+
+        if(fragmentA == null) {
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+        }
 
     }
 
