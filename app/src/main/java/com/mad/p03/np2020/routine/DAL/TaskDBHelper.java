@@ -6,8 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/DAL/TaskDBHelper.java
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.models.Task;
+=======
+import com.mad.p03.np2020.routine.models.Task;
+import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/DAL/TaskDBHelper.java
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +25,7 @@ import androidx.annotation.Nullable;
  * in the database
  *
  * @author Jeyavishnu
- * @since 03-06-2020
+ * @since 07-06-2020
  */
 public class TaskDBHelper extends DBHelper {
 
@@ -123,6 +128,32 @@ public class TaskDBHelper extends DBHelper {
         return String.valueOf(id);
     }
 
+    public Task getTask(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.d(TAG, "getUser: Querying data");
+
+
+        //Get the data from sqlite
+        Cursor cursor =  db.rawQuery( "select * from " + Task.TABLE_NAME+ " where "+Task.COLUMN_TASK_ID+"='"+id+"'", null );
+
+        if (cursor != null)
+            cursor.moveToFirst(); //Only getting the first value
+
+        //Prepare a section object
+        assert cursor != null;
+        Task task = Task.fromCursor(cursor);
+        Log.d(TAG, "getAllSections(): Reading data" + task.toString() );
+
+
+        //Close the DB connection
+        db.close();
+
+        return task;
+
+    }
+
+
     /**
      *
      * This will get all the task from the database
@@ -192,21 +223,27 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+
     /**
-     * This method will update the position of the given
-     * row based on the ID
-     * @param ID
-     * @param name
+     *
+     * This is to update the name and notes in the task with
+     * ID from the first parameter
+     *
+     * @param ID The task with this ID that will be updated
+     * @param name String The name you want to update too
+     * @param notes String The notes you update
      */
-    public void update(String ID, String name){
+    public void update(String ID, String name, String notes){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-
+        Log.d(TAG, "update(): Name or notes will be updated");
 
         ContentValues updateValues = new ContentValues();
         if(name != null)
             updateValues.put(Task.COLUMN_NAME, name);
+        if(notes != null)
+            updateValues.put(Task.COLUMN_NOTES, notes);
         db.update(
                 Task.TABLE_NAME,
                 updateValues,
@@ -217,11 +254,12 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+
     /**
      * This method will update the position of the given
      * row based on the ID
-     * @param ID
-     * @param position
+     * @param ID The task with this ID that will be updated
+     * @param position The position that need to be updated
      */
     public void update(String ID, int position){
 
@@ -246,10 +284,11 @@ public class TaskDBHelper extends DBHelper {
 
 
     /**
-     * This method will update the position of the given
-     * row based on the ID
-     * @param ID
-     * @param checked
+     *
+     * This to update the checked in SQL
+     *
+     * @param ID String The ID of the task you want to change
+     * @param checked bool if you want the task to be checked
      */
     public void update(String ID,boolean checked){
 
@@ -267,6 +306,43 @@ public class TaskDBHelper extends DBHelper {
         db.close();
     }
 
+    /**
+     *
+     * This is to update the date of the ID
+     * associated with the task in SQL
+     *
+     * @param ID String The ID of the task you want to change
+     * @param date String The date you want to change to please
+     *             put it in string with the date formatted
+     */
+    public void update(String ID, String date){
+
+        Log.d(TAG, "update: Date updated: " + date);
+
+        Log.d(TAG, "update: Updating using object task");
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Task.COLUMN_REMIND_DATE, String.valueOf(date));
+
+        db.update(
+                Task.TABLE_NAME,
+                updateValues,
+                Task.COLUMN_TASK_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
+
+    /**
+     * This method will update the position of the given
+     * row based on the ID will update the name, checked, notes
+     * and remindDate
+     * @param task The task you want to update
+     */
     public void update(Task task){
 
         Log.d(TAG, "update: Updating using object task");
@@ -276,12 +352,17 @@ public class TaskDBHelper extends DBHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(Task.COLUMN_NAME, task.getName());
         updateValues.put(Task.COLUMN_CHECKED, task.isChecked());
+        updateValues.put(Task.COLUMN_NOTES, task.getNotes());
+        updateValues.put(Task.COLUMN_REMIND_DATE, task.getRemindDate());
         db.update(
                 Task.TABLE_NAME,
                 updateValues,
                 Task.COLUMN_TASK_ID + " = ?",
                 new String[]{task.getTaskID()}
         );
+
+        if (mMyDatabaseListener != null)
+            mMyDatabaseListener.onDataUpdate(task);
 
         db.close();
     }

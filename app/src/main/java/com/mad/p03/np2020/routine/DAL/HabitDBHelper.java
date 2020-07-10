@@ -144,8 +144,6 @@ public class HabitDBHelper extends DBHelper{
      *
      * This method is used to retrieve all the habits based on the UID in the SQLiteDatabase.
      *
-//     * @param UID This parameter is the get the UID to refer which habit column is going to be referred.
-     *
      * @return ArrayList<Habit> This will return the habitList.
      * */
     public Habit.HabitList getAllHabits() {
@@ -194,6 +192,7 @@ public class HabitDBHelper extends DBHelper{
             habitList.addItem(habit);;
             res.moveToNext(); // move to the next result
         }
+        db.close();
 
         return habitList;
     }
@@ -294,6 +293,7 @@ public class HabitDBHelper extends DBHelper{
         db.close(); // close the db connection
     }
 
+    /**This method is used to delete the all habit object in the SQLiteDatabase.* */
     public void deleteAllHabit(){
         Log.d(TAG, "Habit: deleteAllHabit: ");
 
@@ -305,4 +305,185 @@ public class HabitDBHelper extends DBHelper{
 
         db.close(); //close the db connection
     }
+
+    /**
+     *
+     * This method is used to check whether a specific reminder is existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return true if the reminder is existed and false if it is not.
+     * */
+    public boolean isReminderExisted(Habit habit){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.d(TAG, "isReminderExisted: ");
+
+        Cursor cursor =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
+        if (cursor == null){
+            return false;
+        }
+
+        cursor.moveToFirst(); //Only getting the first value
+
+        if (cursor.getString(cursor.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES)) != null ){
+            return true;
+        }
+
+        db.close();
+
+        return false;
+
+    }
+
+    /**
+     *
+     * This method is used to get a specific reminder existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return the habitReminder object, and return null if no result found.
+     * */
+    public HabitReminder getReminder(Habit habit){
+        Log.d(TAG, "getReminder: ");
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
+        if (res != null){
+            res.moveToFirst(); //Only getting the first value
+        }
+
+        int reminder_id = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_ID));
+        int reminder_hours = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_HOURS));
+        int reminder_minutes = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MINUTES));
+        String reminder_message = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES));
+        String reminder_customText = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT));
+
+        HabitReminder reminder = null;
+        if (reminder_message != null){ //check if habit reminder is null, if not set the object
+            reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
+        }
+
+        db.close();
+
+        return reminder;
+
+    }
+
+    /**
+     *
+     * This method is used to get a specific reminder existed in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return boolean This will return the habitReminder object, and return null if no result found.
+     * */
+    public Habit getHabit(Habit habit){
+        Log.d(TAG, "getHabit: ");
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
+        if (res != null){
+            res.moveToFirst(); //Only getting the first value
+        }
+
+        long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
+        String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
+        int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
+        int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
+        int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
+        String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
+        String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
+
+        int reminder_id = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_ID));
+        int reminder_hours = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_HOURS));
+        int reminder_minutes = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MINUTES));
+        String reminder_message = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES));
+        String reminder_customText = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT));
+
+        HabitReminder reminder = null;
+        if (reminder_message != null){ //check if habit reminder is null, if not set the object
+            reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
+        }
+
+        long group_id = res.getLong(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_ID));
+        String group_name = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_NAME));
+        HabitGroup group = null;
+        if (group_name != null) {// check if habit group is null, if not set the object
+            group = new HabitGroup(group_id, group_name);
+        }
+
+        db.close();
+
+        return new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
+    }
+
+    /**
+     *
+     * This method is used to insert the habit to the habit column in the SQLiteDatabase from firebase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @param UID This parameter is the get the UID to refer which habit column is going to be inserted.
+     *
+     * */
+    public void insertHabitFromFirebase(Habit habit, String UID) {
+
+        Log.d(TAG, "insertHabitFromFirebase: "+UID);
+
+        // insert the values
+        ContentValues values = new ContentValues();
+        values.put(Habit.COLUMN_ID, habit.getHabitID());
+        values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
+        values.put(Habit.COLUMN_USERID,UID);
+        values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
+        values.put(Habit.COLUMN_HABIT_COUNT,habit.getCount());
+        values.put(Habit.COLUMN_HABIT_PERIOD,habit.getPeriod());
+        values.put(Habit.COLUMN_HABIT_TIMECREATED,habit.getTime_created());
+        values.put(Habit.COLUMN_HABIT_HOLDERCOLOR,habit.getHolder_color());
+
+        HabitReminder reminder = habit.getHabitReminder();
+
+        if(reminder !=  null){ // if reminder object is not null
+            values.put(Habit.COLUMN_HABIT_REMINDER_ID,reminder.getId());
+            values.put(Habit.COLUMN_HABIT_REMINDER_MESSAGES,reminder.getMessage());
+            values.put(Habit.COLUMN_HABIT_REMINDER_MINUTES,reminder.getMinutes());
+            values.put(Habit.COLUMN_HABIT_REMINDER_HOURS,reminder.getHours());
+            values.put(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT,reminder.getCustom_text());
+        }else{ // if reminder object is null, set the null value for the reminder rows
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_ID);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MESSAGES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MINUTES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_HOURS);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT);
+        }
+
+        HabitGroup group = habit.getGroup();
+        if (group != null){ // if group object is not null
+            values.put(Habit.COLUMN_HABIT_GROUP_ID, group.getGrp_id());
+            values.put(Habit.COLUMN_HABIT_GROUP_NAME, group.getGrp_name());
+        }else{  // if group object is null, set the null value for the group row
+            values.putNull(Habit.COLUMN_HABIT_GROUP_ID);
+            values.putNull(Habit.COLUMN_HABIT_GROUP_NAME);
+        }
+
+        // get the writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // insert the habit
+        long id =  db.insert(Habit.TABLE_NAME, null, values);
+        if (id == -1){ // if id is equal to 1, there is error inserting the habit
+            Log.d(TAG, "Habit: insertHabit: " + "Error");
+        }else{ // if id is not equal to 1, there is no error inserting the habit
+            Log.d(TAG, "Habit: insertHabit: " + "Successful");
+
+        }
+        // close the database
+        db.close();
+
+    }
+
 }

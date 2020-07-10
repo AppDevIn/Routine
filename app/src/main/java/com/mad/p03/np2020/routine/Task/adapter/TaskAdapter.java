@@ -4,19 +4,24 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
 import android.widget.TextView;
 
 
 import com.mad.p03.np2020.routine.Card.CardActivity;
 import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
 import com.mad.p03.np2020.routine.models.Task;
+=======
+
+
+import com.mad.p03.np2020.routine.CardActivity;
+import com.mad.p03.np2020.routine.models.Task;
+import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
@@ -133,29 +138,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
                 mTaskList.get(position).setChecked(b);
                 mTaskDBHelper.update(mTaskList.get(position).getTaskID(), b);
 
-            }
-        });
-
-        holder.mListName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-
-
-                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                        event.getAction() == KeyEvent.ACTION_DOWN &&
-                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-
-                    Log.d(TAG, "onEditorAction: " + textView.getText());
-                    mTaskList.get(position).setName(holder.mListName.getText().toString());
-                    mTaskDBHelper.update(mTaskList.get(position).getTaskID(),mTaskList.get(position).getName());
-                    showNewEntry(holder.mListName);
-                }
-
-                return false;
+                mTaskList.get(position).executeUpdateFirebase(null);
 
             }
         });
+
 
 
     }
@@ -221,8 +208,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //Move to the card layout
         Intent intent = new Intent(mContext, CardActivity.class);
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
         intent.putExtra("task", mTaskList.get(position)); // Add the object
         mContext.startActivity(intent);
+=======
+        intent.putExtra("task", mTaskList.get(position));
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        mContext.startActivity(intent);
+
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/adapter/TaskAdapter.java
     }
 
 
@@ -259,19 +253,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         task.deleteTask(mContext);
 
     }
-
-    /**
-     * Upon calling this method, the keyboard will retract
-     * and the recyclerview will scroll to the last item
-     */
-    private void showNewEntry(View view){
-
-        //auto hide keyboard after entry
-        InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert imm != null;
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
 
 
 

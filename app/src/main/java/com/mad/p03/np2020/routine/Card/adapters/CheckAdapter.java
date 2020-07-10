@@ -14,7 +14,10 @@ import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.Check;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 import java.util.List;
 
 import androidx.annotation.NonNull;

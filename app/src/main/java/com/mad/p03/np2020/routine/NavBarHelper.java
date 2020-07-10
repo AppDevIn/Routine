@@ -48,14 +48,19 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
 
         switch (item.getItemId()){
             case R.id.habit:
-                mContext.startActivity(new Intent(mContext, HabitActivity.class), options.toBundle());
+                Intent intent = new Intent(mContext, HabitActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                mContext.startActivity(intent, options.toBundle());
                 break;
             case R.id.focus:
-                mContext.startActivity(new Intent(mContext, FocusActivity.class), options.toBundle());
+                Intent intentFocus = new Intent(mContext, FocusActivity.class);
+                intentFocus.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                mContext.startActivity(intentFocus, options.toBundle());
                 break;
             case R.id.home:
-                Intent intent3 = new Intent(mContext, Home.class);
-                mContext.startActivity(intent3, options.toBundle());
+                Intent intentHome = new Intent(mContext, Home.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                mContext.startActivity(intentHome, options.toBundle());
                 break;
             case R.id.calender:
                 Toast.makeText(mContext, "Calender will be implemented in stage 2", Toast.LENGTH_SHORT).show();

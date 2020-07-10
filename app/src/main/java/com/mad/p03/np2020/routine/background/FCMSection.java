@@ -77,9 +77,9 @@ public class FCMSection extends FirebaseMessagingService {
 
         //Depending on the reason different functions run
         switch (Objects.requireNonNull(remoteMessage.getData().get("for"))){
-            case "SectionAdd": addSectionSQL(remoteMessage); break;
+//            case "SectionAdd": addSectionSQL(remoteMessage); break;
             case "SectionDelete": deleteSectionSQL(remoteMessage); ;break;
-            case "TaskAdd": addTaskSQL(remoteMessage); ;break;
+//            case "TaskAdd": addTaskSQL(remoteMessage); ;break;
             case "TaskDelete": deleteTaskSQL(remoteMessage); ;break;
             case "UpdateTask": updateTask(remoteMessage); ;break;
 
@@ -144,7 +144,7 @@ public class FCMSection extends FirebaseMessagingService {
      * @param remoteMessage Remote message that has been received.
      */
     private void addTaskSQL(RemoteMessage remoteMessage){
-        Task task =  Task.fromJSON(remoteMessage.getData().toString());
+        Task task =  Task.fromMap(remoteMessage.getData());
         Log.d(TAG, "onMessageReceived(): Section info: " + task.toString());
 
         String id = remoteMessage.getData().get("id");
@@ -184,7 +184,7 @@ public class FCMSection extends FirebaseMessagingService {
 
     private void updateTask(RemoteMessage remoteMessage){
         Log.d(TAG, "updateTask: " + remoteMessage);
-        Task task =  Task.fromJSON(remoteMessage.getData().toString());
+        Task task =  Task.fromMap(remoteMessage.getData());
         TaskDBHelper taskDBHelper = new TaskDBHelper(this);
 
         //Delete the old row

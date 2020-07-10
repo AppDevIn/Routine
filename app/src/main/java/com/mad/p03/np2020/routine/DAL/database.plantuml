@@ -4,23 +4,6 @@ title __DATABASE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace database {
-      class com.mad.p03.np2020.routine.database.CardDBHelper {
-          {static} + COL1 : String
-          {static} + COL2 : String
-          {static} + DATABASE_NAME : String
-          {static} + DATABASE_VERSION : int
-          {static} + TABLE_NAME : String
-          {static} - TAG : String
-          + CardDBHelper()
-          + onCreate()
-          + onUpgrade()
-      }
-    }
-  }
-  
-
-  namespace com.mad.p03.np2020.routine {
-    namespace database {
       class com.mad.p03.np2020.routine.database.DBHelper {
           {static} ~ DATABASE_NAME : String
           {static} ~ DATABASE_VERSION : int
@@ -58,9 +41,14 @@ title __DATABASE's Class Diagram__\n
       class com.mad.p03.np2020.routine.database.HabitDBHelper {
           - TAG : String
           + HabitDBHelper()
+          + deleteAllHabit()
           + deleteHabit()
           + getAllHabits()
+          + getHabit()
+          + getReminder()
           + insertHabit()
+          + insertHabitFromFirebase()
+          + isReminderExisted()
           + onCreate()
           + onDowngrade()
           + onUpgrade()
@@ -76,8 +64,10 @@ title __DATABASE's Class Diagram__\n
       class com.mad.p03.np2020.routine.database.HabitGroupDBHelper {
           - TAG : String
           + HabitGroupDBHelper()
+          + deleteAllHabitGroups()
           + getAllGroups()
           + insertGroup()
+          + insertGroupFromFirebase()
           + onCreate()
           + onDowngrade()
           + onUpgrade()
@@ -88,17 +78,8 @@ title __DATABASE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace database {
-      interface com.mad.p03.np2020.routine.database.MyDatabaseListener {
-          {abstract} + onDataAdd()
-          {abstract} + onDataDelete()
-      }
-    }
-  }
-  
-
-  namespace com.mad.p03.np2020.routine {
-    namespace database {
       class com.mad.p03.np2020.routine.database.SectionDBHelper {
+          ~ mContext : Context
           - TAG : String
           {static} - mMyDatabaseListener : MyDatabaseListener
           + SectionDBHelper()
@@ -125,12 +106,18 @@ title __DATABASE's Class Diagram__\n
           + TaskDBHelper()
           + delete()
           + getAllTask()
+          + getTask()
           + hasID()
           + insertTask()
           + onCreate()
           + onDowngrade()
           + onUpgrade()
           {static} + setMyDatabaseListener()
+          + update()
+          + update()
+          + update()
+          + update()
+          + update()
       }
     }
   }
@@ -151,7 +138,6 @@ title __DATABASE's Class Diagram__\n
   }
   
 
-  com.mad.p03.np2020.routine.database.CardDBHelper -up-|> android.database.sqlite.SQLiteOpenHelper
   com.mad.p03.np2020.routine.database.DBHelper -up-|> android.database.sqlite.SQLiteOpenHelper
   com.mad.p03.np2020.routine.database.FocusDBHelper .up.|> android.os.Parcelable
   com.mad.p03.np2020.routine.database.FocusDBHelper -up-|> com.mad.p03.np2020.routine.database.DBHelper

@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 /**
  *
- * Model used to manage the section
+ * Model used to manage the Focus
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020

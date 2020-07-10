@@ -27,9 +27,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+<<<<<<< HEAD
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Register.RegisterActivity;
+=======
+import com.mad.p03.np2020.routine.Home.Home;
+import com.mad.p03.np2020.routine.Register.RegisterActivity;
+import com.mad.p03.np2020.routine.models.User;
+>>>>>>> master
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
 import java.text.ParseException;
@@ -38,7 +44,7 @@ import java.util.Date;
 
 /**
  *
- * Login Activity for user
+ * Login activity used to manage the login layout section
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020
@@ -132,6 +138,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     /**
@@ -273,10 +284,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //TODO Get All User Routine Data
                             user.readHabit_Firebase(context);
                             user.readHabitGroup_Firebase(context);
+                            user.getAllSectionAndTask();
 
                             Intent intent = new Intent(LoginActivity.this, Home.class);
                             intent.putExtra("user", user);
                             startActivity(intent);
+                            finish();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

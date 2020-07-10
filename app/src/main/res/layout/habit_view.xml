@@ -80,15 +80,16 @@
                 android:layout_width="22dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="70dp"
+                android:layout_marginEnd="50dp"
                 android:layout_toStartOf="@+id/habit_view_count"
                 android:scaleX="-1"
                 app:srcCompat="@drawable/habit_refresh" />
 
 
             <TextView
+                android:textAlignment="center"
                 android:id="@+id/habit_view_count"
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
@@ -96,7 +97,7 @@
                 android:letterSpacing="0.1"
                 android:text="11"
                 android:textColor="@color/colorWhite"
-                android:textSize="60dp" />
+                android:textSize="50dp" />
 
 
             <ImageButton
@@ -104,9 +105,9 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="70dp"
+                android:layout_marginStart="35dp"
                 android:layout_toEndOf="@+id/habit_view_count"
-                android:src="@drawable/habit_add" />
+                android:src="@drawable/habit_add_white" />
 
             <ImageButton
                 android:id="@+id/habit_view_modify"
@@ -115,7 +116,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
                 android:layout_toEndOf="@id/habit_view_add"
-                app:srcCompat="@drawable/habit_modify" />
+                app:srcCompat="@drawable/habit_hashtag" />
 
         </RelativeLayout>
 
@@ -197,18 +198,17 @@
 
         <ImageButton
             android:id="@+id/habit_view_edit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="20dp"
             app:srcCompat="@drawable/habit_modify" />
 
         <ImageButton
             android:id="@+id/habit_view_delete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="20dp"
             app:srcCompat="@drawable/habit_delete" />
-
 
 
     </LinearLayout>

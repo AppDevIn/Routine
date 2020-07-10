@@ -27,11 +27,19 @@ import android.widget.TextView;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Register/RegisterActivity.java
 import com.mad.p03.np2020.routine.models.User;
 
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth;
 import com.mad.p03.np2020.routine.R;
+=======
+import com.mad.p03.np2020.routine.Home.Home;
+import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.models.User;
+
+import com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Register/RegisterActivity.java
 import com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
@@ -360,6 +368,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
                 // When timer is finished
                 // Execute your code here'
                 Log.d(TAG, "onFinish: Done with Register animation");
+                textView.setText(R.string.register);
 
             }
 
@@ -371,7 +380,6 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
                     i++;
                 }
                 catch (Exception e){
-                    Log.e(TAG, "startUpAnimation: ", e);
 
                     textView.setText(R.string.register);
                    this.cancel();

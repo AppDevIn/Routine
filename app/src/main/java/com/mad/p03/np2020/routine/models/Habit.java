@@ -105,6 +105,14 @@ public class Habit {
     public Habit() { }
 
     /**This method is a constructor for habit*/
+    public Habit(String title, int occurrence, int period, String holder_color) {
+        this.title = title;
+        this.occurrence = occurrence;
+        this.period = period;
+        this.holder_color = holder_color;
+    }
+
+    /**This method is a constructor for habit*/
     public Habit(String title, int occurrence, int count, int period, String holder_color) {
         this.title = title;
         this.occurrence = occurrence;
@@ -393,6 +401,12 @@ public class Habit {
         return 0;
     }
 
+
+    /**
+     *
+     * Model used to manage the habitList
+     *
+     */
     public static class HabitList {
 
         private ArrayList<Habit> habitList;
@@ -439,6 +453,4 @@ public class Habit {
          * */
         public Integer size() { return this.habitList.size(); }
     }
-
-
 }

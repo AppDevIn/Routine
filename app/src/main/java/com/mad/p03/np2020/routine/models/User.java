@@ -20,6 +20,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/User.java
+=======
+import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/User.java
 import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
@@ -30,7 +34,6 @@ import java.util.List;
 
 
 /**
- *
  * Model used to manage the user data
  *
  * @author Lee Quan Sheng and Jeyavishnu
@@ -38,16 +41,26 @@ import java.util.List;
  */
 public class User implements Parcelable {
 
-    /**The table name for this model*/
+    /**
+     * The table name for this model
+     */
     public static final String TABLE_NAME = "user"; //Name of the table
 
-    /**Used as the primary key for this table*/
+    /**
+     * Used as the primary key for this table
+     */
     public static final String COLUMN_NAME_ID = "id";
-    /**Column name for table,  to identify the name of the user*/
+    /**
+     * Column name for table,  to identify the name of the user
+     */
     public static final String COLUMN_NAME_NAME = "name";
-    /**Column name for table,  to identify the email of the user*/
+    /**
+     * Column name for table,  to identify the email of the user
+     */
     public static final String COLUMN_NAME_EMAIL = "email";
-    /**Column name for table,  to identify the password of the task*/
+    /**
+     * Column name for table,  to identify the password of the task
+     */
     public static final String COLUMN_NAME_PASSWORD = "password"; //The password will be encrypted
 
     /**
@@ -138,6 +151,46 @@ public class User implements Parcelable {
         return mFocusList;
     }
 
+    public ArrayList<Focus> getmUnsuccessFocusList() {
+        ArrayList<Focus> unSuccessList = new ArrayList<>();
+
+        if (mFocusList.size() != 0) {
+            for (Focus item : mFocusList) {
+                if (item.getmCompletion().equals("False")) {
+                    unSuccessList.add(item);
+                }
+            }
+        }
+
+        return unSuccessList;
+
+    }
+
+    public ArrayList<Focus> getmSuccessFocusList() {
+        ArrayList<Focus> SuccessList = new ArrayList<>();
+
+        if (mFocusList.size() != 0) {
+            for (Focus item : mFocusList) {
+                if (item.getmCompletion().equals("True")) {
+                    SuccessList.add(item);
+                }
+            }
+        }
+
+        return SuccessList;
+    }
+
+    public int getTotalHours() {
+        int hours = 0;
+        for (Focus item : mFocusList) {
+            if (item.getmCompletion().equals("True")) {
+                hours = +Integer.parseInt(item.getmDuration());
+            }
+        }
+
+        return hours;
+    }
+
     /**
      * Method to set all FocusList for current User
      *
@@ -158,7 +211,6 @@ public class User implements Parcelable {
 
     /**
      * Method to clear Focus List
-     *
      */
     public void clearFocusList() {
         setmFocusList(new ArrayList<Focus>());
@@ -170,12 +222,12 @@ public class User implements Parcelable {
      * @param context set context to the current content
      */
     public void readFocusFirebase(Context context) {
-        myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
+        myRef = FirebaseDatabase.getInstance().getReference().child("focusData").child(getUID());
         focusDBHelper = new FocusDBHelper(context);
 
         //Clear all data since there is a change to the database so it can be updated
 
-        myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 focusDBHelper.deleteAll();
@@ -200,20 +252,24 @@ public class User implements Parcelable {
         });
     }
 
-    /** This method is read the habits from firebase
-     * @param context*/
-    public void readHabit_Firebase(Context context){
-        Log.d(TAG, "readHabit_Firebase: ");
+    /**
+     * This method is read the habits from firebase
+     *
+     * @param context This is to get the context of the activity
+     */
+    public void readHabit_Firebase(Context context) {
+        Log.d(TAG, "read Habit_Firebase: ");
 
         habitDBHelper = new HabitDBHelper(context);
 
+        // delete all the habit
         habitDBHelper.deleteAllHabit();
 
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habit").addValueEventListener(new ValueEventListener() {
+        myRef.child("habit").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: ");
+                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     Habit habit = new Habit();
                     habit.setHabitID((Long) singleSnapshot.child("habitID").getValue(Long.class));
@@ -225,29 +281,29 @@ public class User implements Parcelable {
                     habit.setTime_created((String) singleSnapshot.child("time_created").getValue());
 
                     HabitGroup habitGroup = new HabitGroup();
-                    if (singleSnapshot.hasChild("group")){
+                    if (singleSnapshot.hasChild("group")) {
                         habitGroup.setGrp_id((Long) singleSnapshot.child("group").child("grp_id").getValue(Long.class));
                         habitGroup.setGrp_name((String) singleSnapshot.child("group").child("grp_name").getValue());
                         habit.setGroup(habitGroup);
-                    }else{
+                    } else {
                         habit.setGroup(null);
                     }
 
                     HabitReminder habitReminder = new HabitReminder();
-                    if (singleSnapshot.hasChild("habitReminder")){
+                    if (singleSnapshot.hasChild("habitReminder")) {
                         habitReminder.setId((Integer) singleSnapshot.child("habitReminder").child("id").getValue(Integer.class));
                         habitReminder.setMessage((String) singleSnapshot.child("habitReminder").child("message").getValue());
                         habitReminder.setCustom_text((String) singleSnapshot.child("habitReminder").child("custom_text").getValue());
                         habitReminder.setHours((Integer) singleSnapshot.child("habitReminder").child("hours").getValue(Integer.class));
                         habitReminder.setMinutes((Integer) singleSnapshot.child("habitReminder").child("minutes").getValue(Integer.class));
                         habit.setHabitReminder(habitReminder);
-                    }else{
+                    } else {
                         habit.setHabitReminder(null);
                     }
 
 
-                    habitDBHelper.insertHabit(habit, getUID());
-                    Log.d(TAG, "reading lines");
+                    habitDBHelper.insertHabitFromFirebase(habit, getUID());
+                    Log.d(TAG, "reading Habit Lines");
 
                 }
 
@@ -260,28 +316,35 @@ public class User implements Parcelable {
         });
     }
 
-    /** This method is read the habitGroups from firebase */
-    public void readHabitGroup_Firebase(Context context){
-        Log.d(TAG, "readHabitGroup_Firebase: ");
+    /**
+     * This method is read the habitGroups from firebase
+     *
+     * @param context This is to get the context of the activity
+     */
+    public void readHabitGroup_Firebase(Context context) {
+        Log.d(TAG, "read HabitGroup_Firebase: ");
 
         habitGroupDBHelper = new HabitGroupDBHelper(context);
 
+        // delete all habitGroups
+        habitGroupDBHelper.deleteAllHabitGroups();
+
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habitGroup").addValueEventListener(new ValueEventListener() {
+        myRef.child("habitGroup").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     HabitGroup habitGroup = new HabitGroup();
                     habitGroup.setGrp_id((Long) singleSnapshot.child("grp_id").getValue(Long.class));
                     habitGroup.setGrp_name((String) singleSnapshot.child("grp_name").getValue());
 
-                    Log.d(TAG, "onDataChange: "+habitGroup.getGrp_id());
-                    Log.d(TAG, "onDataChange: "+habitGroup.getGrp_name());
+                    Log.d(TAG, "onDataChange: " + habitGroup.getGrp_id());
+                    Log.d(TAG, "onDataChange: " + habitGroup.getGrp_name());
 
-                    habitGroupDBHelper.insertGroup(habitGroup);
+                    habitGroupDBHelper.insertGroupFromFirebase(habitGroup);
 
-                    Log.d(TAG, "reading lines");
+                    Log.d(TAG, "reading HabitGroup Lines");
                 }
             }
 
@@ -291,17 +354,34 @@ public class User implements Parcelable {
             }
         });
 
+    }
+
+
+    public void getAllSectionAndTask() {
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+
+        //Create the request
+        OneTimeWorkRequest getSectionTask = new OneTimeWorkRequest.
+                Builder(GetTaskSectionWorker.class)
+                .setConstraints(constraints)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(getSectionTask);
     }
 
     public User() {
     }
 
     /**
-     *
      * This will set the name and the password
      * to the object
      *
-     * @param name The name of the user
+     * @param name     The name of the user
      * @param password The password of the user
      */
     User(String name, String password) {
@@ -310,14 +390,13 @@ public class User implements Parcelable {
     }
 
     /**
-     *
      * This will set the UID, name, password,
      * dob and email into the object
      *
-     * @param UID The unique ID of the user
-     * @param name The name of the user
+     * @param UID      The unique ID of the user
+     * @param name     The name of the user
      * @param password The password of the user
-     * @param Email The email of the user
+     * @param Email    The email of the user
      */
     public User(String UID, String name, String password, String Email) {
         this.mUID = UID;
@@ -327,12 +406,11 @@ public class User implements Parcelable {
     }
 
     /**
-     *
      * You can set the name, password and the email of the
      * user in to the object
      *
-     * @param name The name of the user
-     * @param password The password of the user
+     * @param name      The name of the user
+     * @param password  The password of the user
      * @param emailAddr The email of the user
      */
     public User(String name, String password, String emailAddr) {
@@ -342,7 +420,6 @@ public class User implements Parcelable {
     }
 
     /**
-     *
      * This methods is to check if the name is empty and
      * set it into the object
      *
@@ -359,14 +436,13 @@ public class User implements Parcelable {
     }
 
     /**
-     *
      * This method is to check if the email is empty and if it's in the email format and
      * set it into the object
      *
      * @param emailAdd This parameter take in the email address of the user
-     *                     and set it
+     *                 and set it
      * @throws FormatException On input given must follow the email format (@ and .com)
-     * and not empty
+     *                         and not empty
      */
     public void setEmailAdd(String emailAdd) throws FormatException {
 
@@ -388,14 +464,13 @@ public class User implements Parcelable {
     }
 
     /**
-     *
      * This method is to check if the password is empty and if it's in the strong password format and
      * set it into the object
      *
      * @param password This parameter take in the password of the user
      *                 and set it
      * @throws FormatException On input given must follow the strong password format have 8 characters,
-     * with special symbol and alphanumeric, not empty and no white space
+     *                         with special symbol and alphanumeric, not empty and no white space
      */
     public void setPassword(String password) throws FormatException {
         //TODO: Encrypt the password
@@ -437,7 +512,6 @@ public class User implements Parcelable {
     }
 
     /**
-     *
      * This method is used to set the
      * user authentication into the object
      *
@@ -452,27 +526,37 @@ public class User implements Parcelable {
     }
 
 
-    /**@return String This return the UID of the user*/
+    /**
+     * @return String This return the UID of the user
+     */
     public String getUID() {
         return mUID;
     }
 
-    /**@return FirebaseUser This return the authentication for this user by firebase*/
+    /**
+     * @return FirebaseUser This return the authentication for this user by firebase
+     */
     public FirebaseUser getAuth() {
         return mAuth;
     }
 
-    /**@return String This return the name of the user*/
+    /**
+     * @return String This return the name of the user
+     */
     public String getName() {
         return mName;
     }
 
-    /**@return String This return the email address the user*/
+    /**
+     * @return String This return the email address the user
+     */
     public String getEmailAdd() {
         return mEmailAddr;
     }
 
-    /**@return String This return the password of the user */
+    /**
+     * @return String This return the password of the user
+     */
     public String getPassword() {
         return mPassword;
     }
@@ -481,10 +565,10 @@ public class User implements Parcelable {
     /**
      * Upload Name, Email and UID up the firebase
      * After registering successfully
-     *
+     * <p>
      * It will be done in the background
      */
-    public void executeFirebaseUserUpload(){
+    public void executeFirebaseUserUpload() {
 
         Log.d(TAG, "executeFirebaseUserUpload(): Preparing the upload ");
 
@@ -514,9 +598,7 @@ public class User implements Parcelable {
     }
 
 
-
     /**
-     *
      * Describe the kinds of special objects contained in this
      * Parcelable instance's marshaled representation.
      *
@@ -530,7 +612,7 @@ public class User implements Parcelable {
     /**
      * Write to parcel
      *
-     * @param dest set dest to current content
+     * @param dest  set dest to current content
      * @param flags set flags to current content
      */
     @Override

@@ -8,7 +8,19 @@ import android.util.Log;
 import com.mad.p03.np2020.routine.models.User;
 
 
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/DAL/UserDBHelper.java
 //This database is just the cache for online data
+=======
+/**
+ *
+ * This is the database that is used create the user table
+ * in the database
+ *
+ *
+ * @author Jeyavishnu
+ * @since 03-06-2020
+ */
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/DAL/UserDBHelper.java
 public class UserDBHelper extends DBHelper {
 
     private final String TAG = "UserDatebase";

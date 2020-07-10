@@ -4,21 +4,27 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
 import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+=======
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.firebase.database.DataSnapshot;
+import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
+import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
@@ -34,10 +40,24 @@ import androidx.work.WorkManager;
  * Model used to manage the Task
  *
  * @author Jeyavishnu
- * @since 04-06-2020
+ * @since 08-06-2020
  */
 public class Task implements Serializable {
 
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
+=======
+    //Member variable
+    private String mName="";
+    private String mTaskID="";
+    private String mSectionID="";
+    private int mPosition=0;
+    private boolean checked;
+    private String remindDate = "";
+    private String mNotes = "";
+    private boolean dirty = false;
+    private Date dueDate;
+    private final static String TAG = "Task Model";
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/Task.java
 
     /**The table name for this model*/
     public static final String TABLE_NAME = "task";
@@ -108,13 +128,16 @@ public class Task implements Serializable {
         this.mTaskID = UUID.randomUUID().toString();
     }
 
-    public Task(String name, int position, String sectionID, String taskID, boolean checked ) {
-
+    public Task(String name, int position, String sectionID, String taskID, boolean checked, String notes, String remindDate )  {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.mName = name;
         this.mSectionID = sectionID;
         this.mTaskID = taskID;
         this.mPosition = position;
         this.checked = checked;
+        this.mNotes = notes;
+        this.remindDate = remindDate;
+
     }
 
 
@@ -133,8 +156,22 @@ public class Task implements Serializable {
                 cursor.getInt(cursor.getColumnIndex(COLUMN_POSITION)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_SECTION_ID)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_TASK_ID)),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_CHECKED)) == 1
+                cursor.getInt(cursor.getColumnIndex(COLUMN_CHECKED)) == 1,
+                cursor.getString(cursor.getColumnIndex(COLUMN_NOTES)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_REMIND_DATE))
         );
+    }
+
+    public static Task fromDataSnapShot(DataSnapshot task){
+        String name = task.child("name").getValue(String.class);
+        int position = task.child("position").getValue(Integer.class) == null ? 0 : task.child("position").getValue(Integer.class);
+        String sectionID = task.child("sectionID").getValue(String.class);
+        String ID = task.child("taskID").getValue(String.class);
+        boolean checked = task.child("checked").getValue(Boolean.class) == null ? false : task.child("checked").getValue(Boolean.class);
+        String notes = task.child("notes").getValue(String.class);
+        String remindDate = task.child("remindDate").getValue(String.class);;
+
+        return new Task(name, position, sectionID, ID, checked, notes, remindDate);
     }
 
     /**
@@ -144,37 +181,39 @@ public class Task implements Serializable {
      * convert it into json object and extract the
      * information needed for the object
      *
-     * @param json The string of data in json format
+     * @param data The string of data in json format
      * @return Task Return back a task object
      */
-    public static Task fromJSON(String json){
+    public static Task fromMap(Map<String, String> data){
 
         String name = "";
         String id = "";
         String sectionID = "";
         boolean checked = false;
+        String notes = "";
+        String remindDate = "Sun Jun 07 13:15:51 GMT+08:00 2020";
 
 
         try {
-            //Make the string to object
-            JSONObject jsonObject = new JSONObject(json);
+
 
             //Get the values from the object
 
-            name = jsonObject.getString("name");
-            id = jsonObject.getString("id");
-            sectionID = jsonObject.getString("sectionID");
-            checked = Boolean.parseBoolean(jsonObject.getString("checked"));
+            name = data.get("name");
+            id = data.get("id");
+            sectionID = data.get("sectionID");
+//            notes = jsonObject.getString("notes");
+            checked = Boolean.parseBoolean(data.get("checked"));
 
 
 
             //Return back the object
-            return new Task(name, 0, sectionID, id,checked);
+            return new Task(name, 0, sectionID, id,checked, notes, remindDate);
 
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "fromJSON: ", e);
+            Log.e(TAG, "fromMap: ", e);
         }
 
 
@@ -195,14 +234,20 @@ public class Task implements Serializable {
     }
 
     /**@return Date This return the data that I need to remind about the task*/
-    public Date getRemindDate() {
+    public String getRemindDate() {
         return remindDate;
     }
 
-    /**@return Date This return the date the task is going to be due*/
-    public Date getDueDate() {
-        return dueDate;
+    /**@return Date This return the data that I need to remind about the task*/
+    public Date getDateRemindDate() {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return dateFormat.parse(remindDate);
+        }catch (Exception e){
+            return null;
+        }
     }
+
 
     /**@return String This return a string of notes for this task*/
     public String getNotes() {
@@ -230,7 +275,10 @@ public class Task implements Serializable {
         return mPosition;
     }
 
-
+    /**@return Date This return the date the task is going to be due*/
+    public Date getDueDate() {
+        return dueDate;
+    }
 
     /**
      *
@@ -266,6 +314,16 @@ public class Task implements Serializable {
     public void setName(String name) {
         dirty = true;
         mName = name;
+    }
+
+    public void setNotes(String notes) {
+        dirty = true;
+        mNotes = notes;
+    }
+
+    public void setRemindDate(String remindDate) {
+        dirty = true;
+        this.remindDate = remindDate;
     }
 
     /**
@@ -334,10 +392,12 @@ public class Task implements Serializable {
         //Adding data which will be received from the worker
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString(Task.COLUMN_NAME, getName())
-                .putString(Section.COLUMN_SECTION_ID, getSectionID())
+                .putString(Task.COLUMN_SECTION_ID, getSectionID())
                 .putString(Task.COLUMN_TASK_ID, getTaskID())
                 .putInt(Task.COLUMN_POSITION, getPosition())
                 .putBoolean(Task.COLUMN_CHECKED, isChecked())
+                .putString(Task.COLUMN_NOTES, getNotes())
+                .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
                 .build();
 
         //Create the request
@@ -375,8 +435,6 @@ public class Task implements Serializable {
      */
     public void executeUpdateFirebase(LifecycleOwner owner){
         if(dirty) {
-
-
             Log.d(TAG, "executeFirebaseUpload(): Preparing the upload");
 
             //Setting condition
@@ -388,10 +446,12 @@ public class Task implements Serializable {
             //Adding data which will be received from the worker
             @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                     .putString(Task.COLUMN_NAME, getName())
-                    .putString(Section.COLUMN_SECTION_ID, getSectionID())
+                    .putString(Task.COLUMN_SECTION_ID, getSectionID())
                     .putString(Task.COLUMN_TASK_ID, getTaskID())
                     .putInt(Task.COLUMN_POSITION, getPosition())
                     .putBoolean(Task.COLUMN_CHECKED, isChecked())
+                    .putString(Task.COLUMN_NOTES, getNotes())
+                    .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
                     .build();
 
             //Create the request
@@ -407,13 +467,17 @@ public class Task implements Serializable {
 
             Log.d(TAG, "executeFirebaseUpload(): Put in queue");
 
-            WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
-                    .observe(owner, new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(WorkInfo workInfo) {
-                            Log.d(TAG, "Task upload state: " + workInfo.getState());
-                        }
-                    });
+            if(owner != null) {
+
+
+                WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
+                        .observe(owner, new Observer<WorkInfo>() {
+                            @Override
+                            public void onChanged(WorkInfo workInfo) {
+                                Log.d(TAG, "Task Delete state: " + workInfo.getState());
+                            }
+                        });
+            }
         }
     }
 
@@ -453,18 +517,58 @@ public class Task implements Serializable {
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Put in queue");
 
+        if(owner != null) {
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(deleteTask.getId())
-                .observe(owner, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        Log.d(TAG, "Task Delete state: " + workInfo.getState());
-                    }
-                });
+
+            WorkManager.getInstance().getWorkInfoByIdLiveData(deleteTask.getId())
+                    .observe(owner, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            Log.d(TAG, "Task Delete state: " + workInfo.getState());
+                        }
+                    });
+        }
 
 
     }
 
+    /**
+     *
+     * This is override to compare between 2 objects
+     * this case in checks the variables of this object against
+     * the one in the parameter
+     *
+     * @param obj The object we comparing with
+     * @return return true if the variables match this object
+     */
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        Task task = (Task) obj;
+
+        //Test
+//        boolean isTask = this.mTaskID.equals(task.getTaskID());
+//        boolean isNotes =  (this.mNotes.equals(task.getNotes()) || task.mNotes == null);
+//        boolean hasChecked = this.isChecked() == task.isChecked();
+//        boolean isName = this.getName().equals(task.getName());
+//        boolean isRemindDate =  this.getRemindDate().equals(task.getRemindDate());
+
+        boolean sameNotes = false;
+
+        if(task != null){
+            if(task.mNotes != null){
+                sameNotes = this.mNotes.equals(task.getNotes());
+            }
+            boolean isSame = this.mTaskID.equals(task.getTaskID()) &&
+                    sameNotes &&
+                    this.isChecked() == task.isChecked() &&
+                    this.getName().equals(task.getName()) &&
+                    this.getRemindDate().equals(task.getRemindDate());
+            return (isSame);
+        }else{
+            return false;
+        }
+    }
 
     @NonNull
     @Override

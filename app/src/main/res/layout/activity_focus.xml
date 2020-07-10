@@ -2,15 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
+    android:background="#CAF4F4"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    android:background="#CAF4F4"
     android:orientation="vertical"
     tools:context=".FocusActivity">
+
 
     <ImageButton
         android:id="@+id/history"
@@ -18,209 +20,148 @@
         android:layout_height="30dp"
         android:layout_gravity="end|top"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="30dp"
         android:background="@drawable/icon_history"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.881"
-        app:layout_constraintStart_toEndOf="@+id/menu"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="72dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:stateListAnimator="@null"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+    <TextView
+        android:id="@+id/displayText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="What are you focusing today?"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="100dp"
+        android:stateListAnimator="@null"
+        android:translationY="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayText"
+        app:srcCompat="@drawable/circle"
+        tools:ignore="UnusedAttribute" />
+
+    <ImageView
+        android:id="@+id/assistant"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="100dp"
+        android:stateListAnimator="@null"
+        android:translationY="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayText"
+        app:srcCompat="@drawable/focus_ast"
+        tools:ignore="UnusedAttribute" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
         <TextView
-            android:id="@+id/diplayText"
+            android:id="@+id/Mins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="What are you focusing today?"
+            android:includeFontPadding="false"
+            android:text="@string/timer_ground"
             android:textColor="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+            android:textSize="72sp" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="11dp"
-            android:stateListAnimator="@null"
-            android:translationY="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/diplayText"
-            app:srcCompat="@drawable/circle"
-            tools:ignore="UnusedAttribute" />
-
-        <ImageView
-            android:id="@+id/assistant"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="11dp"
-            android:stateListAnimator="@null"
-            android:translationY="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/diplayText"
-            app:srcCompat="@drawable/focus_ast"
-            tools:ignore="UnusedAttribute" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/semicolon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2">
-
-            <TextView
-                android:id="@+id/mins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
-                android:includeFontPadding="false"
-                android:text="@string/timer_ground"
-                android:textColor="#000000"
-                android:textSize="72sp" />
-
-            <TextView
-                android:id="@+id/semicolon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
-                android:includeFontPadding="false"
-                android:text="@string/timer_center"
-                android:textColor="#000000"
-                android:textSize="72sp" />
-
-            <TextView
-                android:id="@+id/secs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
-                android:includeFontPadding="false"
-                android:text="@string/timer_ground"
-                android:textColor="#000000"
-                android:textSize="72sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:rotation="180">
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="*">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="76dp">
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-
-
-            </TableLayout>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/start"
-            android:layout_width="137dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:background="#FFF2CC"
             android:fontFamily="@font/montserrat_regular"
-            android:text="@string/start"
-            android:translationY="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/minDown" />
+            android:includeFontPadding="false"
+            android:text="@string/timer_center"
+            android:textColor="#000000"
+            android:textSize="72sp" />
 
-        <ImageView
-            android:id="@+id/secDown"
+        <TextView
+            android:id="@+id/secs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:rotation="180"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.386"
-            app:layout_constraintStart_toEndOf="@+id/minDown"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-            app:srcCompat="@drawable/arrow_up" />
+            android:fontFamily="@font/montserrat_regular"
+            android:includeFontPadding="false"
+            android:text="@string/timer_ground"
+            android:textColor="#000000"
+            android:textSize="72sp" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/secUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.38"
-            app:layout_constraintStart_toEndOf="@+id/minUp"
-            app:srcCompat="@drawable/arrow_up" />
 
-        <ImageView
-            android:id="@+id/minUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="138dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/arrow_up" />
+    <ImageView
+        android:id="@+id/secDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-10dp"
+        android:rotation="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.386"
+        app:layout_constraintStart_toEndOf="@+id/minDown"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:srcCompat="@drawable/arrow_up" />
 
-        <ImageView
-            android:id="@+id/minDown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="138dp"
-            android:rotation="180"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-            app:srcCompat="@drawable/arrow_up" />
+    <ImageView
+        android:id="@+id/secUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.38"
+        app:layout_constraintStart_toEndOf="@+id/minUp"
+        app:srcCompat="@drawable/arrow_up" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/minUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="125dp"
+        android:layout_marginBottom="-10dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/arrow_up" />
+
+    <ImageView
+        android:id="@+id/minDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="-10dp"
+        android:rotation="180"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:srcCompat="@drawable/arrow_up" />
 
     <EditText
         android:id="@+id/taskInput"
@@ -232,10 +173,10 @@
         android:background="#FFF2CC"
         android:clickable="true"
         android:cursorVisible="true"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
         android:elevation="4dp"
         android:ems="10"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:fontFamily="@font/montserrat_regular"
         android:hint="@string/INPUT_TASK"
         android:inputType="textPersonName"
@@ -264,21 +205,44 @@
 
     </ImageButton>
 
+    <Button
+        android:id="@+id/start"
+        android:layout_width="137dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:background="#FFF2CC"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/start"
+        android:translationY="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minDown" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavViewBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
-
-
         android:background="#FFFFFF"
+
+        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
+        app:labelVisibilityMode="unlabeled"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav"
-        />
+        app:menu="@menu/bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

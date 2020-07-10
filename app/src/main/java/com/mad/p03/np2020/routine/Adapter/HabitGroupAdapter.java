@@ -8,8 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+<<<<<<< HEAD
 import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
 import com.mad.p03.np2020.routine.models.HabitGroup;
+=======
+import com.mad.p03.np2020.routine.models.HabitGroup;
+import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
+>>>>>>> master
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder;
 

@@ -15,23 +15,36 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+=======
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
+=======
+import com.mad.p03.np2020.routine.R;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 import com.mad.p03.np2020.routine.R;
+=======
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 
 
 import java.text.SimpleDateFormat;
@@ -60,6 +73,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     EditText mEdTask;
     List<Task> mTaskList;
 
+
     /**
      *
      * This is used to get the ID of for the view and initialize the recycler
@@ -75,9 +89,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         setContentView(R.layout.activity_task);
         Log.d(TAG, "Creating GUI");
 
-        //To set to Full screen
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
         //Find the id
         mConstraintLayout = findViewById(R.id.taskLayout);
@@ -88,8 +99,23 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         mSection = (Section) getIntent().getSerializableExtra("section");
         Log.d(TAG, "onCreate(): " + mSection.toString());
 
-        //Find all the date from SQLite
-        mTaskList = mSection.getTaskList(this);
+
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
+=======
+        //init of the recycler view
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+
+
+        //Find the id
+        mTxtListName = findViewById(R.id.edSectioName);
+        mConstraintLayout = findViewById(R.id.taskLayout);
+        mEdTask = findViewById(R.id.edTask);
+
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 
 
         //Set to listen for the editor
@@ -131,11 +157,34 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         super.onStart();
         Log.d(TAG, "GUI ready");
 
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
         startUpUI();
+=======
+
+        //Find all the date from SQLite
+        mTaskList = mSection.getTaskList(this);
+
+        //Adding the adapter
+        mTaskAdapter = new TaskAdapter(mTaskList, this);
+        mRecyclerView.setAdapter(mTaskAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        mTxtListName.setText(mSection.getName());
+        mConstraintLayout.setBackgroundColor(mSection.getBackgroundColor());
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 
         initRecyclerView();
 
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
 
+=======
+        //Setting up touchhelper
+        ItemTouchHelper.Callback callback = new MyTaskTouchHelper(mTaskAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/TaskActivity.java
     }
 
     /**
@@ -146,6 +195,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         super.onResume();
         Log.d(TAG, "GUI in the foreground and interactive");
     }
+
+
 
     /**
      *
@@ -160,10 +211,9 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
             mTaskList.get(i).setPosition(i);
             Task task = mTaskList.get(i);
             taskDBHelper.update(task.getTaskID(),task.getPosition());
-            task.executeUpdateFirebase(this);
+
 
         }
-
 
     }
 
@@ -265,6 +315,28 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
                 break;
             }
         }
+    }
+
+    @Override
+    public void onDataUpdate(Object object) {
+
+        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+        Task task = (Task) object;
+
+        for (int position = 0; position < mTaskList.size(); position++) {
+
+
+            if(mTaskList.get(position).getTaskID().equals(task.getTaskID())){
+
+                mTaskList.remove(position);
+                mTaskList.add(position, task);
+
+                mTaskAdapter.notifyItemChanged(position);
+                break;
+            }
+        }
+
+
     }
 
 

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  *
- * Model used to manage the section
+ * This created to handle the Focus Data in SQLiteDatabase
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020
@@ -86,6 +86,7 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         cv.put(Focus.COLUMN_TASK_DATE, focus.getmDateTime());
 
         long insert = db.insert(Focus.FOCUS_TABLE, null, cv); //if insert is -1 means fail
+        db.close();
         if (insert == -1) return false;
         else return true;
     }
@@ -106,9 +107,11 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         Cursor cursor = db.rawQuery(queryString, null);
 
         if(cursor.moveToFirst()){
+            db.close();
             return true;
         }
         else{
+            db.close();
             return false;
         }
     }
@@ -181,9 +184,11 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         try (Cursor cursor = mDatabase.rawQuery(query, null)) {
             if(cursor!=null) {
                 if(cursor.getCount()>0) {
+                    mDatabase.close();
                     return true;
                 }
             }
+            mDatabase.close();
             return false;
         }
     }

@@ -4,10 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
+    android:clipChildren="false"
     android:layout_height="match_parent"
     tools:context=".Task.TaskActivity">
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> master
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,6 +34,7 @@
             android:background="@color/superiorityBlue"
             >
 
+<<<<<<< HEAD
 
 
             <LinearLayout
@@ -37,12 +44,21 @@
                 android:weightSum="1"
                 >
 
+=======
+        <TextView
+            android:id="@+id/edSectioName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="16dp"
+>>>>>>> master
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
 
+<<<<<<< HEAD
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/holder"
                     android:padding="20dp"
@@ -66,6 +82,21 @@
                     app:srcCompat="@drawable/account"
                      />
             </LinearLayout>
+=======
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+
+            android:text="@string/holder"
+
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+>>>>>>> master
 
 
         </androidx.appcompat.widget.Toolbar>
@@ -203,6 +234,7 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

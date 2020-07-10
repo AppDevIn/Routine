@@ -16,8 +16,13 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.gson.Gson;
+<<<<<<< HEAD
 import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
 import com.mad.p03.np2020.routine.models.Habit;
+=======
+import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
+>>>>>>> master
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
@@ -157,9 +162,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         }
 
         if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_tick); // replace the add button as a tick button
+            holder.addBtn.setImageResource(R.drawable.habit_tick_white); // replace the add button as a tick button
         }else{ // if habit count < habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_add); // set the add button
+            holder.addBtn.setImageResource(R.drawable.habit_add_white); // set the add button
         }
 
     }

@@ -8,7 +8,11 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/models/Section.java
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
+=======
+import com.google.firebase.database.DataSnapshot;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/models/Section.java
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.Home.models.UploadSectionWorker;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
@@ -114,6 +118,11 @@ public class Section implements Serializable {
     }
 
 
+    /**
+     * Create the section object from a json object
+     * @param json The json you want to convert to object
+     * @return This will return the section object
+     */
     public static Section fromJSON(String json){
 
         int color = 0;
@@ -147,6 +156,32 @@ public class Section implements Serializable {
 
     }
 
+    /**
+     * Create a object from the DatasnapShot from
+     * firebase
+     * @param snapshot The snap you want to convert to object
+     * @return This will return the section object
+     */
+    public static Section fromDataSnapShot(DataSnapshot snapshot){
+        
+        
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String name = snapshot.child("name").getValue(String.class);
+        int icon = snapshot.child("bmiIcon").getValue(Integer.class) == null ? 0 : snapshot.child("bmiIcon").getValue(Integer.class);
+        int color = snapshot.child("backgroundColor").getValue(Integer.class) == null ? 0 : snapshot.child("backgroundColor").getValue(Integer.class);
+        String id = snapshot.child("id").getValue(String.class);
+
+        return new Section(name, color, icon, id, 0, UID);
+
+
+
+    }
+
+    /**
+     * Create object from cursor from SQLite
+     * @param cursor The cursor you want to convert to object
+     * @return This will return the section
+     */
     public static Section fromCursor(Cursor cursor){
 
         return new Section(
@@ -182,6 +217,10 @@ public class Section implements Serializable {
     /**@return int This return the position the section arranged in the recycler view*/
     public int getPosition() {
         return position;
+    }
+    /**@return String This return the UID of the user */
+    public String getUID() {
+        return mUID;
     }
 
     /**
@@ -220,6 +259,8 @@ public class Section implements Serializable {
 
         SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
         sectionDBHelper.delete(getID());
+
+        
     }
 
     /**

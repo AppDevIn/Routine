@@ -1,4 +1,9 @@
 package com.mad.p03.np2020.routine.Task.model;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Task/model/MyTaskTouchHelper.java
+=======
+
+import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Task/model/MyTaskTouchHelper.java
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

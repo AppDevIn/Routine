@@ -11,6 +11,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Register/models/RegisterFirebaseUser.java
+=======
+import com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Register/models/RegisterFirebaseUser.java
 
 import androidx.annotation.NonNull;
 

@@ -37,17 +37,28 @@ import com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter;
 import com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.LoginActivity;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
+=======
+import com.mad.p03.np2020.routine.LoginActivity;
+import com.mad.p03.np2020.routine.NavBarHelper;
+import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.models.Section;
+import com.mad.p03.np2020.routine.models.User;
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import java.text.SimpleDateFormat;
 import java.util.Date;
+=======
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java
 import java.util.List;
 
 
@@ -106,7 +117,10 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
 
+        if(mUser != null){
+            mUser.getAllSectionAndTask();
 
+        }
 
         try {
             mUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -169,9 +183,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: Done Running");
-                            Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onComplete(): UID: " + mUID);
+//                            Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(Home.this, "Never subscribe yet", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onComplete(): Never Subscribe yet");
+//                            Toast.makeText(Home.this, "Never subscribe yet", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -296,6 +312,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         }
 
 
+
     }
 
     /**
@@ -341,6 +358,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         }
     }
 
+    @Override
+    public void onDataUpdate(Object object) {
+
+
+    }
 
 
     /**

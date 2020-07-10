@@ -14,7 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+<<<<<<< HEAD
 public class MyCheckViewHolder  extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
+=======
+public class MyCheckViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
+>>>>>>> master
 
 
     public TextView mListName;

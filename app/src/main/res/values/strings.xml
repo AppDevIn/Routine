@@ -45,7 +45,8 @@
     <string name="NotificationDescription">Notification Icon</string>
     <string name="ArrowDescription">Arrow Buttons</string>
     <string name="SetNotification"><b>Set a time</b></string>
-    <string name="SetTimer">Set Timer</string>
+    <string name="SetTimer">Set Notification</string>
+    <string name="SelectDate">Select a date</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -55,7 +56,8 @@
 
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_focus_history">My Focus History</string>
+    <string name="title_focus_achievement">My Achievement</string>
     <string name="logo_description">Routine Logo</string>
     <string name="dateFormat">DD/MM/YYYY</string>
     <string name="back">Back</string>

@@ -8,8 +8,11 @@ import android.util.Log;
 import com.mad.p03.np2020.routine.Card.models.DeleteCheckWorker;
 import com.mad.p03.np2020.routine.Card.models.UploadCheckWorker;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
+<<<<<<< HEAD
 import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
+=======
+>>>>>>> master
 
 import java.util.UUID;
 

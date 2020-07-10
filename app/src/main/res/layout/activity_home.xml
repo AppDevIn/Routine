@@ -157,6 +157,10 @@
         android:text="@string/homeTime"
         android:textColor="@color/black"
 
+<<<<<<< HEAD
+=======
+        app:backgroundTint="@color/colorHistory"
+>>>>>>> master
 
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

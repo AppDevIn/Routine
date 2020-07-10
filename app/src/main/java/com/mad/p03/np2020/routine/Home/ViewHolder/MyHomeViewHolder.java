@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+<<<<<<< HEAD:app/src/main/java/com/mad/p03/np2020/routine/Home/ViewHolder/MyHomeViewHolder.java
 
 import com.mad.p03.np2020.routine.Card.CardActivity;
+=======
+>>>>>>> master:app/src/main/java/com/mad/p03/np2020/routine/Home/ViewHolder/MyHomeViewHolder.java
 import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
 import com.mad.p03.np2020.routine.R;
 import androidx.annotation.NonNull;

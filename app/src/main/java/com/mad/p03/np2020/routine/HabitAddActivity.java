@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -40,7 +41,16 @@ import java.util.Date;
 
 import static java.lang.String.format;
 
-public class AddHabitActivity extends AppCompatActivity {
+/**
+ *
+ * Habit activity used to manage the add habit layout section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
+
+
+public class HabitAddActivity extends AppCompatActivity {
 
     private static final String TAG = "AddHabitActivity" ;
     private static final String SHARED_PREFS = "sharedPrefs";
@@ -52,6 +62,8 @@ public class AddHabitActivity extends AppCompatActivity {
     private TextView group_indicate_text;
     private ImageButton add_btn;
     private ImageButton minus_btn;
+    private Button buttonClose;
+    private Button buttonOk;
 
     // initialise the dateFormat
     private DateFormat dateFormat;
@@ -62,19 +74,30 @@ public class AddHabitActivity extends AppCompatActivity {
     //User
     private User user;
 
-    private HabitReminder reminder;
-
-    private HabitGroup group;
-
+    // Period and Color
     private int[] period;
     private String[] color;
 
+    // Habit
     private Habit habit;
 
+    /**
+     *
+     * This method will be called when the start of the HabitActivity.
+     * This will initialise the widgets and set onClickListener on them.
+     *
+     * @param savedInstanceState This parameter refers to the saved state of the bundle object.
+     *
+     * */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_habit);
+
+        // set the layout in full screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // initialise widgets
         menu_count = findViewById(R.id.menu_count);
@@ -85,6 +108,8 @@ public class AddHabitActivity extends AppCompatActivity {
         group_indicate_text = findViewById(R.id.group_indicate_text);
         add_btn = findViewById(R.id.menu_add_count);
         minus_btn = findViewById(R.id.menu_minus_count);
+        buttonClose = findViewById(R.id.habit_close);
+        buttonOk = findViewById(R.id.create_habit);
 
         // initialise dateFormat
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -92,6 +117,7 @@ public class AddHabitActivity extends AppCompatActivity {
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
 
+        // initialise user
         user = new User();
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -99,12 +125,11 @@ public class AddHabitActivity extends AppCompatActivity {
         period = new int[1]; // this is used to store the chosen period
         populatePeriodBtn(this, period, period_text);
 
-
         // initialise color section
         color = new String[1]; // this is used to store the chosen color
         populateColorBtn(this,color);
 
-
+        // This is to get the habit object from intent bundle and initialise the period and color section
         Intent intent = getIntent();
         if (intent.hasExtra("recorded_habit")){
             habit = deserializeFromJson(intent.getExtras().getString("recorded_habit"));
@@ -145,40 +170,49 @@ public class AddHabitActivity extends AppCompatActivity {
             }
         });
 
+        // set onClickListener on the group indicate text
         group_indicate_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(AddHabitActivity.this, HabitGroupActivity.class);
+                // go the habit group activity
+                Intent activityName = new Intent(HabitAddActivity.this, HabitGroupActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(recordCurrentHabit()));
+                extras.putString("action", "add");
                 activityName.putExtras(extras);
                 startActivity(activityName);
+                finish();
             }
         });
 
+        // set onClickListener on the habit reminder indicate text
         habit_reminder_indicate_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(AddHabitActivity.this, HabitReminderActivity.class);
+                // got to habit reminder activity
+                Intent activityName = new Intent(HabitAddActivity.this, HabitReminderActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(recordCurrentHabit()));
+                extras.putString("action", "add");
                 activityName.putExtras(extras);
                 startActivity(activityName);
+                finish();
             }
         });
 
         // set onClickListener on close button
-        Button buttonClose = findViewById(R.id.habit_close);
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(AddHabitActivity.this, HabitActivity.class);
+                // go back to habit activity
+                Intent activityName = new Intent(HabitAddActivity.this, HabitActivity.class);
+                activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
+                finish();
             }
         });
 
         // set onClickListener on create button
-        Button buttonOk = findViewById(R.id.create_habit);
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,7 +247,6 @@ public class AddHabitActivity extends AppCompatActivity {
                     }
                 }
 
-                Log.d(TAG, "onClick: "+hr.getMessage());
                 // create a habit object
                 Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
 
@@ -227,11 +260,14 @@ public class AddHabitActivity extends AppCompatActivity {
 
                     Log.d(TAG, "onClick: "+habit.getHabitID());
                     // toast a message to alert the habit has been created
-                    Toast.makeText(AddHabitActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HabitAddActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                 }
 
-                Intent activityName = new Intent(AddHabitActivity.this, HabitActivity.class);
+
+                Intent activityName = new Intent(HabitAddActivity.this, HabitActivity.class);
+                activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
+                finish();
 
             }
         });
@@ -240,6 +276,18 @@ public class AddHabitActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
+    }
+
+    /**
+     *
+     * This method is used to record the current habit based on the input field
+     *
+     * @return Habit This will return the habit
+     * */
     public Habit recordCurrentHabit(){
         String name = habit_name.getText().toString(); // retrieve the title of the habit from the input field
         int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
@@ -260,6 +308,11 @@ public class AddHabitActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is used to set the text field based on the habit
+     *
+     * @param habit This is to get the habit object
+     * */
     public void setTextField(Habit habit){
         if (!habit.getTitle().equals("")){
             habit_name.setText(habit.getTitle());
@@ -272,7 +325,7 @@ public class AddHabitActivity extends AppCompatActivity {
         }
 
         if (habit.getHabitReminder() != null){
-            habit_reminder_indicate_text.setText((format("%d:%d",habit.getHabitReminder().getHours(),habit.getHabitReminder().getMinutes()))); // set the timing on the TextView
+            habit_reminder_indicate_text.setText((format("%02d:%02d",habit.getHabitReminder().getHours(),habit.getHabitReminder().getMinutes()))); // set the timing on the TextView
         }
     }
 
@@ -351,7 +404,7 @@ public class AddHabitActivity extends AppCompatActivity {
      *
      * @param period This parameter refers to the period list which indicates the chosen period
      *@param period_text This parameter refers to the period TextView in the view  */
-    public void populatePeriodBtn(final AddHabitActivity dialogView, final int[] period, final TextView period_text){
+    public void populatePeriodBtn(final HabitAddActivity dialogView, final int[] period, final TextView period_text){
         // set listener on buttons to change the color based on the user's option in period section
         for (final int i :Habit.period_buttonIDS){
             final Button btn = dialogView.findViewById(i); // find button in the view
@@ -388,7 +441,7 @@ public class AddHabitActivity extends AppCompatActivity {
      *
      * @param color This parameter refers to the color list which indicates the chosen color
      * */
-    public void populateColorBtn(final AddHabitActivity dialogView, final String[] color){
+    public void populateColorBtn(final HabitAddActivity dialogView, final String[] color){
         // set listener on buttons to change the color based on the user's option in color section
         for (final int i : Habit.color_buttonIDS){
             final Button btn = dialogView.findViewById(i);
@@ -426,7 +479,7 @@ public class AddHabitActivity extends AppCompatActivity {
      *
      * @param color This parameter refers to the color list which indicates the chosen color
      * */
-    public void habit_add_initialise_colorSection(final AddHabitActivity dialogView, final String[] color){
+    public void habit_add_initialise_colorSection(final HabitAddActivity dialogView, final String[] color){
         // initialise the color button at color section since nothing is chosen at first
         // At default, lightCoral color is chosen.
         // A black border will surround the color.
@@ -441,11 +494,10 @@ public class AddHabitActivity extends AppCompatActivity {
     /**
      *
      * This method is used to initialise the color of "daily" button at period section since nothing is chosen at first
-     *  @param dialogView This parameter refers to the view
-     *
+     * @param dialogView This parameter refers to the view
      * @param period This parameter refers to the period list which indicates the chosen period
      * */
-    public void habit_add_initialise_periodSection(final AddHabitActivity dialogView, final int[] period){
+    public void habit_add_initialise_periodSection(final HabitAddActivity dialogView, final int[] period){
         // initialise the color of "daily" button at period section since nothing is chosen at first
         // At default, "daily" period is chosen at first.
         // A grey background will surround the "daily" button.
@@ -458,7 +510,6 @@ public class AddHabitActivity extends AppCompatActivity {
      * This method is used to format text by capitalising the first text of each split text
      *
      * @param text This parameter is used to get the text
-     *
      * @return String This returns the formatted text
      * */
     public String capitalise(String text){
@@ -473,12 +524,11 @@ public class AddHabitActivity extends AppCompatActivity {
     /**
      *
      * This method is used to initialise the holder color on the color section based on the habit holder color of the habit
-     *  @param dialogView This parameter refers to the view
-     *
+     * @param dialogView This parameter refers to the view
      * @param habit This parameter refers to the habit object.
-     *@param color This parameter refers to the color list which indicates the chosen color
+     * @param color This parameter refers to the color list which indicates the chosen color
      *  */
-    public void habit_edit_initialise_colorSection(AddHabitActivity dialogView, final Habit habit, final String[] color){
+    public void habit_edit_initialise_colorSection(HabitAddActivity dialogView, final Habit habit, final String[] color){
         // initialise the holder color on the color section based on the habit holder color of the habit
         for(int i = 0; i < 4; i++){
             if (Habit.colorList[i].equals(habit.getHolder_color())){ // loop to find matched values
@@ -498,13 +548,12 @@ public class AddHabitActivity extends AppCompatActivity {
     /**
      *
      * This method is used to initialise the color of button at period section based on the habit period of the habit
-     *  @param dialogView This parameter refers to the view
-     *
+     * @param dialogView This parameter refers to the view
      * @param habit This parameter refers to the habit object.
-     *@param period This parameter refers to the period list which indicates the chosen period
-     *@param period_text This parameter refers to the period TextView in the view
+     * @param period This parameter refers to the period list which indicates the chosen period
+     * @param period_text This parameter refers to the period TextView in the view
      *   */
-    public void habit_edit_initialise_periodSection(AddHabitActivity dialogView, final Habit habit, final int[] period, final TextView period_text){
+    public void habit_edit_initialise_periodSection(HabitAddActivity dialogView, final Habit habit, final int[] period, final TextView period_text){
         // initialise the color of button at period section based on the habit period of the habit
         for(int i = 0; i < 4; i++){
             if (Habit.period_countList[i] == habit.getPeriod()){ // loop to find matches value
