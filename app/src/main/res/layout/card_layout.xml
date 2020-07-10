@@ -56,7 +56,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imgEdit"
                 android:layout_width="60dp"
                 android:layout_height="0dp"
                 android:contentDescription="@string/description_edit"

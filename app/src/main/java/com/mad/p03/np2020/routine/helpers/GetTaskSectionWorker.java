@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.background;
+package com.mad.p03.np2020.routine.helpers;
 
 import android.content.Context;
 import android.util.Log;
@@ -61,8 +61,6 @@ public class GetTaskSectionWorker extends Worker {
 
     private void listenOneTime(){
 
-
-
     }
 
     /**
@@ -70,10 +68,16 @@ public class GetTaskSectionWorker extends Worker {
      * be updated
      */
     private void startListenSection(){
+
+        //Get the database reference got section
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").
                 child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("section");
 
+        /*
+            Listen to the data change in firebase
+            This also does reads all the data again
+        */
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -81,6 +85,7 @@ public class GetTaskSectionWorker extends Worker {
 
                 String id = dataSnapshot.child("id").getValue(String.class);
 
+                //Check if it exist in the database
                 if(!mSectionDBHelper.hasID(id)) {
                     Section section = Section.fromDataSnapShot(dataSnapshot);
                     mSectionDBHelper.insertSection(section, section.getUID());
@@ -126,9 +131,15 @@ public class GetTaskSectionWorker extends Worker {
      */
     private void startListenTask(){
 
+        //Get the database reference for task
         DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("task").
                 child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+
+        /*
+            Listen to the data change in firebase
+            This also does reads all the data again
+        */
         taskRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -136,10 +147,12 @@ public class GetTaskSectionWorker extends Worker {
 
                 String id = dataSnapshot.child("taskID").getValue(String.class);
 
+                //Check if the task exist in the database
                 if(!mTaskDBHelper.hasID(id)) {
                     Task task = Task.fromDataSnapShot(dataSnapshot);
                     mTaskDBHelper.insertTask(task);
-                } else{
+                }
+                else{ //If doesn't exist it means it needs to be updated
                     Task task = Task.fromDataSnapShot(dataSnapshot);
                     Task taskDataBase = mTaskDBHelper.getTask(id);
                     if(!task.equals(taskDataBase)){
@@ -148,7 +161,6 @@ public class GetTaskSectionWorker extends Worker {
                     }
                 }
             }
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "onChildChanged(): " + dataSnapshot.getKey());
@@ -156,6 +168,7 @@ public class GetTaskSectionWorker extends Worker {
 
                 String id = dataSnapshot.child("taskID").getValue(String.class);
 
+                //If exist in the database than update
                 if(mTaskDBHelper.hasID(id)) {
                     Task task = Task.fromDataSnapShot(dataSnapshot);
                     mTaskDBHelper.update(task);
