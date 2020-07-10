@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="adjustPan">
+        android:windowSoftInputMode="adjustResize|adjustPan">
 
         <activity android:name=".CardActivity"
             android:launchMode="singleTask"

@@ -27,14 +27,14 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                app:cardBackgroundColor="#f1f1f1"
+                app:cardBackgroundColor="#F1F1F1"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
                 app:contentPaddingBottom="33dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="134dp">
 
                     <ImageButton
                         android:id="@+id/closeFragment"
@@ -53,81 +53,29 @@
 
                     <TextView
                         android:id="@+id/title"
-                        android:layout_width="231dp"
-                        android:layout_height="35dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="36dp"
                         android:layout_marginTop="52dp"
-                        android:textSize="24sp"
                         android:fontFamily="@font/montserrat_extrabold"
-                        android:text="@string/title_focus_history"
+                        android:text="@string/title_focus_achievement"
                         android:textColor="#000000"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <RelativeLayout
-                        android:id="@+id/unSuccessIndicatorLayout"
-                        android:layout_width="54dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="9dp"
-                        android:layout_marginTop="20dp"
-                        app:layout_constraintStart_toEndOf="@+id/successIndicatorLayout"
-                        app:layout_constraintTop_toBottomOf="@+id/title">
-
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignLeft="@+id/buttonLayout"
-                            android:layout_alignRight="@+id/buttonLayout"
-                            android:background="@null"
-                            android:elevation="2dp" />
-
-                        <LinearLayout
-                            android:id="@+id/buttonLayout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/rounded_button_red"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-
-                            <TextView
-                                android:id="@+id/unSuccessFocusIndicator"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:gravity="center"
-                                android:text="1"
-                                android:textColor="@color/black"
-                                android:textSize="11sp" />
-
-                            <ImageView
-                                android:id="@+id/imageView"
-                                android:layout_width="41dp"
-                                android:layout_height="21dp"
-                                app:srcCompat="@drawable/icon_sun" />
-                        </LinearLayout>
-
-
-                    </RelativeLayout>
-
                     <ImageView
-                        android:id="@+id/imageView4"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="28dp"
+                        app:srcCompat="@drawable/ic_achievement"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/title"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_history" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <RelativeLayout
                         android:id="@+id/successIndicatorLayout"
-                        android:layout_width="54dp"
+                        android:layout_width="95dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:layout_marginStart="37dp"
@@ -147,78 +95,31 @@
 
                         <LinearLayout
                             android:id="@+id/buttonLayout1"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_alignParentStart="true"
                             android:layout_marginStart="0dp"
                             android:background="@drawable/rounded_button_green"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-
-                            <TextView
-                                android:id="@+id/SuccessFocusIndicator"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:gravity="center"
-                                android:text="1"
-                                android:textColor="@color/black"
-                                android:textSize="11sp" />
 
                             <ImageView
                                 android:layout_width="41dp"
                                 android:layout_height="21dp"
                                 app:srcCompat="@drawable/icon_sun" />
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/completedHours"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="37dp"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/unSuccessIndicatorLayout">
-
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignLeft="@+id/buttonLayout2"
-                            android:layout_alignRight="@+id/buttonLayout2"
-                            android:background="@null"
-                            android:elevation="2dp"
-
-                            />
-
-                        <LinearLayout
-                            android:id="@+id/buttonLayout2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginStart="0dp"
-                            android:layout_marginTop="0dp"
-                            android:background="@drawable/rounded_button"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
 
                             <TextView
-                                android:id="@+id/totalHours"
+                                android:id="@+id/SuccessFocusIndicator"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="15dp"
                                 android:fontFamily="@font/montserrat_semibold"
                                 android:gravity="center"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
-                                android:text="Total: 20 Hrs 5 Mins 30 Secs"
+                                android:text="1 / 10"
                                 android:textColor="@color/black"
-                                android:textSize="15sp" />
+                                android:textSize="11sp" />
+
                         </LinearLayout>
 
                     </RelativeLayout>

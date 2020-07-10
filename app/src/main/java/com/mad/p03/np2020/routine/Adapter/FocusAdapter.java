@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -27,10 +28,11 @@ import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.database.FocusDBHelper;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
- *
  * Focus Adapter to handle the recyclerView Focus Activity
  *
  * @author Lee Quan Sheng
@@ -48,8 +50,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     /**
      * Focus Adapter
      *
-     * @param user This parameter is used to set the user of the section
-     * @param context This parameter is used to set the context of the section
+     * @param user          This parameter is used to set the user of the section
+     * @param context       This parameter is used to set the context of the section
      * @param focusDBHelper This parameter is used to set the focus database of the section
      */
     public FocusAdapter(User user, Context context, FocusDBHelper focusDBHelper) {
@@ -64,7 +66,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     /**
      * Focus View Holder
      *
-     * @param parent This parameter is used to set the ViewGroup of this section
+     * @param parent   This parameter is used to set the ViewGroup of this section
      * @param viewType This parameter is used to set the viewType of this section
      */
     @NonNull
@@ -77,27 +79,31 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     /**
      * Notify Item changed if user remove
      *
-     * @param positon This parameter is used to set the position of the section
+     * @param positon         This parameter is used to set the position of the section
      * @param focusViewHolder This parameter is used to set the FocusViewHolder of the section
      */
     @Override
     public void onBindViewHolder(@NonNull FocusViewHolder holder, int position) {
-        holder.duration.setText(focusList.get(position).getmDuration());
+        List<Integer> hrMinSec = ConvertSecondsToTime(Integer.parseInt(focusList.get(position).getmDuration()));
+
+        holder.duration.setText(String.format(Locale.US, "%dHr %dMin", hrMinSec.get(0), hrMinSec.get(1)));
         holder.Task.setText(focusList.get(position).getmTask());
         holder.date.setText(focusList.get(position).getmDateTime());
         boolean completed = focusList.get(position).getmCompletion().equals("True");
         Log.v(TAG, focusList.get(position).getmCompletion());
         if (completed) {
             holder.iconComplete.setImageResource(R.drawable.ic_tick);
+            holder.constraintLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.focus_image_background_success));
         } else {
             holder.iconComplete.setImageResource(R.drawable.ic_cross);
+            holder.constraintLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.focus_image_background_unsuccess));
         }
     }
 
     /**
      * Notify Item changed if user remove
      *
-     * @param positon This parameter is used to set the position of the section
+     * @param positon         This parameter is used to set the position of the section
      * @param focusViewHolder This parameter is used to set the FocusViewHolder of the section
      */
     public void remove(int position, Focus focusViewHolder) {
@@ -109,19 +115,28 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
     /**
      * Notify Item changed if user delete or add data
-     *
      */
-    public void notifiyItemChange(){
+    public void notifiyItemChange() {
         focusList = user.getmFocusList();
         this.notifyDataSetChanged();
         Log.v(TAG, "Data is changed from other server");
     }
 
+    public List<Integer> ConvertSecondsToTime(int TotalInSeconds) {
+        if (TotalInSeconds != 0) {
+            int hours = (TotalInSeconds) / 3600;
+            int minutes = ((TotalInSeconds) % 3600) / 60;
+            int seconds = (TotalInSeconds) % 60;
+            return Arrays.asList(hours, minutes, seconds);
+
+        }
+        return Arrays.asList(0, 0, 0);
+    }
+
     /**
      * Listen to firebase data change to update views on the recyclerView
-     *
      */
-    private void eventListener(){
+    private void eventListener() {
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
         myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
             @Override
@@ -149,8 +164,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     /**
      * Get Item Position
      *
+     * @return Focus To return the Focus Data from the list
      * @Param int To used to indicate the positon of the item inside the list based on its position
-     * @return  Focus To return the Focus Data from the list
      */
     public Focus getItems(int position) {
         return focusList.get(position);
@@ -158,8 +173,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
     /**
      * Deletes data from Firebase
-     * @Param focus Passed in the object that is needed to be deleted from firebase
      *
+     * @Param focus Passed in the object that is needed to be deleted from firebase
      */
     public void deleteDataFirebase(Focus focus) {
         Log.i("Firebase", "Deleting Database entry");
@@ -185,6 +200,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
 
     /**
      * Serialize a single object.
+     *
      * @return String this returns the custom object class as a string
      * @Param myClass passing in the custom object to be converted by Gson to string
      */

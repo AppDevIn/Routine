@@ -1,13 +1,11 @@
 package com.mad.p03.np2020.routine.Fragment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -19,11 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
-import com.mad.p03.np2020.routine.Class.ItemDecoration;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
 import com.mad.p03.np2020.routine.database.FocusDBHelper;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -42,12 +42,11 @@ public class HistoryFragment extends Fragment {
 
     private ImageButton buttonFragment;
     private ImageView nothing;
-    private TextView textFragment;
+    private TextView textFragment, sIndicator, usIndicator, totalHours;
     private OnFragmentInteractionListener mListener;
 
     private static final int VERTICAL_ITEM_SPACE = 30; //Spacing length
     private final String TAG = "Focus";
-    private TextView completion;
 
     private FocusDBHelper focusDBHelper;
     private User user;
@@ -120,9 +119,11 @@ public class HistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_historyfocus, container, false);
         buttonFragment = view.findViewById(R.id.closeFragment);
-        textFragment = view.findViewById(R.id.text_cool);
-        completion = view.findViewById(R.id.NumberOfCompletion);
+        textFragment = view.findViewById(R.id.title);
+        usIndicator = view.findViewById(R.id.unSuccessFocusIndicator);
+        sIndicator = view.findViewById(R.id.SuccessFocusIndicator);
         nothing = view.findViewById(R.id.nothing);
+        totalHours = view.findViewById(R.id.totalHours);
 
         //RecyclerView for display history
         //Recycler View
@@ -130,15 +131,15 @@ public class HistoryFragment extends Fragment {
 
         //recycler adapter
         FocusAdapter focusAdapter = new FocusAdapter(user, getActivity(), focusDBHelper);
-        Drawable dividerDrawable = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.VERTICAL, false); //Declare layoutManager
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getActivity(), 2); //Declare layoutManager
 
-        recyclerView.addItemDecoration(new ItemDecoration(VERTICAL_ITEM_SPACE, dividerDrawable)); //Add Custom Spacing
+        recyclerView.addItemDecoration(new DividerItemDecoration(15)); //Add Custom Spacing
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(focusAdapter);
 
         initialisation();
+
         buttonFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +154,7 @@ public class HistoryFragment extends Fragment {
      * Used for initialization of history Fragment
      **/
     private void initialisation() {
-        textFragment.setText("History");
+        textFragment.setText("My Focus History");
         updateTask();
     }
 
@@ -177,7 +178,12 @@ public class HistoryFragment extends Fragment {
      * Method to update task number on the fragment
      * */
     private void updateTask() {
-        completion.setText(String.format(Locale.getDefault(),"You have completed\n%d Task", user.getmFocusList().size()));
+        usIndicator.setText(String.valueOf(user.getmUnsuccessFocusList().size()));
+        sIndicator.setText(String.valueOf(user.getmSuccessFocusList().size()));
+        int totalSeconds = user.getTotalHours();
+        List<Integer> hrMinSec = ConvertSecondsToTime(totalSeconds);
+        totalHours.setText(String.format(Locale.US, "Total: %dHr %dMin %dSec", hrMinSec.get(0), hrMinSec.get(1), hrMinSec.get(2)));
+
         if(user.getmFocusList().size() == 0){
             nothing.setVisibility(View.VISIBLE);
         }
@@ -199,6 +205,17 @@ public class HistoryFragment extends Fragment {
      * */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction();
+    }
+
+    public List<Integer> ConvertSecondsToTime(int TotalInSeconds){
+        if(TotalInSeconds != 0) {
+            int hours = (TotalInSeconds) / 3600;
+            int minutes = ((TotalInSeconds) % 3600) / 60;
+            int seconds = (TotalInSeconds) % 60;
+            return Arrays.asList(hours, minutes, seconds);
+
+        }
+        return Arrays.asList(0, 0, 0);
     }
 
 

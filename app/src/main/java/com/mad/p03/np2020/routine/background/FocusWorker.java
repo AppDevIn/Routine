@@ -61,7 +61,7 @@ public class FocusWorker extends Worker {
         focusData = deserializeFromJson(getInputData().getString("focusData" + ""));
 
         //Referencing Data
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("focusData").child(UID);
 
         if ((REFERENCE_STATUS)) {
             deleteToFirebase();
@@ -79,10 +79,12 @@ public class FocusWorker extends Worker {
     private void writeToFirebase() {
         //Write Data to firebase
         Log.i("Focus", "Focus Data being uploaded");
-        mDatabase.child("FocusData").child(focusData.getFbID()).setValue(focusData).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDatabase.child(focusData.getFbID()).setValue(focusData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                result = mDatabase.child("FocusData").child(focusData.getFbID()).setValue(focusData);
+                result = mDatabase.child(focusData.getFbID()).setValue(focusData);
+                Log.i("Focus", String.valueOf(result));
+
             }
         });;
     }
@@ -93,10 +95,10 @@ public class FocusWorker extends Worker {
      * */
     private void deleteToFirebase() {
         Log.i("Focus", "Focus Data being deleted with the uid of " + focusData.getFbID());
-        mDatabase.child("FocusData").child(focusData.getFbID()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDatabase.child(focusData.getFbID()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                result = mDatabase.child("FocusData").child(focusData.getFbID()).removeValue();
+                result = mDatabase.child(focusData.getFbID()).removeValue();
             }
         });
     }

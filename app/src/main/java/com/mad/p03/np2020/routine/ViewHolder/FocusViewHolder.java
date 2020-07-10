@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
@@ -25,9 +26,10 @@ import com.mad.p03.np2020.routine.R;
  */
 public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView iconComplete;
-    public TextView Task, date, duration;
+    public TextView Task, date, duration, sIndicator, usIndicator;
     public FocusAdapter adapter;
     public ViewGroup parent;
+    public ConstraintLayout constraintLayout;
 
     /**
      *
@@ -46,6 +48,7 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
         Task = itemView.findViewById(R.id.taskView);
         date = itemView.findViewById(R.id.dateView);
         duration = itemView.findViewById(R.id.duration);
+        constraintLayout = itemView.findViewById(R.id.relativeLayout);
 
         this.adapter = adapter;
         this.parent = parent;
