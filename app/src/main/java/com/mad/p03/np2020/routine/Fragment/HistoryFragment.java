@@ -17,10 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
-import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
-import com.mad.p03.np2020.routine.database.FocusDBHelper;
+import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
+import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
 import java.util.Arrays;
 import java.util.List;

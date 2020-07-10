@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="544dp"
-    tools:context=".Fragment.NotesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Card.Fragments.NotesFragment">
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp">
+        app:cardElevation="4dp"
+        android:layout_margin="10dp">
 
-        <EditText
-            android:id="@+id/notes"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#50c5c5c5"
-            android:cursorVisible="true"
-            android:gravity="top|left"
-            android:hint="@string/NotesHint"
-            android:inputType="textMultiLine"
-            android:minLines="7"
+            android:padding="10dp"
+            tools:ignore="UselessParent">
 
-            android:padding="3dp"
-            android:scrollbars="vertical" />
+            <EditText
+                android:id="@+id/notes"
+                android:padding="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textMultiLine"
+                android:minLines="7"
+                android:hint="@string/NotesHint"
+                android:gravity="top|left"
+                android:cursorVisible="true"
+                android:scrollbars="vertical"
 
-    </RelativeLayout>
+                android:background="@color/white"
+                android:autofillHints="" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
 
 </FrameLayout>

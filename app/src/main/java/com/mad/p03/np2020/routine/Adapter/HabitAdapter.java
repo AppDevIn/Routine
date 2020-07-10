@@ -16,12 +16,12 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Interface.OnItemClickListener;
+import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
+import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.database.HabitDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 
 /**
  *

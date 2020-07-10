@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
-    android:background="@color/background">
+    tools:context=".Home.Home"
+    android:background="@color/colorPrimary">
+
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -23,10 +25,10 @@
         android:layout_marginEnd="191dp"
 
         android:fontFamily="@font/montserrat_regular"
-        android:textColor="@color/black"
-
         android:text="@string/homePageHeading"
+
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="25sp"
 
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -34,6 +36,73 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/emptyUI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintVertical_bias="0.04000002"
+        android:padding="20dp"
+        android:elevation="8dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintVertical_bias="0.04000002"
+            android:padding="20dp"
+            >
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/todoIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/white"
+                app:borderWidth="0dp"
+                app:fabCustomSize="70dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add_black_24dp" />
+
+            <TextView
+                android:id="@+id/listName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/montserrat_regular"
+
+                android:layout_marginTop="13dp"
+                android:text="@string/holder"
+                android:textColor="@color/black"
+
+                android:textSize="12sp"
+                android:translationZ="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/todoIcon"
+                app:layout_constraintStart_toStartOf="@+id/todoIcon"
+                app:layout_constraintTop_toBottomOf="@+id/todoIcon"
+                app:layout_constraintVertical_bias="0.01999998" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/section_grid_view"
@@ -44,16 +113,16 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:horizontalSpacing="20dp"
-        android:numColumns="2"
         android:padding="10dp"
         android:verticalSpacing="20dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:numColumns="2"
+
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintVertical_bias="0.0">
-
 
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -62,16 +131,56 @@
         android:id="@+id/imgBtnTodo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-
-        android:backgroundTint="@color/registerColor"
-
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="2dp"
+        android:backgroundTint="@color/white"
+        app:borderWidth="0dp"
+        app:fabCustomSize="35dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+    <TextView
+        android:id="@+id/subTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+        android:paddingStart="10dp"
+
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="@string/homeTime"
+        android:textColor="@color/black"
+
+
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+
+        android:fontFamily="@font/montserrat_regular"
+        android:paddingStart="10dp"
+        android:text="@string/holder"
+
+
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subTitle" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewPopUp"
@@ -79,10 +188,11 @@
         android:layout_height="208dp"
 
 
+
         app:cardCornerRadius="10dp"
         app:cardElevation="30dp"
 
-        app:layout_constraintBottom_toBottomOf="@+id/section_grid_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline"

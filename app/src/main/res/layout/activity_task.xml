@@ -8,47 +8,146 @@
     android:clipToPadding="false"
     android:clipChildren="false"
     android:layout_height="match_parent"
-    tools:context=".TaskActivity">
+    tools:context=".Task.TaskActivity">
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
-
-        <TextView
-            android:id="@+id/edSectioName"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:layout_marginTop="16dp"
-
-
-            android:fontFamily="@font/montserrat_regular"
-            android:gravity="center"
-
-            android:text="@string/holder"
-
-            android:textColor="@color/black"
-            android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:elevation="4dp"
+            android:padding="10dp"
+            android:background="@color/superiorityBlue"
+            >
 
-        <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
 
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
 
-        android:padding="10dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                >
 
-        app:layout_constraintBottom_toTopOf="@id/cdAdd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edSectioName">
 
-    </androidx.recyclerview.widget.RecyclerView>
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/holder"
+                    android:padding="20dp"
+                    android:layout_weight="0.8"
+
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                     />
+
+                <ImageView
+                    android:id="@+id/todoIcon"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+
+                    android:layout_weight="0.2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+
+                    app:srcCompat="@drawable/account"
+                     />
+            </LinearLayout>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <ViewSwitcher
+            android:id="@+id/switcher"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/cdAdd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:padding="10dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_gravity="center"
+                >
+
+
+                <ImageView
+                    android:id="@+id/nothing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+
+                    android:src="@drawable/nothing"
+
+                    />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="@string/your_tasklist_is_empty"
+                    android:textAlignment="center"
+                    android:textColor="#929292"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+
+
+        </ViewSwitcher>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cdAdd"

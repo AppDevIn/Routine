@@ -31,8 +31,6 @@
 
 
 
-<!--        android:imeOptions="actionDone"-->
-<!--        android:inputType="text"-->
             <TextView
                 android:id="@+id/txtListName"
                 android:layout_width="0dp"
@@ -44,8 +42,9 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:textSize="20sp"
                 android:textColor="@color/black"
-                android:text="@string/holder" android:maxLines="1"
-                android:autofillHints="" />
+
+                android:text="@string/holder"
+                />
 
 
                 </LinearLayout>
