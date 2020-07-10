@@ -18,11 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.mad.p03.np2020.routine.Class.PopUp;
-import com.mad.p03.np2020.routine.Class.Task;
+import com.mad.p03.np2020.routine.models.PopUp;
+import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.Fragment.NotesFragment;
 import com.mad.p03.np2020.routine.Fragment.StepsFragment;
-import com.mad.p03.np2020.routine.database.TaskDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
 /**
 *

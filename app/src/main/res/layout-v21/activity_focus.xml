@@ -65,7 +65,7 @@
             app:srcCompat="@drawable/focus_ast"
             tools:ignore="UnusedAttribute" />
 
-        <com.mad.p03.np2020.routine.Class.CircularProgressBar
+        <com.mad.p03.np2020.routine.models.CircularProgressBar
             android:id="@+id/custom_progressBar"
             android:layout_width="200dp"
             android:layout_height="200dp"

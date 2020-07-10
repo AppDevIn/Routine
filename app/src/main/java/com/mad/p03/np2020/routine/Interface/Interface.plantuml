@@ -4,7 +4,7 @@ title __INTERFACE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Interface {
-      interface com.mad.p03.np2020.routine.Interface.HomeItemTouchHelperAdapter {
+      interface com.mad.p03.np2020.routine.Home.Home.models.HomeItemTouchHelperAdapter {
           {abstract} + onItemClicked()
           {abstract} + onItemMove()
           {abstract} + onItemSwiped()
@@ -15,7 +15,7 @@ title __INTERFACE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Interface {
-      interface com.mad.p03.np2020.routine.Interface.MyDatabaseListener {
+      interface com.mad.p03.np2020.routine.helpers.MyDatabaseListener {
           {abstract} + onDataAdd()
           {abstract} + onDataDelete()
           {abstract} + onDataUpdate()
@@ -26,7 +26,7 @@ title __INTERFACE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Interface {
-      interface com.mad.p03.np2020.routine.Interface.OnFirebaseAuth {
+      interface com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth {
           {abstract} + OnSignUpFailure()
           {abstract} + OnSignUpSuccess()
       }
@@ -36,7 +36,7 @@ title __INTERFACE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Interface {
-      interface com.mad.p03.np2020.routine.Interface.OnItemClickListener {
+      interface com.mad.p03.np2020.routine.helpers.OnItemClickListener {
           {abstract} + onItemClick()
       }
     }
@@ -45,7 +45,7 @@ title __INTERFACE's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Interface {
-      interface com.mad.p03.np2020.routine.Interface.TaskTouchHelperAdapter {
+      interface com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter {
           {abstract} + onItemClicked()
           {abstract} + onItemMove()
           {abstract} + onItemSwiped()

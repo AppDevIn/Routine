@@ -47,7 +47,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.DeleteTaskWorker {
+      class com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker {
           + DeleteTaskWorker()
           + doWork()
       }
@@ -132,7 +132,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.RegisterFirebaseUser {
+      class com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser {
           - mActivity : Activity
           - mEmail : String
           - mPassword : String
@@ -145,7 +145,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadDataWorker {
+      class com.mad.p03.np2020.routine.Register.models.UploadDataWorker {
           + UploadDataWorker()
           + doWork()
       }
@@ -155,7 +155,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadSectionWorker {
+      class com.mad.p03.np2020.routine.Home.Home.models.UploadSectionWorker {
           + UploadSectionWorker()
           + doWork()
       }
@@ -165,7 +165,7 @@ title __BACKGROUND's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace background {
-      class com.mad.p03.np2020.routine.background.UploadTaskWorker {
+      class com.mad.p03.np2020.routine.Task.model.UploadTaskWorker {
           + UploadTaskWorker()
           + doWork()
       }
@@ -178,7 +178,7 @@ title __BACKGROUND's Class Diagram__\n
   com.mad.p03.np2020.routine.background.BoundService +-down- com.mad.p03.np2020.routine.background.BoundService.MyBinder
   com.mad.p03.np2020.routine.background.BoundService.MyBinder -up-|> android.os.Binder
   com.mad.p03.np2020.routine.background.DeleteSectionWorker -up-|> androidx.work.Worker
-  com.mad.p03.np2020.routine.background.DeleteTaskWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.FCMSection -up-|> com.google.firebase.messaging.FirebaseMessagingService
   com.mad.p03.np2020.routine.background.FocusWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.FocusWorker o-- com.mad.p03.np2020.routine.Class.Focus : focusData
@@ -189,11 +189,11 @@ title __BACKGROUND's Class Diagram__\n
   com.mad.p03.np2020.routine.background.HabitGroupWorker o-- com.mad.p03.np2020.routine.Class.HabitGroup : habitGroupData
   com.mad.p03.np2020.routine.background.HabitWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.HabitWorker o-- com.mad.p03.np2020.routine.Class.Habit : habitData
-  com.mad.p03.np2020.routine.background.RegisterFirebaseUser -up-|> android.os.AsyncTask
-  com.mad.p03.np2020.routine.background.RegisterFirebaseUser o-- com.mad.p03.np2020.routine.Interface.OnFirebaseAuth : mOnFirebaseAuth
-  com.mad.p03.np2020.routine.background.UploadDataWorker -up-|> androidx.work.Worker
-  com.mad.p03.np2020.routine.background.UploadSectionWorker -up-|> androidx.work.Worker
-  com.mad.p03.np2020.routine.background.UploadTaskWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser -up-|> android.os.AsyncTask
+  com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser o-- com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth : mOnFirebaseAuth
+  com.mad.p03.np2020.routine.Register.models.UploadDataWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Home.Home.models.UploadSectionWorker -up-|> androidx.work.Worker
+  com.mad.p03.np2020.routine.Task.model.UploadTaskWorker -up-|> androidx.work.Worker
 
 
 right footer

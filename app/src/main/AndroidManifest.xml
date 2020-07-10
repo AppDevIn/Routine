@@ -25,7 +25,7 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme" />
 
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".Register.RegisterActivity" />
 
         <activity android:name=".LoginActivity"
         android:theme="@style/AppTheme">
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Home"
+        <activity android:name=".Home.Home"
                 android:exported="true"/>
 
         <activity android:name=".FocusActivity"
@@ -43,7 +43,7 @@
 
             />
         
-        <activity android:name=".Class.PopUp"
+        <activity android:name=".models.PopUp"
             android:theme="@style/AppTheme.NotificationTheme">
         </activity>
 
@@ -55,7 +55,7 @@
 
         <activity android:name=".MainActivity"/>
 
-        <activity android:name=".TaskActivity"
+        <activity android:name=".Task.TaskActivity"
             android:windowSoftInputMode="adjustResize"
             android:fitsSystemWindows="true"
             />
@@ -82,7 +82,7 @@
         <service android:name=".FocusActivity" />
         <service android:name=".background.BoundService" android:stopWithTask="false" />
 
-        <receiver android:enabled="true" android:name=".Class.AlarmReceiver"
+        <receiver android:enabled="true" android:name=".models.AlarmReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -92,7 +92,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".Class.CardNotification"/>
+        <receiver android:name=".models.CardNotification"/>
 
 
     </application>

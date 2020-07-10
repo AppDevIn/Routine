@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Class.HabitReminder;
+import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitReminder;
 
 import java.util.Calendar;
 
