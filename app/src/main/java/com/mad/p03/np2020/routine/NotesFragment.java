@@ -49,13 +49,13 @@ public class NotesFragment extends Fragment
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
 
-                Log.d("NotesFragment", "onEditorAction: " + textView.getText());
-                mTask.setNotes(textView.getText().toString());
-
-                TaskDBHelper taskDBHelper = new TaskDBHelper(view.getContext());
-                taskDBHelper.update(mTask.getTaskID(),null, mTask.getNotes());
-
-                mTask.executeUpdateFirebase(null);
+//                Log.d("NotesFragment", "onEditorAction: " + textView.getText());
+//                mTask.setNotes(textView.getText().toString());
+//
+//                TaskDBHelper taskDBHelper = new TaskDBHelper(view.getContext());
+//                taskDBHelper.update(mTask.getTaskID(),null, mTask.getNotes());
+//
+//                mTask.executeUpdateFirebase(null);
 
                 return false;
             }
