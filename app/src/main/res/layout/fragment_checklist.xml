@@ -65,7 +65,7 @@
                 android:layout_marginBottom="24dp"
 
                 android:fontFamily="@font/montserrat_regular"
-                android:text="@string/your_tasklist_is_empty"
+                android:text="@string/checkListEmpty"
                 android:textAlignment="center"
                 android:textColor="#929292"
                 android:textSize="15sp" />
