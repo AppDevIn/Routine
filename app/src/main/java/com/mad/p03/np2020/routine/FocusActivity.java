@@ -275,7 +275,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             Log.v(TAG, "Database does not exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
             FirebaseDatabase();
-            user.execute(this);
+            user.readFocusFirebase(this);
         }
 
         tmins = 0;
