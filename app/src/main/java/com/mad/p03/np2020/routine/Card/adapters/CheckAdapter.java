@@ -77,6 +77,9 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
                 Log.d(TAG, "onCheckedChanged: The checked has been ticked");
                 mCheckList.get(position).setChecked(b);
                 mCheckDBHelper.update(mCheckList.get(position).getID(), b);
+                mCheckList.get(position).executeUpdateFirebase(mOwner,mSectionID);
+
+
 
             }
         });
