@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Fragment;
+package com.mad.p03.np2020.routine.Card.Fragments;
 
 import android.os.Bundle;
 
@@ -12,61 +12,30 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mad.p03.np2020.routine.models.Task;
-import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.models.Task;
 
-/**
+/*
  *
- * NotesFragment class for notes
+ * Notes fragment to take notes for each task
  *
- * @author Pritheev and Jeyavishnu
- * @since 02-06-2020
+ * @author Jeyavishnu
+ * @since 10-07-2020
  *
  */
+
 public class NotesFragment extends Fragment
 {
 
     Task mTask;
 
-    //Constructor
+
     public NotesFragment(Task task) {
         mTask = task;
     }
 
-    //Initializing variables for NotesFragment when new instance created
-    public static NotesFragment newInstance(Task task)
-    {
-        //Initializing a new instance of NotesFragment
-        NotesFragment fragment = new NotesFragment(task);
 
-        //Initializing Bundle
-        Bundle args = new Bundle();
-
-        //Setting bundle for fragment
-        fragment.setArguments(args);
-
-        //Returning fragment
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    /**
-     *
-     *
-     * This is where you set the notes and update the sql and firebase
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,7 +62,6 @@ public class NotesFragment extends Fragment
             }
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
 }

@@ -59,6 +59,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     ConstraintLayout mConstraintLayout;
     EditText mEdTask;
     List<Task> mTaskList;
+    TaskDBHelper taskDBHelper;
 
 
     /**
@@ -114,6 +115,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         viewSwitcher.setInAnimation(in);
         viewSwitcher.setOutAnimation(out);
 
+        taskDBHelper = new TaskDBHelper(this);
 
     }
 
@@ -127,6 +129,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "GUI ready");
+
+        mTaskList = taskDBHelper.getAllTask(mSection.getID());
 
         startUpUI();
 
@@ -153,7 +157,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     @Override
     protected void onStop() {
         super.onStop();
-        TaskDBHelper taskDBHelper = new TaskDBHelper(this);
         for (int i = 0; i < mTaskList.size(); i++) {
             mTaskList.get(i).setPosition(i);
             Task task = mTaskList.get(i);

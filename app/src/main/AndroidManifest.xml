@@ -53,8 +53,6 @@
             android:fitsSystemWindows="true"
             />
 
-        <activity android:name=".Register.RegisterActivity" />
-
         <activity android:name=".HabitAddActivity" />
 
         <activity android:name=".HabitEditActivity" />
@@ -66,13 +64,6 @@
         <activity android:name=".HabitReminderActivity" />
 
 
-        <activity
-            android:name=".Home.Home">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <service
             android:name=".background.FCMSection"
             android:exported="false">
@@ -81,7 +72,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".FocusActivity" />
+
         <service android:name=".background.BoundService" android:stopWithTask="false" />
 
         <receiver android:enabled="true" android:name=".models.AlarmReceiver"

@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -91,7 +92,7 @@ public class Task implements Serializable {
     private String mSectionID;
     private int mPosition;
     private boolean checked;
-    private Date remindDate;
+    private String remindDate;
     private Date dueDate;
     private String mNotes;
     private String mLabels;
@@ -380,7 +381,7 @@ public class Task implements Serializable {
                 .putInt(Task.COLUMN_POSITION, getPosition())
                 .putBoolean(Task.COLUMN_CHECKED, isChecked())
                 .putString(Task.COLUMN_NOTES, getNotes())
-                .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
+//                .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
                 .build();
 
         //Create the request
@@ -434,7 +435,7 @@ public class Task implements Serializable {
                     .putInt(Task.COLUMN_POSITION, getPosition())
                     .putBoolean(Task.COLUMN_CHECKED, isChecked())
                     .putString(Task.COLUMN_NOTES, getNotes())
-                    .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
+//                    .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
                     .build();
 
             //Create the request
@@ -545,8 +546,8 @@ public class Task implements Serializable {
             boolean isSame = this.mTaskID.equals(task.getTaskID()) &&
                     sameNotes &&
                     this.isChecked() == task.isChecked() &&
-                    this.getName().equals(task.getName()) &&
-                    this.getRemindDate().equals(task.getRemindDate());
+                    this.getName().equals(task.getName()) && true;
+//                    this.getRemindDate().equals(task.getRemindDate());
             return (isSame);
         }else{
             return false;

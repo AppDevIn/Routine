@@ -267,8 +267,8 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick(): Add button is pressed ");
-                addSection(mEditAddList);
                 listUI();
+                addSection(mEditAddList);
             }
         });
 
@@ -315,7 +315,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     @Override
     public void onDataAdd(final Object object) {
         Log.d(TAG, "A new section has been added: " + object.toString());
-
+        listUI();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

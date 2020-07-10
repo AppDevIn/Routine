@@ -8,5 +8,6 @@ package com.mad.p03.np2020.routine.helpers;
 public interface MyDatabaseListener {
 
     public void onDataAdd(Object object);
+    public void onDataUpdate(Object object);
     public void onDataDelete(String ID);
 }

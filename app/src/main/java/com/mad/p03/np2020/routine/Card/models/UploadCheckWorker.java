@@ -54,8 +54,11 @@ public class UploadCheckWorker extends Worker {
         //Getting a database reference to Users
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("check").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(sectionID).child(String.valueOf(ID));
 
-        //Setting value using object
-        // mDatabase.setValue(new Task(Name,0,sectionID,ID,isCheck));
+        //Setting data into the user portion
+        mDatabase.child(Check.COLUMN_NAME).setValue(Name);
+        mDatabase.child(Check.COLUMN_Check_ID).setValue(ID);
+        mDatabase.child(Check.COLUMN_SectionID).setValue(sectionID);
+        mDatabase.child(Check.COLUMN_CHECKED).setValue(isCheck);
 
         return Result.success();
     }

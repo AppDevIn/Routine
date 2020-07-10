@@ -4,22 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
-import com.mad.p03.np2020.routine.HistoryFragment;
-import com.mad.p03.np2020.routine.NotesFragment;
+import com.mad.p03.np2020.routine.Card.Fragments.NotesFragment;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.StepsFragment;
-import com.mad.p03.np2020.routine.models.PopUp;
 import com.mad.p03.np2020.routine.models.Task;
 
 /**
