@@ -63,12 +63,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         //Set the title text the task name
         edTitle.setText(mTask.getName());
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        CheckListFragment fragment = new CheckListFragment(mTask.getTaskID());
-        fragmentTransaction.add(R.id.fragmentContainer, fragment);
-        fragmentTransaction.commit();
     }
 
     @Override
@@ -115,6 +109,18 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void notes() {
+        //Initializing fragment manager and fragment transaction
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        //Creating an instance of the notes fragment class
+        NotesFragment noteFrag = new NotesFragment();
+
+        //Replacing FragmentContainer in CardLayout with notes fragment view
+        fragmentTransaction.replace(R.id.fragmentContainer, noteFrag);
+
+        //Committing to enable fragment view
+        fragmentTransaction.commit();
     }
 
     private void focus() {
@@ -122,6 +128,12 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
     private void checkList() {
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        CheckListFragment fragment = new CheckListFragment(mTask.getTaskID());
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.commit();
     }
 
     //Reference
@@ -134,4 +146,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 //        fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
 //
 //    }
+
+
 }
