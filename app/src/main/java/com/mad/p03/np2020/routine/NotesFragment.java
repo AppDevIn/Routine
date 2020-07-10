@@ -25,28 +25,6 @@ public class NotesFragment extends Fragment
         // Required empty public constructor
     }
 
-    //Initializing variables for NotesFragment when new instance created
-    public static NotesFragment newInstance()
-    {
-        //Initializing a new instance of NotesFragment
-        NotesFragment fragment = new NotesFragment();
-
-        //Initializing Bundle
-        Bundle args = new Bundle();
-
-        //Setting bundle for fragment
-        fragment.setArguments(args);
-
-        //Returning fragment
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -39,7 +39,7 @@
     <string name="StepAdd"><b>Steps</b></string>
     <string name="NotesAdd">Notes</string>
     <string name="FocusButton">Focus</string>
-    <string name="NotesHint">Type Here</string>
+    <string name="NotesHint">Enter notes here...</string>
     <string name="Add">Add</string>
     <string name="EnterStep">Enter Step Name</string>
     <string name="NotificationDescription">Notification Icon</string>
