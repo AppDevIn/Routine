@@ -263,6 +263,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             public void onClick(View view) {
                 Log.d(TAG, "onClick(): Add button is pressed ");
                 addSection(mEditAddList);
+                listUI();
             }
         });
 
@@ -455,8 +456,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
                 //Make the card view visible to the user
                 mCardViewPopUp.setVisibility(View.VISIBLE);
                 Log.d(TAG, "onClick(): Cardview is visible");
-
-                listUI();
             }
         });
 
