@@ -63,7 +63,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/guideline2"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/card_img_edit_noraml" />
+                app:srcCompat="@drawable/ic_card_img_edit_normal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,6 +97,7 @@
                             android:layout_height="30dp"
                             android:layout_weight="0.3"
                             android:contentDescription="@string/description_check"
+                            android:scaleType="centerCrop"
                             app:srcCompat="@drawable/card_img_check_normal" />
 
                         <TextView
@@ -123,14 +124,6 @@
                         android:padding="8dp"
                         android:weightSum="1">
 
-                        <ImageView
-
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="0.3"
-                            android:contentDescription="@string/description_focus"
-                            app:srcCompat="@drawable/card_img_target_normal" />
-
 
                         <TextView
                             android:layout_width="0dp"
@@ -145,6 +138,15 @@
                             android:textColor="#484848"
 
                             android:textSize="15sp" />
+
+                        <ImageView
+
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/description_focus"
+                            app:srcCompat="@drawable/card_img_target_normal" />
 
                     </LinearLayout>
 
@@ -174,6 +176,7 @@
                             android:layout_width="0dp"
                             android:layout_height="30dp"
                             android:layout_weight="0.3"
+                            android:scaleType="centerCrop"
                             android:contentDescription="@string/description_bel"
                             app:srcCompat="@drawable/card_img_bell_normal" />
 
@@ -203,14 +206,6 @@
                         android:weightSum="1">
 
 
-                        <ImageView
-
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="0.3"
-                            android:contentDescription="@string/description_notes"
-                            app:srcCompat="@drawable/card_img_notes_normal" />
-
 
                         <TextView
                             android:layout_width="0dp"
@@ -225,6 +220,16 @@
                             android:textColor="#484848"
 
                             android:textSize="15sp" />
+
+
+                        <ImageView
+
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/description_notes"
+                            app:srcCompat="@drawable/card_img_notes_normal" />
                     </LinearLayout>
 
                 </LinearLayout>
