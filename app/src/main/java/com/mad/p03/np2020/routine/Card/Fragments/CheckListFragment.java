@@ -182,7 +182,7 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
 
         CheckDBHelper checkDBHelper = new CheckDBHelper(getContext());
 
-        mCheckLst = checkDBHelper.getSection(mTaskID);
+        mCheckLst = checkDBHelper.getTask(mTaskID);
 
         mRecyclerView = getView().findViewById(R.id.checkRecycler);
         mRecyclerView.setHasFixedSize(true);

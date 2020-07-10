@@ -52,7 +52,7 @@ public class CheckDBHelper extends DBHelper{
         sCheckDataListener = checkDataListener;
     }
 
-    public List<Check> getSection(String sectionID){
+    public List<Check> getTask(String taskID){
 
         List<Check> checkList = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class CheckDBHelper extends DBHelper{
 
 
         //Get the data from sqlite
-        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " WHERE SectionID='"+sectionID+"' ORDER BY " + Check.COLUMN_POSITION + " ASC;", null );
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " WHERE TaskID='"+taskID+"' ORDER BY " + Check.COLUMN_POSITION + " ASC;", null );
 
         if (cursor.moveToFirst()){
             do {
@@ -84,7 +84,7 @@ public class CheckDBHelper extends DBHelper{
 
     }
 
-    public String insertCheck(Check check, String sectionID) {
+    public String insertCheck(Check check, String taskID) {
         Log.d(TAG, "insertCheck(): Preparing to insert the new Check ");
 
         //Add values into the database
@@ -96,7 +96,7 @@ public class CheckDBHelper extends DBHelper{
         values.put(Check.COLUMN_Check_ID, check.getID());
         values.put(Check.COLUMN_CHECKED, check.isChecked());
         values.put(Check.COLUMN_NAME, check.getName());
-        values.put(Check.COLUMN_SectionID, sectionID);
+        values.put(Check.COLUMN_TaskID, taskID);
 
         // Insert the new row, returning the primary key value of the new row
         //If -1 means there is an error
@@ -185,6 +185,28 @@ public class CheckDBHelper extends DBHelper{
 
         if (sCheckDataListener != null)
             sCheckDataListener.onDataDelete(ID);
+
+        db.close();
+    }
+
+    /**
+     * This will delete all the data from checkList table based
+     * of the taskID
+     *
+     * @param taskID ID that will be used find the task and delete it
+     */
+    public void deleteAll(String taskID){
+
+        Log.d(TAG, "delete(): Will be deleting ID " + taskID );
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(
+                Check.TABLE_NAME,  // The table to delete from
+                Check.COLUMN_TaskID + " = ?", //The condition
+                new String[]{taskID} // The args will be replaced by ?
+        );
+
+        Log.d(TAG, "delete(): Removed from database");
 
         db.close();
     }

@@ -33,6 +33,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter;
 import com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
@@ -328,11 +329,13 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     @Override
     public void onDataDelete(String ID) {
+
         for (int position = 0; position < mSectionList.size(); position++) {
 
 
             if(mSectionList.get(position).getID().equals(ID)){
                 final int finalPosition = position;
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

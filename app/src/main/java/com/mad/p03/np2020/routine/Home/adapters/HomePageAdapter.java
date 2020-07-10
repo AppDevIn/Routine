@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.R;

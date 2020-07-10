@@ -29,13 +29,13 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
     private List<Check> mCheckList;
     private Context mContext;
     private CheckDBHelper mCheckDBHelper;
-    private String mSectionID;
+    private String mTaskID;
     private ItemTouchHelper mItemTouchHelper;
     private LifecycleOwner mOwner;
 
-    public CheckAdapter(List<Check> checkList, String sectionID, LifecycleOwner owner) {
+    public CheckAdapter(List<Check> checkList, String taskID, LifecycleOwner owner) {
         mCheckList = checkList;
-        mSectionID = sectionID;
+        mTaskID = taskID;
         mOwner = owner;
     }
 
@@ -79,7 +79,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
                 mCheckDBHelper.update(mCheckList.get(position).getID(), b);
 
                 //Update the cloud
-                mCheckList.get(position).executeUpdateFirebase(mOwner,mSectionID);
+                mCheckList.get(position).executeUpdateFirebase(mOwner,mTaskID);
 
 
 
@@ -101,10 +101,10 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
     public void addItem(Check check, Context context){
 
         //TODO: Add to the SQLite
-        check.addCheck(context, mSectionID);
+        check.addCheck(context, mTaskID);
 
         //TODO: Add from firebase
-        check.executeFirebaseUpload(mOwner, mSectionID);
+        check.executeFirebaseUpload(mOwner, mTaskID);
 
 
         Log.d(TAG, "New Task added, " + check.toString());
@@ -120,7 +120,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
         Check check = mCheckList.get(position);
 
         //Delete from firebase
-        check.executeFirebaseDelete(mOwner, mSectionID);
+        check.executeFirebaseDelete(mOwner, mTaskID);
 
         //Delete from SQL
         check.deleteTask(mContext);

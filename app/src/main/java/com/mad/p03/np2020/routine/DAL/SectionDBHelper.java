@@ -206,6 +206,12 @@ public class SectionDBHelper extends DBHelper{
      */
     public void delete(String ID){
         SQLiteDatabase db = this.getWritableDatabase();
+
+
+        //Will delete the check and task list
+        new TaskDBHelper(mContext).deleteAll(ID);
+
+        //Delete the section
         db.delete(
                 Section.TABLE_NAME,  // The table to delete from
                 Section.COLUMN_SECTION_ID + " = ?", //The condition
@@ -214,11 +220,7 @@ public class SectionDBHelper extends DBHelper{
         mMyDatabaseListener.onDataDelete(ID);
 
 
-        db.delete(
-                Task.TABLE_NAME,  // The table to delete from
-                Task.COLUMN_SECTION_ID + " = ?", //The condition
-                new String[]{ID} // The args will be replaced by ?
-        );
+
 
         db.close();
     }

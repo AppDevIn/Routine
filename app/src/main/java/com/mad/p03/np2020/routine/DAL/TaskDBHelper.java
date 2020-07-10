@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
+import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Task;
 
 import java.util.ArrayList;
@@ -25,12 +26,14 @@ import androidx.annotation.Nullable;
 public class TaskDBHelper extends DBHelper {
 
     private final String TAG = "Task Database";
+    private Context mContext;
 
     //Listener
     private static MyDatabaseListener mMyDatabaseListener;
 
     public TaskDBHelper(@Nullable Context context) {
         super(context);
+        mContext = context;
     }
 
     /**
@@ -204,16 +207,56 @@ public class TaskDBHelper extends DBHelper {
         Log.d(TAG, "delete(): Will be deleting ID " + ID );
 
         SQLiteDatabase db = this.getWritableDatabase();
+
+
+        //Delete the check list in task
+        new CheckDBHelper(mContext).deleteAll(ID);
+
         db.delete(
                 Task.TABLE_NAME,  // The table to delete from
                 Task.COLUMN_TASK_ID + " = ?", //The condition
                 new String[]{ID} // The args will be replaced by ?
         );
 
+
         Log.d(TAG, "delete(): Removed from database");
 
         if (mMyDatabaseListener != null)
             mMyDatabaseListener.onDataDelete(ID);
+
+        db.close();
+    }
+
+    /**
+     * This will delete the data from task table based of
+     * sectionID
+     *
+     * @param sectionID ID that will be used find the task and delete it
+     */
+    public void deleteAll(String sectionID){
+
+        Log.d(TAG, "delete(): Will be deleting ID " + sectionID );
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        //Delete the checklist for each task
+        for (Task task:
+                getAllTask(sectionID)) {
+            //Delete the check list in task
+            new CheckDBHelper(mContext).deleteAll(task.getTaskID());
+        }
+
+        db = this.getWritableDatabase();
+        //Delete the tasks
+        db.delete(
+                Task.TABLE_NAME,  // The table to delete from
+                Task.COLUMN_SECTION_ID + " = ?", //The condition
+                new String[]{sectionID} // The args will be replaced by ?
+        );
+
+        Log.d(TAG, "delete(): Removed from database");
+
 
         db.close();
     }
