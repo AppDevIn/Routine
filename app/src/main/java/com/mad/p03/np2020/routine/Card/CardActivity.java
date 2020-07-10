@@ -26,8 +26,8 @@ import com.mad.p03.np2020.routine.models.Task;
 *
 * CardActivity class used to manage card activities
 *
-* @author Pritheev
-* @since 02-06-2020
+* @author Jeyavishnu & Pritheev
+ *@since 10-07-2020
 *
  */
 
@@ -114,7 +114,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         //Creating an instance of the notes fragment class
-        NotesFragment noteFrag = new NotesFragment();
+        NotesFragment noteFrag = new NotesFragment(mTask);
 
         //Replacing FragmentContainer in CardLayout with notes fragment view
         fragmentTransaction.replace(R.id.fragmentContainer, noteFrag);
@@ -136,16 +136,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         fragmentTransaction.commit();
     }
 
-    //Reference
-//    public void openHistory() { //Open history tab
-//        HistoryFragment fragmentFocus = HistoryFragment.newInstance(user, focusDBHelper);
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
-//
-//    }
 
 
 }

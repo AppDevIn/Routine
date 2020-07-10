@@ -22,6 +22,17 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+
+
+/*
+ *
+ * Check is object that belongs to task object
+ *
+ * @author Jeyavishnu
+ * @since 10-07-2020
+ *
+ */
+
 public class Check {
 
 

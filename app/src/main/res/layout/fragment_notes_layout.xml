@@ -19,6 +19,7 @@
             tools:ignore="UselessParent">
 
             <EditText
+                android:id="@+id/notes"
                 android:padding="3dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
