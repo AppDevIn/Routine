@@ -34,6 +34,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter;
 import com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
@@ -104,10 +105,13 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.d(TAG, "UI is being created");
 
         //TODO: Get user from the intent
-        mUser = getIntent().getParcelableExtra("user");
+        mUser = new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//        mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
 
         if(mUser != null){
+
+            Log.d(TAG, "onCreate: Get all the task and section");
             mUser.getAllSectionAndTask();
 
         }
