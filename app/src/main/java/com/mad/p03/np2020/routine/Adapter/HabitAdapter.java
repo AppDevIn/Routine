@@ -82,8 +82,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_grid_view_items, parent, false);
 
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.width = (int) (parent.getWidth() * 0.44);
-        Log.d(TAG, "onCreateViewHolder: " + layoutParams.width);
+        layoutParams.width = (int) (parent.getWidth() * 0.464);
+        Log.d(TAG, "onCreateViewHolder: width" + layoutParams.width);
         view.setLayoutParams(layoutParams);
 
         return new HabitHolder(view, mListener);

@@ -35,7 +35,7 @@ import com.mad.p03.np2020.routine.Class.Habit;
 import com.mad.p03.np2020.routine.Class.User;
 import com.mad.p03.np2020.routine.Interface.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.Interface.HabitItemClickListener;
-import com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration;
+import com.mad.p03.np2020.routine.ViewHolder.HabitHorizontalDivider;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.database.HabitDBHelper;
 
@@ -70,7 +70,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     private ImageView prev_indicator, next_indicator;
 
-    private TextView indicator_num;
+    private TextView indicator_num, remind_text;
 
 
     /**
@@ -115,11 +115,12 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             }
         };
         habitRecyclerView.setLayoutManager(manager);
-        habitRecyclerView.addItemDecoration(new DividerItemDecoration(25));
+        habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
 
         prev_indicator = findViewById(R.id.habit_indicator_prev);
         next_indicator = findViewById(R.id.habit_indicator_next);
         indicator_num = findViewById(R.id.habit_indicator_number);
+        remind_text = findViewById(R.id.habit_remind_text);
 
         prev_indicator.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +186,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
+
+        int n = checkIncompleteHabits(habitAdapter._habitList);
+
+        if (n == 0){
+            remind_text.setText("You have completed all habits today!");
+        }else if (n == 1){
+            remind_text.setText("You still have 1 habit to do today");
+        }else{
+            remind_text.setText(String.format("You still have %d habits to do today",n));
+        }
 
         indicator_num.setText("1");
     }
@@ -300,6 +311,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habit_dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
         writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
 
+        int n = checkIncompleteHabits(habitAdapter._habitList);
+
+        if (n == 0){
+            remind_text.setText("You have completed all habits today!");
+        }else if (n == 1){
+            remind_text.setText("You still have 1 habit to do today");
+        }else{
+            remind_text.setText(String.format("You still have %d habits to do today",n));
+        }
+
     }
 
     /**
@@ -373,6 +394,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // send the work request to the work manager
         WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    public int checkIncompleteHabits(Habit.HabitList habitList){
+        int n = 0;
+        for (int i = 0; i < habitList.size(); i++){
+            Habit habit = habitList.getItemAt(i);
+            if (!habit.getTitle().toLowerCase().equals("dummy") && habit.getOccurrence() > habit.getCount() ){
+                n++;
+            }
+        }
+        return n;
     }
 
 
