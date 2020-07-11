@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Card;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,23 +38,37 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleDialogListener.DatePicker();
+                String date = scheduleDialogListener.DatePicker();
+                Log.v(TAG, "Date:" + date);
+                onDateClicked(date);
             }
         });
 
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleDialogListener.TimePicker();
+                String time = scheduleDialogListener.TimePicker();
+                Log.v(TAG, "Time: " + time);
+                onTimeClicked(time);
             }
         });
+
+
 
         return v;
     }
 
+    void onDateClicked(String dateText){
+        dateButton.setText("Date Set: " + dateText);
+    }
+
+    void onTimeClicked(String timeText){
+        timeButton.setText("Time Set: " + timeText);
+    }
+
     public interface ScheduleDialogListener {
-        void DatePicker();
-        void TimePicker();
+        String DatePicker();
+        String TimePicker();
     }
 
     @Override

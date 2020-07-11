@@ -52,6 +52,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
     Button dateButton;
     Button timeButton;
+    String date;
+    String time;
 
 
     @Override
@@ -135,7 +137,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void DatePicker() {
+    public String DatePicker() {
         Log.v(TAG, "Date Button Pressed!");
 
         Calendar cal = Calendar.getInstance();
@@ -152,20 +154,19 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month += 1;
 
-                String date = day + "/" + month + "/" + year;
+                date = day + "/" + month + "/" + year;
 
-                Intent intent = new Intent(CardActivity.this, ScheduleDialog.class);
-                intent.putExtra("Date", date);
                 //dateButton.setText(date);
-
                 Log.v(TAG, "Date Set: dd/mm/yyyy: " + date);
 
             }
         };
+
+        return date;
     }
 
     @Override
-    public void TimePicker() {
+    public String TimePicker() {
         Log.v(TAG, "Time Button Pressed");
 
         Calendar cal = Calendar.getInstance();
@@ -179,15 +180,15 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hour, int minute) {
-                String time = hour + ":" + minute;
+                time = hour + ":" + minute;
 
-                Intent intent = new Intent(CardActivity.this, ScheduleDialog.class);
-                intent.putExtra("Time", time);
                 //timeButton.setText(time);
 
                 Log.v(TAG, "Time set: " + time);
             }
         };
+
+        return time;
     }
 
     //Reference
