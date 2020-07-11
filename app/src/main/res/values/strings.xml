@@ -111,6 +111,9 @@
     <string name="select_a_tool_to_get_started">Select a tool to get started</string>
     <string name="down_arrow">Down arrow</string>
     <string name="schedule">Schedule</string>
+    <string name="my_habits">My Habits</string>
+    <string name="habit_remind_text">You still have 3 habits to do today</string>
+    <string name="habit_one">1</string>
 
 </resources>
 
