@@ -23,6 +23,7 @@
 
         <activity android:name=".Card.CardActivity"
             android:fitsSystemWindows="true"
+            android:windowSoftInputMode="adjustResize"
         android:theme="@style/AppTheme"/>
 
         <activity android:name=".Register.RegisterActivity" />
