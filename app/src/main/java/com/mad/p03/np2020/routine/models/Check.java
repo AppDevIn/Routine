@@ -100,7 +100,13 @@ public class Check {
 //        int position = check.child(COLUMN_POSITION).getValue(Integer.class) == null ? 0 : check.child("position").getValue(Integer.class);
         String ID = check.child(COLUMN_Check_ID).getValue(String.class);
         String taskID = check.child(COLUMN_TaskID).getValue(String.class);
-        String checked = check.child(COLUMN_CHECKED).getValue(Boolean.class) ? "1":"0";
+
+        String checked;
+        if(check.child(COLUMN_CHECKED).getValue() != null){
+             checked = check.child(COLUMN_CHECKED).getValue(Boolean.class) ? "1":"0";
+        }else{
+            checked = "0";
+        }
 
         return new Check(name, ID, checked, 0, taskID);
     }

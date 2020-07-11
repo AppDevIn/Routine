@@ -303,9 +303,6 @@ public class CheckDBHelper extends DBHelper{
         // Create a new map of values, where column names are the keys
         ContentValues updateValues = new ContentValues();
         updateValues.put(Check.COLUMN_Check_ID, check.getID());
-        updateValues.put(Check.COLUMN_CHECKED, check.isChecked());
-        updateValues.put(Check.COLUMN_NAME, check.getName());
-        updateValues.put(Check.COLUMN_TaskID, check.getTaskID());
 
         db.update(
                 Check.TABLE_NAME,
