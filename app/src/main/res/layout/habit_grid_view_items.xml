@@ -7,98 +7,195 @@
     android:layout_height="wrap_content">
 
 
-    <ImageView
-        android:id="@+id/habit_background"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/habit_card"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-
-        android:clickable="false"
-        android:contentDescription="@string/background"
-
-        android:descendantFocusability="blocksDescendants"
-        android:focusable="false"
+        android:layout_height="164dp"
+        android:layout_margin="4dp"
+        app:cardElevation="4dp"
 
 
-        android:focusableInTouchMode="false"
-        android:translationZ="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/habitCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:fontFamily="@font/montserrat_regular"
-        android:text="0"
-
-        android:textColor="@color/black"
-
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/habit_background"
-        app:layout_constraintHorizontal_bias="0.392"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744" />
-
-    <TextView
-        android:id="@+id/habit_divider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:fontFamily="@font/montserrat_regular"
-        android:text="@string/habit_divider"
-
-        android:textColor="@color/black"
-
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/habit_background"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/habitCount"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744" />
-
-    <TextView
-        android:id="@+id/habitOccurrence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:fontFamily="@font/montserrat_regular"
-        android:text="10"
-
-        android:textColor="@color/black"
-
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/habit_background"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/habit_divider"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />
-
-    <TextView
-        android:id="@+id/habitTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:fontFamily="@font/montserrat_regular"
-        android:text="@string/holder"
-
-        android:textColor="@color/black"
-
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/habit_background"
-        app:layout_constraintHorizontal_bias="0.443"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.872" />
+        app:layout_constraintVertical_bias="0.1">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/habit_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:clickable="false"
+                android:contentDescription="@string/background"
+
+                android:descendantFocusability="blocksDescendants"
+                android:focusable="false"
+
+
+                android:focusableInTouchMode="false"
+                android:translationZ="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:visibility="invisible"
+                android:id="@+id/habit_finished"
+                android:layout_width="61dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/habitCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/habit_finished"
+                android:contentDescription="@string/background" />
+
+            <ProgressBar
+                tools:visibility="visible"
+                android:id="@+id/habit_progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="31dp"
+                android:layout_height="29dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/circle_shape"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="65"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                app:layout_constraintBottom_toTopOf="@+id/habitCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/habit_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/montserrat_regular"
+
+                android:text="100"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/habitCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/habit_progressBar"
+                app:layout_constraintTop_toTopOf="@id/habit_progressBar"
+                app:layout_constraintVertical_bias="0.09" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="1dp"
+                android:fontFamily="@font/montserrat_regular"
+
+                android:text="%"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/habitCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/habit_progress"
+                app:layout_constraintTop_toTopOf="@id/habit_progressBar"
+                app:layout_constraintVertical_bias="0.09" />
+
+            <TextView
+                android:id="@+id/habitCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="92dp"
+                android:layout_marginBottom="4dp"
+
+                android:fontFamily="@font/montserrat_regular"
+
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/habitTitle"
+                app:layout_constraintEnd_toEndOf="@+id/habit_background"
+                app:layout_constraintStart_toStartOf="@+id/habitTitle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+            <TextView
+                android:id="@+id/habit_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="92dp"
+                android:layout_marginBottom="4dp"
+
+                android:fontFamily="@font/montserrat_regular"
+
+                android:text="@string/habit_divider"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/habitTitle"
+                app:layout_constraintEnd_toEndOf="@+id/habit_background"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/habitCount"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/habitOccurrence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="92dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginBottom="4dp"
+
+                android:fontFamily="@font/montserrat_regular"
+
+                android:text="100"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/habitTitle"
+                app:layout_constraintEnd_toEndOf="@+id/habit_background"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/habit_divider"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/habitTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/holder"
+
+                android:textColor="@color/black"
+
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/habit_background"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.879" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
