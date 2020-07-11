@@ -403,7 +403,7 @@ public class Section implements Serializable {
 
         CheckDBHelper checkDBHelper = new CheckDBHelper(context);
 
-        return checkDBHelper.getTask(ID);
+        return checkDBHelper.getAllCheck(ID);
 
 
     }

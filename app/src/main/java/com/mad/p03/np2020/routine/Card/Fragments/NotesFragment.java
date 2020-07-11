@@ -46,21 +46,6 @@ public class NotesFragment extends Fragment
 
         notes.setText(mTask.getNotes());
 
-//        notes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-//
-//                Log.d("NotesFragment", "onEditorAction: " + textView.getText());
-//                mTask.setNotes(textView.getText().toString());
-//
-//                TaskDBHelper taskDBHelper = new TaskDBHelper(view.getContext());
-//                taskDBHelper.update(mTask.getTaskID(),null, mTask.getNotes());
-//
-//                mTask.executeUpdateFirebase(null);
-//
-//                return false;
-//            }
-//        });
 
         return view;
     }
@@ -71,7 +56,7 @@ public class NotesFragment extends Fragment
 
         //Save the notes
 
-        Log.d("NotesFragment", "onEditorAction: " + notes.getText());
+        Log.d("NotesFragment", "onStop: " + notes.getText());
         mTask.setNotes(notes.getText().toString());
 
         TaskDBHelper taskDBHelper = new TaskDBHelper(getView().getContext());

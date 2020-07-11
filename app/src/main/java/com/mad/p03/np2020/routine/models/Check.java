@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
 import com.mad.p03.np2020.routine.Card.models.DeleteCheckWorker;
 import com.mad.p03.np2020.routine.Card.models.UploadCheckWorker;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
@@ -12,7 +13,9 @@ import com.mad.p03.np2020.routine.Task.model.DeleteTaskWorker;
 import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
 
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
@@ -74,7 +77,7 @@ public class Check {
     private final String TAG = "Check";
 
     //Member variable
-    private String mName, mID;
+    private String mName, mID, mTaskID;
     private Boolean mChecked;
     private int mPosition;
     private boolean dirty = false;
@@ -86,9 +89,20 @@ public class Check {
                 cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_Check_ID)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CHECKED)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POSITION))
+                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_POSITION)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TaskID))
 
         );
+    }
+
+    public static Check fromDataSnapShot(DataSnapshot check){
+        String name = check.child(COLUMN_NAME).getValue(String.class);
+//        int position = check.child(COLUMN_POSITION).getValue(Integer.class) == null ? 0 : check.child("position").getValue(Integer.class);
+        String ID = check.child(COLUMN_Check_ID).getValue(String.class);
+        String taskID = check.child(COLUMN_TaskID).getValue(String.class);
+        String checked = check.child(COLUMN_CHECKED).getValue(Boolean.class) ? "1":"0";
+
+        return new Check(name, ID, checked, 0, taskID);
     }
 
     public Check(String name){
@@ -97,11 +111,12 @@ public class Check {
         mID = UUID.randomUUID().toString();
     }
 
-    private Check(String name, String id, String checked, int position){
+    private Check(String name, String id, String checked, int position, String taskID){
         mName = name;
         mID = id;
         mChecked = checked.equals("1");
         mPosition = position;
+        mTaskID = taskID;
     }
 
     public String getName() {
@@ -114,6 +129,10 @@ public class Check {
 
     public int getPosition() {
         return mPosition;
+    }
+
+    public String getTaskID() {
+        return mTaskID;
     }
 
     public Boolean isChecked() {
@@ -314,5 +333,30 @@ public class Check {
                         Log.d(TAG, "Task Delete state: " + workInfo.getState());
                     }
                 });
+    }
+
+    /**
+     *
+     * This is override to compare between 2 objects
+     * this case in checks the variables of this object against
+     * the one in the parameter
+     *
+     * @param obj The object we comparing with
+     * @return return true if the variables match this object
+     */
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        Check check = (Check) obj;
+
+
+
+        if(check != null){
+            boolean isSame = check.isChecked() == this.isChecked();
+
+            return (isSame);
+        }else{
+            return false;
+        }
     }
 }

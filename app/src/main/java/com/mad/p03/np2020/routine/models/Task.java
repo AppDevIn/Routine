@@ -546,7 +546,7 @@ public class Task implements Serializable {
             boolean isSame = this.mTaskID.equals(task.getTaskID()) &&
                     sameNotes &&
                     this.isChecked() == task.isChecked() &&
-                    this.getName().equals(task.getName()) && true;
+                    this.getName().equals(task.getName());
 //                    this.getRemindDate().equals(task.getRemindDate());
             return (isSame);
         }else{
