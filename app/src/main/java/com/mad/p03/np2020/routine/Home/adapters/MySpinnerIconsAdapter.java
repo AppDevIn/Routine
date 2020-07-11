@@ -7,6 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import com.mad.p03.np2020.routine.R;
 
+import java.util.List;
+
 
 /**
  *
@@ -22,7 +24,7 @@ import com.mad.p03.np2020.routine.R;
  */
 public class MySpinnerIconsAdapter extends BaseAdapter {
 
-    private Integer[] mIcons;
+    private List<Integer> mIcons;
 
     /**
      *
@@ -33,7 +35,7 @@ public class MySpinnerIconsAdapter extends BaseAdapter {
      * @param icons This is a list of images that
      *              the user will see
      */
-    public MySpinnerIconsAdapter(Integer[] icons) {
+    public MySpinnerIconsAdapter(List<Integer> icons) {
         mIcons = icons;
     }
 
@@ -44,7 +46,7 @@ public class MySpinnerIconsAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return mIcons.length;
+        return mIcons.size();
     }
 
     /**
@@ -57,7 +59,7 @@ public class MySpinnerIconsAdapter extends BaseAdapter {
      */
     @Override
     public Object getItem(int i) {
-        return mIcons[i];
+        return mIcons.get(i);
     }
 
     /**
@@ -89,7 +91,7 @@ public class MySpinnerIconsAdapter extends BaseAdapter {
         View layout = inflater.inflate(R.layout.spinner_background_items, parent, false);
 
         ImageView imageView = layout.findViewById(R.id.imgIcon);
-        imageView.setImageResource(mIcons[position]);
+        imageView.setImageResource(mIcons.get(position));
 
 
         return layout;

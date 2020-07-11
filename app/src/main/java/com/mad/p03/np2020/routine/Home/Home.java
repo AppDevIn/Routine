@@ -39,6 +39,7 @@ import com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter;
 import com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
+import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.LoginActivity;
@@ -81,7 +82,8 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     FloatingActionButton mImgAdd;
     List<Section> mSectionList;
     SectionDBHelper mSectionDBHelper;
-    Integer[] mColors, mBackgrounds;
+    Integer[] mColors;
+    List<Integer> mBackgrounds;
     String mUID;
     User mUser;
 
@@ -147,7 +149,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mColors = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.green_yellow), getResources().getColor(R.color.turquoise)};
 
         //A list of possible background to be user
-        mBackgrounds = new Integer[] {R.drawable.amazon, R.drawable.android, R.drawable.laptop, R.drawable.code, R.drawable.bookmark};
+        mBackgrounds = HomeIcon.getAllBackgrounds();
 
 
         //To set to Full screen
@@ -374,7 +376,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.i(TAG, "adding confirmed for " + listName);
 
         //Create a Section Object for the user input
-        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerIcons.getSelectedItemPosition()], mUID);
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], HomeIcon.getValue(mBackgrounds.get(mSpinnerIcons.getSelectedItemPosition())), mUID);
 
         //Save to SQL
         section.addSection(this);
