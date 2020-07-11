@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Interface.HabitCheckItemClickListener;
+import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitCheckHolder;
 import com.mad.p03.np2020.routine.models.Habit;

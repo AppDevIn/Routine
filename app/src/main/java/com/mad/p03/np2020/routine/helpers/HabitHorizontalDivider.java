@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.ViewHolder;
+package com.mad.p03.np2020.routine.helpers;
 
 import android.graphics.Rect;
 import android.view.View;
