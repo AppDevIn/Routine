@@ -294,7 +294,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         Log.d(TAG, "Editing habit " + habit.getTitle());
 
-        Intent activityName = new Intent(HabitActivity.this, HabitViewActivity.class);
+        Intent activityName = new Intent(HabitActivity.this, HabitView.class);
         Bundle extras = new Bundle();
         extras.putString("recorded_habit", habit_serializeToJson(habit));
         activityName.putExtras(extras);
