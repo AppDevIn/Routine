@@ -344,6 +344,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     private Habit.HabitList initDummyList (Habit.HabitList habitList){
 
+        if (habitList.size() == 0) {return habitList;}
         int size = habitList.size();
 
         int dummy_size = 4-(size % 4);
