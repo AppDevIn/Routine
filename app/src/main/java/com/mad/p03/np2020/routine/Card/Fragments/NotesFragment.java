@@ -29,7 +29,7 @@ public class NotesFragment extends Fragment
 {
 
     Task mTask;
-
+    EditText notes;
 
     public NotesFragment(Task task) {
         mTask = task;
@@ -42,26 +42,42 @@ public class NotesFragment extends Fragment
 
         final View view = inflater.inflate(R.layout.fragment_notes_layout, container, false);
 
-        EditText notes = view.findViewById(R.id.notes);
+        notes = view.findViewById(R.id.notes);
 
         notes.setText(mTask.getNotes());
 
-        notes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-
-                Log.d("NotesFragment", "onEditorAction: " + textView.getText());
-                mTask.setNotes(textView.getText().toString());
-
-                TaskDBHelper taskDBHelper = new TaskDBHelper(view.getContext());
-                taskDBHelper.update(mTask.getTaskID(),null, mTask.getNotes());
-
-                mTask.executeUpdateFirebase(null);
-
-                return false;
-            }
-        });
+//        notes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+//
+//                Log.d("NotesFragment", "onEditorAction: " + textView.getText());
+//                mTask.setNotes(textView.getText().toString());
+//
+//                TaskDBHelper taskDBHelper = new TaskDBHelper(view.getContext());
+//                taskDBHelper.update(mTask.getTaskID(),null, mTask.getNotes());
+//
+//                mTask.executeUpdateFirebase(null);
+//
+//                return false;
+//            }
+//        });
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        //Save the notes
+
+        Log.d("NotesFragment", "onEditorAction: " + notes.getText());
+        mTask.setNotes(notes.getText().toString());
+
+        TaskDBHelper taskDBHelper = new TaskDBHelper(getView().getContext());
+        taskDBHelper.update(mTask.getTaskID(),null, mTask.getNotes());
+
+        mTask.executeUpdateFirebase(null);
+
     }
 }
