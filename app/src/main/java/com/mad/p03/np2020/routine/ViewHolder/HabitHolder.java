@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Interface.HabitItemClickListener;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 
 /**
  *

@@ -10,10 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
-import com.mad.p03.np2020.routine.Class.Focus;
+import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.R;
 
 /**
@@ -25,9 +26,12 @@ import com.mad.p03.np2020.routine.R;
  */
 public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView iconComplete;
-    public TextView Task, date, duration;
+    public TextView Task, date, duration, sIndicator, usIndicator;
     public FocusAdapter adapter;
     public ViewGroup parent;
+    public ConstraintLayout constraintLayout;
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
 
     /**
      *
@@ -46,6 +50,7 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
         Task = itemView.findViewById(R.id.taskView);
         date = itemView.findViewById(R.id.dateView);
         duration = itemView.findViewById(R.id.duration);
+        constraintLayout = itemView.findViewById(R.id.relativeLayout);
 
         this.adapter = adapter;
         this.parent = parent;
@@ -62,8 +67,11 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
      * */
     @Override
     public void onClick(View v) { //If item on click
-        showAlertDialogButtonClicked(this.getLayoutPosition(), adapter.getItems(getLayoutPosition()));
-        Log.v("item", "Item on click");
+        if(dialog == null || !
+                dialog.isShowing()) {
+            showAlertDialogButtonClicked(this.getLayoutPosition(), adapter.getItems(getLayoutPosition()));
+            Log.v("item", "Item on click");
+        }
     }
 
     /**
@@ -78,7 +86,9 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void showAlertDialogButtonClicked(final int position, final Focus focus) {
         final String task = Task.getText().toString();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.MyDialogTheme);
+
+        builder = new AlertDialog.Builder(itemView.getContext(), R.style.MyDialogTheme);
+
         builder.setTitle("Delete");
 
         LayoutInflater inflater = LayoutInflater.from(itemView.getContext());
@@ -103,7 +113,8 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
         });
 
         // create and show the alert dialog
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
+
         dialog.show();
     }
 }

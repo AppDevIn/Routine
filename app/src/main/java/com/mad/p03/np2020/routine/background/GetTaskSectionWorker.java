@@ -9,11 +9,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.mad.p03.np2020.routine.Class.Section;
-import com.mad.p03.np2020.routine.Class.Task;
-import com.mad.p03.np2020.routine.database.SectionDBHelper;
-import com.mad.p03.np2020.routine.database.TaskDBHelper;
+import com.mad.p03.np2020.routine.models.Section;
+import com.mad.p03.np2020.routine.models.Task;
+import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

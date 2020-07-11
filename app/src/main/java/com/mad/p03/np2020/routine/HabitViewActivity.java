@@ -29,11 +29,11 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Class.AlarmReceiver;
-import com.mad.p03.np2020.routine.Class.Habit;
-import com.mad.p03.np2020.routine.Class.User;
+import com.mad.p03.np2020.routine.models.AlarmReceiver;
+import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.database.HabitDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 
 import static java.lang.String.format;
 

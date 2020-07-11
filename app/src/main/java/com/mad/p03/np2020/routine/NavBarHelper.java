@@ -8,8 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.mad.p03.np2020.routine.Class.Focus;
-import com.mad.p03.np2020.routine.Class.Habit;
+import com.mad.p03.np2020.routine.Home.Home;
 
 import androidx.annotation.NonNull;
 
@@ -26,7 +25,7 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
 
 
     private Context mContext;
-    NavBarHelper(Context context) {
+    public NavBarHelper(Context context) {
         mContext = context;
     }
 

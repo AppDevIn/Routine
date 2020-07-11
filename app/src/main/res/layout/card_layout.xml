@@ -5,104 +5,279 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pastelBlue">
+    android:background="@color/colorPrimary">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_section"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:padding="10dp"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/melon"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+
+                android:layout_marginTop="8dp"
+                android:layout_weight="0.8"
+                android:autofillHints=""
+                android:background="@null"
+                android:clickable="false"
+
+                android:focusable="false"
+                android:fontFamily="@font/montserrat_semibold"
+                android:imeOptions="actionDone"
+
+                android:inputType="text"
+                android:padding="10dp"
+                android:text="@string/holder"
+                android:textAlignment="center"
+
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="60dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/description_edit"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintEnd_toEndOf="@+id/title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_card_img_edit_normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="2"
+                app:layout_constraintTop_toBottomOf="@id/guideline2">
+
+                <LinearLayout
+                    android:id="@+id/Layout2Container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/ll_check"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_linearlayout_background_normal"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:weightSum="1"
+                        tools:ignore="NestedWeights">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:contentDescription="@string/description_check"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/card_img_check_normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="@string/check_list"
+                            android:textColor="#484848"
+
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_focus"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_linearlayout_background_normal"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:weightSum="1">
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+
+                            android:fontFamily="@font/montserrat_regular"
+
+                            android:text="@string/focus"
+                            android:textAlignment="center"
+                            android:textColor="#484848"
+
+                            android:textSize="15sp" />
+
+                        <ImageView
+
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/description_focus"
+                            app:srcCompat="@drawable/card_img_target_normal" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/ll_schedule"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_linearlayout_background_normal"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:weightSum="1"
+                        tools:ignore="NestedWeights">
+
+                        <ImageView
+
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/description_bel"
+                            app:srcCompat="@drawable/card_img_bell_normal" />
+
+                        <TextView
+
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="@string/schedule"
+                            android:textColor="#484848"
+
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_notes"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/card_linearlayout_background_normal"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:weightSum="1">
+
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+
+                            android:fontFamily="@font/montserrat_regular"
+
+                            android:text="@string/notes"
+                            android:textAlignment="center"
+                            android:textColor="#484848"
+
+                            android:textSize="15sp" />
+
+
+                        <ImageView
+
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="0.3"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/description_notes"
+                            app:srcCompat="@drawable/card_img_notes_normal" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.4" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/toolMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="16sp"
+        android:text="@string/select_a_tool_to_get_started"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="#929292"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+        app:layout_constraintVertical_bias="0.399" />
 
-        <EditText
-            android:id="@+id/id_edit_text"
-            android:layout_width="281dp"
-            android:layout_height="58dp"
-            android:layout_weight="1"
-            android:autofillHints="Enter Card Name"
-            android:inputType="text"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.198"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.128" />
-
-        <ImageButton
-            android:id="@+id/notifyButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/notification_bell"
-            android:contentDescription="@string/NotificationDescription"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.55"
-            app:layout_constraintStart_toEndOf="@+id/id_edit_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.215" />
-
-        <Button
-            android:id="@+id/stepFragment"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_white_rectangle"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@string/StepAdd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.077"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/id_edit_text" />
-
-        <Button
-            android:id="@+id/notesFragment"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_white_rectangle"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@string/NotesAdd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/id_edit_text" />
-
-        <Button
-            android:id="@+id/focusButton"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/rounded_white_rectangle"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@string/FocusButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.887"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/id_edit_text" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <RelativeLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
         android:layout_width="0dp"
-        android:layout_height="559dp"
-        android:background="@color/white"
-        android:padding="10dp"
+        android:layout_height="0dp"
+
+        android:visibility="invisible"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_section"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2">
 
-    </RelativeLayout>
+    </androidx.fragment.app.FragmentContainerView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
