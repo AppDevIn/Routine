@@ -164,6 +164,9 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
 
         cursor.close();
         db.close();
+
+        Log.v("SQL", "Focus Data has been initialized completed with " + returnList.size());
+
         return returnList;
     }
 

@@ -146,6 +146,11 @@ public class Habit {
         this.group = group;
     }
 
+    public int calculateProgress(){
+        int progress = (int) ((this.count/(double)this.occurrence) * 100);
+        return Math.min(progress, 100);
+    }
+
     /**@return String This return the title of the habit*/
     public String getTitle() {
         return title.toUpperCase().trim();

@@ -30,6 +30,8 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public FocusAdapter adapter;
     public ViewGroup parent;
     public ConstraintLayout constraintLayout;
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
 
     /**
      *
@@ -65,8 +67,11 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
      * */
     @Override
     public void onClick(View v) { //If item on click
-        showAlertDialogButtonClicked(this.getLayoutPosition(), adapter.getItems(getLayoutPosition()));
-        Log.v("item", "Item on click");
+        if(dialog == null || !
+                dialog.isShowing()) {
+            showAlertDialogButtonClicked(this.getLayoutPosition(), adapter.getItems(getLayoutPosition()));
+            Log.v("item", "Item on click");
+        }
     }
 
     /**
@@ -81,7 +86,9 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void showAlertDialogButtonClicked(final int position, final Focus focus) {
         final String task = Task.getText().toString();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext(), R.style.MyDialogTheme);
+
+        builder = new AlertDialog.Builder(itemView.getContext(), R.style.MyDialogTheme);
+
         builder.setTitle("Delete");
 
         LayoutInflater inflater = LayoutInflater.from(itemView.getContext());
@@ -106,7 +113,8 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
         });
 
         // create and show the alert dialog
-        final AlertDialog dialog = builder.create();
+        dialog = builder.create();
+
         dialog.show();
     }
 }

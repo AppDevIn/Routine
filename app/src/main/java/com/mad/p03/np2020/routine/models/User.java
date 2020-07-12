@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.models;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.nfc.FormatException;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -25,6 +26,8 @@ import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
+import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
+import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -373,6 +376,7 @@ public class User implements Parcelable {
 
     public User() {
     }
+
 
     /**
      * This will set the name and the password

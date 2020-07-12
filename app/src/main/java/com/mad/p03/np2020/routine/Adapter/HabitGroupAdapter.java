@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.HabitGroup;
-import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder;
 
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
 
     private Context c;
-    private OnItemClickListener mListener;
+    private HabitItemClickListener mListener;
     private static View view;
 
     /**Used as the adapter habitGroupList*/
@@ -47,7 +47,7 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
      *
      * @param listener This parameter reference the local Listener
      * */
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(HabitItemClickListener listener){
         this.mListener = listener;
     }
 

@@ -9,7 +9,7 @@ package com.mad.p03.np2020.routine.helpers;
  */
 
 
-public interface OnItemClickListener {
+public interface HabitItemClickListener {
     /**
      *
      * This method is an "abstract" method used to set onClickListener on each holder by parsing position from the adapter.
@@ -18,5 +18,5 @@ public interface OnItemClickListener {
      * @param position This parameter is used to parse the position.
      *
      * */
-    void onItemClick(int position);
+    void onHabitItemClick(int position);
 }

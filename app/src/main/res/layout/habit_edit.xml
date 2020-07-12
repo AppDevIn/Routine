@@ -228,54 +228,54 @@
 
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="130dp"-->
-<!--        android:orientation="vertical">-->
+    <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical">
 
-<!--        <TextView-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="@color/colorBlack"-->
-<!--            android:text="HABIT COUNT:"-->
-<!--            android:letterSpacing="0.1"/>-->
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:text="HABIT COUNT:"
+            android:letterSpacing="0.1"/>
 
-<!--        <LinearLayout-->
-<!--            android:layout_marginStart="25dp"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:orientation="horizontal">-->
+        <LinearLayout
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
 
-<!--            <TextView-->
-<!--                android:textColor="@color/colorBlack"-->
-<!--                android:id="@+id/menu_count"-->
-<!--                android:layout_width="10dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:textSize="20dp"-->
-<!--                android:text="0"/>-->
+            <TextView
+                android:textColor="@color/colorBlack"
+                android:id="@+id/menu_count"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20dp"
+                android:text="0"/>
 
 
-<!--            <ImageButton-->
-<!--                android:id="@+id/menu_minus_count"-->
-<!--                android:layout_marginStart="30dp"-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:src="@drawable/habit_minus_count"-->
-<!--                android:background="@drawable/edit_text_background" />-->
+            <ImageButton
+                android:id="@+id/menu_minus_count"
+                android:layout_marginStart="30dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/habit_minus_count"
+                android:background="@drawable/edit_text_background" />
 
-<!--            <ImageButton-->
-<!--                android:id="@+id/menu_add_count"-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:src="@drawable/habit_add"-->
-<!--                android:background="@drawable/edit_text_background"/>-->
+            <ImageButton
+                android:id="@+id/menu_add_count"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/habit_add"
+                android:background="@drawable/edit_text_background"/>
 
-<!--        </LinearLayout>-->
+        </LinearLayout>
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
 
     <LinearLayout
         android:layout_below="@id/fourth"
@@ -397,6 +397,28 @@
                 android:letterSpacing="0.1"/>
 
         </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:id="@+id/btm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/habit_view_edit_delete"
+            android:layout_width="100dp"
+            android:layout_height="29dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/habit_btn_background3"
+            android:fontFamily="@font/montserrat_regular"
+            android:letterSpacing="0.1"
+            android:textColor="@color/white"
+            android:text="@string/delete" />
 
     </LinearLayout>
 

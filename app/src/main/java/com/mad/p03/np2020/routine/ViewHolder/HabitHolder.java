@@ -2,14 +2,16 @@ package com.mad.p03.np2020.routine.ViewHolder;
 
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 
 /**
  *
@@ -26,16 +28,20 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     public TextView mTitle;
     /** Shown as habit count on the left ot the habit holder*/
     public TextView mCount;
-    /** Shown as habit count on the right of the habit holder*/
-    public TextView mCount2;
     /** Shown as habit occurrence on the habit holder*/
     public TextView mOccurrence;
     /** Shown as habit period on the habit holder*/
     public TextView mPeriod;
     /** Shown as the add count button on the habit holder*/
     public ImageButton addBtn;
-    /** The layout of the habit holder*/
-    public RelativeLayout habit_row;
+    /** The background of the habit holder*/
+    public CardView habit_card;
+    /** The progress of the habit */
+    public TextView habit_progress;
+    /** The progress bar of the habit */
+    public ProgressBar habit_progressBar;
+
+    public ImageView habit_finished;
 
     /**
      *
@@ -47,16 +53,19 @@ public class HabitHolder extends RecyclerView.ViewHolder {
      * @param listener This parameter is used to get the listener interface.
      *
      * */
-    public HabitHolder(@NonNull View itemView, final OnItemClickListener listener) {
+    public HabitHolder(@NonNull View itemView, final HabitItemClickListener listener) {
         super(itemView);
 
         this.mTitle = itemView.findViewById(R.id.habitTitle);
+        this.habit_card = itemView.findViewById(R.id.habit_card);
         this.mCount = itemView.findViewById(R.id.habitCount);
-        this.mCount2 = itemView.findViewById(R.id.habitCount2);
-        this.mOccurrence = itemView.findViewById(R.id.habitOccurence);
-        this.addBtn = itemView.findViewById(R.id.addCnt);
-        this.mPeriod = itemView.findViewById(R.id.habit_period);
-        this.habit_row = itemView.findViewById(R.id.habit_row);
+        this.mOccurrence = itemView.findViewById(R.id.habitOccurrence);
+        this.habit_progress = itemView.findViewById(R.id.habit_progress);
+        this.habit_progressBar = itemView.findViewById(R.id.habit_progressBar);
+        this.habit_finished = itemView.findViewById(R.id.habit_finished);
+
+//        this.addBtn = itemView.findViewById(R.id.addCnt);
+//        this.mPeriod = itemView.findViewById(R.id.habit_period);
 
         //set an onclick listener when the holder is clicked
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +74,7 @@ public class HabitHolder extends RecyclerView.ViewHolder {
                 if (listener!=null){
                     int position = getAdapterPosition(); //this is to get the position of the holder
                     if (position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(position);
+                        listener.onHabitItemClick(position);
                         //this is to parse the position into the parameter so that we can utilise the position in other activity further on
                     }
                 }

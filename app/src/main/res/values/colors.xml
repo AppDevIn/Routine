@@ -13,12 +13,12 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorFieryRose">#F45B69</color>
-    <color name="colorLightCoral">#F08080</color>
+    <color name="colorLightCoral">#FFC2B4</color>
     <color name="colorNCS_Blue">#3498DB</color>
     <color name="colorGrey">#bcc0c8</color>
-    <color name="colorSlightDesBlue">#6882ba</color>
-    <color name="colorCyanGreen">#6ecfba</color>
-    <color name="colorFadePurple">#d488db</color>
+    <color name="colorSlightDesBlue">#9FC5E8</color>
+    <color name="colorCyanGreen">#AFFFBE</color>
+    <color name="colorFadePurple">#FFEAAC</color>
     <color name="colorWhiteGrey">#dfdfdf</color>
     <color name="colorPureWhiteGrey">#f3f3f5</color>
     <color name="colorUnsaturatedGrey">#f2f2f2</color>
@@ -44,4 +44,5 @@
     <color name="silver">#BDC3C7</color>
     <color name="gray">#2C3E50</color>
     <color name="pastelBlue">#AEC6CF</color>
+    <color name="warmRed">#e74b3c</color>
 </resources>

@@ -6,7 +6,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
+import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.R;
 
 /**
@@ -33,7 +33,7 @@ public class HabitGroupHolder extends RecyclerView.ViewHolder {
      * @param listener This parameter is used to get the listener interface.
      *
      * */
-    public HabitGroupHolder(@NonNull View itemView, final OnItemClickListener listener) {
+    public HabitGroupHolder(@NonNull View itemView, final HabitItemClickListener listener) {
         super(itemView);
 
         this.grp_name = itemView.findViewById(R.id.habit_group_name);
@@ -45,7 +45,7 @@ public class HabitGroupHolder extends RecyclerView.ViewHolder {
                 if (listener!=null){
                     int position = getAdapterPosition(); //this is to get the position of the holder
                     if (position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(position);
+                        listener.onHabitItemClick(position);
                         //this is to parse the position into the parameter so that we can utilise the position in other activity further on
                     }
                 }

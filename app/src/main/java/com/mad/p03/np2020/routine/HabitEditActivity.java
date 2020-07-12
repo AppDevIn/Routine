@@ -1,8 +1,10 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -49,8 +52,9 @@ public class HabitEditActivity extends AppCompatActivity {
     private static final String TAG = "HabitEditActivity";
     private static final String SHARED_PREFS = "sharedPrefs"; // initialise sharedPrefs
 
-    private TextView habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text;
-    private Button buttonClose, buttonOk;
+    private TextView habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text, habit_count;
+    private Button buttonClose, buttonOk, buttonDelete;
+    private ImageButton menu_add_count, menu_minus_count;
 
     private Habit habit;
 
@@ -90,6 +94,10 @@ public class HabitEditActivity extends AppCompatActivity {
         group_indicate_text = findViewById(R.id.group_indicate_text);
         buttonClose = findViewById(R.id.habit_close);
         buttonOk = findViewById(R.id.create_habit);
+        habit_count = findViewById(R.id.menu_count);
+        menu_add_count = findViewById(R.id.menu_add_count);
+        menu_minus_count = findViewById(R.id.menu_minus_count);
+        buttonDelete = findViewById(R.id.habit_view_edit_delete);
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
@@ -121,6 +129,7 @@ public class HabitEditActivity extends AppCompatActivity {
         // set text on the input fields based on habit
         habit_name.setText(habit.getTitle());
         habit_occur.setText(String.valueOf(habit.getOccurrence()));
+        habit_count.setText(String.valueOf(habit.getCount()));
 
         // Retrieve tha habitGroup object
         final HabitGroup habitGroup = habit.getGroup();
@@ -139,6 +148,34 @@ public class HabitEditActivity extends AppCompatActivity {
         }else{
             habit_reminder_indicate_text.setText("NONE");
         }
+
+        // set onClickListener on the add count button
+        menu_add_count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cnt = habit_count.getText().toString();
+                // add the count by 1
+                int count = Integer.parseInt(cnt);
+                count++;
+                // set the count in the TextView
+                habit_count.setText(String.valueOf(count));
+            }
+        });
+
+        // set onClickListener on the minus count button
+        menu_minus_count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cnt = habit_count.getText().toString();
+                // minus the count by 1 if count > 0
+                int count = Integer.parseInt(cnt);
+                if (count > 0){
+                    count--;
+                }
+                // set the count in the TextView
+                habit_count.setText(String.valueOf(count));
+            }
+        });
 
         // set onClickListener on the group indicate text
         group_indicate_text.setOnClickListener(new View.OnClickListener() {
@@ -176,12 +213,59 @@ public class HabitEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // go back to habit view activity
                 Habit initial_habit = habit_dbHandler.getHabit(habit);
-                Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
+                Intent activityName = new Intent(HabitEditActivity.this, HabitView.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(initial_habit));
                 activityName.putExtras(extras);
                 startActivity(activityName);
                 finish();
+            }
+        });
+
+        // set onClickListener on delete habit button
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // create an alert dialog (delete habit)
+                AlertDialog.Builder builder = new AlertDialog.Builder(HabitEditActivity.this); // initialise the builder of alert dialog
+                builder.setTitle("Delete");
+                builder.setMessage("Are you sure you want to delete this habit?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // if the user choose to delete the habit
+
+                        Log.v(TAG, format("%s deleted!",habit.getTitle()));
+
+                        if (habit.getHabitReminder() != null){ // if the reminder of the habit object is not null
+                            // cancel the reminder if existed
+                            cancelReminder(habit.getTitle(),habit.getHabitReminder().getId(),habit.getHabitReminder().getCustom_text());
+                        }
+
+                        // delete the habit
+                        habit_dbHandler.deleteHabit(habit); // delete the habit in SQLiteDatabase
+
+                        writeHabit_Firebase(habit, user.getUID(), true); // delete the habit in the firebase
+
+                        // go back to habit activity
+                        Intent activityName = new Intent(HabitEditActivity.this, HabitActivity.class);
+                        activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(activityName);
+                        finish();
+
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        // if the user refused to delete the habit
+                        Log.v(TAG,"User refuses to delete!");
+                    }
+                });
+
+                AlertDialog alert = builder.create(); // build the dialog
+                alert.show(); // show the alert dialog (delete habit)
             }
         });
 
@@ -192,28 +276,34 @@ public class HabitEditActivity extends AppCompatActivity {
 
                 // update habit title if modified
                 if (!habit.getTitle().equals(habit_name.getText().toString())){
-                    Log.d(TAG, "HabitReminder: Update habit title");
+                    Log.d(TAG, "Habit: Update habit title");
                     habit.modifyTitle(habit_name.getText().toString()); // modify the title
                     if (habit.getHabitReminder() != null){
                         habit.getHabitReminder().setMessage(habit_name.getText().toString());
                     }
                 }
 
+                // update habit count if modified
+                if (habit.getCount() != Integer.parseInt(habit_count.getText().toString())){
+                    Log.d(TAG, "Habit: Update habit count");
+                    habit.setCount(Integer.parseInt(habit_count.getText().toString())); // modify the occurrence
+                }
+
                 // update habit occurrence if modified
                 if (habit.getOccurrence() != Integer.parseInt(habit_occur.getText().toString())){
-                    Log.d(TAG, "HabitReminder: Update habit occurrence");
+                    Log.d(TAG, "Habit: Update habit occurrence");
                     habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString())); // modify the occurrence
                 }
 
                 // update habit period if modified
                 if (habit.getPeriod() != period[0]){
-                    Log.d(TAG, "HabitReminder: Update habit period");
+                    Log.d(TAG, "Habit: Update habit period");
                     habit.setPeriod(period[0]); // modify the period
                 }
 
                 // update habit holder color if modified
                 if (!habit.getHolder_color().equals(color[0])){
-                    Log.d(TAG, "HabitReminder: Update habit holder color");
+                    Log.d(TAG, "Habit: Update habit holder color");
                     habit.setHolder_color(color[0]); // modify the holder color
                 }
 
@@ -221,13 +311,13 @@ public class HabitEditActivity extends AppCompatActivity {
                 HabitReminder reminder = habit.getHabitReminder();
                 if (habit_dbHandler.isReminderExisted(habit)){
                     if (reminder == null){
-                        Log.d(TAG, "Cancel an existing alarm");
+                        Log.d(TAG, "HabitReminder: Cancel an existing alarm");
                         HabitReminder cancel = habit_dbHandler.getReminder(habit);
                         Log.d(TAG, cancel.getMessage());
                         cancelReminder(habit.getTitle(), cancel.getId(), cancel.getCustom_text());
                     }else{
                         if (!reminder.isIdentical(habit_dbHandler.getReminder(habit))){
-                            Log.d(TAG, "Overriding the alarm");
+                            Log.d(TAG, "HabitReminder: Overriding the alarm");
                             cancelReminder(habit.getTitle(), reminder.getId(), reminder.getCustom_text());
                             setReminder(habit.getTitle(),reminder.getMinutes(),reminder.getHours(),reminder.getId(),reminder.getCustom_text());
                         }
@@ -246,7 +336,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
 
                 // go back to habit view activity
-                Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
+                Intent activityName = new Intent(HabitEditActivity.this, HabitView.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);

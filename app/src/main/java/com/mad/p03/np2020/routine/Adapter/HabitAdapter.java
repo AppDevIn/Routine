@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.helpers.OnItemClickListener;
+import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
@@ -38,7 +37,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
     final static String TAG = "HabitAdapter";
     private Context c;
-    private OnItemClickListener mListener;
+    private HabitItemClickListener mListener;
     private static View view;
     private HabitDBHelper dbHandler;
     private String UID;
@@ -61,7 +60,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
      *
      * @param listener This parameter reference the local Listener
      * */
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(HabitItemClickListener listener){
         this.mListener = listener;
     }
 
@@ -80,7 +79,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     @Override
     public HabitHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // create a new view
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_row,null);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_grid_view_items, parent, false);
+
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.width = (int) (parent.getWidth() * 0.464);
+        Log.d(TAG, "onCreateViewHolder: width" + layoutParams.width);
+        view.setLayoutParams(layoutParams);
 
         return new HabitHolder(view, mListener);
     }
@@ -102,65 +106,84 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         // retrieve the habit object
         final Habit habit = _habitList.getItemAt(position);
 
+        if (habit.getTitle().toLowerCase().equals("dummy")){
+            holder.itemView.setVisibility(View.INVISIBLE);
+            return;
+        }else{
+            holder.itemView.setVisibility(View.VISIBLE);
+        }
+
         // set the background color of the holder based on its holder color value
-        switch (habit.getHolder_color()){
+        switch (habit.getHolder_color()) {
+
             case ("cyangreen"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_cyangreen);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_cyangreen);
                 break;
 
             case ("lightcoral"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_lightcoral);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_lightcoral);
                 break;
 
             case ("fadepurple"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_fadepurple);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_fadepurple);
                 break;
 
             case ("slightdesblue"):
-                holder.habit_row.setBackgroundResource(R.drawable.habit_holder_slightdesblue);
+                holder.habit_card.setBackgroundResource(R.drawable.habit_holder_slightdesblue);
                 break;
         }
 
         // set text on TextView based on the object
-        holder.mTitle.setText(habit.getTitle());
+        holder.mTitle.setText(capitalise(habit.getTitle()));
         holder.mCount.setText(String.valueOf(habit.getCount()));
-        holder.mCount2.setText(String.valueOf(habit.getCount()));
         holder.mOccurrence.setText(String.valueOf(habit.getOccurrence()));
-        holder.addBtn.setBackgroundColor(Color.TRANSPARENT);
-        // set onClickListener on add button
-        holder.addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // this will trigger the habit class add count method
-                habit.addCount(); // add the count by 1
-                notifyDataSetChanged(); // notify the data set has changed
-                dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
-                writeHabit_Firebase(habit, UID, false); // write the habit to the firebase
 
-            }
-        });
-
-        // set the period text based on its period attribute value
-        switch (habit.getPeriod()){
-            case 1:
-                holder.mPeriod.setText("TODAY:");
-                break;
-            case 7:
-                holder.mPeriod.setText("THIS WEEK:");
-                break;
-            case 30:
-                holder.mPeriod.setText("THIS MONTH:");
-                break;
-            case 365:
-                holder.mPeriod.setText("THIS YEAR:");
-                break;
+        int progress = habit.calculateProgress();
+        holder.habit_progressBar.setProgress(progress);
+        holder.habit_progress.setText(String.valueOf(progress));
+        if (progress == 100){
+            holder.habit_progressBar.setVisibility(View.INVISIBLE);
+            holder.habit_finished.setVisibility(View.VISIBLE);
+        }else{
+            holder.habit_progressBar.setVisibility(View.VISIBLE);
+            holder.habit_finished.setVisibility(View.INVISIBLE);
         }
 
-        if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_tick_white); // replace the add button as a tick button
-        }else{ // if habit count < habit occurrence
-            holder.addBtn.setImageResource(R.drawable.habit_add_white); // set the add button
-        }
+//        holder.addBtn.setBackgroundColor(Color.TRANSPARENT);
+//        // set onClickListener on add button
+//        holder.addBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // this will trigger the habit class add count method
+//                habit.addCount(); // add the count by 1
+//                notifyDataSetChanged(); // notify the data set has changed
+//                dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
+//                writeHabit_Firebase(habit, UID, false); // write the habit to the firebase
+//
+//            }
+//        });
+//
+//        // set the period text based on its period attribute value
+//        switch (habit.getPeriod()){
+//            case 1:
+//                holder.mPeriod.setText("TODAY:");
+//                break;
+//            case 7:
+//                holder.mPeriod.setText("THIS WEEK:");
+//                break;
+//            case 30:
+//                holder.mPeriod.setText("THIS MONTH:");
+//                break;
+//            case 365:
+//                holder.mPeriod.setText("THIS YEAR:");
+//                break;
+//        }
+
+//        if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
+//            holder.addBtn.setImageResource(R.drawable.habit_tick_white); // replace the add button as a tick button
+//        }else{ // if habit count < habit occurrence
+//            holder.addBtn.setImageResource(R.drawable.habit_add_white); // set the add button
+//        }
 
     }
 
@@ -224,6 +247,25 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         Gson gson = new Gson();
         Log.i(TAG,"Object serialize");
         return gson.toJson(habit);
+    }
+
+    /**
+     *
+     * This method is used to format text by capitalising the first text of each split text
+     *
+     * @param text This parameter is used to get the text
+     *
+     * @return String This returns the formatted text
+     * */
+    public String capitalise(String text){
+        String txt = "";
+        String[] splited = text.split("\\s+");
+        for (String s: splited){
+            txt += s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase() + " ";
+        }
+        return txt;
+
+//        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
 }
