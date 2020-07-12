@@ -1,10 +1,12 @@
 package com.mad.p03.np2020.routine.Card;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -48,7 +50,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.card_layout);
 
         //Get task object from extra
-        mTask = (Task) getIntent().getSerializableExtra("task");
+        mTask = new TaskDBHelper(this).getTask(getIntent().getStringExtra("task"));
 
         //IDs
         mEdTitle = findViewById(R.id.title);
@@ -57,6 +59,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout schedule = findViewById(R.id.ll_schedule);
         LinearLayout notes = findViewById(R.id.ll_notes);
         ImageView imageView = findViewById(R.id.imgEdit);
+        Toolbar toolbar = findViewById(R.id.toolbar2);
 
         //Set onclick listeners
         check.setOnClickListener(this);
@@ -70,6 +73,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
         //Set the title text the task name
         mEdTitle.setText(mTask.getName());
+
+        float radius[] = {0f,0f,0f,0f,50f,50f,50f,50f};
+
 
     }
 

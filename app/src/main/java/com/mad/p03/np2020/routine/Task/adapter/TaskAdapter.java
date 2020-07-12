@@ -200,7 +200,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         //Move to the card layout
         Intent intent = new Intent(mContext, CardActivity.class);
-        intent.putExtra("task", mTaskList.get(position)); // Add the object
+        intent.putExtra("task", mTaskList.get(position).getTaskID()); // Add the object
         mContext.startActivity(intent);
     }
 

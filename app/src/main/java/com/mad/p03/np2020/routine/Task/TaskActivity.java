@@ -353,8 +353,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         //if empty display the image if not the recyclerview
         if(mTaskList.size() == 0){
             viewSwitcher.showNext();
-        }else{
-
         }
 
 
