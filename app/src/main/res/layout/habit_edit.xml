@@ -398,6 +398,28 @@
 
         </LinearLayout>
 
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:id="@+id/btm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/habit_view_edit_delete"
+            android:layout_width="100dp"
+            android:layout_height="29dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/habit_btn_background3"
+            android:fontFamily="@font/montserrat_regular"
+            android:letterSpacing="0.1"
+            android:textColor="@color/white"
+            android:text="@string/delete" />
+
     </LinearLayout>
 
     </TableLayout>

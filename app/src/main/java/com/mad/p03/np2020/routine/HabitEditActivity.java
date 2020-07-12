@@ -1,8 +1,10 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -51,7 +53,7 @@ public class HabitEditActivity extends AppCompatActivity {
     private static final String SHARED_PREFS = "sharedPrefs"; // initialise sharedPrefs
 
     private TextView habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text, habit_count;
-    private Button buttonClose, buttonOk;
+    private Button buttonClose, buttonOk, buttonDelete;
     private ImageButton menu_add_count, menu_minus_count;
 
     private Habit habit;
@@ -95,6 +97,7 @@ public class HabitEditActivity extends AppCompatActivity {
         habit_count = findViewById(R.id.menu_count);
         menu_add_count = findViewById(R.id.menu_add_count);
         menu_minus_count = findViewById(R.id.menu_minus_count);
+        buttonDelete = findViewById(R.id.habit_view_edit_delete);
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
@@ -216,6 +219,53 @@ public class HabitEditActivity extends AppCompatActivity {
                 activityName.putExtras(extras);
                 startActivity(activityName);
                 finish();
+            }
+        });
+
+        // set onClickListener on delete habit button
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // create an alert dialog (delete habit)
+                AlertDialog.Builder builder = new AlertDialog.Builder(HabitEditActivity.this); // initialise the builder of alert dialog
+                builder.setTitle("Delete");
+                builder.setMessage("Are you sure you want to delete this habit?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // if the user choose to delete the habit
+
+                        Log.v(TAG, format("%s deleted!",habit.getTitle()));
+
+                        if (habit.getHabitReminder() != null){ // if the reminder of the habit object is not null
+                            // cancel the reminder if existed
+                            cancelReminder(habit.getTitle(),habit.getHabitReminder().getId(),habit.getHabitReminder().getCustom_text());
+                        }
+
+                        // delete the habit
+                        habit_dbHandler.deleteHabit(habit); // delete the habit in SQLiteDatabase
+
+                        writeHabit_Firebase(habit, user.getUID(), true); // delete the habit in the firebase
+
+                        // go back to habit activity
+                        Intent activityName = new Intent(HabitEditActivity.this, HabitActivity.class);
+                        activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(activityName);
+                        finish();
+
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        // if the user refused to delete the habit
+                        Log.v(TAG,"User refuses to delete!");
+                    }
+                });
+
+                AlertDialog alert = builder.create(); // build the dialog
+                alert.show(); // show the alert dialog (delete habit)
             }
         });
 
