@@ -180,7 +180,16 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hour, int minute) {
-                time = hour + ":" + minute;
+
+                if (minute < 10)
+                {
+                    time = hour + ":0" + minute;
+                }
+                else
+                {
+                    time = hour + ":" + minute;
+                }
+
 
                 //timeButton.setText(time);
 
