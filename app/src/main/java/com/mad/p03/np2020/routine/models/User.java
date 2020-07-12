@@ -26,9 +26,6 @@ import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
-import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
-import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
-
 import java.util.ArrayList;
 import java.util.List;
 
