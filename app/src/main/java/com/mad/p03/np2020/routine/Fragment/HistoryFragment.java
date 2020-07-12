@@ -130,7 +130,7 @@ public class HistoryFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerHistory);
 
         //recycler adapter
-        FocusAdapter focusAdapter = new FocusAdapter(user, getActivity(), focusDBHelper);
+        FocusAdapter focusAdapter = new FocusAdapter(user, getActivity(), focusDBHelper, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getActivity(), 2); //Declare layoutManager
 
         recyclerView.addItemDecoration(new DividerItemDecoration(15)); //Add Custom Spacing
@@ -155,7 +155,7 @@ public class HistoryFragment extends Fragment {
      **/
     private void initialisation() {
         textFragment.setText("My Focus History");
-        updateTask();
+        updateTask(this.user);
     }
 
     /**
@@ -177,7 +177,7 @@ public class HistoryFragment extends Fragment {
      *
      * Method to update task number on the fragment
      * */
-    private void updateTask() {
+    public void updateTask(User user) {
         usIndicator.setText(String.valueOf(user.getmUnsuccessFocusList().size()));
         sIndicator.setText(String.valueOf(user.getmSuccessFocusList().size()));
         int totalSeconds = user.getTotalHours();

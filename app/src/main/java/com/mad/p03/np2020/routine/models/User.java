@@ -375,6 +375,7 @@ public class User implements Parcelable {
     public User() {
     }
 
+
     /**
      * This will set the name and the password
      * to the object

@@ -103,16 +103,16 @@ public class BoundService extends Service {
      * Set Notification only for Focus
      *
      */
-    public void createNotification() {
+    public void createNotification(Context context) {
         Log.e(LOG_TAG, "Notification is pushed");
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) { //API level for Kitkat
             Log.e(LOG_TAG, "Notification is pushed for kitkat level");
 
-            Intent intent = new Intent(getApplicationContext(), FocusActivity.class);
+            Intent intent = new Intent(context, FocusActivity.class);
             PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            Notification noti = new Notification.Builder(getApplicationContext()).setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.focus).setContentIntent(pIntent).build();
+            Notification noti = new Notification.Builder(context).setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.focus).setContentIntent(pIntent).build();
             if (notificationManager != null) {
                 notificationManager.notify(0, noti);
             } else {
@@ -128,7 +128,7 @@ public class BoundService extends Service {
             NotificationManager manager = getSystemService(NotificationManager.class);
             assert manager != null;
             manager.createNotificationChannel(channel);
-            sendChannel1();
+            sendChannel1(context);
         }
     }
 
@@ -138,13 +138,13 @@ public class BoundService extends Service {
      *
      * Send notification to channel 1, used for api above 24
      */
-    public void sendChannel1() {
+    public void sendChannel1(Context context) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), FocusActivity.class);
+        Intent intent = new Intent(context, FocusActivity.class);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-        Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.focus).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        Notification notification = new NotificationCompat.Builder(context, CHANNEL_1_ID).setContentIntent(pIntent).setSmallIcon(R.drawable.focus).setContentTitle(title).setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setCategory(NotificationCompat.CATEGORY_MESSAGE).build();
         assert notificationManager != null;
         notificationManager.notify(1, notification);
 

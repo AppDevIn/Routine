@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder;
 import com.mad.p03.np2020.routine.background.FocusWorker;
@@ -28,6 +29,7 @@ import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +48,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     private FocusDBHelper focusDBHelper;
     private User user;
     private String TAG = "FocusAdapter";
+    private HistoryFragment historyFragment;
 
     /**
      * Focus Adapter
@@ -54,11 +57,13 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      * @param context       This parameter is used to set the context of the section
      * @param focusDBHelper This parameter is used to set the focus database of the section
      */
-    public FocusAdapter(User user, Context context, FocusDBHelper focusDBHelper) {
+    public FocusAdapter(User user, Context context, FocusDBHelper focusDBHelper, HistoryFragment historyFragment) {
         this.context = context;
         this.focusDBHelper = focusDBHelper;
         this.user = user;
         this.focusList = user.getmFocusList();
+        this.historyFragment = historyFragment;
+
         user.readFocusFirebase(context);
         eventListener();
     }
@@ -79,8 +84,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     /**
      * Notify Item changed if user remove
      *
-     * @param positon         This parameter is used to set the position of the section
-     * @param focusViewHolder This parameter is used to set the FocusViewHolder of the section
+     * @param position         This parameter is used to set the position of the section
+     * @param holder This parameter is used to set the FocusViewHolder of the section
      */
     @Override
     public void onBindViewHolder(@NonNull FocusViewHolder holder, int position) {
@@ -98,6 +103,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
             holder.iconComplete.setImageResource(R.drawable.ic_cross);
             holder.constraintLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.focus_image_background_unsuccess));
         }
+
+        Log.v("FocusAdapter", "item is adding");
     }
 
     /**
@@ -109,7 +116,12 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     public void remove(int position, Focus focusViewHolder) {
         focusList.remove(position);
         focusDBHelper.removeOneData(focusViewHolder);
+
         deleteDataFirebase(focusViewHolder);
+
+        user.setmFocusList((ArrayList<Focus>) focusList);
+        historyFragment.updateTask(user);
+
         this.notifyItemRemoved(position);
     }
 
@@ -118,6 +130,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      */
     public void notifiyItemChange() {
         focusList = user.getmFocusList();
+
         this.notifyDataSetChanged();
         Log.v(TAG, "Data is changed from other server");
     }
