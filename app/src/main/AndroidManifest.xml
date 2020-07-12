@@ -63,7 +63,8 @@
 
         <activity android:name=".HabitGroupActivity" />
 
-        <activity android:name=".FocusActivity" />
+        <activity android:name=".FocusActivity"
+            android:launchMode="singleTask"/>
 
 
         <activity android:name=".HabitReminderActivity" />
