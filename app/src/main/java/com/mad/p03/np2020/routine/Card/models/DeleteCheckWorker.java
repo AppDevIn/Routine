@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Section;
 
 import androidx.annotation.NonNull;
@@ -44,11 +45,11 @@ public class DeleteCheckWorker extends Worker {
     public Result doWork() {
         final String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String ID = getInputData().getString("ID") ;
-        String sectionID =  getInputData().getString(Section.COLUMN_SECTION_ID);
+        String taskID =  getInputData().getString(Check.COLUMN_TaskID);
 
         Log.d("TaskDelete", "doWork: " + ID);
 
-        FirebaseDatabase.getInstance().getReference().child("check").child(UID).child(sectionID).child(ID).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("check").child(UID).child(ID).removeValue();
 
 
         return Result.success();

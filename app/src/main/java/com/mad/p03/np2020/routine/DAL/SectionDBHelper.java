@@ -106,7 +106,7 @@ public class SectionDBHelper extends DBHelper{
         values.put(Section.COLUMN_NAME, section.getName());
         values.put(Section.COLUMN_COLOR, section.getBackgroundColor());
         values.put(Section.COLUMN_USERID, UID);
-        values.put(Section.COLUMN_IMAGE, section.getBmiIcon());//TODO: The image
+        values.put(Section.COLUMN_IMAGE, section.getBmiIcon());//The image
 
         // Insert the new row, returning the primary key value of the new row
         //If -1 means there is an error
@@ -206,6 +206,12 @@ public class SectionDBHelper extends DBHelper{
      */
     public void delete(String ID){
         SQLiteDatabase db = this.getWritableDatabase();
+
+
+        //Will delete the check and task list
+        new TaskDBHelper(mContext).deleteAll(ID);
+
+        //Delete the section
         db.delete(
                 Section.TABLE_NAME,  // The table to delete from
                 Section.COLUMN_SECTION_ID + " = ?", //The condition
@@ -214,11 +220,7 @@ public class SectionDBHelper extends DBHelper{
         mMyDatabaseListener.onDataDelete(ID);
 
 
-        db.delete(
-                Task.TABLE_NAME,  // The table to delete from
-                Task.COLUMN_SECTION_ID + " = ?", //The condition
-                new String[]{ID} // The args will be replaced by ?
-        );
+
 
         db.close();
     }

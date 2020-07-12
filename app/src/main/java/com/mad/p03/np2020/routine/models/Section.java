@@ -114,44 +114,44 @@ public class Section implements Serializable {
         this.mUID = UID;
     }
 
-
-    /**
-     * Create the section object from a json object
-     * @param json The json you want to convert to object
-     * @return This will return the section object
-     */
-    public static Section fromJSON(String json){
-
-        int color = 0;
-        String name = "";
-        int image = 0;
-        String id = "";
-        try {
-            //Make the string to object
-            JSONObject jsonObject = new JSONObject(json);
-
-            //Get the values from the object
-            color = Integer.parseInt(jsonObject.getString("backgroundColor"));
-            name = jsonObject.getString("name");
-            image = Integer.parseInt(jsonObject.getString("bmiIcon"));
-            id = jsonObject.getString("id");
-
-            //Return back the object
-            //TODO: Needs to change
-            return new Section(name, color, image, id,5,"jdfshkjfgnds");
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e(TAG, "fromJSON: ", e);
-        }
-
-
-
-        return null;
-
-
-    }
+                    /*Not Used anymore*/
+//    /**
+//     * Create the section object from a json object
+//     * @param json The json you want to convert to object
+//     * @return This will return the section object
+//     */
+//    public static Section fromJSON(String json){
+//
+//        int color = 0;
+//        String name = "";
+//        int image = 0;
+//        String id = "";
+//        try {
+//            //Make the string to object
+//            JSONObject jsonObject = new JSONObject(json);
+//
+//            //Get the values from the object
+//            color = Integer.parseInt(jsonObject.getString("backgroundColor"));
+//            name = jsonObject.getString("name");
+//            image = Integer.parseInt(jsonObject.getString("bmiIcon"));
+//            id = jsonObject.getString("id");
+//
+//            //Return back the object
+//            //TODO: Needs to change
+//            return new Section(name, color, image, id,5,"jdfshkjfgnds");
+//
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.e(TAG, "fromJSON: ", e);
+//        }
+//
+//
+//
+//        return null;
+//
+//
+//    }
 
     /**
      * Create a object from the DatasnapShot from
@@ -403,7 +403,7 @@ public class Section implements Serializable {
 
         CheckDBHelper checkDBHelper = new CheckDBHelper(context);
 
-        return checkDBHelper.getSection(ID);
+        return checkDBHelper.getAllCheck(ID);
 
 
     }

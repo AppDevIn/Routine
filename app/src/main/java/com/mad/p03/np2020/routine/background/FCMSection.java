@@ -47,7 +47,7 @@ public class FCMSection extends FirebaseMessagingService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+        // Implement this method to send token to your app server.
 
 //        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
 //        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users")
@@ -86,31 +86,31 @@ public class FCMSection extends FirebaseMessagingService {
         }
 
     }
-
-    /**
-     *
-     * This method used create the section object, using the
-     * object to create the a row in the section table. It also check
-     * the data is already create to avoid duplicate
-     *
-     * @param remoteMessage Remote message that has been received.
-     */
-
-    private void addSectionSQL(RemoteMessage remoteMessage){
-        Section section = Section.fromJSON(remoteMessage.getData().toString());
-        Log.d(TAG, "onMessageReceived(): Section info: " + section.toString());
-
-        String id = remoteMessage.getData().get("id");
-
-        //Save to SQL
-        //Check if the Data already exist
-        SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
-        Log.d(TAG, "onMessageReceived: " + sectionDBHelper.hasID(id));
-        if(!sectionDBHelper.hasID(id)){
-            sectionDBHelper.insertSection(section, FirebaseAuth.getInstance().getCurrentUser().getUid());
-            Log.d(TAG, "Added to new Firebase data to Section ");
-        }
-    }
+//
+//    /**
+//     *
+//     * This method used create the section object, using the
+//     * object to create the a row in the section table. It also check
+//     * the data is already create to avoid duplicate
+//     *
+//     * @param remoteMessage Remote message that has been received.
+//     */
+//
+//    private void addSectionSQL(RemoteMessage remoteMessage){
+//        Section section = Section.fromJSON(remoteMessage.getData().toString());
+//        Log.d(TAG, "onMessageReceived(): Section info: " + section.toString());
+//
+//        String id = remoteMessage.getData().get("id");
+//
+//        //Save to SQL
+//        //Check if the Data already exist
+//        SectionDBHelper sectionDBHelper = new SectionDBHelper(this);
+//        Log.d(TAG, "onMessageReceived: " + sectionDBHelper.hasID(id));
+//        if(!sectionDBHelper.hasID(id)){
+//            sectionDBHelper.insertSection(section, FirebaseAuth.getInstance().getCurrentUser().getUid());
+//            Log.d(TAG, "Added to new Firebase data to Section ");
+//        }
+//    }
 
 
     /**

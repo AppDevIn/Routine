@@ -153,6 +153,24 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
     }
 
     @Override
+    public void onDataUpdate(Check check) {
+
+
+        for (int position = 0; position < mCheckLst.size(); position++) {
+
+
+            if(mCheckLst.get(position).getID().equals(check.getID())){
+
+                mCheckLst.remove(position);
+                mCheckLst.add(position, check);
+
+                checkAdapter.notifyItemChanged(position);
+                break;
+            }
+        }
+    }
+
+    @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 actionId == EditorInfo.IME_ACTION_DONE ||
@@ -182,7 +200,7 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
 
         CheckDBHelper checkDBHelper = new CheckDBHelper(getContext());
 
-        mCheckLst = checkDBHelper.getSection(mTaskID);
+        mCheckLst = checkDBHelper.getAllCheck(mTaskID);
 
         mRecyclerView = getView().findViewById(R.id.checkRecycler);
         mRecyclerView.setHasFixedSize(true);

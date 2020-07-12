@@ -418,7 +418,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //TODO
+                /*Not Implemented*/
             }
         });
 

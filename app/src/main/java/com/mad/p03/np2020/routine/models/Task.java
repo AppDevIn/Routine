@@ -96,7 +96,6 @@ public class Task implements Serializable {
     private Date dueDate;
     private String mNotes;
     private String mLabels;
-    private List<Steps> mSteps;
     private List<Label> mLabelList;
     private boolean dirty = false;
 
@@ -542,11 +541,13 @@ public class Task implements Serializable {
         if(task != null){
             if(task.mNotes != null){
                 sameNotes = this.mNotes.equals(task.getNotes());
+            }else{
+                sameNotes = (this.mNotes == task.getNotes());
             }
             boolean isSame = this.mTaskID.equals(task.getTaskID()) &&
                     sameNotes &&
                     this.isChecked() == task.isChecked() &&
-                    this.getName().equals(task.getName()) && true;
+                    this.getName().equals(task.getName());
 //                    this.getRemindDate().equals(task.getRemindDate());
             return (isSame);
         }else{

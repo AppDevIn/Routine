@@ -52,7 +52,33 @@ public class CheckDBHelper extends DBHelper{
         sCheckDataListener = checkDataListener;
     }
 
-    public List<Check> getSection(String sectionID){
+
+    public Check getCheck(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.d(TAG, "getUser: Querying data");
+
+
+        //Get the data from sqlite
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " where "+Check.COLUMN_Check_ID+"='"+id+"'", null );
+
+        if (cursor != null)
+            cursor.moveToFirst(); //Only getting the first value
+
+        //Prepare a section object
+        assert cursor != null;
+        Check check = Check.fromCursor(cursor);
+        Log.d(TAG, "getTask(): Reading data" + check.toString() );
+
+
+        //Close the DB connection
+        db.close();
+
+        return check;
+
+    }
+
+    public List<Check> getAllCheck(String taskID){
 
         List<Check> checkList = new ArrayList<>();
 
@@ -62,7 +88,7 @@ public class CheckDBHelper extends DBHelper{
 
 
         //Get the data from sqlite
-        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " WHERE SectionID='"+sectionID+"' ORDER BY " + Check.COLUMN_POSITION + " ASC;", null );
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " WHERE TaskID='"+taskID+"' ORDER BY " + Check.COLUMN_POSITION + " ASC;", null );
 
         if (cursor.moveToFirst()){
             do {
@@ -84,7 +110,7 @@ public class CheckDBHelper extends DBHelper{
 
     }
 
-    public String insertCheck(Check check, String sectionID) {
+    public String insertCheck(Check check, String taskID) {
         Log.d(TAG, "insertCheck(): Preparing to insert the new Check ");
 
         //Add values into the database
@@ -96,7 +122,7 @@ public class CheckDBHelper extends DBHelper{
         values.put(Check.COLUMN_Check_ID, check.getID());
         values.put(Check.COLUMN_CHECKED, check.isChecked());
         values.put(Check.COLUMN_NAME, check.getName());
-        values.put(Check.COLUMN_SectionID, sectionID);
+        values.put(Check.COLUMN_TaskID, taskID);
 
         // Insert the new row, returning the primary key value of the new row
         //If -1 means there is an error
@@ -115,28 +141,38 @@ public class CheckDBHelper extends DBHelper{
 
     }
 
-    /**
-     * This method will update the position of the given
-     * row based on the ID
-     * @param ID
-     * @param checked
-     */
-    public void update(String ID,boolean checked){
+    public String insertCheck(Check check) {
+        Log.d(TAG, "insertCheck(): Preparing to insert the new Check ");
 
-        Log.d(TAG, "update: Updating the check status too " + checked);
+        //Add values into the database
+        // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues updateValues = new ContentValues();
-        updateValues.put(Check.COLUMN_CHECKED, checked);
-        db.update(
-                Check.TABLE_NAME,
-                updateValues,
-                Check.COLUMN_Check_ID + " = ?",
-                new String[]{ID}
-        );
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(Check.COLUMN_Check_ID, check.getID());
+        values.put(Check.COLUMN_CHECKED, check.isChecked());
+        values.put(Check.COLUMN_NAME, check.getName());
+        values.put(Check.COLUMN_TaskID, check.getTaskID());
 
-        db.close();
+        // Insert the new row, returning the primary key value of the new row
+        //If -1 means there is an error
+        long id = db.insert(Check.TABLE_NAME, null, values);
+
+        if(id == -1){
+            Log.e(TAG, "insertTask(): There has been error inserting the data: ");
+        } else {
+            Log.d(TAG, "insertTask(): Data inserted");
+        }
+
+        if (sCheckDataListener != null)
+            sCheckDataListener.onDataAdd(check);
+
+        return String.valueOf(id);
+
     }
+
+
 
     /**
      * This method will update the position of the given
@@ -190,6 +226,28 @@ public class CheckDBHelper extends DBHelper{
     }
 
     /**
+     * This will delete all the data from checkList table based
+     * of the taskID
+     *
+     * @param taskID ID that will be used find the task and delete it
+     */
+    public void deleteAll(String taskID){
+
+        Log.d(TAG, "delete(): Will be deleting ID " + taskID );
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(
+                Check.TABLE_NAME,  // The table to delete from
+                Check.COLUMN_TaskID + " = ?", //The condition
+                new String[]{taskID} // The args will be replaced by ?
+        );
+
+        Log.d(TAG, "delete(): Removed from database");
+
+        db.close();
+    }
+
+    /**
      * This method will update the position of the given
      * row based on the ID
      * @param ID
@@ -216,6 +274,69 @@ public class CheckDBHelper extends DBHelper{
         db.close();
     }
 
+    /**
+     * This method will update the position of the given
+     * row based on the ID
+     * @param ID
+     * @param checked
+     */
+    public void update(String ID,boolean checked){
+
+        Log.d(TAG, "update: Updating the check status too " + checked);
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Check.COLUMN_CHECKED, checked);
+        db.update(
+                Check.TABLE_NAME,
+                updateValues,
+                Check.COLUMN_Check_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
+
+    public void update(Check check){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Check.COLUMN_CHECKED, check.isChecked());
+
+        db.update(
+                Check.TABLE_NAME,
+                updateValues,
+                Check.COLUMN_Check_ID + " = ?",
+                new String[]{check.getID()}
+        );
+
+        if (sCheckDataListener != null)
+            sCheckDataListener.onDataUpdate(check);
+
+        db.close();
+    }
+
+    /**
+     *
+     * This method will query from the database
+     * if it doesn't exist it return false if does true
+     * based on the {@code moveToFirst()}
+     *
+     * @param id Section ID to check against the table
+     * @return Boolean if is true or false depending on if
+     * the row exits. If it exists is true
+     */
+    public Boolean hasID(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //Get the data from sqlite
+        Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " where "+ Check.COLUMN_Check_ID +"='"+id+"'", null );
+
+        return cursor.moveToFirst();
+    }
 
 
 }

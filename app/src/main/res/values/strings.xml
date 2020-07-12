@@ -99,7 +99,8 @@
     <string name="drink_water">Drink water</string>
     <string name="divider">/</string>
     <string name="homeTime">My Task List</string>
-    <string name="your_tasklist_is_empty">Your tasklist is empty</string>
+    <string name="your_tasklist_is_empty">Your Task List is empty</string>
+    <string name="checkListEmpty">Your Check List is empty</string>
     <string name="description_bel">A bell icon</string>
     <string name="description_check">A check icon</string>
     <string name="check_list">Check List</string>
