@@ -33,10 +33,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter;
 import com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
+import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.LoginActivity;
@@ -79,9 +82,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     FloatingActionButton mImgAdd;
     List<Section> mSectionList;
     SectionDBHelper mSectionDBHelper;
-    Integer[] mColors, mBackgrounds;
+    Integer[] mColors;
+    List<Integer> mBackgrounds;
     String mUID;
     User mUser;
+    boolean isListRun = false;
 
 
 
@@ -102,11 +107,14 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         setContentView(R.layout.activity_home);
         Log.d(TAG, "UI is being created");
 
-        //TODO: Get user from the intent
-        mUser = getIntent().getParcelableExtra("user");
+        //Get user from the intent
+        mUser = new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//        mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
 
         if(mUser != null){
+
+            Log.d(TAG, "onCreate: Get all the task and section");
             mUser.getAllSectionAndTask();
 
         }
@@ -142,7 +150,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mColors = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.green_yellow), getResources().getColor(R.color.turquoise)};
 
         //A list of possible background to be user
-        mBackgrounds = new Integer[] {R.drawable.amazon, R.drawable.android, R.drawable.laptop, R.drawable.code, R.drawable.bookmark};
+        mBackgrounds = HomeIcon.getAllBackgrounds();
 
 
         //To set to Full screen
@@ -214,7 +222,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         mImgAdd.setImageResource(R.drawable.ic_add_black_24dp);
 
-        //TODO: Set the date below the title
+        //Set the date below the title
         setTxtDate(mTxtDate);
     }
 
@@ -328,11 +336,13 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     @Override
     public void onDataDelete(String ID) {
+
         for (int position = 0; position < mSectionList.size(); position++) {
 
 
             if(mSectionList.get(position).getID().equals(ID)){
                 final int finalPosition = position;
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -367,7 +377,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.i(TAG, "adding confirmed for " + listName);
 
         //Create a Section Object for the user input
-        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], mBackgrounds[mSpinnerIcons.getSelectedItemPosition()], mUID);
+        Section section = new Section(textView.getText().toString().trim(), mColors[mSpinnerColor.getSelectedItemPosition()], HomeIcon.getValue(mBackgrounds.get(mSpinnerIcons.getSelectedItemPosition())), mUID);
 
         //Save to SQL
         section.addSection(this);
@@ -484,21 +494,27 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         findViewById(R.id.emptyUI).setVisibility(View.GONE);
 
 
-        //Recycler view setup
-        mGridView.setLayoutManager(new GridLayoutManager(Home.this,2)); //Setting the layout manager with the column of 2
-        mGridView.addItemDecoration(new DividerItemDecoration(25));
+        if(!isListRun) {
+
+            //Recycler view setup
+            mGridView.setLayoutManager(new GridLayoutManager(Home.this, 2)); //Setting the layout manager with the column of 2
+            mGridView.addItemDecoration(new DividerItemDecoration(25));
 
 
-        // Initialize any value
-        mHomePageAdapter = new HomePageAdapter(mSectionList, this);
-        mGridView.setAdapter(mHomePageAdapter);
+            // Initialize any value
+            mHomePageAdapter = new HomePageAdapter(mSectionList, this);
+            mGridView.setAdapter(mHomePageAdapter);
 
 
-        //Setting up touchhelper
-        ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        mHomePageAdapter.setTouchHelper(itemTouchHelper);
-        itemTouchHelper.attachToRecyclerView(mGridView);
+            //Setting up touchhelper
+            ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            mHomePageAdapter.setTouchHelper(itemTouchHelper);
+            itemTouchHelper.attachToRecyclerView(mGridView);
+
+            isListRun = true;
+        }
+
     }
 
 

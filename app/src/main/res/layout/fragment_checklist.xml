@@ -24,16 +24,20 @@
 
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/checkRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <RelativeLayout
@@ -65,7 +69,7 @@
                 android:layout_marginBottom="24dp"
 
                 android:fontFamily="@font/montserrat_regular"
-                android:text="@string/your_tasklist_is_empty"
+                android:text="@string/checkListEmpty"
                 android:textAlignment="center"
                 android:textColor="#929292"
                 android:textSize="15sp" />

@@ -6,5 +6,5 @@ import androidx.lifecycle.ViewModel;
  * Not Implemented
  */
 public class BlankViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+    // Implement the ViewModel
 }

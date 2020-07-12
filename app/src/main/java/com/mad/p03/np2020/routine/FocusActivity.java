@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine;
 
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -266,10 +267,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.v(TAG, "Database does not exist");
 
         focusDBHelper = new FocusDBHelper(FocusActivity.this);
-        if (focusDBHelper.isTableExists("FOCUS_TABLE")) {
+        if (focusDBHelper.isTableExists("focus")) {
+
+            user.setmFocusList(focusDBHelper.getAllData());
+
             Log.v(TAG, "Database Exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
-            user.setmFocusList(focusDBHelper.getAllData());
             FirebaseDatabase();
         } else {
             Log.v(TAG, "Database does not exist");
@@ -313,6 +316,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             }
         });
     }
+
 
     //
     //This function is to track the button state so that it can show its respective view
@@ -847,6 +851,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     public void userQuitApp() {
         mCountDownTimer.cancel();
+        boundService.setmContext(this);
         boundService.createNotification(); //Notification pushed
         eCountDownTimer = new CountDownTimer(10000, 1000) { //timer countdown start
             @Override

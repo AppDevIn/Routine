@@ -63,7 +63,7 @@ public class MyCardTouchHelper extends ItemTouchHelper.Callback {
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
-        //TODO: Reset the color
+        //Reset the color
     }
 
     /**
@@ -78,7 +78,7 @@ public class MyCardTouchHelper extends ItemTouchHelper.Callback {
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
         if(actionState == ItemTouchHelper.ACTION_STATE_DRAG){
-            //TODO: Color when dragged
+            //Color when dragged
         }
     }
 

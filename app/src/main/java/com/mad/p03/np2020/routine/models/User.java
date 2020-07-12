@@ -21,12 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.helpers.GetTaskSectionWorker;
+import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
-import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
-import com.mad.p03.np2020.routine.background.GetTaskSectionWorker;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -375,6 +374,7 @@ public class User implements Parcelable {
     public User() {
     }
 
+
     /**
      * This will set the name and the password
      * to the object
@@ -471,7 +471,6 @@ public class User implements Parcelable {
      *                         with special symbol and alphanumeric, not empty and no white space
      */
     public void setPassword(String password) throws FormatException {
-        //TODO: Encrypt the password
 
         if (!password.isEmpty()) {
             String STRONGPASSWORD = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
