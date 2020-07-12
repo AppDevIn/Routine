@@ -58,6 +58,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/habit_completion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
