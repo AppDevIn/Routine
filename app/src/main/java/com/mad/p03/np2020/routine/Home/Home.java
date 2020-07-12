@@ -86,6 +86,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     List<Integer> mBackgrounds;
     String mUID;
     User mUser;
+    boolean isListRun = false;
 
 
 
@@ -493,21 +494,27 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         findViewById(R.id.emptyUI).setVisibility(View.GONE);
 
 
-        //Recycler view setup
-        mGridView.setLayoutManager(new GridLayoutManager(Home.this,2)); //Setting the layout manager with the column of 2
-        mGridView.addItemDecoration(new DividerItemDecoration(25));
+        if(!isListRun) {
+
+            //Recycler view setup
+            mGridView.setLayoutManager(new GridLayoutManager(Home.this, 2)); //Setting the layout manager with the column of 2
+            mGridView.addItemDecoration(new DividerItemDecoration(25));
 
 
-        // Initialize any value
-        mHomePageAdapter = new HomePageAdapter(mSectionList, this);
-        mGridView.setAdapter(mHomePageAdapter);
+            // Initialize any value
+            mHomePageAdapter = new HomePageAdapter(mSectionList, this);
+            mGridView.setAdapter(mHomePageAdapter);
 
 
-        //Setting up touchhelper
-        ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        mHomePageAdapter.setTouchHelper(itemTouchHelper);
-        itemTouchHelper.attachToRecyclerView(mGridView);
+            //Setting up touchhelper
+            ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            mHomePageAdapter.setTouchHelper(itemTouchHelper);
+            itemTouchHelper.attachToRecyclerView(mGridView);
+
+            isListRun = true;
+        }
+
     }
 
 
