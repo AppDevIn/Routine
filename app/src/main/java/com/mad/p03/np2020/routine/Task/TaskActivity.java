@@ -27,7 +27,6 @@ import android.widget.ViewSwitcher;
 
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
-import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
@@ -339,7 +338,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         txtTitle.setText(titleMessage);
 
         //Set the icon
-        imgIcon.setImageResource(HomeIcon.getBackground(mSection.getBmiIcon()));
+        imgIcon.setImageResource(mSection.getBmiIcon());
 
         //Create the shape of the toolbar
 

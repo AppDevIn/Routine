@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Home.models.HomeItemTouchHelperAdapter;
-import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.TaskActivity;
@@ -123,7 +122,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         holder.mBackGround.setBackground(shape);
 
         //Setting the image icon
-        holder.mimgIcon.setImageResource(HomeIcon.getBackground(mSectionList.get(position).getBmiIcon()));
+        holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());
 
     }
 

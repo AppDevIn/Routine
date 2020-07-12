@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Home;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -14,9 +15,11 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -73,11 +76,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     //Declare member variables
     RecyclerView mGridView;
     HomePageAdapter mHomePageAdapter;
-
-    EditText mEditAddList;
-    Spinner mSpinnerColor, mSpinnerIcons;
-    CardView mCardViewPopUp;
-    Button mBtnAdd, mBtnCancel;
     TextView mTxtDate;
     FloatingActionButton mImgAdd;
     List<Section> mSectionList;
@@ -86,6 +84,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     List<Integer> mBackgrounds;
     String mUID;
     User mUser;
+    Spinner mSpinnerColor, mSpinnerIcons;
     boolean isListRun = false;
 
 
@@ -131,13 +130,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //Find view by ID
         mGridView = findViewById(R.id.section_grid_view);
         mImgAdd = findViewById(R.id.imgBtnTodo);
-        mEditAddList = findViewById(R.id.txtAddList);
-        mSpinnerColor = findViewById(R.id.spinnerColor);
-        mSpinnerIcons = findViewById(R.id.spinnerImg);
-        mCardViewPopUp = findViewById(R.id.cardViewPopUp);
-        mCardViewPopUp = findViewById(R.id.cardViewPopUp);
-        mBtnAdd = findViewById(R.id.btnAdd);
-        mBtnCancel = findViewById(R.id.btnCancel);
         mTxtDate = findViewById(R.id.title);
 
 
@@ -156,13 +148,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //To set to Full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-        //Declaring a custom adapter
-        mSpinnerColor.setAdapter(new MySpinnerColorAdapter( mColors)); // For the color
-        mSpinnerIcons.setAdapter(new MySpinnerIconsAdapter(mBackgrounds)); //For the background
-
-        //Set the cursor to the start
-        mEditAddList.setSelection(0);
 
 
         if(mSectionList.size() != 0){
@@ -214,11 +199,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         super.onStart();
         Log.d(TAG, "onStart: GUI is ready");
 
-
-        //Make sure the card view is not visible
-        mCardViewPopUp.setVisibility(View.INVISIBLE);
         Log.d(TAG, "onStart(): Card view is set to invisible");
-
 
         mImgAdd.setImageResource(R.drawable.ic_add_black_24dp);
 
@@ -245,48 +226,15 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
                 Log.i(TAG, "onClick(): Adding new list clicked");
 
                 //Make the card view visible to the user
-                mCardViewPopUp.setVisibility(View.VISIBLE);
-                Log.d(TAG, "onClick(): Cardview is visible");
+                showCustomDialog();
+                Log.d(TAG, "onClick(): Cardview dialog is on");
 
             }
         });
 
-        //Checks for the enter action from the keyboard
-        mEditAddList.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                        event.getAction() == KeyEvent.ACTION_DOWN &&
-                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-
-                    Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
-                    addSection(textView);
-
-                    return true;
-                }
-
-                return false;
-            }
-        });
-
-        //When the add button is clicked
-        mBtnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick(): Add button is pressed ");
-                addSection(mEditAddList);
-            }
-        });
 
 
-        //If the cancel button is pressed
-        mBtnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateCard();
-            }
-        });
+
 
         SectionDBHelper.setMyDatabaseListener(this);
 
@@ -386,25 +334,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //Save to firebase
         section.executeFirebaseSectionUpload(mUID, section.getID(), this);
 
-        //Function that make the cardview invisible and hide keyboard
-        updateCard();
-    }
-
-
-
-    /**
-     *  Set the cardview invisible and hide the keyboard
-     *
-     */
-    void updateCard(){
-        //The card view will disappear
-        mCardViewPopUp.setVisibility(View.INVISIBLE);
-        Log.d(TAG, "updateCardUI(): Card view is invisible");
-
-        //Hide the soft keyboard
-        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert mgr != null;
-        mgr.hideSoftInputFromWindow(mEditAddList.getWindowToken(), 0);
     }
 
     /**
@@ -475,9 +404,10 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             public void onClick(View view) {
                 Log.i(TAG, "onClick(): Adding new list clicked");
 
-                //Make the card view visible to the user
-                mCardViewPopUp.setVisibility(View.VISIBLE);
-                Log.d(TAG, "onClick(): Cardview is visible");
+                //Show add dialog
+                showCustomDialog();
+
+                Log.d(TAG, "onClick(): Cardview dialog is active");
             }
         });
 
@@ -514,6 +444,82 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
             isListRun = true;
         }
+
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void showCustomDialog() {
+
+        Button mBtnAdd, mBtnCancel;
+
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.home_alertdialog_add, null, false);
+
+        mBtnAdd = dialogView.findViewById(R.id.btnAdd);
+        mBtnCancel = dialogView.findViewById(R.id.btnCancel);
+
+        mSpinnerColor = dialogView.findViewById(R.id.spinnerColor);
+        mSpinnerIcons = dialogView.findViewById(R.id.spinnerImg);
+
+        final EditText mEditAddList = dialogView.findViewById(R.id.txtAddList);
+
+        //Declaring a custom adapter
+        mSpinnerColor.setAdapter(new MySpinnerColorAdapter( mColors)); // For the color
+        mSpinnerIcons.setAdapter(new MySpinnerIconsAdapter(mBackgrounds)); //For the background
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        //Set the cursor to the start
+        mEditAddList.setSelection(0);
+
+        //When the add button is clicked
+        mBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick(): Add button is pressed ");
+                addSection(mEditAddList);
+                alertDialog.cancel();
+            }
+        });
+
+
+        //If the cancel button is pressed
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+            }
+        });
+
+        //Checks for the enter action from the keyboard
+        mEditAddList.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        event.getAction() == KeyEvent.ACTION_DOWN &&
+                                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                    Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
+                    addSection(textView);
+                    alertDialog.cancel();
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
     }
 
