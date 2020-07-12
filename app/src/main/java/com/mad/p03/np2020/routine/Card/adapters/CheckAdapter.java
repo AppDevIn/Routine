@@ -100,10 +100,10 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
      */
     public void addItem(Check check, Context context){
 
-        //TODO: Add to the SQLite
+        //Add to the SQLite
         check.addCheck(context, mTaskID);
 
-        //TODO: Add from firebase
+        //Add from firebase
         check.executeFirebaseUpload(mOwner, mTaskID);
 
 

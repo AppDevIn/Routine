@@ -47,7 +47,7 @@ public class FCMSection extends FirebaseMessagingService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+        // Implement this method to send token to your app server.
 
 //        Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
 //        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users")

@@ -275,7 +275,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             User user = new User(UID, name, pwd, email);
                             userDatabase.insertUser(user);
 
-                            //TODO Get All User Routine Data
+                            //Get All User Routine Data
                             user.readHabit_Firebase(context);
                             user.readHabitGroup_Firebase(context);
                             user.getAllSectionAndTask();

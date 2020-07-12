@@ -470,7 +470,6 @@ public class User implements Parcelable {
      *                         with special symbol and alphanumeric, not empty and no white space
      */
     public void setPassword(String password) throws FormatException {
-        //TODO: Encrypt the password
 
         if (!password.isEmpty()) {
             String STRONGPASSWORD = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";

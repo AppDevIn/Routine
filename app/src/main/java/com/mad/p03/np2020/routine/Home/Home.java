@@ -106,7 +106,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         setContentView(R.layout.activity_home);
         Log.d(TAG, "UI is being created");
 
-        //TODO: Get user from the intent
+        //Get user from the intent
         mUser = new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
 //        mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
@@ -221,7 +221,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         mImgAdd.setImageResource(R.drawable.ic_add_black_24dp);
 
-        //TODO: Set the date below the title
+        //Set the date below the title
         setTxtDate(mTxtDate);
     }
 
