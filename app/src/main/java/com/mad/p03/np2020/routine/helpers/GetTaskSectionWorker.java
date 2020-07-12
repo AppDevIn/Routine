@@ -252,10 +252,10 @@ public class GetTaskSectionWorker extends Worker {
                 Log.d(TAG, "onChildChanged(): " + dataSnapshot.getValue());
 
                 String id = dataSnapshot.getKey();
-
+                Check check = Check.fromDataSnapShot(dataSnapshot);
+                Check checkDataBase = mCheckDBHelper.getCheck(id);
                 //If exist in the database than update
-                if(mCheckDBHelper.hasID(id)) {
-                    Check check = Check.fromDataSnapShot(dataSnapshot);
+                if(mCheckDBHelper.hasID(id) && !check.equals(checkDataBase)) {
                     mCheckDBHelper.update(check);
                 }
             }

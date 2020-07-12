@@ -172,28 +172,7 @@ public class CheckDBHelper extends DBHelper{
 
     }
 
-    /**
-     * This method will update the position of the given
-     * row based on the ID
-     * @param ID
-     * @param checked
-     */
-    public void update(String ID,boolean checked){
 
-        Log.d(TAG, "update: Updating the check status too " + checked);
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues updateValues = new ContentValues();
-        updateValues.put(Check.COLUMN_CHECKED, checked);
-        db.update(
-                Check.TABLE_NAME,
-                updateValues,
-                Check.COLUMN_Check_ID + " = ?",
-                new String[]{ID}
-        );
-
-        db.close();
-    }
 
     /**
      * This method will update the position of the given
@@ -285,6 +264,29 @@ public class CheckDBHelper extends DBHelper{
         ContentValues updateValues = new ContentValues();
         updateValues.put(Check.COLUMN_POSITION, position);
 
+        db.update(
+                Check.TABLE_NAME,
+                updateValues,
+                Check.COLUMN_Check_ID + " = ?",
+                new String[]{ID}
+        );
+
+        db.close();
+    }
+
+    /**
+     * This method will update the position of the given
+     * row based on the ID
+     * @param ID
+     * @param checked
+     */
+    public void update(String ID,boolean checked){
+
+        Log.d(TAG, "update: Updating the check status too " + checked);
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Check.COLUMN_CHECKED, checked);
         db.update(
                 Check.TABLE_NAME,
                 updateValues,
