@@ -96,7 +96,6 @@ public class Task implements Serializable {
     private Date dueDate;
     private String mNotes;
     private String mLabels;
-    private List<Steps> mSteps;
     private List<Label> mLabelList;
     private boolean dirty = false;
 
