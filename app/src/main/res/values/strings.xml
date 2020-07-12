@@ -107,6 +107,7 @@
     <string name="down_arrow">Down arrow</string>
     <string name="Datenotset">Date: Not Set Yet</string>
     <string name="Timenotset">Time: Not Set Yet</string>
+    <string name="SetReminder">Set Reminder</string>
 
 </resources>
 

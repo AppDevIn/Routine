@@ -1,14 +1,22 @@
 package com.mad.p03.np2020.routine.Card;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,11 +27,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.mad.p03.np2020.routine.HistoryFragment;
 import com.mad.p03.np2020.routine.NotesFragment;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.StepsFragment;
+import com.mad.p03.np2020.routine.models.CardNotification;
 import com.mad.p03.np2020.routine.models.PopUp;
 import com.mad.p03.np2020.routine.models.Task;
 
@@ -39,22 +49,15 @@ import java.util.Date;
 *
  */
 
-public class CardActivity extends AppCompatActivity implements View.OnClickListener, ScheduleDialog.ScheduleDialogListener {
+public class CardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "CardActivity";
-
-    private DatePickerDialog.OnDateSetListener dateSetListener;
-
-    private TimePickerDialog.OnTimeSetListener timeSetListener;
 
     //Member Variable
     Task mTask;
 
     Button dateButton;
     Button timeButton;
-    String date;
-    String time;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,69 +139,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     private void checkList() {
     }
 
-    @Override
-    public String DatePicker() {
-        Log.v(TAG, "Date Button Pressed!");
-
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
-        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        datePickerDialog.show();
-
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                month += 1;
-
-                date = day + "/" + month + "/" + year;
-
-                //dateButton.setText(date);
-                Log.v(TAG, "Date Set: dd/mm/yyyy: " + date);
-
-            }
-        };
-
-        return date;
-    }
-
-    @Override
-    public String TimePicker() {
-        Log.v(TAG, "Time Button Pressed");
-
-        Calendar cal = Calendar.getInstance();
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, hour, minute, false);
-        timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        timePickerDialog.show();
-
-        timeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hour, int minute) {
-
-                if (minute < 10)
-                {
-                    time = hour + ":0" + minute;
-                }
-                else
-                {
-                    time = hour + ":" + minute;
-                }
-
-
-                //timeButton.setText(time);
-
-                Log.v(TAG, "Time set: " + time);
-            }
-        };
-
-        return time;
-    }
 
     //Reference
 //    public void openHistory() { //Open history tab
