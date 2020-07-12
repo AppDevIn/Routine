@@ -542,6 +542,8 @@ public class Task implements Serializable {
         if(task != null){
             if(task.mNotes != null){
                 sameNotes = this.mNotes.equals(task.getNotes());
+            }else{
+                sameNotes = (this.mNotes == task.getNotes());
             }
             boolean isSame = this.mTaskID.equals(task.getTaskID()) &&
                     sameNotes &&
