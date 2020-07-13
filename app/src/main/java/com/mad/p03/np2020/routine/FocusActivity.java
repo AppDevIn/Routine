@@ -244,11 +244,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         circularProgressBar.setMin(0);
         circularProgressBar.setMax(100);
 
-        //Bottom Navigation
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
-        bottomNavInit(bottomNavigationView);
 
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -738,6 +737,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             }
             Log.v(TAG, "Resume");
         }
+
+
+        //Bottom Navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
     }
 
     /**
@@ -989,14 +993,16 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void bottomNavInit(BottomNavigationView bottomNavigationView) {
 
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+
         //To have the highlight
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
 
-        //To set setOnNavigationItemSelectedListener
-        NavBarHelper navBarHelper = new NavBarHelper(this);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+
     }
 
     /***

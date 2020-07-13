@@ -46,6 +46,7 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
         ActivityOptions options =
                 ActivityOptions.makeCustomAnimation(mContext, 0, 0);
 
+
         switch (item.getItemId()){
             case R.id.habit:
                 Intent intent = new Intent(mContext, HabitActivity.class);
