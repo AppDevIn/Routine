@@ -30,6 +30,7 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.CardNotification;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class ScheduleDialog extends BottomSheetDialogFragment {
 
@@ -50,6 +51,8 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
     String date;
     String time;
 
+    Calendar cal;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
         dateButton = v.findViewById(R.id.dateButton);
         timeButton = v.findViewById(R.id.timeButton);
         reminderButton = v.findViewById(R.id.setReminderButton);
+
+        cal = Calendar.getInstance();
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +77,7 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String time = TimePicker();
+                String timeSet = TimePicker();
                 Log.v(TAG, "Time: " + time);
                 onTimeClicked(time);
             }
@@ -99,7 +104,6 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
     public String DatePicker() {
         Log.v(TAG, "Date Button Pressed!");
 
-        Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -115,9 +119,11 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
 
                 date = day + "/" + month + "/" + year;
 
-                //dateButton.setText(date);
-                Log.v(TAG, "Date Set: dd/mm/yyyy: " + date);
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.DAY_OF_MONTH, day);
 
+                Log.v(TAG, "Date Set: dd/mm/yyyy: " + date);
             }
         };
 
@@ -127,7 +133,6 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
     public String TimePicker() {
         Log.v(TAG, "Time Button Pressed");
 
-        Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
 
@@ -148,8 +153,9 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
                     time = hour + ":" + minute;
                 }
 
-
-                //timeButton.setText(time);
+                cal.set(Calendar.HOUR_OF_DAY, hour);
+                cal.set(Calendar.MINUTE, minute);
+                cal.set(Calendar.SECOND, 0);
 
                 Log.v(TAG, "Time set: " + time);
             }
@@ -179,11 +185,19 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
 
-        long time = System.currentTimeMillis();
+        Calendar setTimeCal = cal;
 
-        long tensec = 1000*10;
+        setTimeCal.set(Calendar.MONTH, cal.get(Calendar.MONTH)-1);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time+tensec, pendingIntent);
+        long timeSet = setTimeCal.getTimeInMillis();
+
+        String DateTimeSet = cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR) + " " +  cal.get(Calendar.HOUR_OF_DAY) + "-" + cal.get(Calendar.MINUTE) + "-" + cal.get(Calendar.SECOND);
+
+        Log.v(TAG, "Time in millis set and now: " + timeSet + "-"  + Calendar.getInstance().getTimeInMillis());
+
+        Log.v(TAG, "Date time set is: " + DateTimeSet);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
 
         Toast.makeText(getActivity(), "Reminder Set!", Toast.LENGTH_SHORT).show();
     }
