@@ -200,7 +200,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mImgAdd.setImageResource(R.drawable.ic_add_black_24dp);
 
         //Set the date below the title
-        setTxtDate(mTxtDate);
+        getTxtDate(mTxtDate);
     }
 
     /**
@@ -356,11 +356,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     }
 
 
-    private void setTxtDate(TextView textView){
+    private void getTxtDate(TextView textView){
 
         //Date format that I want example(WEDNESDAY, 29 APRIL)
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM");
+        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM YYYY");
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());
