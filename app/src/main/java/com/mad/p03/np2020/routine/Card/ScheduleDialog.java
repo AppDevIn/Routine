@@ -29,6 +29,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.CardNotification;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -53,6 +55,15 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
 
     Calendar cal;
 
+    Calendar setTimeCal;
+
+    Boolean timeSet = false;
+    Boolean dateSet = false;
+
+    Boolean reminderSet  =false;
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,28 +76,40 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
 
         cal = Calendar.getInstance();
 
+        setTimeCal = cal;
+
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String date = DatePicker();
+                date = DatePicker();
                 Log.v(TAG, "Date:" + date);
-                onDateClicked(date);
+                //onDateClicked(date);
+                dateSet = true;
             }
         });
 
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String timeSet = TimePicker();
+                time = TimePicker();
                 Log.v(TAG, "Time: " + time);
-                onTimeClicked(time);
+                //onTimeClicked(time);
+                timeSet = true;
             }
         });
 
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNotification();
+                if (dateSet.equals(false) && timeSet.equals(false))
+                {
+                    Toast.makeText(getActivity(), "Set a date and time first!", Toast.LENGTH_SHORT);
+                }
+                else
+                {
+                    setNotification();
+                    reminderSet = true;
+                }
             }
         });
 
@@ -123,6 +146,8 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
                 cal.set(Calendar.MONTH, month);
                 cal.set(Calendar.DAY_OF_MONTH, day);
 
+                onDateClicked(date);
+
                 Log.v(TAG, "Date Set: dd/mm/yyyy: " + date);
             }
         };
@@ -157,6 +182,8 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
                 cal.set(Calendar.MINUTE, minute);
                 cal.set(Calendar.SECOND, 0);
 
+                onTimeClicked(time);
+
                 Log.v(TAG, "Time set: " + time);
             }
         };
@@ -185,8 +212,6 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
 
-        Calendar setTimeCal = cal;
-
         setTimeCal.set(Calendar.MONTH, cal.get(Calendar.MONTH)-1);
 
         long timeSet = setTimeCal.getTimeInMillis();
@@ -200,6 +225,29 @@ public class ScheduleDialog extends BottomSheetDialogFragment {
         alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
 
         Toast.makeText(getActivity(), "Reminder Set!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (reminderSet.equals(true))
+        {
+            long finalTime = setTimeCal.getTimeInMillis();
+            Date setTime = new Date(finalTime);
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mms:ss");
+
+            String dateString = dateFormat.format(setTime);
+
+            Intent intent = new Intent(getActivity(), CardActivity.class);
+            intent.putExtra("ReminderDate", dateString);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            Log.v(TAG, "Intent with date sent! [" + setTime + "]");
+
+            startActivity(intent);
+        }
     }
 
     /*

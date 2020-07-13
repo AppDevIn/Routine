@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -195,8 +196,12 @@ public class Task implements Serializable {
     }
 
     /**@return Date This return the data that I need to remind about the task*/
-    public Date getRemindDate() {
-        return remindDate;
+    public String getRemindDate() {
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mms:ss");
+        String dateString = dateFormat.format(remindDate);
+
+        return dateString;
     }
 
     /**@return Date This return the date the task is going to be due*/
@@ -268,6 +273,11 @@ public class Task implements Serializable {
         mName = name;
     }
 
+    public void setReminderDate(String reminderDate)
+    {
+        remindDate = stringToDate(reminderDate);
+    }
+
     /**
      *
      * @param date String This parameter gives me the data and time in
@@ -275,7 +285,7 @@ public class Task implements Serializable {
      * @return Date Return the date object
      */
     public Date stringToDate(String date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mms:ss");
         try {
             return sdf.parse(date);
         } catch (ParseException ex) {
@@ -338,6 +348,7 @@ public class Task implements Serializable {
                 .putString(Task.COLUMN_TASK_ID, getTaskID())
                 .putInt(Task.COLUMN_POSITION, getPosition())
                 .putBoolean(Task.COLUMN_CHECKED, isChecked())
+                .putString(Task.COLUMN_REMIND_DATE, getRemindDate())
                 .build();
 
         //Create the request
@@ -392,6 +403,7 @@ public class Task implements Serializable {
                     .putString(Task.COLUMN_TASK_ID, getTaskID())
                     .putInt(Task.COLUMN_POSITION, getPosition())
                     .putBoolean(Task.COLUMN_CHECKED, isChecked())
+                    //.putString(Task.COLUMN_REMIND_DATE, getRemindDate())
                     .build();
 
             //Create the request

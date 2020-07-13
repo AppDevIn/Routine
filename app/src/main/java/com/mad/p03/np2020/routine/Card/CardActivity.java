@@ -89,6 +89,19 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle bundle = intent.getExtras();
+
+        String reminderSetTime = bundle.getString("ReminderDate");
+
+        Log.v(TAG, "Reminder date received! [" + reminderSetTime + "]");
+
+        mTask.executeUpdateFirebase(this);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
     }
