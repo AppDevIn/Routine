@@ -163,9 +163,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //Bottom Navigation
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
-        bottomNavInit(bottomNavigationView);
 
     }
 
@@ -198,6 +195,15 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         }
 
         indicator_num.setText("1");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Bottom Navigation
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
+
     }
 
     /** This method is used to initialise the habit notification channel. */
@@ -332,14 +338,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
      */
     private void bottomNavInit( BottomNavigationView bottomNavigationView){
 
+
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper  navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+
         //To have the highlight
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
 
-        //To set setOnNavigationItemSelectedListener
-        NavBarHelper  navBarHelper = new NavBarHelper(this);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
     }
 
     private Habit.HabitList initDummyList (Habit.HabitList habitList){

@@ -182,10 +182,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         });
 
 
-        //Bottom Nav
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
-        bottomNavInit(bottomNavigationView);
-
 
 
     }
@@ -233,7 +229,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         });
 
 
-
+        //Bottom Nav
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
 
 
         SectionDBHelper.setMyDatabaseListener(this);
@@ -345,14 +343,16 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
      */
     private void bottomNavInit( BottomNavigationView bottomNavigationView){
 
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+
         //To have the highlight
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
-        //To set setOnNavigationItemSelectedListener
-        NavBarHelper navBarHelper = new NavBarHelper(this);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+
     }
 
 
