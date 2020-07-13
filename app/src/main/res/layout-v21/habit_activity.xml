@@ -137,7 +137,7 @@
 
     <TextView
         android:id="@+id/habit_indicator_number"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="2.4dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
