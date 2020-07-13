@@ -128,14 +128,14 @@ public class SectionDBHelper extends DBHelper{
      *
      * @return section back
      */
-    public Section getSection(long id){
+    public Section getSection(String id){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Log.d(TAG, "getUser: Querying data");
 
 
         //Get the data from sqlite
-        Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where id="+id+"", null );
+        Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where sectionID='"+id+"'", null );
 
         if (cursor != null)
             cursor.moveToFirst(); //Only getting the first value

@@ -20,8 +20,10 @@ import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
 import com.mad.p03.np2020.routine.Card.Fragments.NotesFragment;
+import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 
 import org.w3c.dom.Text;
@@ -52,6 +54,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         //Get task object from extra
         mTask = new TaskDBHelper(this).getTask(getIntent().getStringExtra("task"));
 
+        Section section = new SectionDBHelper(this).getSection(mTask.getSectionID());
+
         //IDs
         mEdTitle = findViewById(R.id.title);
         LinearLayout check = findViewById(R.id.ll_check);
@@ -74,7 +78,18 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         //Set the title text the task name
         mEdTitle.setText(mTask.getName());
 
+        //Create the shape of the toolbar
+
         float radius[] = {0f,0f,0f,0f,50f,50f,50f,50f};
+
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(section.getBackgroundColor());
+        shape.setCornerRadii(radius);
+
+        toolbar.setBackground(shape);
+
+
 
 
     }
