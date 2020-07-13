@@ -52,7 +52,6 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
                 Intent intent = new Intent(mContext, HabitActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 mContext.startActivity(intent, options.toBundle());
-
                 break;
             case R.id.focus:
                 Intent intentFocus = new Intent(mContext, FocusActivity.class);
