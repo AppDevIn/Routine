@@ -12,8 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -72,6 +77,12 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     private TextView indicator_num, remind_text;
 
+    private ViewSwitcher viewSwitcher;
+
+    private Button add_first_habit;
+
+    private RelativeLayout nothing_view;
+
 
     /**
      *
@@ -93,6 +104,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
+
+        viewSwitcher = findViewById(R.id.switcher);
+
+        nothing_view = findViewById(R.id.nothing_view);
 
         // set User
         user = new User();
@@ -116,6 +131,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         };
         habitRecyclerView.setLayoutManager(manager);
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
+
 
         prev_indicator = findViewById(R.id.habit_indicator_prev);
         next_indicator = findViewById(R.id.habit_indicator_next);
@@ -160,6 +176,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_habit = findViewById(R.id.add_habit);
         add_habit.setOnClickListener(this);
 
+        add_first_habit = findViewById(R.id.add_first_habit);
+        add_first_habit.setOnClickListener(this);
+
+
         habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -172,6 +192,26 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // initialise the habitAdapter
         Habit.HabitList habitArrayList = initDummyList(habit_dbHandler.getAllHabits());
+
+        if(habitArrayList.size() == 0){
+            if (viewSwitcher.getCurrentView() != nothing_view){
+                viewSwitcher.showNext();
+                add_habit.setVisibility(View.INVISIBLE);
+                prev_indicator.setVisibility(View.INVISIBLE);
+                next_indicator.setVisibility(View.INVISIBLE);
+                indicator_num.setVisibility(View.INVISIBLE);
+                remind_text.setVisibility(View.INVISIBLE);
+            }
+        }else{
+            if (viewSwitcher.getCurrentView() == nothing_view){
+                viewSwitcher.showPrevious();
+            }
+            add_habit.setVisibility(View.VISIBLE);
+            prev_indicator.setVisibility(View.VISIBLE);
+            next_indicator.setVisibility(View.VISIBLE);
+            indicator_num.setVisibility(View.VISIBLE);
+            remind_text.setVisibility(View.VISIBLE);
+        }
 
         habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
@@ -279,6 +319,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v){
         switch (v.getId()){
             case R.id.add_habit:
+
+            case R.id.add_first_habit:
                 Intent activityName = new Intent(HabitActivity.this, HabitAddActivity.class);
                 startActivity(activityName);
                 break;

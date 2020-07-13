@@ -115,6 +115,8 @@
     <string name="my_habits">My Habits</string>
     <string name="habit_remind_text">You still have 3 habits to do today</string>
     <string name="habit_one">1</string>
+    <string name="your_habitlist_is_empty">Your habitList is empty</string>
+    <string name="add_your_first_habit">Add your first habit</string>
 
 </resources>
 

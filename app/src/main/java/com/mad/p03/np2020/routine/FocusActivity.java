@@ -855,7 +855,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     public void userQuitApp() {
         mCountDownTimer.cancel();
-        boundService.createNotification(this); //Notification pushed
+        boundService.setmContext(this);
+        boundService.createNotification(); //Notification pushed
         eCountDownTimer = new CountDownTimer(10000, 1000) { //timer countdown start
             @Override
             public void onTick(long millisUntilFinished) {
