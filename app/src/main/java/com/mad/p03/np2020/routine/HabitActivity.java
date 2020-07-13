@@ -123,7 +123,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
         habitRecyclerView = findViewById(R.id.habit_recycler_view);
-        GridLayoutManager manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.HORIZONTAL, false){
+        GridLayoutManager manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.VERTICAL, false){
             @Override
             public boolean canScrollHorizontally() {
                 return false;

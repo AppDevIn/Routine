@@ -64,7 +64,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/habit_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="370dp"
+            android:layout_height="365dp"
 
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
