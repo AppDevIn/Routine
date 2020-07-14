@@ -164,7 +164,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Bottom Navigation
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
 
     }

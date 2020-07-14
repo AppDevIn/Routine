@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -171,7 +172,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_focus);
+
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -245,7 +248,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         circularProgressBar.setMax(100);
 
         //Bottom Navigation
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
 
     }
@@ -253,6 +256,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mServiceConnection != null) {
+            unbindService(mServiceConnection);
+        }
+
     }
 
     /**
@@ -265,6 +272,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void initialization() {
         Log.v(TAG, "Database does not exist");
+        Intent intent = new Intent(getApplicationContext(), BoundService.class);
+        startService(intent);
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
 
         focusDBHelper = new FocusDBHelper(FocusActivity.this);
         if (focusDBHelper.isTableExists("focus")) {
@@ -845,6 +855,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }.start();
     }
 
+
     /***
      * Event Handles when user quit the app
      */
@@ -913,9 +924,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(this, BoundService.class);
-        startService(intent);
-        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+
     }
 
 

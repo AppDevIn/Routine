@@ -86,7 +86,7 @@ public class FocusWorker extends Worker {
                 Log.i("Focus", String.valueOf(result));
 
             }
-        });;
+        });
     }
 
     /**

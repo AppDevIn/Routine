@@ -74,7 +74,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         //Set the title text the task name
         mEdTitle.setText(mTask.getName());
 
-        float radius[] = {0f,0f,0f,0f,50f,50f,50f,50f};
+        float[] radius = {0f,0f,0f,0f,50f,50f,50f,50f};
 
 
     }

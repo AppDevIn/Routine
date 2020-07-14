@@ -189,7 +189,7 @@ public class HabitDBHelper extends DBHelper{
 
             // add the habit object
             Habit habit = new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
-            habitList.addItem(habit);;
+            habitList.addItem(habit);
             res.moveToNext(); // move to the next result
         }
         db.close();

@@ -96,7 +96,7 @@ public class StepsFragment extends Fragment{
         stepName = view.findViewById(R.id.stepInput);
 
         // Button click listeners for when button clicked to call addItemToList
-        stepAddButton = (Button) view.findViewById(R.id.stepAdd);
+        stepAddButton = view.findViewById(R.id.stepAdd);
 
         //LinearLayout manager for linear layout of recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

@@ -269,17 +269,17 @@ public class User implements Parcelable {
                 // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     Habit habit = new Habit();
-                    habit.setHabitID((Long) singleSnapshot.child("habitID").getValue(Long.class));
+                    habit.setHabitID(singleSnapshot.child("habitID").getValue(Long.class));
                     habit.setTitle((String) singleSnapshot.child("title").getValue());
-                    habit.setCount((Integer) singleSnapshot.child("count").getValue(Integer.class));
-                    habit.setOccurrence((Integer) singleSnapshot.child("occurrence").getValue(Integer.class));
-                    habit.setPeriod((Integer) singleSnapshot.child("period").getValue(Integer.class));
+                    habit.setCount(singleSnapshot.child("count").getValue(Integer.class));
+                    habit.setOccurrence(singleSnapshot.child("occurrence").getValue(Integer.class));
+                    habit.setPeriod(singleSnapshot.child("period").getValue(Integer.class));
                     habit.setHolder_color((String) singleSnapshot.child("holder_color").getValue());
                     habit.setTime_created((String) singleSnapshot.child("time_created").getValue());
 
                     HabitGroup habitGroup = new HabitGroup();
                     if (singleSnapshot.hasChild("group")) {
-                        habitGroup.setGrp_id((Long) singleSnapshot.child("group").child("grp_id").getValue(Long.class));
+                        habitGroup.setGrp_id(singleSnapshot.child("group").child("grp_id").getValue(Long.class));
                         habitGroup.setGrp_name((String) singleSnapshot.child("group").child("grp_name").getValue());
                         habit.setGroup(habitGroup);
                     } else {
@@ -288,11 +288,11 @@ public class User implements Parcelable {
 
                     HabitReminder habitReminder = new HabitReminder();
                     if (singleSnapshot.hasChild("habitReminder")) {
-                        habitReminder.setId((Integer) singleSnapshot.child("habitReminder").child("id").getValue(Integer.class));
+                        habitReminder.setId(singleSnapshot.child("habitReminder").child("id").getValue(Integer.class));
                         habitReminder.setMessage((String) singleSnapshot.child("habitReminder").child("message").getValue());
                         habitReminder.setCustom_text((String) singleSnapshot.child("habitReminder").child("custom_text").getValue());
-                        habitReminder.setHours((Integer) singleSnapshot.child("habitReminder").child("hours").getValue(Integer.class));
-                        habitReminder.setMinutes((Integer) singleSnapshot.child("habitReminder").child("minutes").getValue(Integer.class));
+                        habitReminder.setHours(singleSnapshot.child("habitReminder").child("hours").getValue(Integer.class));
+                        habitReminder.setMinutes(singleSnapshot.child("habitReminder").child("minutes").getValue(Integer.class));
                         habit.setHabitReminder(habitReminder);
                     } else {
                         habit.setHabitReminder(null);
@@ -333,7 +333,7 @@ public class User implements Parcelable {
                 // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     HabitGroup habitGroup = new HabitGroup();
-                    habitGroup.setGrp_id((Long) singleSnapshot.child("grp_id").getValue(Long.class));
+                    habitGroup.setGrp_id(singleSnapshot.child("grp_id").getValue(Long.class));
                     habitGroup.setGrp_name((String) singleSnapshot.child("grp_name").getValue());
 
                     Log.d(TAG, "onDataChange: " + habitGroup.getGrp_id());

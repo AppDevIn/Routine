@@ -15,7 +15,7 @@ public enum HomeIcon {
     public final int value;
     public final int backgroundURL;
 
-    private HomeIcon(int value, int backgroundURL) {
+    HomeIcon(int value, int backgroundURL) {
         this.value = value;
         this.backgroundURL = backgroundURL;
     }

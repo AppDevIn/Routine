@@ -200,9 +200,9 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
 
         Log.d(TAG, "onClick(): Register has been clicked");
 
-        boolean isEmailAllowed = emailCheck((TextView) findViewById(R.id.edEmail));
-        boolean isPasswordAllowed = passwordCheck((TextView) findViewById(R.id.edPassword));
-        boolean isNameAllowed = nameCheck((TextView) findViewById(R.id.edName));
+        boolean isEmailAllowed = emailCheck(findViewById(R.id.edEmail));
+        boolean isPasswordAllowed = passwordCheck(findViewById(R.id.edPassword));
+        boolean isNameAllowed = nameCheck(findViewById(R.id.edName));
 
         if(isNameAllowed && isEmailAllowed && isPasswordAllowed){
             RegisterFirebaseUser registerFirebaseUser = new RegisterFirebaseUser(

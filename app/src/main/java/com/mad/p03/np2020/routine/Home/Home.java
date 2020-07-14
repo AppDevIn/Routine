@@ -198,7 +198,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
 
         //Bottom Nav
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
 
 
@@ -435,7 +435,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());
-        String dateValue = formatter.format(date).toString().toUpperCase();
+        String dateValue = formatter.format(date).toUpperCase();
         Log.i(TAG, "setTxtDate: " + dateValue);
 
         //Set it to the text

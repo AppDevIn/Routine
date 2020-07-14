@@ -87,8 +87,7 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
 
         long insert = db.insert(Focus.FOCUS_TABLE, null, cv); //if insert is -1 means fail
         db.close();
-        if (insert == -1) return false;
-        else return true;
+        return insert != -1;
     }
 
     /**

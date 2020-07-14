@@ -152,7 +152,7 @@ public class Task implements Serializable {
         String ID = task.child("taskID").getValue(String.class);
         boolean checked = task.child("checked").getValue(Boolean.class) == null ? false : task.child("checked").getValue(Boolean.class);
         String notes = task.child("notes").getValue(String.class);
-        String remindDate = task.child("remindDate").getValue(String.class);;
+        String remindDate = task.child("remindDate").getValue(String.class);
 
         return new Task(name, position, sectionID, ID, checked, notes, remindDate);
     }

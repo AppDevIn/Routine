@@ -109,7 +109,7 @@
                                 android:id="@+id/imageView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/icon_sun" />
+                                app:srcCompat="@drawable/icon_sun" />
                         </LinearLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -178,7 +178,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/icon_sun" />
+                                android:src="@drawable/icon_sun" />
 
                         </LinearLayout>
                         </androidx.cardview.widget.CardView>
