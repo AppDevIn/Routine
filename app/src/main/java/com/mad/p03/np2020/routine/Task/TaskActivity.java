@@ -365,7 +365,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         //Date format that I want example(WEDNESDAY, 29 APRIL)
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM");
+        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM YYYY");
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());
