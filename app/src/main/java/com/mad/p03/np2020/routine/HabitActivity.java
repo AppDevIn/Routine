@@ -146,14 +146,19 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                     int n = Integer.parseInt(num)-1;
                     indicator_num.setText(String.valueOf(n));
                     n--;
-
+                    if (n*4+1 <= habitAdapter._habitList.size()){
+                        next_indicator.setVisibility(View.VISIBLE);
+                    }
                     int position = n*4;
                     habitRecyclerView.scrollToPosition(position);
+                }
+
+                if (indicator_num.getText().toString().equals("1")){
+                    prev_indicator.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-//        next_indicator.setRotation(180);
         next_indicator.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
@@ -166,12 +171,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                   if (position+1 <= arr_size){
                       n++;
                       indicator_num.setText(String.valueOf(n));
-
+                      if (n*4+1 > arr_size) {
+                          next_indicator.setVisibility(View.INVISIBLE);
+                      }
+                      prev_indicator.setVisibility(View.VISIBLE);
                       habitRecyclerView.scrollToPosition(position+3);
                   }
               }
           });
-
 
         add_habit = findViewById(R.id.add_habit);
         add_habit.setOnClickListener(this);
@@ -202,12 +209,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 indicator_num.setVisibility(View.INVISIBLE);
                 remind_text.setVisibility(View.INVISIBLE);
             }
+        }else if (habitArrayList.size() <= 4){
+            prev_indicator.setVisibility(View.INVISIBLE);
+            next_indicator.setVisibility(View.INVISIBLE);
+            indicator_num.setVisibility(View.INVISIBLE);
         }else{
             if (viewSwitcher.getCurrentView() == nothing_view){
                 viewSwitcher.showPrevious();
             }
             add_habit.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.VISIBLE);
+            prev_indicator.setVisibility(View.INVISIBLE);
             next_indicator.setVisibility(View.VISIBLE);
             indicator_num.setVisibility(View.VISIBLE);
             remind_text.setVisibility(View.VISIBLE);
