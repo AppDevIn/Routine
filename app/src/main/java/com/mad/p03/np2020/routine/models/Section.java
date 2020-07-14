@@ -14,6 +14,7 @@ import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.Home.models.UploadSectionWorker;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.helpers.HomeIcon;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -193,7 +194,11 @@ public class Section implements Serializable {
 
     /**@return int This return the int value associated with the image*/
     public int getBmiIcon() {
-        return bmiIcon;
+        return HomeIcon.getBackground(bmiIcon);
+    }
+
+    public int getIconValue() {
+        return HomeIcon.getBackground(bmiIcon);
     }
 
     /**@return String This return the name of this section*/

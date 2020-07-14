@@ -39,7 +39,6 @@
 
 
                 android:focusableInTouchMode="false"
-                android:translationZ="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintEnd_toEndOf="parent"
@@ -118,23 +117,24 @@
                 app:layout_constraintVertical_bias="0.09" />
 
             <TextView
+                android:layout_marginStart="5dp"
                 android:id="@+id/habitCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="92dp"
+
                 android:layout_marginBottom="4dp"
 
                 android:fontFamily="@font/montserrat_regular"
-
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/habitTitle"
                 app:layout_constraintEnd_toEndOf="@+id/habit_background"
-                app:layout_constraintStart_toStartOf="@+id/habitTitle"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.0" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/habit_progressBar"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/habit_divider"
@@ -177,6 +177,7 @@
 
 
             <TextView
+                android:layout_marginStart="5dp"
                 android:id="@+id/habitTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -189,8 +190,8 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/habit_background"
-                app:layout_constraintHorizontal_bias="0.2"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/habit_progressBar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.879" />
 

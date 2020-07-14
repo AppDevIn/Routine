@@ -106,7 +106,7 @@ public class SectionDBHelper extends DBHelper{
         values.put(Section.COLUMN_NAME, section.getName());
         values.put(Section.COLUMN_COLOR, section.getBackgroundColor());
         values.put(Section.COLUMN_USERID, UID);
-        values.put(Section.COLUMN_IMAGE, section.getBmiIcon());//The image
+        values.put(Section.COLUMN_IMAGE, section.getIconValue());//The image
 
         // Insert the new row, returning the primary key value of the new row
         //If -1 means there is an error
@@ -128,14 +128,14 @@ public class SectionDBHelper extends DBHelper{
      *
      * @return section back
      */
-    public Section getSection(long id){
+    public Section getSection(String id){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Log.d(TAG, "getUser: Querying data");
 
 
         //Get the data from sqlite
-        Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where id="+id+"", null );
+        Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where sectionID='"+id+"'", null );
 
         if (cursor != null)
             cursor.moveToFirst(); //Only getting the first value

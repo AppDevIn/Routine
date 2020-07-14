@@ -52,22 +52,73 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/habit_recycler_view"
+    <ViewSwitcher
+        android:id="@+id/switcher"
         android:layout_width="match_parent"
         android:layout_height="370dp"
-
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:padding="10dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MyHabits"
         app:layout_constraintVertical_bias="0.0">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/habit_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="365dp"
 
-    </androidx.recyclerview.widget.RecyclerView>
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:padding="10dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/MyHabits"
+            app:layout_constraintVertical_bias="0.0">
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/nothing_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="center_horizontal">
+
+
+            <ImageView
+                android:id="@+id/nothing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/nothing" />
+
+            <Button
+                android:id="@+id/add_first_habit"
+                android:layout_marginTop="40dp"
+                android:textSize="12sp"
+                android:layout_below="@id/nothing"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"
+                android:textAlignment="center"
+                android:layout_width="172dp"
+                android:layout_height="37dp"
+                android:background="@drawable/habit_btn_background4"
+                android:text="@string/add_your_first_habit"
+                android:layout_centerHorizontal="true"
+                android:textAllCaps="false"
+                android:elevation="4dp"
+                tools:ignore="SmallSp" />
+
+        </RelativeLayout>
+
+
+    </ViewSwitcher>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/habit_check_rv"
@@ -86,7 +137,7 @@
 
     <TextView
         android:id="@+id/habit_indicator_number"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="2.4dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -101,7 +152,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/switcher"
         app:layout_constraintVertical_bias="0.031" />
 
     <ImageView
@@ -113,7 +164,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="@id/habit_indicator_number"
-        app:layout_constraintTop_toBottomOf="@+id/habit_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/switcher"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/habit_left" />
 
@@ -126,7 +177,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/switcher"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/habit_right" />
 
