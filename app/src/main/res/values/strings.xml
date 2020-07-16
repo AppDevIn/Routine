@@ -117,6 +117,9 @@
     <string name="habit_one">1</string>
     <string name="your_habitlist_is_empty">Your habitList is empty</string>
     <string name="add_your_first_habit">Add your first habit</string>
+    <string name="Datenotset">Date: Not Set Yet</string>
+    <string name="Timenotset">Time: Not Set Yet</string>
+    <string name="SetReminder">Set Reminder!</string>
 
 </resources>
 

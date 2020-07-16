@@ -60,6 +60,8 @@ public class UploadTaskWorker extends Worker {
         //Setting value using object
         mDatabase.setValue(new Task(Name,0,sectionID,ID,isCheck, notes, remindDate));
 
+        mDatabase.child(Task.COLUMN_REMIND_DATE).setValue(remindDate);
+
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 
         return Result.success();

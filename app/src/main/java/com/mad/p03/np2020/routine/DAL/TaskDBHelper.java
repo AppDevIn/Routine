@@ -106,7 +106,7 @@ public class TaskDBHelper extends DBHelper {
         values.put(Task.COLUMN_SECTION_ID, task.getSectionID());
         values.put(Task.COLUMN_NAME, task.getName());
         values.put(Task.COLUMN_CHECKED, task.isChecked());
-        values.put(Task.COLUMN_REMIND_DATE, task.getRemindDate() != null ? task.getRemindDate() : null);
+        values.put(Task.COLUMN_REMIND_DATE, task.getRemindDate() != null ? task.getRemindDate().toString() : null);
         values.put(Task.COLUMN_DUE_DATE, task.getDueDate() != null ? task.getDueDate().toString() : null);
         values.put(Task.COLUMN_DUE_DATE, task.getNotes());
 
@@ -191,7 +191,7 @@ public class TaskDBHelper extends DBHelper {
         db.close();
 
         Log.d(TAG, "getAllTask(): The number of task are " + taskList.size());
-        
+
         // return notes list
         return taskList;
     }
@@ -384,14 +384,14 @@ public class TaskDBHelper extends DBHelper {
     public void update(Task task){
 
         Log.d(TAG, "update: Updating using object task");
-        
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues updateValues = new ContentValues();
         updateValues.put(Task.COLUMN_NAME, task.getName());
         updateValues.put(Task.COLUMN_CHECKED, task.isChecked());
         updateValues.put(Task.COLUMN_NOTES, task.getNotes());
-        updateValues.put(Task.COLUMN_REMIND_DATE, task.getRemindDate());
+        updateValues.put(Task.COLUMN_REMIND_DATE, task.getStringRemindDate());
         db.update(
                 Task.TABLE_NAME,
                 updateValues,

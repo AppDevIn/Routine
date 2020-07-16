@@ -5,7 +5,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,13 +23,19 @@ import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
 import com.mad.p03.np2020.routine.Card.Fragments.NotesFragment;
+import com.mad.p03.np2020.routine.Card.Fragments.ScheduleDialogFragment;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.models.CardNotification;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 
 import org.w3c.dom.Text;
+
+import java.util.Calendar;
+
+import static java.security.AccessController.getContext;
 
 /**
 *
@@ -52,7 +61,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.card_layout);
 
         //Get task object from extra
-        mTask = new TaskDBHelper(this).getTask(getIntent().getStringExtra("task"));
+         mTask = new TaskDBHelper(this).getTask(getIntent().getStringExtra("task"));
 
         Section section = new SectionDBHelper(this).getSection(mTask.getSectionID());
 
@@ -139,6 +148,33 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /*
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent.getAction().equals("ScheduleNotification"))
+        {
+            long timeSet = intent.getLongExtra("CalendarMillis", 0);
+            String DateTimeSet = intent.getStringExtra("DateTimeSet");
+            //String DateTimeSet = selectedCal.get(Calendar.DAY_OF_MONTH) + "/" + selectedCal.get(Calendar.MONTH)+1 + "/" + selectedCal.get(Calendar.YEAR) + " " +  selectedCal.get(Calendar.HOUR_OF_DAY) + "-" + selectedCal.get(Calendar.MINUTE) + "-" + selectedCal.get(Calendar.SECOND);
+            Log.v(TAG, "Time in millis set and now: " + timeSet + "-"  + Calendar.getInstance().getTimeInMillis());
+            Log.v(TAG, "Date time set is: " + DateTimeSet);
+
+
+            Intent notificationIntent = new Intent(CardActivity.this, CardNotification.class);
+            notificationIntent.setAction("CardNotification");
+            notificationIntent.putExtra("CardName", mEdTitle.getText());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
+        }
+    }
+
+     */
+
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_SEARCH ||
@@ -169,6 +205,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void schedule() {
+        ScheduleDialogFragment scheduleDialogFragment = new ScheduleDialogFragment();
+        scheduleDialogFragment.show(getSupportFragmentManager(), "Schedule Dialog Fragment");
+
     }
 
     private void notes() {
