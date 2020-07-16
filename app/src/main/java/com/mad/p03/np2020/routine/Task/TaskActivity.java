@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +30,7 @@ import android.widget.ViewSwitcher;
 
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
+import com.mad.p03.np2020.routine.models.CardNotification;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
@@ -262,6 +266,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
                 //Informing the adapter and view after removing
                 mTaskAdapter.notifyItemRemoved(position);
                 mTaskAdapter.notifyItemRangeChanged(position, mTaskList.size());
+                cancelNotification();
                 break;
             }
         }
@@ -394,6 +399,15 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    public void cancelNotification(){
+        Intent intent = new Intent(this, CardNotification.class);
+        intent.setAction("CardNotification");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(getApplicationContext().ALARM_SERVICE);
+
+        alarmManager.cancel(pendingIntent);
     }
 
 
