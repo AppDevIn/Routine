@@ -210,6 +210,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 remind_text.setVisibility(View.INVISIBLE);
             }
         }else if (habitArrayList.size() <= 4){
+            if (viewSwitcher.getCurrentView() == nothing_view){
+                viewSwitcher.showPrevious();
+            }
+            add_habit.setVisibility(View.VISIBLE);
+            remind_text.setVisibility(View.VISIBLE);
             prev_indicator.setVisibility(View.INVISIBLE);
             next_indicator.setVisibility(View.INVISIBLE);
             indicator_num.setVisibility(View.INVISIBLE);
