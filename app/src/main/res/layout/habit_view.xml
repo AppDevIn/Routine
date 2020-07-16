@@ -107,7 +107,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="35dp"
                 android:layout_toEndOf="@+id/habit_view_count"
-                android:src="@drawable/habit_add_white" />
+                app:srcCompat="@drawable/habit_add_white" />
 
             <ImageButton
                 android:id="@+id/habit_view_modify"
