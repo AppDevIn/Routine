@@ -230,6 +230,41 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         int hour = currentCal.get(Calendar.HOUR_OF_DAY);
         int minute = currentCal.get(Calendar.MINUTE);
 
+        TimePickerDialog timePickerDialog;
+        timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                currentHour = hourOfDay;
+                currentMinute = minute;
+
+                selectedTime = currentHour + ":" + currentMinute;
+
+                if (currentHour < 10)
+                {
+                    selectedTime = "0" + currentHour + ":" + currentMinute;
+                }
+
+                if (currentMinute < 10)
+                {
+                    selectedTime = currentHour + ":" + "0" + currentMinute;
+                }
+
+                selectedCal.set(Calendar.HOUR_OF_DAY, currentHour);
+                selectedCal.set(Calendar.MINUTE, currentMinute);
+                selectedCal.set(Calendar.SECOND, 0);
+
+                isTimeSet = true;
+
+                timeButton.setText("Time: " + selectedTime);
+
+                Log.v(TAG, "Time Set: " + selectedTime);
+            }
+        }, hour, minute, false);
+        timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        timePickerDialog.show();
+
+
+        /*
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, hour, minute, false);
         timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         timePickerDialog.show();
@@ -279,6 +314,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
                 });
             }
         };
+
+         */
 
         /*
         timeSetListener = new TimePickerDialog.OnTimeSetListener() {
