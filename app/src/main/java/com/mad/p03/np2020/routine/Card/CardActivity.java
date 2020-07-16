@@ -148,21 +148,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        Bundle bundle = intent.getExtras();
-
-        String reminderSetTime = bundle.getString("ReminderDate");
-
-        Log.v(TAG, "Reminder date received! [" + reminderSetTime + "]");
-
-        mTask.setRemindDate(reminderSetTime);
-
-        mTask.executeUpdateFirebase(this);
-
-    }
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -194,7 +179,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void schedule() {
-        ScheduleDialogFragment scheduleDialogFragment = new ScheduleDialogFragment();
+        ScheduleDialogFragment scheduleDialogFragment = new ScheduleDialogFragment(mTask);
         scheduleDialogFragment.show(getSupportFragmentManager(), "Schedule Dialog Fragment");
 
     }

@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Card.Fragments;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -30,8 +31,10 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mad.p03.np2020.routine.Card.CardActivity;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.CardNotification;
+import com.mad.p03.np2020.routine.models.Task;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -96,6 +99,13 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
     String CardName;
 
+    Task mTask;
+
+    public ScheduleDialogFragment(Task task) {
+        mTask = task;
+    }
+
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,8 +125,19 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         timeButton = v.findViewById(R.id.timeButton);
         reminderButton = v.findViewById(R.id.reminderButton);
 
-        dateButton.setText("Date: Click to select! ");
-        timeButton.setText("Time: Click to select!");
+        if(mTask.getRemindDate() != null){
+            String time, date;
+
+            date = mTask.getStringRemindDate().split(" ")[0];
+            time = mTask.getStringRemindDate().split(" ")[1];
+
+            dateButton.setText("Date: " + date);
+            timeButton.setText("Time: " + time);
+        }else{
+            dateButton.setText("Date: Click to select!");
+            timeButton.setText("Time: Click to select!");
+        }
+
 
         //Getting current calendar
         currentCal = Calendar.getInstance();
@@ -160,6 +181,19 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
             setNotification();
             isReminderSet = true;
             dismiss();
+
+            long finalTime = selectedCal.getTimeInMillis();
+            Date setTime = new Date(finalTime);
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+
+            String dateString = dateFormat.format(setTime);
+            mTask.setRemindDate(dateString);
+
+            mTask.executeUpdateFirebase(this);
+
+            new TaskDBHelper(getContext()).update(mTask.getTaskID(), mTask.getStringRemindDate());
+
         }
         else
         {
@@ -425,29 +459,6 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         startActivity(intent);
 
          */
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        if (isReminderSet.equals(true))
-        {
-            long finalTime = selectedCal.getTimeInMillis();
-            Date setTime = new Date(finalTime);
-
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mms:ss");
-
-            String dateString = dateFormat.format(setTime);
-
-            Intent intent = new Intent(getActivity(), CardActivity.class);
-            intent.putExtra("ReminderDate", dateString);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-            Log.v(TAG, "Intent with date sent! [" + setTime + "]");
-
-            startActivity(intent);
-        }
     }
 
 

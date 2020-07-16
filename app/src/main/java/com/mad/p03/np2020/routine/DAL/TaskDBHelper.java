@@ -106,7 +106,7 @@ public class TaskDBHelper extends DBHelper {
         values.put(Task.COLUMN_SECTION_ID, task.getSectionID());
         values.put(Task.COLUMN_NAME, task.getName());
         values.put(Task.COLUMN_CHECKED, task.isChecked());
-        values.put(Task.COLUMN_REMIND_DATE, task.getRemindDate() != null ? task.getRemindDate().toString() : null);
+        values.put(Task.COLUMN_REMIND_DATE, task.getRemindDate() != null ? task.getStringRemindDate() : null);
         values.put(Task.COLUMN_DUE_DATE, task.getDueDate() != null ? task.getDueDate().toString() : null);
         values.put(Task.COLUMN_DUE_DATE, task.getNotes());
 
