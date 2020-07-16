@@ -136,10 +136,14 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/semicolon1"
@@ -155,6 +159,10 @@
                     android:text="@string/timer_center"
                     android:textColor="#000000"
                     android:textSize="42sp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -197,10 +205,13 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/semicolon"
@@ -216,6 +227,11 @@
                     android:text="@string/timer_center"
                     android:textColor="#000000"
                     android:textSize="42sp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
             <LinearLayout
