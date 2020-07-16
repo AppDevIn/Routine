@@ -242,6 +242,15 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
                 selectedTime = currentHour + ":" + currentMinute;
 
+                if (currentHour < 10)
+                {
+                    selectedTime = "0" + currentHour + ":" + currentMinute;
+                }
+
+                if (currentMinute < 10)
+                {
+                    selectedTime = currentHour + ":" + "0" + currentMinute;
+                }
 
                 selectedCal.set(Calendar.HOUR_OF_DAY, currentHour);
                 selectedCal.set(Calendar.MINUTE, currentMinute);
