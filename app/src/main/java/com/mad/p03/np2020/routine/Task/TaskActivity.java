@@ -342,7 +342,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         //Create the shape of the toolbar
 
-        float[] radius = {0f,0f,0f,0f,50f,50f,50f,50f};
+        float radius[] = {0f,0f,0f,0f,50f,50f,50f,50f};
 
         GradientDrawable shape = new GradientDrawable();
         shape.setShape(GradientDrawable.RECTANGLE);
@@ -369,7 +369,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());
-        String dateValue = formatter.format(date);
+        String dateValue = formatter.format(date).toString();
         Log.i(TAG, "setTxtDate: " + dateValue);
 
         //return the date formatted

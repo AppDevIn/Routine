@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="8dp"
-        app:cardElevation="20dp"
+        app:cardElevation="2.5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,16 +26,16 @@
             android:padding="10dp"
             android:weightSum="1">
 
-            <ImageButton
-                android:id="@+id/closeFragment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.1"
+<!--            <ImageButton-->
+<!--                android:id="@+id/closeFragment"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_weight="0.1"-->
 
-                android:background="@drawable/arrow_up"
-                android:contentDescription="@string/down_arrow"
-                android:rotation="-180" />
+<!--                android:background="@drawable/arrow_up"-->
+<!--                android:contentDescription="@string/down_arrow"-->
+<!--                android:rotation="-180" />-->
 
             <TextView
                 android:id="@+id/text_cool"
@@ -44,7 +44,7 @@
                 android:layout_gravity="center"
 
 
-                android:layout_weight="0.9"
+                android:layout_weight="1"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center"
                 android:text="@string/schedule"
@@ -58,26 +58,39 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView6"
+    <Button
+        android:fontFamily="@font/montserrat_regular"
+        android:id="@+id/dateButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="@string/holder"
-
-
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
-    <TextView
-        android:id="@+id/textView7"
+    <Button
+        android:fontFamily="@font/montserrat_regular"
+        android:id="@+id/timeButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="@string/holder"
-
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/dateButton" />
+
+    <Button
+        android:fontFamily="@font/montserrat_regular"
+        android:id="@+id/reminderButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/SetReminder"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

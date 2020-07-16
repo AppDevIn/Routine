@@ -20,24 +20,28 @@ import com.mad.p03.np2020.routine.R;
  */
 public class CardNotification extends BroadcastReceiver {
 
-    private static final String TAG = "Card Notification";
+    private String channelID = "CardNotification";
 
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        Log.v(TAG, "Building Notification");
-        Bundle bundle = intent.getExtras();
-        String CardName = bundle.getString("CardName");
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyCard")
-                .setSmallIcon(R.drawable.logo)
-                .setContentTitle(CardName)
-                .setContentText("You have a task due now!")
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+        if (intent.getAction().equals("CardNotification"))
+        {
+            Bundle bundle = intent.getExtras();
 
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+            //String CardName = intent.getStringExtra("CardName");
 
-        notificationManagerCompat.notify(200,  builder.build());
-        Log.v(TAG, "Notification built!");
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(context, channelID)
+                    .setSmallIcon(R.drawable.logo)
+                    .setContentTitle("Routine")
+                    .setContentText("Your card is due!")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+
+            notificationManagerCompat.notify(200, notification.build());
+        }
+
 
     }
 }

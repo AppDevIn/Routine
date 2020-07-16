@@ -14,6 +14,7 @@ import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,7 +38,7 @@ import androidx.work.WorkManager;
  *
  * Model used to manage the Task
  *
- * @author Jeyavishnu
+ * @author Jeyavishnu & Pritheev
  * @since 08-06-2020
  */
 public class Task implements Serializable {
@@ -92,7 +93,7 @@ public class Task implements Serializable {
     private String mSectionID;
     private int mPosition;
     private boolean checked;
-    private String remindDate;
+    private Date remindDate;
     private Date dueDate;
     private String mNotes;
     private String mLabels;
@@ -112,14 +113,14 @@ public class Task implements Serializable {
     }
 
     public Task(String name, int position, String sectionID, String taskID, boolean checked, String notes, String remindDate )  {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.mName = name;
         this.mSectionID = sectionID;
         this.mTaskID = taskID;
         this.mPosition = position;
         this.checked = checked;
         this.mNotes = notes;
-        this.remindDate = remindDate;
+        Log.i(TAG, "Task: " + remindDate);
+        this.remindDate = stringToDate(remindDate);
 
     }
 
@@ -152,7 +153,7 @@ public class Task implements Serializable {
         String ID = task.child("taskID").getValue(String.class);
         boolean checked = task.child("checked").getValue(Boolean.class) == null ? false : task.child("checked").getValue(Boolean.class);
         String notes = task.child("notes").getValue(String.class);
-        String remindDate = task.child("remindDate").getValue(String.class);
+        String remindDate = task.child(COLUMN_REMIND_DATE).getValue(String.class);;
 
         return new Task(name, position, sectionID, ID, checked, notes, remindDate);
     }
@@ -217,16 +218,25 @@ public class Task implements Serializable {
     }
 
     /**@return Date This return the data that I need to remind about the task*/
-    public String getRemindDate() {
+    public Date getRemindDate() {
+
+        /*
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mms:ss");
+        String dateString = dateFormat.format(remindDate);String dateString = dateFormat.format(remindDate);
+         */
+
         return remindDate;
     }
 
     /**@return Date This return the data that I need to remind about the task*/
-    public Date getDateRemindDate() {
+    public String getStringRemindDate() {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            return dateFormat.parse(remindDate);
-        }catch (Exception e){
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            String dateString = dateFormat.format(remindDate);
+            return dateString;
+        }
+        catch (Exception e)
+        {
             return null;
         }
     }
@@ -306,7 +316,7 @@ public class Task implements Serializable {
 
     public void setRemindDate(String remindDate) {
         dirty = true;
-        this.remindDate = remindDate;
+        this.remindDate = stringToDate(remindDate);
     }
 
     /**
@@ -316,10 +326,10 @@ public class Task implements Serializable {
      * @return Date Return the date object
      */
     public Date stringToDate(String date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         try {
             return sdf.parse(date);
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             Log.e("Exception", "Date unable to change reason: "+ ex.getLocalizedMessage());
             return null;
         }
@@ -380,7 +390,7 @@ public class Task implements Serializable {
                 .putInt(Task.COLUMN_POSITION, getPosition())
                 .putBoolean(Task.COLUMN_CHECKED, isChecked())
                 .putString(Task.COLUMN_NOTES, getNotes())
-//                .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
+                .putString(Task.COLUMN_REMIND_DATE, getStringRemindDate())
                 .build();
 
         //Create the request
@@ -434,7 +444,7 @@ public class Task implements Serializable {
                     .putInt(Task.COLUMN_POSITION, getPosition())
                     .putBoolean(Task.COLUMN_CHECKED, isChecked())
                     .putString(Task.COLUMN_NOTES, getNotes())
-//                    .putString(Task.COLUMN_REMIND_DATE, getRemindDate().toString())
+                    .putString(Task.COLUMN_REMIND_DATE, getStringRemindDate())
                     .build();
 
             //Create the request
