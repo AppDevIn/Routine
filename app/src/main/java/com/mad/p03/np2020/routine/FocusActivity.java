@@ -244,10 +244,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         circularProgressBar.setMin(0);
         circularProgressBar.setMax(100);
 
-        //Bottom Navigation
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
-        bottomNavInit(bottomNavigationView);
-
     }
 
 
@@ -747,6 +743,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             }
             Log.v(TAG, "Resume");
         }
+
+        //Bottom Navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
     }
 
     /**
