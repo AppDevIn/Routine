@@ -128,6 +128,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             public boolean canScrollHorizontally() {
                 return false;
             }
+
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
         };
         habitRecyclerView.setLayoutManager(manager);
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
