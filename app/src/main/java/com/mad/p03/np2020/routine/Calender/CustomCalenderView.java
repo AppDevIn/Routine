@@ -47,6 +47,8 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
 
     GridViewAdapter mGridViewAdapter;
 
+    DateChangeListener mDateChangeListener;
+
     public CustomCalenderView(Context context) {
         super(context);
     }
@@ -79,6 +81,8 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
         }
 
     }
+
+
 
     private void IntializeLayout(){
 
@@ -113,7 +117,7 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
     }
 
     //Is a datetime picker method
-    public void ChooseDate() {
+    private void ChooseDate() {
         Log.v(TAG, "Date Button Pressed!");
 
         int year = mCalender.get(Calendar.YEAR);
@@ -127,22 +131,33 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
         datePickerDialog.getDatePicker().setMinDate(mCalender.getTimeInMillis());
         datePickerDialog.show();
 
-        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", (dialog, which) -> {
 
-                //Set the date to the calender
-                mCalender.set(Calendar.YEAR, datePickerDialog.getDatePicker().getYear());
-                mCalender.set(Calendar.MONTH, datePickerDialog.getDatePicker().getMonth());
-                mCalender.set(Calendar.DAY_OF_MONTH, datePickerDialog.getDatePicker().getDayOfMonth());
+            //Set the date to the calender
+            mCalender.set(Calendar.YEAR, datePickerDialog.getDatePicker().getYear());
+            mCalender.set(Calendar.MONTH, datePickerDialog.getDatePicker().getMonth());
+            mCalender.set(Calendar.DAY_OF_MONTH, datePickerDialog.getDatePicker().getDayOfMonth());
 
-                //Re create the calender
-                SetUpCalender();
+            //Re create the calender
+            SetUpCalender();
 
+            //If not null trigger the listener
+            if(mDateChangeListener != null){
+                mDateChangeListener.onDateChange(mCalender.getTime());
             }
+
         });
 
 
+    }
+
+
+    public Date getDate(){
+        return mCalender.getTime();
+    }
+
+    public void setDateListener(DateChangeListener dateChangeListener){
+        this.mDateChangeListener = dateChangeListener;
     }
 
 }
