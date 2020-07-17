@@ -59,21 +59,21 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     protected void onResume() {
         super.onResume();
         //Bottom Navigation
-//        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
-//        bottomNavInit(bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
     }
 
-//    private void bottomNavInit(BottomNavigationView bottomNavigationView) {
-//
-//        //To have the highlight
-//        Menu menu = bottomNavigationView.getMenu();
-//        MenuItem menuItem = menu.getItem(1);
-//        menuItem.setChecked(true);
-//
-//        //To set setOnNavigationItemSelectedListener
-//        NavBarHelper navBarHelper = new NavBarHelper(this);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
-//    }
+    private void bottomNavInit(BottomNavigationView bottomNavigationView) {
+
+        //To have the highlight
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(3);
+        menuItem.setChecked(true);
+
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
 
 
     @Override
