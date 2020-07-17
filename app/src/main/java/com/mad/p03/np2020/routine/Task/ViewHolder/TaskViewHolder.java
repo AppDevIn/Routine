@@ -29,7 +29,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     public TextView mListName;
+    public TextView mTxtTime;
     public CheckBox mCheckBox;
+
 
 
     private ItemTouchHelper mItemTouchHelper;
@@ -53,6 +55,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnTo
         //Find the id
         mListName = itemView.findViewById(R.id.txtListName);
         mCheckBox = itemView.findViewById(R.id.checkbox);
+        mTxtTime = itemView.findViewById(R.id.txtTime);
 
 
         this.mItemTouchHelper = itemTouchHelper;

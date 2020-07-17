@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:gravity="center"
-            android:text="@string/holder" />
+            android:text="@string/task" />
 
         <LinearLayout
             android:layout_width="0dp"

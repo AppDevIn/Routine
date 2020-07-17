@@ -185,7 +185,7 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
             long finalTime = selectedCal.getTimeInMillis();
             Date setTime = new Date(finalTime);
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             String dateString = dateFormat.format(setTime);
             mTask.setRemindDate(dateString);

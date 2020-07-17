@@ -40,7 +40,7 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     private TaskAdapter mTaskAdapter;
     List<Task> mTaskList;
     ViewSwitcher viewSwitcher;
-    Boolean isZero;
+    Boolean isZero = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

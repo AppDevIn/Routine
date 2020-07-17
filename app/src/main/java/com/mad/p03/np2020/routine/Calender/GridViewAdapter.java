@@ -27,15 +27,15 @@ import androidx.cardview.widget.CardView;
 class GridViewAdapter extends ArrayAdapter {
 
     List<Date> dates;
-    Calendar currentDate;
+    Calendar selectedDSate, currentDate;
     List<Task> taskList;
     LayoutInflater mInflater;
 
 
-    public GridViewAdapter(@NonNull Context context, List<Date> dates, Calendar currentDate, List<Task> taskList) {
+    public GridViewAdapter(@NonNull Context context, List<Date> dates, Calendar selectedDSate,   List<Task> taskList) {
         super(context, R.layout.single_cell_layout);
         this.dates = dates;
-        this.currentDate = currentDate;
+        this.selectedDSate = selectedDSate;
         this.taskList = taskList;
 
         mInflater = LayoutInflater.from(context);
@@ -56,8 +56,8 @@ class GridViewAdapter extends ArrayAdapter {
         int dayNo = dateCalender.get(Calendar.DAY_OF_MONTH);
         int displayMonth = dateCalender.get(Calendar.MONTH) + 1;
         int displayYear = dateCalender.get(Calendar.YEAR);
-        int currentMonth = currentDate.get(Calendar.MONTH) + 1;
-        int currentYear = currentDate.get(Calendar.YEAR);
+        int currentMonth = selectedDSate.get(Calendar.MONTH) + 1;
+        int currentYear = selectedDSate.get(Calendar.YEAR);
 
         View view = convertView;
 
@@ -80,14 +80,24 @@ class GridViewAdapter extends ArrayAdapter {
         }
 
 
+
+
+
         if(displayMonth == currentMonth && displayYear == currentYear){
 
-            if(dayNo == currentDate.get(Calendar.DAY_OF_MONTH)){
+
+            if(dayNo == selectedDSate.get(Calendar.DAY_OF_MONTH)){
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.white));
                 cardView.setCardBackgroundColor(view.getContext().getResources().getColor(R.color.colorNCS_Blue));
             }else {
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
                 cardView.setCardBackgroundColor(view.getContext().getResources().getColor(android.R.color.transparent));
+                
+                if(dayNo == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+                    txtDay.setTextColor(view.getContext().getResources().getColor(R.color.red));
+                }
+
+
             }
 
         }
@@ -117,7 +127,7 @@ class GridViewAdapter extends ArrayAdapter {
         return dates.get(position);
     }
 
-    public void setCurrentDate(Calendar currentDate) {
-        this.currentDate = currentDate;
+    public void setCurrentDate(Calendar selectedDSate) {
+        this.selectedDSate = selectedDSate;
     }
 }

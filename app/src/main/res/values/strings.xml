@@ -122,6 +122,8 @@
     <string name="SetReminder">Set Reminder!</string>
     <string name="calender">Calender</string>
     <string name="my_calender">My Calender</string>
+    <string name="task">Task</string>
+    <string name="noTime">No Time</string>
 
 </resources>
 

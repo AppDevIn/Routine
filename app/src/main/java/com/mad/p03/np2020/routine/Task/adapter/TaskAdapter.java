@@ -18,6 +18,7 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -119,18 +120,34 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         Log.d(TAG, "onBindViewHolder: Running");
 
 
+        Task task = mTaskList.get(position);
 
         holder.mListName.setText(mTaskList.get(position).getName());
         holder.mCheckBox.setChecked(mTaskList.get(position).isChecked());
+
+        //Get the date formatted
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy, hh:mma");
+            String dateString = dateFormat.format(task.getRemindDate());
+            //Set the time
+            holder.mTxtTime.setText(dateString);
+
+        }
+        catch (Exception e)
+        {
+            holder.mTxtTime.setText(R.string.noTime);
+        }
+
+
 
         //Check if the box has been changed
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mTaskList.get(position).setChecked(b);
-                mTaskDBHelper.update(mTaskList.get(position).getTaskID(), b);
+                mTaskDBHelper.update(task.getTaskID(), b);
 
-                mTaskList.get(position).executeUpdateFirebase(null);
+                task.executeUpdateFirebase(null);
 
             }
         });
