@@ -10,10 +10,13 @@ import android.view.MenuItem;
 import android.widget.CalendarView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.models.Task;
 
 import java.util.Date;
+import java.util.List;
 
 public class Calender extends AppCompatActivity implements DateChangeListener {
 
@@ -58,11 +61,15 @@ public class Calender extends AppCompatActivity implements DateChangeListener {
     public void onDateChange(Date date) {
 
         Log.i(TAG, "onCreate: Date that needs to be retrieved: " + date.toString() );
+
+        initRecyclerView(date);
     }
 
     //TODO: Initialize the recycler view
-    public void initRecyclerView(){
-        
+    public void initRecyclerView(Date date){
+        List<Task> taskList = new TaskDBHelper(this).getAllTask(date);
+
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.DAL;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,10 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
-import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -150,6 +152,59 @@ public class TaskDBHelper extends DBHelper {
         return task;
 
     }
+
+    public List<Task> getAllTask(Date date){
+
+        List<Task> taskList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        //Convert to get the date, month and year
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String dateString = dateFormat.format(date);
+
+
+
+            Log.d(TAG, "getUser: Querying data");
+
+
+            //Get the data from sqlite
+            Cursor cursor =  db.rawQuery( "select * from " + Task.TABLE_NAME+ " where "+"'"+dateString+"' IN (SELECT substr(RemindDate, 1,10 ))", null );
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Task task = Task.fromCursor(cursor);
+
+                    Log.d(TAG, "getAllTask(): Reading data " + task.toString());
+
+                    taskList.add(task);
+                } while (cursor.moveToNext());
+            }
+
+
+            //Prepare a section object
+            assert cursor != null;
+            Task task = Task.fromCursor(cursor);
+            Log.d(TAG, "getAllSections(): Reading data" + task.toString() );
+
+
+            //Close the DB connection
+            db.close();
+
+        }
+        catch (Exception e)
+        {
+            db.close();
+        }
+
+        return taskList;
+
+
+
+
+
+    }
+
 
 
     /**
