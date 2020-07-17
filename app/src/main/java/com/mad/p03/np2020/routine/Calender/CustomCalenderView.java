@@ -134,15 +134,19 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
     private void ChooseDate() {
         Log.v(TAG, "Date Button Pressed!");
 
-        int year = mCalender.get(Calendar.YEAR);
-        int month = mCalender.get(Calendar.MONTH);
-        int day = mCalender.get(Calendar.DAY_OF_MONTH);
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(2020,6, 15);
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, android.R.style.Theme_Holo_Light_Dialog_MinWidth, null, year, month, day);
         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        datePickerDialog.getDatePicker().setMinDate(mCalender.getTimeInMillis());
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
 
         datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", (dialog, which) -> {
