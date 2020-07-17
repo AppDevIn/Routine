@@ -1,8 +1,13 @@
 package com.mad.p03.np2020.routine.Calender;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.Layout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridView;
@@ -22,8 +27,10 @@ import java.util.Locale;
 
 import androidx.annotation.Nullable;
 
-public class CustomCalenderView extends LinearLayout {
+public class CustomCalenderView extends LinearLayout implements View.OnClickListener {
 
+
+    final String TAG = "CalenderLayout";
 
     TextView txtCalender;
     GridView mGridView;
@@ -48,8 +55,6 @@ public class CustomCalenderView extends LinearLayout {
         super(context, attrs);
         this.mContext = context;
 
-
-
         IntializeLayout();
         SetUpCalender();
 
@@ -61,12 +66,28 @@ public class CustomCalenderView extends LinearLayout {
 
     }
 
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+            case R.id.calender_picker:
+                //Call the datePicker Method
+                ChooseDate();
+                break;
+            case R.id.calendarView:break;
+        }
+
+    }
+
     private void IntializeLayout(){
 
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.calender_layout, this);
         mGridView = view.findViewById(R.id.calendarView);
         txtCalender = view.findViewById(R.id.calender_picker);
+
+        txtCalender.setOnClickListener(this);
 
 
     }
@@ -90,4 +111,38 @@ public class CustomCalenderView extends LinearLayout {
         mGridView.setAdapter(mGridViewAdapter);
 
     }
+
+    //Is a datetime picker method
+    public void ChooseDate() {
+        Log.v(TAG, "Date Button Pressed!");
+
+        int year = mCalender.get(Calendar.YEAR);
+        int month = mCalender.get(Calendar.MONTH);
+        int day = mCalender.get(Calendar.DAY_OF_MONTH);
+
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(mContext, android.R.style.Theme_Holo_Light_Dialog_MinWidth, null, year, month, day);
+        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.getDatePicker().setMinDate(mCalender.getTimeInMillis());
+        datePickerDialog.show();
+
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                //Set the date to the calender
+                mCalender.set(Calendar.YEAR, datePickerDialog.getDatePicker().getYear());
+                mCalender.set(Calendar.MONTH, datePickerDialog.getDatePicker().getMonth());
+                mCalender.set(Calendar.DAY_OF_MONTH, datePickerDialog.getDatePicker().getDayOfMonth());
+
+                //Re create the calender
+                SetUpCalender();
+
+            }
+        });
+
+
+    }
+
 }

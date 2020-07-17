@@ -18,6 +18,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 class GridViewAdapter extends ArrayAdapter {
 
@@ -56,9 +57,14 @@ class GridViewAdapter extends ArrayAdapter {
         }
 
         TextView txtDay = view.findViewById(R.id.calendar_day);
+        CardView cardView = view.findViewById(R.id.cardView);
 
         if(displayMonth == currentMonth && displayYear == currentYear){
 
+            if(dayNo == currentDate.get(Calendar.DAY_OF_MONTH)){
+                txtDay.setTextColor(view.getContext().getResources().getColor(R.color.white));
+                cardView.setCardBackgroundColor(view.getContext().getResources().getColor(R.color.colorNCS_Blue));
+            }
 
         }
         else
