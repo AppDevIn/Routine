@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Calender;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Layout;
@@ -7,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +45,11 @@ class GridViewAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
+
+        //Get the task list
+        List<Task> taskList = new TaskDBHelper(getContext()).getAllTask();
+
+
         Date monthDate = dates.get(position);
         Calendar dateCalender = Calendar.getInstance();
         dateCalender.setTime(monthDate);
@@ -58,6 +67,18 @@ class GridViewAdapter extends ArrayAdapter {
 
         TextView txtDay = view.findViewById(R.id.calendar_day);
         CardView cardView = view.findViewById(R.id.cardView);
+        ImageView imageView = view.findViewById(R.id.alertEvent);
+
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        for (Task task:
+             taskList) {
+
+            if(task.getRemindDate() != null && (dateFormat.format(task.getRemindDate()).equals(dateFormat.format(monthDate)))){
+                imageView.setVisibility(View.VISIBLE);
+            }
+        }
+
 
         if(displayMonth == currentMonth && displayYear == currentYear){
 

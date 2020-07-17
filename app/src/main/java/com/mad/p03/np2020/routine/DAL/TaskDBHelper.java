@@ -153,6 +153,7 @@ public class TaskDBHelper extends DBHelper {
 
     }
 
+
     public List<Task> getAllTask(Date date){
 
         List<Task> taskList = new ArrayList<>();
@@ -203,6 +204,41 @@ public class TaskDBHelper extends DBHelper {
 
 
 
+    }
+
+    public List<Task> getAllTask(){
+
+        List<Task> taskList = new ArrayList<>();
+
+        // Select All Query
+
+        String selectQuery = "SELECT  * FROM " + Task.TABLE_NAME + " ORDER BY " +
+                Task.COLUMN_POSITION + " ASC;";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Task task = Task.fromCursor(cursor);
+
+                Log.d(TAG, "getAllTask(): Reading data " + task.toString());
+
+                taskList.add(task);
+            } while (cursor.moveToNext());
+        }
+
+
+        // close db connection
+        db.close();
+
+        Log.d(TAG, "getAllTask(): The number of task are " + taskList.size());
+
+        // return notes list
+        return taskList;
     }
 
 
