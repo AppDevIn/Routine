@@ -102,7 +102,7 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
                     mDateChangeListener.onDateChange(mCalender.getTime());
                 }
 
-                SetUpCalender();
+                UpdateCalender();
 
             }
         });
@@ -153,7 +153,7 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
             mCalender.set(Calendar.DAY_OF_MONTH, datePickerDialog.getDatePicker().getDayOfMonth());
 
             //Re create the calender
-            SetUpCalender();
+            UpdateCalender();
 
             //If not null trigger the listener
             if(mDateChangeListener != null){
@@ -161,6 +161,21 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
             }
 
         });
+
+
+    }
+
+    private void UpdateCalender() {
+
+        //Update the calender date
+        String currentDate = dateFormat.format(mCalender.getTime());
+        txtCalender.setText(currentDate);
+
+        //Update the color
+        mGridViewAdapter.setCurrentDate(mCalender);
+        mGridViewAdapter.notifyDataSetChanged();
+
+
 
 
     }

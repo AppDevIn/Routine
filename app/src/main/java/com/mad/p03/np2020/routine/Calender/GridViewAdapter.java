@@ -85,6 +85,9 @@ class GridViewAdapter extends ArrayAdapter {
             if(dayNo == currentDate.get(Calendar.DAY_OF_MONTH)){
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.white));
                 cardView.setCardBackgroundColor(view.getContext().getResources().getColor(R.color.colorNCS_Blue));
+            }else {
+                txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
+                cardView.setCardBackgroundColor(view.getContext().getResources().getColor(android.R.color.transparent));
             }
 
         }
@@ -112,5 +115,9 @@ class GridViewAdapter extends ArrayAdapter {
     @Override
     public Object getItem(int position) {
         return dates.get(position);
+    }
+
+    public void setCurrentDate(Calendar currentDate) {
+        this.currentDate = currentDate;
     }
 }
