@@ -138,7 +138,7 @@ public class Section implements Serializable {
 //            id = jsonObject.getString("id");
 //
 //            //Return back the object
-//            //TODO: Needs to change
+//            //Needs to change
 //            return new Section(name, color, image, id,5,"jdfshkjfgnds");
 //
 //
@@ -416,7 +416,7 @@ public class Section implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "Name: " + getName() + ",\tColor: " + getBackgroundColor() + ",\tImage: " + getBmiIcon() + " id: " + getID(); //TODO: Add the images
+        return "Name: " + getName() + ",\tColor: " + getBackgroundColor() + ",\tImage: " + getBmiIcon() + " id: " + getID();
     }
 
 

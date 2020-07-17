@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,7 +78,6 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
                 //Call the datePicker Method
                 ChooseDate();
                 break;
-            case R.id.calendarView:break;
         }
 
     }
@@ -92,6 +92,20 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
         txtCalender = view.findViewById(R.id.calender_picker);
 
         txtCalender.setOnClickListener(this);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                mCalender.setTime(dates.get(position));
+                //If not null trigger the listener
+                if(mDateChangeListener != null){
+                    mDateChangeListener.onDateChange(mCalender.getTime());
+                }
+
+                SetUpCalender();
+
+            }
+        });
 
 
     }
