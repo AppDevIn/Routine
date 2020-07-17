@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.DAL;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  * @since 02-06-2020
  */
 
-
+@SuppressLint("ParcelCreator")
 public class FocusDBHelper extends DBHelper  implements Parcelable{
 
 
@@ -38,6 +39,7 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
     public FocusDBHelper(@Nullable Context context) {
         super(context);
     }
+
 
     /**
      *
@@ -202,6 +204,5 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
     }
 }

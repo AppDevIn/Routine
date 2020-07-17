@@ -110,8 +110,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     /**
      * Notify Item changed if user remove
      *
-     * @param positon         This parameter is used to set the position of the section
-     * @param focusViewHolder This parameter is used to set the FocusViewHolder of the section
+     * @param position         This parameter is used to set the position of the section
+     * @param focusViewHolder  This parameter is used to set the FocusViewHolder of the section
      */
     public void remove(int position, Focus focusViewHolder) {
         focusList.remove(position);

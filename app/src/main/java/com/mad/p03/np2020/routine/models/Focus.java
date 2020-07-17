@@ -66,7 +66,6 @@ public class Focus implements Parcelable {
      * when its called
      *
      * @param fbID fpID is used for firebase as the primary key
-     * @param sqlID sqlID is used for SQLite as the primary key
      * @param mDate Date is used to capture the date of activity
      * @param mDuration Duration is used to capture the Duration of activity
      * @param mTask Task is used to capture the task of activity

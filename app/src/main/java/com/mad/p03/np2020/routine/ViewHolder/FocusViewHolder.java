@@ -39,7 +39,6 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
      * an item view and metadata about its place within the RecyclerView
      *
      * @param itemView set the positon to this section
-     * @param context set the focus to this section
      * @param adapter set the adapter to this section
      * @param parent set the parent to this section
      *
