@@ -27,7 +27,7 @@
         android:id="@+id/ll_border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:weightSum="1"
@@ -65,6 +65,7 @@
 
 
 
+
     </LinearLayout>
 
 
@@ -76,43 +77,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/calendar">
+        app:layout_constraintTop_toBottomOf="@id/ll_border">
 
 
 
 
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            >
-
-
-            <ImageView
-                android:id="@+id/nothing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
-
-                android:src="@drawable/nothing"
-
-                />
-
-            <TextView
-                android:id="@+id/timeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-
-                android:fontFamily="@font/montserrat_regular"
-                android:text="@string/your_tasklist_is_empty"
-                android:textAlignment="center"
-                android:textColor="#929292"
-                android:textSize="15sp" />
-
-        </RelativeLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

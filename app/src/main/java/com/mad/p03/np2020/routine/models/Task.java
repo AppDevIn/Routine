@@ -231,7 +231,7 @@ public class Task implements Serializable {
     /**@return Date This return the data that I need to remind about the task*/
     public String getStringRemindDate() {
         try {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String dateString = dateFormat.format(remindDate);
             return dateString;
         }
@@ -326,7 +326,7 @@ public class Task implements Serializable {
      * @return Date Return the date object
      */
     public Date stringToDate(String date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             return sdf.parse(date);
         } catch (Exception ex) {

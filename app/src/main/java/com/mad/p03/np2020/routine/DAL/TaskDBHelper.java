@@ -159,7 +159,7 @@ public class TaskDBHelper extends DBHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         //Convert to get the date, month and year
         try {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String dateString = dateFormat.format(date);
 
 

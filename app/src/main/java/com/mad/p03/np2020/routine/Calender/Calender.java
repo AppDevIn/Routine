@@ -1,7 +1,12 @@
 package com.mad.p03.np2020.routine.Calender;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,15 +18,24 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
+import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
+import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.models.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Calender extends AppCompatActivity implements DateChangeListener {
+public class Calender extends AppCompatActivity implements DateChangeListener, MyDatabaseListener {
 
 
     private final String TAG = "Calender";
+
+    RecyclerView mRecyclerView;
+    private Date currentDate;
+    private TaskAdapter mTaskAdapter;
+    List<Task> mTaskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +44,14 @@ public class Calender extends AppCompatActivity implements DateChangeListener {
 
 
         CustomCalenderView calendarView = findViewById(R.id.calendar);
-        Date date = calendarView.getDate();
+        currentDate = calendarView.getDate();
 
         calendarView.setDateListener(this);
+
+        initRecyclerView(currentDate);
+
+        //Set the listener
+        TaskDBHelper.setMyDatabaseListener(this);
 
     }
 
@@ -60,15 +79,98 @@ public class Calender extends AppCompatActivity implements DateChangeListener {
     @Override
     public void onDateChange(Date date) {
 
-        Log.i(TAG, "onCreate: Date that needs to be retrieved: " + date.toString() );
+        currentDate = date;
 
-        initRecyclerView(date);
+        mTaskList = new TaskDBHelper(this).getAllTask(date);
+
+        mTaskAdapter = new TaskAdapter(mTaskList, this);
+        mRecyclerView.setAdapter(mTaskAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
     }
 
-    //TODO: Initialize the recycler view
-    public void initRecyclerView(Date date){
-        List<Task> taskList = new TaskDBHelper(this).getAllTask(date);
+    @Override
+    public void onDataAdd(Object object) {
 
+        Task task = (Task) object;
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Log.d(TAG, "onDataAdd(): A new data added into SQL updating local list with: " + task );
+
+        if( task.getRemindDate() != null && (dateFormat.format(task.getRemindDate()).equals(dateFormat.format(currentDate)))){
+            //Adding into the local list
+            mTaskList.add(task);
+
+            //Informing the adapter and view of the new item
+            mTaskAdapter.notifyItemInserted(mTaskList.size());
+        }
+
+    }
+
+    @Override
+    public void onDataUpdate(Object object) {
+        Task task = (Task) object;
+
+        for (int position = 0; position < mTaskList.size(); position++) {
+
+
+            if(mTaskList.get(position).getTaskID().equals(task.getTaskID())){
+
+                mTaskList.remove(position);
+                mTaskList.add(position, task);
+
+                mTaskAdapter.notifyItemChanged(position);
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public void onDataDelete(String ID) {
+        Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
+
+        for (int position = 0; position < mTaskList.size(); position++) {
+
+            if(mTaskList.get(position).getTaskID().equals(ID)){
+
+                //Remove the list
+                mTaskList.remove(position);
+
+                //Informing the adapter and view after removing
+                mTaskAdapter.notifyItemRemoved(position);
+                mTaskAdapter.notifyItemRangeChanged(position, mTaskList.size());
+                break;
+            }
+        }
+    }
+
+    //Initialize the recycler view
+    public void initRecyclerView(Date date){
+
+        Log.i(TAG, "onCreate: Date that needs to be retrieved: " + date.toString() );
+
+        mTaskList = new TaskDBHelper(this).getAllTask(date);
+
+        mRecyclerView = findViewById(R.id.rcTask);
+        mRecyclerView.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        mTaskAdapter = new TaskAdapter(mTaskList, this);
+        mRecyclerView.setAdapter(mTaskAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //Setting up touchhelper
+        ItemTouchHelper.Callback callback = new MyTaskTouchHelper(mTaskAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        
 
     }
 
