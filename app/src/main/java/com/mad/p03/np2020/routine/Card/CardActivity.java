@@ -148,32 +148,21 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /*
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if (intent.getAction().equals("ScheduleNotification"))
-        {
-            long timeSet = intent.getLongExtra("CalendarMillis", 0);
-            String DateTimeSet = intent.getStringExtra("DateTimeSet");
-            //String DateTimeSet = selectedCal.get(Calendar.DAY_OF_MONTH) + "/" + selectedCal.get(Calendar.MONTH)+1 + "/" + selectedCal.get(Calendar.YEAR) + " " +  selectedCal.get(Calendar.HOUR_OF_DAY) + "-" + selectedCal.get(Calendar.MINUTE) + "-" + selectedCal.get(Calendar.SECOND);
-            Log.v(TAG, "Time in millis set and now: " + timeSet + "-"  + Calendar.getInstance().getTimeInMillis());
-            Log.v(TAG, "Date time set is: " + DateTimeSet);
+        Bundle bundle = intent.getExtras();
 
+        String reminderSetTime = bundle.getString("ReminderDate");
 
-            Intent notificationIntent = new Intent(CardActivity.this, CardNotification.class);
-            notificationIntent.setAction("CardNotification");
-            notificationIntent.putExtra("CardName", mEdTitle.getText());
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Log.v(TAG, "Reminder date received! [" + reminderSetTime + "]");
 
-            alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
-        }
+        mTask.setRemindDate(reminderSetTime);
+
+        mTask.executeUpdateFirebase(this);
+
     }
-
-     */
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {

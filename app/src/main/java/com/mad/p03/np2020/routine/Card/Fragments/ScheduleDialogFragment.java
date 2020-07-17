@@ -71,6 +71,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     //Second calendar for final reminder time
     Calendar selectedCal;
 
+    Calendar validationCalendar;
+
     int currentYear;
     int currentMonth;
     int currentDay;
@@ -113,14 +115,16 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         timeButton = v.findViewById(R.id.timeButton);
         reminderButton = v.findViewById(R.id.reminderButton);
 
-        dateButton.setText("Date: ");
-        timeButton.setText("Time: ");
+        dateButton.setText("Date: Click to select! ");
+        timeButton.setText("Time: Click to select!");
 
         //Getting current calendar
         currentCal = Calendar.getInstance();
 
         //Initializing setTimeCal to cal
         selectedCal = Calendar.getInstance();
+
+        validationCalendar = Calendar.getInstance();
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,8 +176,11 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         int month = currentCal.get(Calendar.MONTH);
         int day = currentCal.get(Calendar.DAY_OF_MONTH);
 
+
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.getDatePicker().setMinDate(validationCalendar.getTimeInMillis());
         datePickerDialog.show();
 
         datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", new DialogInterface.OnClickListener() {

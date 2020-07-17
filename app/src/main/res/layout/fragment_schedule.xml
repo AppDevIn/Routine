@@ -61,7 +61,7 @@
     <Button
         android:id="@+id/dateButton"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:text="@string/holder"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +71,7 @@
     <Button
         android:id="@+id/timeButton"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:text="@string/holder"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
