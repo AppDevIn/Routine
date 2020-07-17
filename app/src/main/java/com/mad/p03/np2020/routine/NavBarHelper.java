@@ -8,7 +8,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mad.p03.np2020.routine.Calender.Calender;
 import com.mad.p03.np2020.routine.Home.Home;
+
+import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 
@@ -64,10 +67,9 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
                 mContext.startActivity(intentHome, options.toBundle());
                 break;
             case R.id.calender:
-                Toast.makeText(mContext, "Calender will be implemented in stage 2", Toast.LENGTH_SHORT).show();
-                //TODO: Stage 2 implement
-//                Intent intent2 = new Intent(mContext, Main4Activity.class);
-//                mContext.startActivity(intent2, options.toBundle());
+                Intent intent2 = new Intent(mContext, Calender.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                mContext.startActivity(intent2, options.toBundle());
                 break;
             case R.id.profile:
                 Toast.makeText(mContext, "Profile will be implemented in stage 2", Toast.LENGTH_SHORT).show();

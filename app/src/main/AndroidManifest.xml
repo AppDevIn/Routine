@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mad.p03.np2020.routine"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
-
-
-    <dist:module dist:instant="true" />
-
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    package="com.mad.p03.np2020.routine">
 
     <application
         android:allowBackup="true"
@@ -20,70 +12,52 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize|adjustPan">
-
-        <activity android:name=".Card.CardActivity"
+        <activity android:name=".Calender.Calender"></activity>
+        <activity
+            android:name=".Card.CardActivity"
             android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustResize"
-        android:theme="@style/AppTheme"/>
-
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Register.RegisterActivity" />
-
-        <activity android:name=".LoginActivity"
-        android:theme="@style/AppTheme">
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Home.Home"
-                android:exported="true"/>
-
-        <activity android:name=".models.PopUp"
-            android:theme="@style/AppTheme.NotificationTheme">
-        </activity>
-
-        <activity android:name=".HabitActivity"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".Settings"
-                android:exported="true"/>
-
-        <activity android:name=".MainActivity"/>
-
-        <activity android:name=".HabitView"/>
-
-        <activity android:name=".Task.TaskActivity"
-            android:fitsSystemWindows="true"
-            />
-
+        <activity
+            android:name=".Home.Home"
+            android:exported="true" />
+        <activity
+            android:name=".models.PopUp"
+            android:theme="@style/AppTheme.NotificationTheme"></activity>
+        <activity
+            android:name=".HabitActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Settings"
+            android:exported="true" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".HabitView" />
+        <activity
+            android:name=".Task.TaskActivity"
+            android:fitsSystemWindows="true" />
         <activity android:name=".HabitAddActivity" />
 
         <activity android:name=".HabitEditActivity" />
-
         <activity android:name=".HabitViewActivity" />
-
         <activity android:name=".HabitGroupActivity" />
-
-        <activity android:name=".FocusActivity"
-            android:launchMode="singleTask"/>
-
-
+        <activity
+            android:name=".FocusActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".HabitReminderActivity" />
 
-
-        <service
-            android:name=".background.FCMSection"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-
-        <service android:name=".background.BoundService" android:stopWithTask="false" />
-
-        <receiver android:enabled="true" android:name=".models.AlarmReceiver"
+        <receiver
+            android:name=".models.AlarmReceiver"
+            android:enabled="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -92,11 +66,25 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".models.CardNotification" />
 
-        <receiver android:name=".models.CardNotification"/>
-
-
+        <service
+            android:name=".background.FCMSection"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".background.BoundService"
+            android:stopWithTask="false" />
     </application>
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <dist:module dist:instant="true" />
 
 </manifest>

@@ -31,7 +31,7 @@
     <string name="registerPassword">Enter a secure password</string>
     <string name="registerDOB">What is your Date of Birth?</string>
     <string name="empty_text_error">This input is empty</string>
-    <string name="addMessage" >Add New Card</string>
+    <string name="addMessage">Add New Card</string>
 
     <string name="account"><b><u>Account</u></b></string>
     <string name="notifications"><b><u>Notifications</u></b></string>
@@ -83,7 +83,7 @@
     <string name="icon_description">Icon description</string>
     <string name="habit">Habit</string>
     <string name="home">Home</string>
-    <string name="calender">Calender</string>
+
     <string name="profile">Profile</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
@@ -120,6 +120,8 @@
     <string name="Datenotset">Date: Not Set Yet</string>
     <string name="Timenotset">Time: Not Set Yet</string>
     <string name="SetReminder">Set Reminder!</string>
+    <string name="calender">Calender</string>
+    <string name="my_calender">My Calender</string>
 
 </resources>
 

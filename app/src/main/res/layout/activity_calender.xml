@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".Calender.Calender"
+    >
+
+
+    <com.mad.p03.np2020.routine.Calender.CustomCalenderView
+        android:id="@+id/calendar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="30dp"
+
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toTopOf="@+id/switcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="0.4"
+            android:background="@color/grey"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/holder" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="0.4"
+            android:background="@color/grey"
+            android:orientation="horizontal">
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <ViewSwitcher
+        android:id="@+id/switcher"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendar">
+
+
+
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+
+            <ImageView
+                android:id="@+id/nothing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+
+                android:src="@drawable/nothing"
+
+                />
+
+            <TextView
+                android:id="@+id/timeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/your_tasklist_is_empty"
+                android:textAlignment="center"
+                android:textColor="#929292"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcTask"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:padding="10dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </ViewSwitcher>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
