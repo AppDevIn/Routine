@@ -12,7 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CalendarView;
+import android.widget.ViewSwitcher;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
@@ -36,6 +39,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     private Date currentDate;
     private TaskAdapter mTaskAdapter;
     List<Task> mTaskList;
+    ViewSwitcher viewSwitcher;
+    Boolean isZero;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +53,25 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
         calendarView.setDateListener(this);
 
-        initRecyclerView(currentDate);
+
 
         //Set the listener
         TaskDBHelper.setMyDatabaseListener(this);
+
+
+
+        //*************For View Switcher********************
+        // Declare in and out animations and load them using AnimationUtils class
+        viewSwitcher = findViewById(R.id.switcher);
+        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
+
+        // set the animation type to ViewSwitcher
+        viewSwitcher.setInAnimation(in);
+        viewSwitcher.setOutAnimation(out);
+
+        initRecyclerView(currentDate);
+
 
     }
 
@@ -79,19 +99,41 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     @Override
     public void onDateChange(Date date) {
 
-        currentDate = date;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        mTaskList = new TaskDBHelper(this).getAllTask(date);
 
-        mTaskAdapter = new TaskAdapter(mTaskList, this);
-        mRecyclerView.setAdapter(mTaskAdapter);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        if(!dateFormat.format(date).equals(dateFormat.format(currentDate))){
+            currentDate = date;
+
+            mTaskList = new TaskDBHelper(this).getAllTask(date);
+
+            mTaskAdapter = new TaskAdapter(mTaskList, this);
+            mRecyclerView.setAdapter(mTaskAdapter);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            if(mTaskList.size() > 0 && isZero){
+                viewSwitcher.reset();
+                viewSwitcher.showNext();
+                isZero = false;
+            }else if (mTaskList.size() == 0 && !isZero){
+                viewSwitcher.showNext();
+                isZero = true;
+            }
+        }
+
 
 
     }
 
     @Override
     public void onDataAdd(Object object) {
+
+        if(mTaskList.size() == 0){
+            viewSwitcher.reset();
+            viewSwitcher.showNext();
+            isZero = false;
+        }
+
 
         Task task = (Task) object;
 
@@ -130,6 +172,11 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     @Override
     public void onDataDelete(String ID) {
+
+        if(mTaskList.size() == 1){
+            viewSwitcher.showNext();
+        }
+
         Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
 
         for (int position = 0; position < mTaskList.size(); position++) {
@@ -149,6 +196,9 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     //Initialize the recycler view
     public void initRecyclerView(Date date){
+
+
+
 
         Log.i(TAG, "onCreate: Date that needs to be retrieved: " + date.toString() );
 
@@ -170,8 +220,11 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-        
-
+        //if empty display the image if not the recyclerview
+        if(mTaskList.size() == 0){
+            viewSwitcher.showNext();
+            isZero = true;
+        }
     }
 
 }
