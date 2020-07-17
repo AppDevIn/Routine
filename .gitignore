@@ -87,3 +87,6 @@ desktop.ini
 
 # OSX files
 .DS_Store
+
+
+app/release/
