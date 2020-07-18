@@ -44,7 +44,8 @@
         <activity android:name=".HabitView" />
         <activity
             android:name=".Task.TaskActivity"
-            android:fitsSystemWindows="true" />
+            android:fitsSystemWindows="true"
+           />
         <activity android:name=".HabitAddActivity" />
 
         <activity android:name=".HabitEditActivity" />

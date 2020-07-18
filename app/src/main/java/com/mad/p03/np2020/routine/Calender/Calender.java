@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CalendarView;
@@ -58,6 +59,13 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         //Set the listener
         TaskDBHelper.setMyDatabaseListener(this);
 
+        //Make full screen
+
+        //To set to Full screen
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+
 
 
         //*************For View Switcher********************
@@ -70,7 +78,7 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         viewSwitcher.setInAnimation(in);
         viewSwitcher.setOutAnimation(out);
 
-        initRecyclerView(currentDate);
+
 
 
     }
@@ -78,6 +86,9 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     @Override
     protected void onResume() {
         super.onResume();
+
+        initRecyclerView(currentDate);
+
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);

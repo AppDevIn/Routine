@@ -92,7 +92,7 @@ class GridViewAdapter extends ArrayAdapter {
             }else {
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
                 cardView.setCardBackgroundColor(view.getContext().getResources().getColor(android.R.color.transparent));
-                
+
                 if(dayNo == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
                     txtDay.setTextColor(view.getContext().getResources().getColor(R.color.red));
                 }
