@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
 import com.mad.p03.np2020.routine.R.color;
 import com.mad.p03.np2020.routine.models.Focus;
@@ -32,6 +33,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.temporal.WeekFields;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.time.*;
 
 import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
@@ -143,6 +150,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        AndroidThreeTen.init(getContext());
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_historyfocus, container, false);
@@ -221,6 +229,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private void initialisation() throws ParseException {
         textFragment.setText("My Focus History");
         Date date = new Date();
+        Log.v(TAG, "Start beforeChange Date init: " + date);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -231,10 +240,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         date = cal.getTime();
         Log.v(TAG, "Start Date init: " + date);
-        mappingDate = getMapWeek(date);
+
+        LocalDateTime ldt = LocalDateTime.ofInstant(DateTimeUtils.toInstant(date), org.threeten.bp.ZoneId.systemDefault());
+
+        mappingDate = getMapWeek(ldt);
 
         Date min = user.getMinFocus();
-        if(min.after(mappingDate.get(1))){
+        if(min.before(mappingDate.get(1))){
             prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
         }else{
             Log.v(TAG, "Change Color");
@@ -395,13 +407,15 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     public void setPrevWeek() throws ParseException {
         Log.v(TAG, "Setting prev week");
         Date min = user.getMinFocus();
-        if(min.after(mappingDate.get(1))){
+        if(min.before(mappingDate.get(1))){
             Calendar cal = Calendar.getInstance();
             cal.setTime(mappingDate.get(1));
             cal.add(Calendar.DATE, -1);
             Date newDate = cal.getTime();
 
-            mappingDate = getMapWeek(newDate);
+            LocalDateTime ldt = LocalDateTime.ofInstant(DateTimeUtils.toInstant(newDate), org.threeten.bp.ZoneId.systemDefault());
+
+            mappingDate = getMapWeek(ldt);
             displayWeek();
 
         }else{
@@ -416,11 +430,12 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         Date max = user.getMaxFocus();
         if(max.after(mappingDate.get(7))){
             Calendar cal = Calendar.getInstance();
-            cal.setTime(mappingDate.get(1));
+            cal.setTime(mappingDate.get(7));
             cal.add(Calendar.DATE, 1);
             Date newDate = cal.getTime();
+            LocalDateTime ldt = LocalDateTime.ofInstant(DateTimeUtils.toInstant(newDate), org.threeten.bp.ZoneId.systemDefault());
 
-            mappingDate = getMapWeek(newDate);
+            mappingDate = getMapWeek(ldt);
             displayWeek();
 
         }else{
@@ -476,15 +491,20 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     }
 
     //Get Current week
-    public HashMap<Integer, Date> getMapWeek(Date date) {
+    public HashMap<Integer, Date> getMapWeek(LocalDateTime date) {
 
         Log.v(TAG, "Receive date: " + date.toString());
         HashMap<Integer, Date> mapDateDay = new HashMap<>();
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
+        Calendar c = Calendar.getInstance(Locale.UK);
+        c.set(Calendar.MONTH, date.getMonthValue()-1);
+        c.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth()-1);
+        c.set(Calendar.YEAR, date.getYear());
+
         int i = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
-        c.add(Calendar.DATE, -i - 7);
+        Log.v(TAG, "Minus date: " + i);
+
+        c.add(Calendar.DATE, -i);
         Date start = c.getTime();
         mapDateDay.put(1, start);
         Log.v(TAG, "Start week date: " + start.toString());

@@ -62,7 +62,6 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         this.context = context;
         this.focusDBHelper = focusDBHelper;
         this.user = user;
-        this.focusList = user.getmFocusList();
         this.historyFragment = historyFragment;
 
         user.readFocusFirebase(context);
