@@ -358,7 +358,7 @@ public class Check {
 
 
         if(check != null){
-            boolean isSame = (check.isChecked() == this.isChecked());
+            boolean isSame = (check.isChecked() == this.isChecked()) && (check.getName().equals(this.getName()));
 
             return (isSame);
         }else{
