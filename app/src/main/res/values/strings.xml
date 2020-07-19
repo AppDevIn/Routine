@@ -124,6 +124,8 @@
     <string name="my_calender">My Calender</string>
     <string name="task">Task</string>
     <string name="noTime">No Time</string>
+    <string name="_20">20</string>
+    <string name="calender_dot">Have event</string>
 
 </resources>
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
@@ -66,7 +67,7 @@ class GridViewAdapter extends ArrayAdapter {
         }
 
         TextView txtDay = view.findViewById(R.id.calendar_day);
-        CardView cardView = view.findViewById(R.id.cardView);
+        LinearLayout linearLayout = view.findViewById(R.id.llDates);
         ImageView imageView = view.findViewById(R.id.alertEvent);
 
 
@@ -88,10 +89,10 @@ class GridViewAdapter extends ArrayAdapter {
 
             if(dayNo == selectedDSate.get(Calendar.DAY_OF_MONTH)){
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.white));
-                cardView.setCardBackgroundColor(view.getContext().getResources().getColor(R.color.colorNCS_Blue));
+                linearLayout.setBackground(view.getContext().getResources().getDrawable(R.drawable.calender_img_dot_normal));
             }else {
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
-                cardView.setCardBackgroundColor(view.getContext().getResources().getColor(android.R.color.transparent));
+                linearLayout.setBackground(null);
 
                 if(dayNo == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
                     txtDay.setTextColor(view.getContext().getResources().getColor(R.color.red));
