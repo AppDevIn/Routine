@@ -207,6 +207,7 @@ public class HabitAddActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                     }
                 });
 
@@ -227,6 +228,7 @@ public class HabitAddActivity extends AppCompatActivity {
 
                         menu_count.setText(cntString);
                         alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                     }
                 });
 

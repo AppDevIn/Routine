@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -134,7 +135,7 @@ public class HabitEditActivity extends AppCompatActivity {
         habit_name.setText(habit.getTitle());
         habit_occur.setText(String.valueOf(habit.getOccurrence()));
         habit_count.setText(String.valueOf(habit.getCount()));
-
+        HideKeyboard();
         // Retrieve tha habitGroup object
         final HabitGroup habitGroup = habit.getGroup();
 
@@ -215,6 +216,7 @@ public class HabitEditActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                     }
                 });
 
@@ -235,6 +237,7 @@ public class HabitEditActivity extends AppCompatActivity {
 
                         habit_count.setText(cntString);
                         alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                     }
                 });
 
@@ -708,6 +711,16 @@ public class HabitEditActivity extends AppCompatActivity {
         Log.d(TAG, "getUniqueHabitReminderID: " + _new);
         editor.apply();
         return id;
+    }
+
+    /**
+     * Hide soft keyboard for user input task
+     */
+    private void HideKeyboard() {
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert mgr != null;
+        mgr.hideSoftInputFromWindow(habit_name.getWindowToken(), 0);
+        Log.i(TAG, "Hide Keyboard");
     }
 
 }
