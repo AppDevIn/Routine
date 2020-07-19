@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
 
     <TableLayout
@@ -272,6 +273,13 @@
                 android:layout_height="30dp"
                 android:src="@drawable/habit_add"
                 android:background="@drawable/edit_text_background"/>
+
+            <ImageButton
+                android:id="@+id/menu_edit_count"
+                android:layout_marginStart="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/habit_hashtag" />
 
         </LinearLayout>
 

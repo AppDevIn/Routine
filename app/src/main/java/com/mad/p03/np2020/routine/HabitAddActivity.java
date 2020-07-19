@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +10,12 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +66,7 @@ public class HabitAddActivity extends AppCompatActivity {
     private TextView group_indicate_text;
     private ImageButton add_btn;
     private ImageButton minus_btn;
+    private ImageButton modify_count;
     private Button buttonClose;
     private Button buttonOk;
 
@@ -110,6 +115,7 @@ public class HabitAddActivity extends AppCompatActivity {
         minus_btn = findViewById(R.id.menu_minus_count);
         buttonClose = findViewById(R.id.habit_close);
         buttonOk = findViewById(R.id.create_habit);
+        modify_count = findViewById(R.id.menu_edit_count);
 
         // initialise dateFormat
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -167,6 +173,64 @@ public class HabitAddActivity extends AppCompatActivity {
                 }
                 // set the count in the TextView
                 menu_count.setText(String.valueOf(count));
+            }
+        });
+
+        modify_count.setBackgroundColor(Color.TRANSPARENT);
+        // set onClickListener on modify count button
+        modify_count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Habit: Modify Count");
+                // Create an alert dialog (modify count)
+                AlertDialog.Builder builder = new AlertDialog.Builder(HabitAddActivity.this); // initialise the builder
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_view_modifycnt_dialog, viewGroup, false); // inflate the view
+                builder.setView(dialogView); //set view to the builder
+                final AlertDialog alertDialog = builder.create(); // build the alert dialog
+
+                // initialise the widgets
+                final TextView dialog_title = dialogView.findViewById(R.id.habit_view_dialog_title);
+                final Button cancelBtn = dialogView.findViewById(R.id.cancel_dialog);
+                final Button saveBtn = dialogView.findViewById(R.id.save_dialog);
+                final EditText dialog_cnt = dialogView.findViewById(R.id.dialog_cnt);
+
+                // set text on the input fields based on the habit
+                dialog_title.setText(habit_name.getText().toString());
+                dialog_cnt.setHint(menu_count.getText().toString());
+
+                dialog_cnt.requestFocus();
+                alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                // set onClickListener on the cancel button
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                    }
+                });
+
+                // set onClickListener on the save button
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String cntString = dialog_cnt.getText().toString();
+                        if (cntString.equalsIgnoreCase("")){
+                            dialog_cnt.setError("Please enter a number");
+                            return;
+                        }
+                        int dialogCnt = Integer.parseInt(cntString); // retrieve the count from the input field
+                        if (dialogCnt > 1000 ){
+                            dialog_cnt.setError("Please enter a smaller number");
+                            return;
+                        }
+
+                        menu_count.setText(cntString);
+                        alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                    }
+                });
+
+                alertDialog.show(); // show the alert dialog (modify count)
             }
         });
 

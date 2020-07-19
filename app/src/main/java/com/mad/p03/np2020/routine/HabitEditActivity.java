@@ -11,9 +11,12 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -54,7 +57,7 @@ public class HabitEditActivity extends AppCompatActivity {
 
     private TextView habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text, habit_count;
     private Button buttonClose, buttonOk, buttonDelete;
-    private ImageButton menu_add_count, menu_minus_count;
+    private ImageButton menu_add_count, menu_minus_count, menu_edit_count;
 
     private Habit habit;
 
@@ -97,6 +100,7 @@ public class HabitEditActivity extends AppCompatActivity {
         habit_count = findViewById(R.id.menu_count);
         menu_add_count = findViewById(R.id.menu_add_count);
         menu_minus_count = findViewById(R.id.menu_minus_count);
+        menu_edit_count = findViewById(R.id.menu_edit_count);
         buttonDelete = findViewById(R.id.habit_view_edit_delete);
 
         // set the HabitDBHelper
@@ -149,6 +153,10 @@ public class HabitEditActivity extends AppCompatActivity {
             habit_reminder_indicate_text.setText("NONE");
         }
 
+//        menu_add_count.setBackgroundColor(Color.TRANSPARENT);
+//        menu_minus_count.setBackgroundColor(Color.TRANSPARENT);
+        menu_edit_count.setBackgroundColor(Color.TRANSPARENT);
+
         // set onClickListener on the add count button
         menu_add_count.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +182,63 @@ public class HabitEditActivity extends AppCompatActivity {
                 }
                 // set the count in the TextView
                 habit_count.setText(String.valueOf(count));
+            }
+        });
+
+        // set onClickListener on modify count button
+        menu_edit_count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Habit: Modify Count");
+                // Create an alert dialog (modify count)
+                AlertDialog.Builder builder = new AlertDialog.Builder(HabitEditActivity.this); // initialise the builder
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_view_modifycnt_dialog, viewGroup, false); // inflate the view
+                builder.setView(dialogView); //set view to the builder
+                final AlertDialog alertDialog = builder.create(); // build the alert dialog
+
+                // initialise the widgets
+                final TextView dialog_title = dialogView.findViewById(R.id.habit_view_dialog_title);
+                final Button cancelBtn = dialogView.findViewById(R.id.cancel_dialog);
+                final Button saveBtn = dialogView.findViewById(R.id.save_dialog);
+                final EditText dialog_cnt = dialogView.findViewById(R.id.dialog_cnt);
+
+                // set text on the input fields based on the habit
+                dialog_title.setText(habit.getTitle());
+                dialog_cnt.setHint(habit_count.getText().toString());
+
+                dialog_cnt.requestFocus();
+                alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                // set onClickListener on the cancel button
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                    }
+                });
+
+                // set onClickListener on the save button
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String cntString = dialog_cnt.getText().toString();
+                        if (cntString.equalsIgnoreCase("")){
+                            dialog_cnt.setError("Please enter a number");
+                            return;
+                        }
+                        int dialogCnt = Integer.parseInt(cntString); // retrieve the count from the input field
+                        if (dialogCnt > 1000 ){
+                            dialog_cnt.setError("Please enter a smaller number");
+                            return;
+                        }
+
+                        habit_count.setText(cntString);
+                        alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                    }
+                });
+
+                alertDialog.show(); // show the alert dialog (modify count)
             }
         });
 
