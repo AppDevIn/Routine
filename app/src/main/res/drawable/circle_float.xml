@@ -1,4 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-</selector>
+    <!-- Drop Shadow Stack -->
+    <item>
+        <shape android:shape="oval">
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+
+            <solid android:color="#00CCCCCC" />
+
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+
+            <solid android:color="#10CCCCCC" />
+
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+
+            <solid android:color="#20CCCCCC" />
+
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+
+            <solid android:color="#30CCCCCC" />
+
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+
+            <solid android:color="#50CCCCCC" />
+
+            <corners android:radius="3dp" />
+        </shape>
+    </item>
+
+    <!-- Background -->
+
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="#FFEAAC"/>
+            <size android:width="80dp" android:height="80dp"/>
+
+        </shape>
+    </item>
+
+</layer-list>

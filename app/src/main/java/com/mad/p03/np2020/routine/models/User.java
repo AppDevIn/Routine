@@ -26,7 +26,12 @@ import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -146,6 +151,44 @@ public class User implements Parcelable {
      */
     public ArrayList<Focus> getmFocusList() {
         return mFocusList;
+    }
+
+
+    public ArrayList<Focus> getmFocusList(Date getDate) throws ParseException {
+
+        String pattern = "dd/MM/yyyy";
+        DateFormat df = new SimpleDateFormat(pattern);
+
+        String dateSelected = df.format(getDate);
+
+        ArrayList<Focus> focusArrayList = new ArrayList<>();
+
+        for (Focus focus : mFocusList
+        ) {
+            String date = focus.getsDate();
+
+            if (dateSelected.equals(date)) {
+                focusArrayList.add(focus);
+            }
+        }
+
+        return focusArrayList;
+    }
+
+    public ArrayList<Focus> getmFocusList(Date sDate, Date eDate) throws ParseException {
+
+        ArrayList<Focus> focusArrayList = new ArrayList<>();
+
+        for (Focus focus : mFocusList
+        ) {
+            Date date = focus.getdDate();
+
+            if (date.after(sDate) && date.before(eDate)) {
+                focusArrayList.add(focus);
+            }
+        }
+
+        return focusArrayList;
     }
 
     public ArrayList<Focus> getmUnsuccessFocusList() {

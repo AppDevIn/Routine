@@ -5,6 +5,12 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 /**
  *
  * Model used to manage the Focus
@@ -124,6 +130,32 @@ public class Focus implements Parcelable {
      */
     public String getmDateTime() {
         return mDateTime;
+    }
+
+    /**
+     *
+     * Get DateTime of task
+     */
+    public String getsDate() throws ParseException {
+        Date date;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+        date = dateFormat.parse(mDateTime);
+
+        String pattern = "dd/MM/yyyy";
+        DateFormat df = new SimpleDateFormat(pattern);
+
+        String dateAsString = df.format(date);
+        return dateAsString;
+
+    }
+
+    public Date getdDate() throws ParseException {
+        Date date;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+        date = dateFormat.parse(mDateTime);
+
+        return date;
+
     }
 
     /**

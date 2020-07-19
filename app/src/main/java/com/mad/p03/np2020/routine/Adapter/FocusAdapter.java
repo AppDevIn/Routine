@@ -91,7 +91,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     public void onBindViewHolder(@NonNull FocusViewHolder holder, int position) {
         List<Integer> hrMinSec = ConvertSecondsToTime(Integer.parseInt(focusList.get(position).getmDuration()));
 
-        holder.duration.setText(String.format(Locale.US, "%dHr %dMin", hrMinSec.get(0), hrMinSec.get(1)));
+        holder.duration.setText(String.format(Locale.US, "%d Hr %d Min", hrMinSec.get(0), hrMinSec.get(1)));
         holder.Task.setText(focusList.get(position).getmTask());
         holder.date.setText(focusList.get(position).getmDateTime());
         boolean completed = focusList.get(position).getmCompletion().equals("True");
@@ -209,6 +209,11 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
                         .build();
 
         WorkManager.getInstance(context.getApplicationContext()).enqueue(mywork);
+    }
+
+    public void updateList(ArrayList<Focus> updateList){
+        user.setmFocusList(updateList);
+        notifiyItemChange();
     }
 
     /**

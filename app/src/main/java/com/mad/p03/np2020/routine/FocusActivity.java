@@ -247,7 +247,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -522,13 +521,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.v(TAG, "Counting down");
         Log.v(TAG, String.valueOf(mTimeLeftInMillis));
         Log.v(TAG, String.valueOf(millisInput));
-        long percentage = (long) ((float) mTimeLeftInMillis / millisInput *100);
+        long percentage = (long) ((float) mTimeLeftInMillis / millisInput * 100);
 
         hour.setText(format(Locale.US, "%02d", hours));
         min.setText(format(Locale.US, "%02d", minutes));
         sec.setText(format(Locale.US, "%02d", seconds));
 
-        circularProgressBar.setProgress(100- percentage);
+        circularProgressBar.setProgress(100 - percentage);
 
 
     }
@@ -760,7 +759,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         Fragment fragmentA = getSupportFragmentManager().findFragmentByTag("HISTORY FRAGMENT");
 
-        if(fragmentA == null) {
+        if (fragmentA == null) {
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
