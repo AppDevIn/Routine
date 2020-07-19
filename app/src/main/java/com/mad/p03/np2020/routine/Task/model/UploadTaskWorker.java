@@ -55,7 +55,8 @@ public class UploadTaskWorker extends Worker {
         boolean isCheck =  getInputData().getBoolean(Task.COLUMN_CHECKED, false);
 
         //Getting a database reference to Users
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("task").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(ID));
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Task").child(String.valueOf(ID));
+        DatabaseReference sectionDatabase = FirebaseDatabase.getInstance().getReference().child("Section").child(String.valueOf(sectionID));
 
         //Setting value using object
         mDatabase.setValue(new Task(Name,0,sectionID,ID,isCheck, notes, remindDate));

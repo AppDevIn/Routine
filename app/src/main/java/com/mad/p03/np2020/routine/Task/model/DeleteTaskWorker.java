@@ -48,7 +48,7 @@ public class DeleteTaskWorker extends Worker {
 
         Log.d("TaskDelete", "doWork: " + ID);
 
-        FirebaseDatabase.getInstance().getReference().child("task").child(UID).child(ID).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("Task").child(ID).removeValue();
 
 
         return Result.success();

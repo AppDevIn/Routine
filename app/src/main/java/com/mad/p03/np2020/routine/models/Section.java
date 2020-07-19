@@ -8,6 +8,9 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
@@ -23,7 +26,9 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
@@ -94,6 +99,7 @@ public class Section implements Serializable {
     private int position;
     private String ID;
     private String mUID;
+    Map<String, String> teamList = new HashMap<>();
 
 
 
@@ -161,13 +167,16 @@ public class Section implements Serializable {
      * @return This will return the section object
      */
     public static Section fromDataSnapShot(DataSnapshot snapshot){
-        
+
+        Map<String, String> teamList = new HashMap<>();
         
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String name = snapshot.child("name").getValue(String.class);
         int icon = snapshot.child("bmiIcon").getValue(Integer.class) == null ? 0 : snapshot.child("bmiIcon").getValue(Integer.class);
         int color = snapshot.child("backgroundColor").getValue(Integer.class) == null ? 0 : snapshot.child("backgroundColor").getValue(Integer.class);
         String id = snapshot.child("id").getValue(String.class);
+
+
 
         return new Section(name, color, icon, id, 0, UID);
 
