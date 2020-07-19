@@ -3,6 +3,9 @@ package com.mad.p03.np2020.routine.Task;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +33,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 
+import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
+import com.mad.p03.np2020.routine.Task.Fragment.TaskSettings;
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.models.CardNotification;
@@ -53,7 +58,7 @@ import java.util.List;
  * @since 04-06-2020
  *
  */
-public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener {
+public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener, View.OnLongClickListener {
 
     private final String TAG = "Task";
 
@@ -84,6 +89,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         Log.d(TAG, "Creating GUI");
 
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         //Find the id
         mConstraintLayout = findViewById(R.id.taskLayout);
@@ -123,6 +129,8 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         viewSwitcher.setOutAnimation(out);
 
         taskDBHelper = new TaskDBHelper(this);
+
+        toolbar.setOnLongClickListener(this);
 
     }
 
@@ -209,6 +217,13 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        Log.d(TAG, "onLongClick: Clicked");
+        settingsInit();
         return false;
     }
 
@@ -411,6 +426,15 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(getApplicationContext().ALARM_SERVICE);
 
         alarmManager.cancel(pendingIntent);
+    }
+
+    private void settingsInit(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        TaskSettings fragment = new TaskSettings();
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.commit();
     }
 
 
