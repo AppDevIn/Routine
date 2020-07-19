@@ -29,6 +29,7 @@ import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -113,14 +114,16 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      * @param position         This parameter is used to set the position of the section
      * @param focusViewHolder  This parameter is used to set the FocusViewHolder of the section
      */
-    public void remove(int position, Focus focusViewHolder) {
+    public void remove(int position, Focus focusViewHolder) throws ParseException {
         focusList.remove(position);
         focusDBHelper.removeOneData(focusViewHolder);
 
         deleteDataFirebase(focusViewHolder);
 
         user.setmFocusList((ArrayList<Focus>) focusList);
-        historyFragment.updateTask(user);
+        ArrayList<Focus> focusArrayList = new ArrayList<>();
+        focusArrayList = (ArrayList<Focus>) focusList;
+        historyFragment.updateTask(focusArrayList);
 
         this.notifyItemRemoved(position);
     }
@@ -212,8 +215,9 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     }
 
     public void updateList(ArrayList<Focus> updateList){
-        user.setmFocusList(updateList);
-        notifiyItemChange();
+        focusList = updateList;
+        Log.v(TAG, "Set new list " + updateList);
+        this.notifyDataSetChanged();
     }
 
     /**

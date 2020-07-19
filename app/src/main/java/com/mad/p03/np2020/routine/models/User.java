@@ -6,6 +6,7 @@ import android.nfc.FormatException;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -98,6 +101,7 @@ public class User implements Parcelable {
     private FocusDBHelper focusDBHelper;
     private HabitDBHelper habitDBHelper;
     private HabitGroupDBHelper habitGroupDBHelper;
+    ArrayList<Date> dateArrayList = new ArrayList<>();
 
     /**
      * Parcelable constructor for custom object
@@ -175,13 +179,44 @@ public class User implements Parcelable {
         return focusArrayList;
     }
 
-    public ArrayList<Focus> getmFocusList(Date sDate, Date eDate) throws ParseException {
+    public Date getMinFocus() {
 
+        return Collections.min(dateArrayList);
+    }
+
+    public Date getMaxFocus() {
+        return Collections.max(dateArrayList);
+
+    }
+
+    public ArrayList<Focus> getmFocusList(Date sDate, Date eDate) throws ParseException {
         ArrayList<Focus> focusArrayList = new ArrayList<>();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(eDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 1);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        eDate = cal.getTime();
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(sDate);
+        cal2.set(Calendar.HOUR_OF_DAY, 0);
+        cal2.set(Calendar.MINUTE, 0);
+        cal2.set(Calendar.SECOND, -1);
+        cal2.set(Calendar.MILLISECOND, 0);
+
+        sDate = cal2.getTime();
+
+        Log.v(TAG, "Sorting date between " + sDate + " and " + eDate);
+
 
         for (Focus focus : mFocusList
         ) {
             Date date = focus.getdDate();
+            Log.v(TAG, "Sorting between " + date);
 
             if (date.after(sDate) && date.before(eDate)) {
                 focusArrayList.add(focus);
@@ -220,6 +255,35 @@ public class User implements Parcelable {
         return SuccessList;
     }
 
+    public ArrayList<Focus> getmUnsuccessFocusList(ArrayList<Focus> mFocusList) {
+        ArrayList<Focus> unSuccessList = new ArrayList<>();
+
+        if (mFocusList.size() != 0) {
+            for (Focus item : mFocusList) {
+                if (item.getmCompletion().equals("False")) {
+                    unSuccessList.add(item);
+                }
+            }
+        }
+
+        return unSuccessList;
+
+    }
+
+    public ArrayList<Focus> getmSuccessFocusList(ArrayList<Focus> mFocusList) {
+        ArrayList<Focus> SuccessList = new ArrayList<>();
+
+        if (mFocusList.size() != 0) {
+            for (Focus item : mFocusList) {
+                if (item.getmCompletion().equals("True")) {
+                    SuccessList.add(item);
+                }
+            }
+        }
+
+        return SuccessList;
+    }
+
     public int getTotalHours() {
         int hours = 0;
         for (Focus item : mFocusList) {
@@ -236,7 +300,12 @@ public class User implements Parcelable {
      *
      * @return ArrayList of focus object
      */
-    public void setmFocusList(ArrayList<Focus> mFocusList) {
+    public void setmFocusList(ArrayList<Focus> mFocusList) throws ParseException {
+        dateArrayList = new ArrayList<>();
+        for (Focus focus : mFocusList
+        ) {
+            dateArrayList.add(focus.getdDate());
+        }
         this.mFocusList = mFocusList;
     }
 
@@ -252,7 +321,7 @@ public class User implements Parcelable {
     /**
      * Method to clear Focus List
      */
-    public void clearFocusList() {
+    public void clearFocusList() throws ParseException {
         setmFocusList(new ArrayList<Focus>());
     }
 
@@ -271,7 +340,11 @@ public class User implements Parcelable {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 focusDBHelper.deleteAll();
-                clearFocusList();
+                try {
+                    clearFocusList();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     Focus focus = new Focus();
                     focus.setFbID((String) singleSnapshot.child("fbID").getValue());
@@ -282,7 +355,11 @@ public class User implements Parcelable {
                     addFocusList(focus);
                     focusDBHelper.addData(focus);
                 }
-                setmFocusList(focusDBHelper.getAllData());
+                try {
+                    setmFocusList(focusDBHelper.getAllData());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

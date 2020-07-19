@@ -59,6 +59,7 @@ import com.mad.p03.np2020.routine.background.BoundService;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -177,7 +178,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
-        initialization(); //Process of data
+        try {
+            initialization(); //Process of data
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         //ImageButton
         imageButton = findViewById(R.id.history);
@@ -264,7 +269,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Get Local Database Data
      * Initialize object
      */
-    private void initialization() {
+    private void initialization() throws ParseException {
         Log.v(TAG, "Database does not exist");
         Intent intent = new Intent(getApplicationContext(), BoundService.class);
         startService(intent);

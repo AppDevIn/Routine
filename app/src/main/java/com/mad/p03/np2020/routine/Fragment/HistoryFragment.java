@@ -27,9 +27,12 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -70,6 +73,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private TextView dateRangeView;
     private RadioButton week, day;
     private RadioGroup toggle;
+    private int selectedDate = 1;
 
     //StartDate and EndDate
     private HashMap<Integer, Date> mappingDate;
@@ -158,6 +162,8 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         sat = view.findViewById(R.id.saturdayButton);
         sun = view.findViewById(R.id.sundayButton);
 
+        dateRangeView = view.findViewById(R.id.dateRange);
+
         prevWeek = view.findViewById(R.id.weekSelectLeft);
         nextWeek = view.findViewById(R.id.weekSelectRight);
 
@@ -190,10 +196,15 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         week.setOnClickListener(this);
         day.setOnClickListener(this);
-
+        nextWeek.setOnClickListener(this);
+        prevWeek.setOnClickListener(this);
         toggle.setOnClickListener(this);
 
-        initialisation();
+        try {
+            initialisation();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         buttonFragment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,12 +218,39 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     /**
      * Used for initialization of history Fragment
      **/
-    private void initialisation() {
+    private void initialisation() throws ParseException {
         textFragment.setText("My Focus History");
         Date date = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        date = cal.getTime();
+        Log.v(TAG, "Start Date init: " + date);
         mappingDate = getMapWeek(date);
 
-        updateTask(this.user);
+        Date min = user.getMinFocus();
+        if(min.after(mappingDate.get(1))){
+            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
+        }else{
+            Log.v(TAG, "Change Color");
+            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+        }
+
+        Date max = user.getMinFocus();
+        if(max.after(mappingDate.get(7))){
+            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
+        }else{
+            Log.v(TAG, "Change Color");
+            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+        }
+
+        displayWeek();
+
     }
 
     /**
@@ -230,18 +268,24 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+
     /**
      * Method to update task number on the fragment
      */
-    public void updateTask(User user) {
-        usIndicator.setText(String.valueOf(user.getmUnsuccessFocusList().size()));
-        sIndicator.setText(String.valueOf(user.getmSuccessFocusList().size()));
+    public void updateTask(ArrayList<Focus> focusArrayList) {
+        Log.v(TAG, "Update task: " + focusArrayList);
+
+        usIndicator.setText(String.valueOf(user.getmUnsuccessFocusList(focusArrayList).size()));
+        sIndicator.setText(String.valueOf(user.getmSuccessFocusList(focusArrayList).size()));
+
         int totalSeconds = user.getTotalHours();
         List<Integer> hrMinSec = ConvertSecondsToTime(totalSeconds);
         totalHours.setText(String.format(Locale.US, "Total: %dHr %dMin %dSec", hrMinSec.get(0), hrMinSec.get(1), hrMinSec.get(2)));
 
-        if (user.getmFocusList().size() == 0) {
+        if (focusArrayList.size() == 0) {
             nothing.setVisibility(View.VISIBLE);
+        }else{
+            nothing.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -257,9 +301,34 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.weekSelectLeft:
+                try {
+                    setPrevWeek();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.weekSelectRight:
+                try {
+                    setNextWeek();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                break;
             case R.id.week:
+                try {
+                    displayWeek();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.day:
+                try {
+                    if(previousButton == null) previousButton = mon;
+                    displayResult(selectedDate, previousButton);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.mondayButton:
                 try {
@@ -319,17 +388,91 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /****
+     * This function is used to get the previous week of the current week
+     */
+
+    public void setPrevWeek() throws ParseException {
+        Log.v(TAG, "Setting prev week");
+        Date min = user.getMinFocus();
+        if(min.after(mappingDate.get(1))){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(mappingDate.get(1));
+            cal.add(Calendar.DATE, -1);
+            Date newDate = cal.getTime();
+
+            mappingDate = getMapWeek(newDate);
+            displayWeek();
+
+        }else{
+            Log.v(TAG, "Change Color");
+            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+        }
+    }
+
+    public void setNextWeek() throws ParseException {
+        Log.v(TAG, "Setting next week");
+
+        Date max = user.getMaxFocus();
+        if(max.after(mappingDate.get(7))){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(mappingDate.get(1));
+            cal.add(Calendar.DATE, 1);
+            Date newDate = cal.getTime();
+
+            mappingDate = getMapWeek(newDate);
+            displayWeek();
+
+        }else{
+            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+        }
+    }
+
+
+
     public void displayResult(int i, ResizeableButton id) throws ParseException {
+        selectedDate = i;
         if(previousButton != null){
             previousButton.setTextColor(getResources().getColor(color.black));
         }
         previousButton = id;
         Log.v(TAG, "Button Pressed " + i + " on " + id);
+        Log.v(TAG, "Date Hashmap " + mappingDate);
+
         id.setTextColor(getResources().getColor(color.pastelBlue));
         toggle.check(R.id.day);
         Date selectedDate = mappingDate.get(i);
         ArrayList<Focus> listUpdate = user.getmFocusList(selectedDate);
         focusAdapter.updateList(listUpdate);
+
+        updateTask(listUpdate);
+    }
+
+    public void displayWeek() throws ParseException {
+
+        if(previousButton != null){
+            previousButton.setTextColor(getResources().getColor(color.black));
+        }
+
+        Log.v(TAG, "Date Hashmap " + mappingDate);
+
+        toggle.check(R.id.week);
+        Date startDate = mappingDate.get(1);
+        Date endDate = mappingDate.get(7);
+        ArrayList<Focus> listUpdate = user.getmFocusList(startDate, endDate);
+
+        String pattern = "dd MMM";
+        DateFormat df = new SimpleDateFormat(pattern);
+
+        String dateAsStart = df.format(startDate);
+        String dateAsEnd = df.format(endDate);
+
+
+        dateRangeView.setText(dateAsStart + " - " + dateAsEnd);
+
+        focusAdapter.updateList(listUpdate);
+        updateTask(listUpdate);
+
     }
 
     //Get Current week
@@ -347,7 +490,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         Log.v(TAG, "Start week date: " + start.toString());
 
         //Uses for loop to map each days to a date for current week selected
-        for (int days = 1; days < 7; days++) {
+        for (int days = 2; days < 8; days++) {
             c.add(Calendar.DATE, 1);
             Date end = c.getTime();
             mapDateDay.put(days, end);
