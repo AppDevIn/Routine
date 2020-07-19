@@ -14,6 +14,11 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.Habit;
@@ -21,6 +26,7 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.models.User;
 
 /**
  *
@@ -40,18 +46,33 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     private HabitItemClickListener mListener;
     private static View view;
     private HabitDBHelper dbHandler;
-    private String UID;
+    private User user;
 
     /**Used as the adapter habitList*/
     public Habit.HabitList _habitList;
+    private HabitCheckAdapter habitCheckAdapter;
 
     /**This method is a constructor for habitAdapter*/
 
-    public HabitAdapter(Context c, Habit.HabitList habitList, String UID) {
+    public HabitAdapter(Context c, Habit.HabitList habitList, User user) {
         this.c = c;
         this._habitList = habitList;
-        this.UID = UID;
         dbHandler = new HabitDBHelper(c);
+        this.user = user;
+
+        user.readHabit_Firebase(c);
+        eventListener();
+    }
+
+    public HabitAdapter(Context c, Habit.HabitList habitList, User user,HabitCheckAdapter habitCheckAdapter) {
+        this.c = c;
+        this._habitList = habitList;
+        dbHandler = new HabitDBHelper(c);
+        this.user = user;
+        this.habitCheckAdapter = habitCheckAdapter;
+
+        user.readHabit_Firebase(c);
+        eventListener();
     }
 
     /**
@@ -268,5 +289,48 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 //        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
+    /**
+     * Listen to firebase data change to update views on the recyclerView
+     */
+    private void eventListener() {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        myRef.child("habit").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notifiyItemChange();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * Notify Item changed if user delete or add data
+     */
+    public void notifiyItemChange() {
+        _habitList = initDummyList(user.getHabitList());
+//        habitCheckAdapter._habitList = user.getHabitList();
+        this.notifyDataSetChanged();
+//        habitCheckAdapter.notifyDataSetChanged();
+        Log.v(TAG, "Data is changed from other server");
+    }
+
+    private Habit.HabitList initDummyList (Habit.HabitList habitList){
+
+        if (habitList.size() == 0) {return habitList;}
+        int size = habitList.size();
+
+        int dummy_size = 4-(size % 4);
+        if (dummy_size == 4) {return habitList;}
+
+        for (int i = 0; i<dummy_size; i++){
+            habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+        }
+
+        return habitList;
+    }
 }
 

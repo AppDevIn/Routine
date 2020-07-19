@@ -93,6 +93,7 @@ public class User implements Parcelable {
     private FocusDBHelper focusDBHelper;
     private HabitDBHelper habitDBHelper;
     private HabitGroupDBHelper habitGroupDBHelper;
+    private Habit.HabitList habitList;
 
     /**
      * Parcelable constructor for custom object
@@ -249,6 +250,20 @@ public class User implements Parcelable {
         });
     }
 
+    public Habit.HabitList getHabitList() {
+        return habitList;
+    }
+
+    public void setHabitList(Habit.HabitList habitList) {
+        this.habitList = habitList;
+    }
+
+    public void clearHabitList() {
+        setHabitList(new Habit.HabitList());
+    }
+
+
+
     /**
      * This method is read the habits from firebase
      *
@@ -259,13 +274,13 @@ public class User implements Parcelable {
 
         habitDBHelper = new HabitDBHelper(context);
 
-        // delete all the habit
-        habitDBHelper.deleteAllHabit();
-
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habit").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("habit").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // delete all the habit
+                habitDBHelper.deleteAllHabit();
+                clearHabitList();
                 // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     Habit habit = new Habit();
@@ -298,11 +313,12 @@ public class User implements Parcelable {
                         habit.setHabitReminder(null);
                     }
 
-
                     habitDBHelper.insertHabitFromFirebase(habit, getUID());
                     Log.d(TAG, "reading Habit Lines");
 
                 }
+
+                setHabitList(habitDBHelper.getAllHabits());
 
             }
 

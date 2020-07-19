@@ -12,6 +12,7 @@ import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitCheckHolder;
 import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.User;
 
 public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 
@@ -20,14 +21,16 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
     Context c;
     private HabitCheckItemClickListener mListener;
     private static View view;
+    private User user;
 
     public void setOnItemClickListener(HabitCheckItemClickListener listener){
         this.mListener = listener;
     }
 
-    public HabitCheckAdapter(Context c, Habit.HabitList habitList) {
+    public HabitCheckAdapter(Context c, Habit.HabitList habitList, User user) {
         this.c = c;
         this.habitList = habitList;
+        this.user = user;
     }
 
 

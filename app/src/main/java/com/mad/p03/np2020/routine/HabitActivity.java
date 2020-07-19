@@ -111,6 +111,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set User
         user = new User();
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
 
         // initialise the shared preferences
         initSharedPreferences();
@@ -146,6 +148,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         prev_indicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: previous");
                 String num = indicator_num.getText().toString();
                 if (!num.equals("1")){
                     int n = Integer.parseInt(num)-1;
@@ -154,7 +157,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                     if (n*4+1 <= habitAdapter._habitList.size()){
                         next_indicator.setVisibility(View.VISIBLE);
                     }
+
                     int position = n*4;
+                    Log.d(TAG, "onClick: previous " + position);
                     habitRecyclerView.scrollToPosition(position);
                 }
 
@@ -167,12 +172,12 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         next_indicator.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-
+                  Log.d(TAG, "onClick: next");
                   String num = indicator_num.getText().toString();
                   int n = Integer.parseInt(num);
                   int position = (n) *4;
                   int arr_size = habitAdapter._habitList.size();
-
+                  Log.d(TAG, "onClick: "+arr_size);
                   if (position+1 <= arr_size){
                       n++;
                       indicator_num.setText(String.valueOf(n));
@@ -202,8 +207,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
+        user.setHabitList(habit_dbHandler.getAllHabits());
         // initialise the habitAdapter
-        Habit.HabitList habitArrayList = initDummyList(habit_dbHandler.getAllHabits());
+        Habit.HabitList habitArrayList = initDummyList(user.getHabitList());
 
         if(habitArrayList.size() == 0){
             if (viewSwitcher.getCurrentView() != nothing_view){
@@ -234,11 +240,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             remind_text.setVisibility(View.VISIBLE);
         }
 
-        habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList);
+        habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList, user);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
         habitCheckAdapter.setOnItemClickListener(this);
 
-        habitAdapter = new HabitAdapter(this, habitArrayList, user.getUID());
+        habitAdapter = new HabitAdapter(this, habitArrayList, user);
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
