@@ -28,6 +28,8 @@ import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.models.User;
 
+import static com.mad.p03.np2020.routine.HabitActivity.remind_text;
+
 /**
  *
  * This will be the controller glue between the viewHolder and the model.
@@ -312,9 +314,17 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
      */
     public void notifiyItemChange() {
         _habitList = initDummyList(user.getHabitList());
-//        habitCheckAdapter._habitList = user.getHabitList();
         this.notifyDataSetChanged();
-//        habitCheckAdapter.notifyDataSetChanged();
+
+        int n = checkIncompleteHabits(_habitList);
+
+        if (n == 0){
+            remind_text.setText("You have completed all habits today!");
+        }else if (n == 1){
+            remind_text.setText("You still have 1 habit to do today");
+        }else{
+            remind_text.setText(String.format("You still have %d habits to do today",n));
+        }
         Log.v(TAG, "Data is changed from other server");
     }
 
@@ -331,6 +341,17 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         }
 
         return habitList;
+    }
+
+    public int checkIncompleteHabits(Habit.HabitList habitList){
+        int n = 0;
+        for (int i = 0; i < habitList.size(); i++){
+            Habit habit = habitList.getItemAt(i);
+            if (!habit.getTitle().toLowerCase().equals("dummy") && habit.getOccurrence() > habit.getCount() ){
+                n++;
+            }
+        }
+        return n;
     }
 }
 

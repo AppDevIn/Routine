@@ -75,8 +75,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     private ImageView prev_indicator, next_indicator;
 
-    private TextView indicator_num, remind_text;
-
+    private TextView indicator_num;
+    public static TextView remind_text;
     private ViewSwitcher viewSwitcher;
 
     private Button add_first_habit;
@@ -251,7 +251,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
 
-        int n = checkIncompleteHabits(habitAdapter._habitList);
+        int n = checkIncompleteHabits(habitArrayList);
 
         if (n == 0){
             remind_text.setText("You have completed all habits today!");
@@ -381,6 +381,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void onHabitCheckItemClick(int position) {
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         habit.addCount(); // add the count by 1
+        Log.d(TAG, "onHabitCheckItemClick: "+habit.getCount());
         habitAdapter.notifyDataSetChanged(); // notify the data set has changed
         habitCheckAdapter.notifyDataSetChanged();
         habit_dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
