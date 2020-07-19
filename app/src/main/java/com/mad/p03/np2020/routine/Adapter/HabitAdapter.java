@@ -299,7 +299,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         myRef.child("habit").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifiyItemChange();
+                notifyItemChanged();
             }
 
             @Override
@@ -312,7 +312,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     /**
      * Notify Item changed if user delete or add data
      */
-    public void notifiyItemChange() {
+    public void notifyItemChanged() {
         _habitList = initDummyList(user.getHabitList());
         this.notifyDataSetChanged();
 

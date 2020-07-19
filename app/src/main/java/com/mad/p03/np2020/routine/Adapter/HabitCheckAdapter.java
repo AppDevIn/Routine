@@ -14,7 +14,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitCheckHolder;
@@ -66,7 +65,7 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
             holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         }
-        Log.d(TAG, "onBindViewHolder: "+habit.getTitle() + " " +habit.getCount());
+
         holder.title.setText(capitalise(habit.getTitle().trim()));
         holder.habit_count.setText(String.valueOf(habit.getCount()));
         holder.habit_occurrence.setText(String.valueOf(habit.getOccurrence()));
@@ -117,7 +116,7 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
         myRef.child("habit").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifiyItemChange();
+                notifyItemChanged();
             }
 
             @Override
@@ -130,7 +129,7 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
     /**
      * Notify Item changed if user delete or add data
      */
-    public void notifiyItemChange() {
+    public void notifyItemChanged() {
         habitList = initDummyList(user.getHabitList());
         this.notifyDataSetChanged();
 
