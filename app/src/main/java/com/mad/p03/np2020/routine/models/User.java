@@ -94,6 +94,7 @@ public class User implements Parcelable {
     private HabitDBHelper habitDBHelper;
     private HabitGroupDBHelper habitGroupDBHelper;
     private Habit.HabitList habitList;
+    private ArrayList<HabitGroup> habitGroupsList;
 
     /**
      * Parcelable constructor for custom object
@@ -262,7 +263,17 @@ public class User implements Parcelable {
         setHabitList(new Habit.HabitList());
     }
 
+    public ArrayList<HabitGroup> getHabitGroupsList() {
+        return habitGroupsList;
+    }
 
+    public void setHabitGroupsList(ArrayList<HabitGroup> habitGroupsList) {
+        this.habitGroupsList = habitGroupsList;
+    }
+
+    public void clearHabitGroupsList(){
+        setHabitGroupsList(new ArrayList<HabitGroup>());
+    }
 
     /**
      * This method is read the habits from firebase
@@ -339,13 +350,14 @@ public class User implements Parcelable {
 
         habitGroupDBHelper = new HabitGroupDBHelper(context);
 
-        // delete all habitGroups
-        habitGroupDBHelper.deleteAllHabitGroups();
-
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habitGroup").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("habitGroup").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // delete all habitGroups
+                habitGroupDBHelper.deleteAllHabitGroups();
+                clearHabitGroupsList();
+                Log.d(TAG, "reading HabitGroup Lines");
                 // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     HabitGroup habitGroup = new HabitGroup();
@@ -356,9 +368,8 @@ public class User implements Parcelable {
                     Log.d(TAG, "onDataChange: " + habitGroup.getGrp_name());
 
                     habitGroupDBHelper.insertGroupFromFirebase(habitGroup);
-
-                    Log.d(TAG, "reading HabitGroup Lines");
                 }
+                setHabitGroupsList(habitGroupDBHelper.getAllGroups());
             }
 
             @Override

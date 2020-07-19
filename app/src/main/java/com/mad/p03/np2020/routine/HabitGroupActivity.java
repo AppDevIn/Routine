@@ -98,6 +98,7 @@ public class HabitGroupActivity extends AppCompatActivity {
         // set user
         user = new User();
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        user.setHabitGroupsList(group_dbhandler.getAllGroups());
 
         // This is to get the habit object from intent bundle and set the text for the current group
         Intent intent = getIntent();
@@ -119,7 +120,7 @@ public class HabitGroupActivity extends AppCompatActivity {
         habitGroupRecyclerView = findViewById(R.id.habit_recycler_view);
         habitGroupRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         // initialise group adapter
-        groupAdapter= new HabitGroupAdapter(group_dbhandler.getAllGroups(), this);
+        groupAdapter= new HabitGroupAdapter(user.getHabitGroupsList(), this, user);
         // set groupAdapter on RecyclerView
         habitGroupRecyclerView.setAdapter(groupAdapter);
 
