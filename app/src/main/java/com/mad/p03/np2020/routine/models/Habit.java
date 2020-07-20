@@ -93,13 +93,12 @@ public class Habit {
     public static final String CREATE_HABITS_REPETITION_TABLE =
             "CREATE TABLE " + HR_TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COLUMN_HABIT_ID  + "INTEGER," +
+                    COLUMN_HABIT_ID  + " INTEGER," +
                     COLUMN_HABIT_TIMESTAMP  + " LONG," +
                     COLUMN_HABIT_CYCLE  + " INTEGER," +
                     COLUMN_HABIT_CYCLE_DAY + " INTEGER," +
                     COLUMN_HABIT_COUNT  + " INTEGER," +
-                    COLUMN_HABIT_CONCOUNT  + " INTEGER," +
-                    COLUMN_USERID + " INTEGER," + ");";
+                    COLUMN_HABIT_CONCOUNT  + " INTEGER" + ")";
 
 
     /**
