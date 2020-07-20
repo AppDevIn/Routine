@@ -78,11 +78,11 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
     /**
      *
-     * This method is used to insert the habit to the habit column in the SQLiteDatabase.
+     * This method is used to insert the habitRepetition to the habitRepetition column in the SQLiteDatabase.
      *
      * @param habit This parameter is to get the habit object.
      *
-     * @return long This will return the id for the habit after the habit is inserted to the habit column.
+     * @return long This will return the id for the habitRepetition after the habitRepetition is inserted to the habitRepetition column.
      * */
     public long insertHabitRepetition(Habit habit) {
 
@@ -97,7 +97,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
         switch (habit.getPeriod()){
             case 1:
                 values.putNull(HabitRepetition.COLUMN_HABIT_CYCLE);
-                values.putNull(HabitRepetition.COLUMN_HABIT_CYCLE_DAY);
+                values.put(HabitRepetition.COLUMN_HABIT_CYCLE_DAY, 1);
                 break;
 
             case 7:

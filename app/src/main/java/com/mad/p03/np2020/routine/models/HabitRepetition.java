@@ -1,5 +1,13 @@
 package com.mad.p03.np2020.routine.models;
 
+/**
+ *
+ * Model used to manage the habitRepetition
+ *
+ * @author Hou Man
+ * @since 20-07-2020
+ */
+
 public class HabitRepetition {
 
     /**Used as the name of the table*/
