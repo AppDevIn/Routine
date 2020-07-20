@@ -97,6 +97,8 @@ public class TaskSettings extends Fragment {
 
     }
 
+    onBac
+
     private void initRecyclerView(View view, List<String> emailList) {
         RecyclerView mRecyclerView = view.findViewById(R.id.recyclerViewEmail);
         mRecyclerView.setHasFixedSize(true);
