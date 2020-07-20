@@ -148,7 +148,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         prev_indicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: previous");
                 String num = indicator_num.getText().toString();
                 if (!num.equals("1")){
                     int n = Integer.parseInt(num)-1;
@@ -159,7 +158,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                     int position = n*4;
-                    Log.d(TAG, "onClick: previous " + position);
                     habitRecyclerView.scrollToPosition(position);
                 }
 
@@ -172,12 +170,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         next_indicator.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                  Log.d(TAG, "onClick: next");
                   String num = indicator_num.getText().toString();
                   int n = Integer.parseInt(num);
                   int position = (n) *4;
                   int arr_size = habitAdapter._habitList.size();
-                  Log.d(TAG, "onClick: "+arr_size);
                   if (position+1 <= arr_size){
                       n++;
                       indicator_num.setText(String.valueOf(n));
