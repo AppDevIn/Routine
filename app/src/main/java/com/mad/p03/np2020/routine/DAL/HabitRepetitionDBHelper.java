@@ -11,11 +11,7 @@ import androidx.annotation.Nullable;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  *
@@ -28,6 +24,7 @@ import java.util.Date;
 public class HabitRepetitionDBHelper extends DBHelper {
 
     private final String TAG = "HabitRepetitionDatabase";
+    private HabitDBHelper habitDBHelper;
 
     /**
      *
@@ -37,6 +34,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
      * */
     public HabitRepetitionDBHelper(@Nullable Context context) {
         super(context);
+        habitDBHelper = new HabitDBHelper(context);
     }
 
     /**
@@ -140,6 +138,18 @@ public class HabitRepetitionDBHelper extends DBHelper {
         return cal.getTimeInMillis();
     }
 
+    public long getYesterdayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        cal.add(Calendar.DATE, -1);
+
+        return cal.getTimeInMillis();
+    }
+
     /**
      *
      * This method is used to update the count of the habit in the SQLiteDatabase.
@@ -163,6 +173,75 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close(); // close the db connection
     }
 
+    public void repeatingHabit(){
+        // get the readable database
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + getYesterdayTimestamp() + " ORDER BY " + HabitRepetition.COLUMN_HABIT_ID + " ASC ";
+        // run the query
+        Cursor res =  db.rawQuery( query, null );
+        res.moveToFirst(); // move to the first result found
+
+        while(!res.isAfterLast()){
+            long id = res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_ID));
+            int cycle = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE));
+            int day = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY));
+            int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
+            int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
+
+            Habit habit = habitDBHelper.getHabitByID(id);
+            switch (habit.getOccurrence()){
+                case 1:
+                    insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
+                    break;
+
+                case 7:
+                    if (day == 7){
+                        insertNewRepetitionHabit(id, ++cycle, 1, conCount+count);
+                    }else{
+                        insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
+                    }
+                    break;
+
+                case 30:
+                    if (day == 30){
+                        insertNewRepetitionHabit(id, ++cycle, 1, conCount+count);
+                    }
+                    else{
+                        insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
+                    }
+                    break;
+            }
+
+            res.moveToNext(); // move to the next result
+
+        }
+        db.close();
+    }
+
+    public void insertNewRepetitionHabit(long habitID, int cycle, int cycle_day, int conCount){
+        // insert the values
+        ContentValues values = new ContentValues();
+        values.put(HabitRepetition.COLUMN_HABIT_ID, habitID);
+        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, getTodayTimestamp());
+        values.put(HabitRepetition.COLUMN_HABIT_COUNT, 0);
+        values.put(HabitRepetition.COLUMN_HABIT_CONCOUNT, conCount);
+        values.put(HabitRepetition.COLUMN_HABIT_CYCLE, cycle);
+        values.put(HabitRepetition.COLUMN_HABIT_CYCLE_DAY, cycle_day);
+
+        // get the writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // insert the habit
+        long id =  db.insert(HabitRepetition.TABLE_NAME, null, values);
+        if (id == -1){ // if id is equal to 1, there is error inserting the habit
+            Log.d(TAG, "Habit: insertNewRepetitionHabit: " + "Error");
+        }else{ // if id is not equal to 1, there is no error inserting the habit
+            Log.d(TAG, "Habit: insertNewRepetitionHabit: " + "Successful");
+
+        }
+        // close the database
+        db.close();
+    }
 
 }
