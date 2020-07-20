@@ -30,6 +30,7 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
@@ -75,6 +76,7 @@ public class HabitAddActivity extends AppCompatActivity {
 
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     //User
     private User user;
@@ -122,6 +124,7 @@ public class HabitAddActivity extends AppCompatActivity {
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         // initialise user
         user = new User();
@@ -323,6 +326,8 @@ public class HabitAddActivity extends AppCompatActivity {
                 if (habitID != -1){ // if habitID returned is legit
                     habit.setHabitID(habitID); // set the id to the habit
                     writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase
+
+                    long hrID = habitRepetitionDBHelper.insertHabitRepetition(habit);
 
                     Log.d(TAG, "onClick: "+habit.getHabitID());
                     // toast a message to alert the habit has been created

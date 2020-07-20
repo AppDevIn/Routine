@@ -1,9 +1,18 @@
 package com.mad.p03.np2020.routine.DAL;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -66,6 +75,72 @@ public class HabitRepetitionDBHelper extends DBHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
     }
+
+    /**
+     *
+     * This method is used to insert the habit to the habit column in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * @return long This will return the id for the habit after the habit is inserted to the habit column.
+     * */
+    public long insertHabitRepetition(Habit habit) {
+
+        Log.d(TAG, "insertHabitRepetitions: "+ habit.getTitle());
+
+        // insert the values
+        ContentValues values = new ContentValues();
+        values.put(HabitRepetition.COLUMN_HABIT_ID, habit.getHabitID());
+        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, getToday(habit.getTime_created()));
+        values.put(HabitRepetition.COLUMN_HABIT_COUNT, habit.getCount());
+        values.put(HabitRepetition.COLUMN_HABIT_CONCOUNT, 0);
+        switch (habit.getPeriod()){
+            case 1:
+                values.putNull(HabitRepetition.COLUMN_HABIT_CYCLE);
+                values.putNull(HabitRepetition.COLUMN_HABIT_CYCLE_DAY);
+                break;
+
+            case 7:
+
+            case 30:
+                values.put(HabitRepetition.COLUMN_HABIT_CYCLE, 1);
+                values.put(HabitRepetition.COLUMN_HABIT_CYCLE_DAY, 1);
+                break;
+
+        }
+
+        // get the writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // insert the habit
+        long id =  db.insert(HabitRepetition.TABLE_NAME, null, values);
+        if (id == -1){ // if id is equal to 1, there is error inserting the habit
+            Log.d(TAG, "Habit: insertHabitRepetitions: " + "Error");
+        }else{ // if id is not equal to 1, there is no error inserting the habit
+            Log.d(TAG, "Habit: insertHabitRepetitions: " + "Successful");
+
+        }
+        // close the database
+        db.close();
+
+        return id;
+    }
+
+    public long getToday(String dateString){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        try{
+            //formatting the dateString to convert it into a Date
+            Date date = sdf.parse(dateString);
+            assert date != null;
+            return date.getTime();
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
 
 
 }

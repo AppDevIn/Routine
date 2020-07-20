@@ -51,20 +51,6 @@ public class Habit {
     /**Column of the habit table, Imported as the user's foreign key of the habit*/
     public static final String COLUMN_USERID = "userId";
 
-    /**Used as the name of the table*/
-    public static final String HR_TABLE_NAME = "habitRepetitions";
-
-    /**Column of the habitRepetitions table, Used as the id of the habit*/
-    public static final String COLUMN_HABIT_ID ="HabitID";
-    /**Column of the habitRepetitions table, Used as the timestamp of the habit*/
-    public static final String COLUMN_HABIT_TIMESTAMP = "timestamp";
-    /**Column of the habitRepetitions table, Used as the cycle of the habit*/
-    public static final String COLUMN_HABIT_CYCLE = "cycle";
-    /**Column of the habitRepetitions table, Used as the day of the cycle of the habit*/
-    public static final String COLUMN_HABIT_CYCLE_DAY = "day";
-    /**Column of the habitRepetitions table, Used as the consecutive count of the habit*/
-    public static final String COLUMN_HABIT_CONCOUNT = "conCount";
-
     /**
      * The query to create habit table
      */
@@ -88,30 +74,10 @@ public class Habit {
                     + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
     /**
-     * The query to create habitRepetition table
-     */
-    public static final String CREATE_HABITS_REPETITION_TABLE =
-            "CREATE TABLE " + HR_TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COLUMN_HABIT_ID  + " INTEGER," +
-                    COLUMN_HABIT_TIMESTAMP  + " LONG," +
-                    COLUMN_HABIT_CYCLE  + " INTEGER," +
-                    COLUMN_HABIT_CYCLE_DAY + " INTEGER," +
-                    COLUMN_HABIT_COUNT  + " INTEGER," +
-                    COLUMN_HABIT_CONCOUNT  + " INTEGER" + ")";
-
-
-    /**
      * The query to drop habit table
      */
     public static final String DROP_HABITS_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
-
-    /**
-     * The query to drop habit table
-     */
-    public static final String DROP_HABITS_Repetition_TABLE =
-            "DROP TABLE IF EXISTS " + HR_TABLE_NAME;
 
     // set values for period section
     public static final int[] period_buttonIDS = new int[]{R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
