@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -10,8 +11,10 @@ import androidx.annotation.Nullable;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -84,15 +87,15 @@ public class HabitRepetitionDBHelper extends DBHelper {
      *
      * @return long This will return the id for the habitRepetition after the habitRepetition is inserted to the habitRepetition column.
      * */
-    public long insertHabitRepetition(Habit habit) {
+    public long insertHabitRepetition(Habit habit, int habitCount) {
 
         Log.d(TAG, "insertHabitRepetitions: "+ habit.getTitle());
 
         // insert the values
         ContentValues values = new ContentValues();
         values.put(HabitRepetition.COLUMN_HABIT_ID, habit.getHabitID());
-        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, getToday(habit.getTime_created()));
-        values.put(HabitRepetition.COLUMN_HABIT_COUNT, habit.getCount());
+        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, getTodayTimestamp());
+        values.put(HabitRepetition.COLUMN_HABIT_COUNT, habitCount);
         values.put(HabitRepetition.COLUMN_HABIT_CONCOUNT, 0);
         switch (habit.getPeriod()){
             case 1:
@@ -126,21 +129,15 @@ public class HabitRepetitionDBHelper extends DBHelper {
         return id;
     }
 
-    public long getToday(String dateString){
+    public long getTodayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        try{
-            //formatting the dateString to convert it into a Date
-            Date date = sdf.parse(dateString);
-            assert date != null;
-            return date.getTime();
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
-
-        return 0;
+        return cal.getTimeInMillis();
     }
-
-
 
 }

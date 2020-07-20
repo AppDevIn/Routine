@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.HabitReminder;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
+
+import java.util.Calendar;
 
 /**
  *
@@ -93,7 +96,6 @@ public class HabitDBHelper extends DBHelper{
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
         values.put(Habit.COLUMN_USERID,UID);
         values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
-        values.put(Habit.COLUMN_HABIT_COUNT,habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD,habit.getPeriod());
         values.put(Habit.COLUMN_HABIT_TIMECREATED,habit.getTime_created());
         values.put(Habit.COLUMN_HABIT_HOLDERCOLOR,habit.getHolder_color());
@@ -164,7 +166,7 @@ public class HabitDBHelper extends DBHelper{
             long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
             String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
             int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
-            int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
+            int count = getHabitCount(id);
             int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
             String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
             String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
@@ -485,5 +487,35 @@ public class HabitDBHelper extends DBHelper{
         db.close();
 
     }
+
+    public int getHabitCount(long habitID){
+        Log.d(TAG, "getHabitRepetition: " + habitID);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " = " + getTodayTimestamp();
+
+        Cursor res =  db.rawQuery( query  , null );
+        if (res != null){
+            res.moveToFirst(); //Only getting the first value
+        }
+
+        int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
+
+        return count;
+
+    }
+
+    public long getTodayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+
+        return cal.getTimeInMillis();
+    }
+
 
 }

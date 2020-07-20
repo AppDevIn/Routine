@@ -134,10 +134,9 @@ public class Habit {
     }
 
     /**This method is a constructor for habit*/
-    public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
+    public Habit(String title, int occurrence, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
         this.title = title;
         this.occurrence = occurrence;
-        this.count = count;
         this.period = period;
         this.time_created = time_created;
         this.holder_color = holder_color;

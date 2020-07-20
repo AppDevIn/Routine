@@ -317,7 +317,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 }
 
                 // create a habit object
-                Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
+                Habit habit = new Habit(name, occur, period[0], dateFormat.format(date),color[0],hr,hg);
 
                 // insert the habit into SQLiteDatabase
                 long habitID = habit_dbHandler.insertHabit(habit, user.getUID());
@@ -327,7 +327,7 @@ public class HabitAddActivity extends AppCompatActivity {
                     habit.setHabitID(habitID); // set the id to the habit
                     writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase
 
-                    long hrID = habitRepetitionDBHelper.insertHabitRepetition(habit);
+                    long hrID = habitRepetitionDBHelper.insertHabitRepetition(habit, cnt);
 
                     Log.d(TAG, "onClick: "+habit.getHabitID());
                     // toast a message to alert the habit has been created
