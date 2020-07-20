@@ -550,8 +550,9 @@ public class HabitDBHelper extends DBHelper{
         }
 
         int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
+        int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
 
-        return count;
+        return count+conCount;
 
     }
 

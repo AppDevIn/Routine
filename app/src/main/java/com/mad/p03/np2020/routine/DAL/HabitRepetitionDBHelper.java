@@ -197,7 +197,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
                 case 7:
                     if (day == 7){
-                        insertNewRepetitionHabit(id, ++cycle, 1, conCount+count);
+                        insertNewRepetitionHabit(id, ++cycle, 1, 0);
                     }else{
                         insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
                     }
@@ -205,7 +205,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
                 case 30:
                     if (day == 30){
-                        insertNewRepetitionHabit(id, ++cycle, 1, conCount+count);
+                        insertNewRepetitionHabit(id, ++cycle, 1, 0);
                     }
                     else{
                         insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
