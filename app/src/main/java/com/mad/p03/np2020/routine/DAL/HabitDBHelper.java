@@ -323,7 +323,7 @@ public class HabitDBHelper extends DBHelper{
         Log.d(TAG, "isReminderExisted: ");
 
         Cursor cursor =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
-        if (cursor == null){
+        if (cursor.getCount() == 0){
             return false;
         }
 
@@ -563,6 +563,18 @@ public class HabitDBHelper extends DBHelper{
         int date  = cal.get(Calendar.DATE);
         cal.clear();
         cal.set(year, month, date);
+
+        return cal.getTimeInMillis();
+    }
+
+    public long getYesterdayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        cal.add(Calendar.DATE, -1);
 
         return cal.getTimeInMillis();
     }

@@ -199,6 +199,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        habitRepetitionDBHelper.repeatingHabit();
+
 
     }
 
