@@ -30,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 
@@ -58,7 +59,7 @@ import java.util.List;
  * @since 04-06-2020
  *
  */
-public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener, View.OnLongClickListener {
+public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener, View.OnLongClickListener, View.OnClickListener {
 
     private final String TAG = "Task";
 
@@ -225,6 +226,11 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         Log.d(TAG, "onLongClick: Clicked");
         settingsInit();
         return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 
     /**
@@ -431,11 +437,15 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     private void settingsInit(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
+
 
         TaskSettings fragment = new TaskSettings();
-        fragmentTransaction.replace(R.id.fragmentContainer, fragment);
+        fragmentTransaction.replace(R.id.fragmentContainer, fragment, "Settings");
         fragmentTransaction.commit();
     }
+
+
 
 
 

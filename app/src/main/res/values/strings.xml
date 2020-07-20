@@ -126,8 +126,9 @@
     <string name="noTime">No Time</string>
     <string name="_20">20</string>
     <string name="calender_dot">Have event</string>
-    <string name="shared_with">Shared With people and groups</string>
+    <string name="shared_with">Shared with people </string>
     <string name="add_people">Add people</string>
+    <string name="arrow_pointing_down">Arrow pointing down</string>
 
 </resources>
 
