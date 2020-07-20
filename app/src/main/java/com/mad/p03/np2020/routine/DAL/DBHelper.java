@@ -12,6 +12,7 @@ import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
+import com.mad.p03.np2020.routine.models.Team;
 import com.mad.p03.np2020.routine.models.User;
 
 import androidx.annotation.Nullable;
@@ -28,7 +29,7 @@ import androidx.annotation.Nullable;
 public class DBHelper extends SQLiteOpenHelper {
 
     static final String DATABASE_NAME = "MyRoutine.db";
-    static final int DATABASE_VERSION = 14;
+    static final int DATABASE_VERSION = 15;
 
     //Listener
     static MyDatabaseListener mMyDatabaseListener;
@@ -57,6 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(HabitGroup.CREATE_GROUPS_TABLE); //Create habit group database
         sqLiteDatabase.execSQL(Focus.CREATE_SQL); //Create focus database
         sqLiteDatabase.execSQL(Check.SQL_CREATE_ENTRIES); //Create focus database
+        sqLiteDatabase.execSQL(Team.SQL_CREATE_ENTRIES); //Create Team database
     }
 
     /**
@@ -79,6 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Habit.DROP_HABITS_TABLE);
         sqLiteDatabase.execSQL(HabitGroup.DROP_GROUPS_TABLE);
         sqLiteDatabase.execSQL(Focus.SQL_DELETE_ENTRIES);
+        sqLiteDatabase.execSQL(Team.SQL_DELETE_ENTRIES);
         onCreate(sqLiteDatabase);
 
         //Add previous data

@@ -4,18 +4,27 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mad.p03.np2020.routine.DAL.TeamDBHelper;
 import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Task.adapter.TeamAdapter;
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
+import com.mad.p03.np2020.routine.models.Section;
+import com.mad.p03.np2020.routine.models.Task;
+import com.mad.p03.np2020.routine.models.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +40,18 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskSettings extends Fragment {
+public class TaskSettings extends Fragment implements TextView.OnEditorActionListener {
 
 
 
+    TeamAdapter mTeamAdapter;
+    RecyclerView mRecyclerView;
+    List<String> emailList;
+    String mSectionID;
+    Team team;
 
-
-    public TaskSettings() {
+    public TaskSettings(String id) {
+        mSectionID = id;
 
     }
 
@@ -60,6 +74,7 @@ public class TaskSettings extends Fragment {
         cardView.setBackground(shape);
 
 
+        //Set click listener for the image
         ImageView imageView = view.findViewById(R.id.downArrow);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +85,9 @@ public class TaskSettings extends Fragment {
                     getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.exit_to_bottom, R.anim.slide_in_bottom).remove(fragment).commit();
             }
         });
+
+        EditText editText = view.findViewById(R.id.addUser);
+        editText.setOnEditorActionListener(this);
 
         return view;
 
@@ -82,35 +100,88 @@ public class TaskSettings extends Fragment {
     public void onStart() {
         super.onStart();
 
-        //Fake data
-        List<String> emailList = new ArrayList<>();
+        TeamDBHelper teamDBHelper = new TeamDBHelper(getContext());
+        team = teamDBHelper.getTeam(mSectionID);
 
-        emailList.add("hhdh@gmail.ocm");
-        emailList.add("hhdh@gmail.ocm");
-        emailList.add("hhdh@gmail.ocm");
-        emailList.add("hhdh@gmail.ocm");
-        emailList.add("hhdh@gmail.ocm");
-        emailList.add("hhdh@gmail.ocm");
-        emailList.add("hhdh@gmail.ocm");
+        if(team.getSectionID() == null){
+            team.setSectionID(mSectionID);
+        }
 
-        initRecyclerView(getView(), emailList);
+
+        initRecyclerView(getView(), team);
+
 
     }
 
-    onBac
+    /**
+     *
+     * The action is being performed on the keyboard
+     * when the the Enter key is pressed add the task into
+     * the adapter and hide the keyboard
+     *
+     * @param textView The view that was clicked.
+     * @param actionId  Identifier of the action. This will be either the identifier you supplied, or
+     *                  EditorInfo#IME_NULL if being called due to the enter key being pressed.
+     * @param event  If triggered by an enter key, this is the event; otherwise, this is null.
+     * @return Return true if you have consumed the action, else false.
+     */
+    @Override
+    public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
 
-    private void initRecyclerView(View view, List<String> emailList) {
-        RecyclerView mRecyclerView = view.findViewById(R.id.recyclerViewEmail);
+        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                actionId == EditorInfo.IME_ACTION_DONE ||
+                event.getAction() == KeyEvent.ACTION_DOWN &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+
+
+
+            //Add this object to the list
+            mTeamAdapter.addEmail(textView.getText().toString());
+
+
+
+            //Hide and scroll the last task
+            showNewEntry();
+
+
+            return true;
+        }
+        return false;
+    }
+
+
+
+    private void initRecyclerView(View view, Team team) {
+        mRecyclerView = view.findViewById(R.id.recyclerViewEmail);
         mRecyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        TeamAdapter mTeamAdapter = new TeamAdapter(emailList);
+        mTeamAdapter = new TeamAdapter(team, getContext());
         mRecyclerView.setAdapter(mTeamAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+
+
     }
+
+
+    /**
+     * Upon calling this method, the keyboard will retract
+     * and the recyclerview will scroll to the last item
+     */
+    private void showNewEntry(){
+        //scroll to the last item of the recyclerview
+        mRecyclerView.smoothScrollToPosition(team.getEmail().size());
+
+        //auto hide keyboard after entry
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mRecyclerView.getWindowToken(), 0);
+
+    }
+
 
 
 

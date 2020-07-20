@@ -440,7 +440,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         fragmentTransaction.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
 
 
-        TaskSettings fragment = new TaskSettings();
+        TaskSettings fragment = new TaskSettings(mSection.getID());
         fragmentTransaction.replace(R.id.fragmentContainer, fragment, "Settings");
         fragmentTransaction.commit();
     }
