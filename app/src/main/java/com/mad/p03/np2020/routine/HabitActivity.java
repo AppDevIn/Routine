@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Adapter.HabitCheckAdapter;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.helpers.HabitHorizontalDivider;
 import com.mad.p03.np2020.routine.background.HabitWorker;
@@ -66,6 +67,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     //User
     private User user;
@@ -104,6 +106,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         viewSwitcher = findViewById(R.id.switcher);
 
@@ -377,10 +380,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void onHabitCheckItemClick(int position) {
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         habit.addCount(); // add the count by 1
-        Log.d(TAG, "onHabitCheckItemClick: "+habit.getCount());
+        Log.d(TAG, "onHabitCheckItemClick: "+ habit.getCount());
         habitAdapter.notifyDataSetChanged(); // notify the data set has changed
         habitCheckAdapter.notifyDataSetChanged();
-        habit_dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
+        habitRepetitionDBHelper.updateCount(habit); //update the habit count in the SQLiteDatabase
+
         writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
 
         int n = checkIncompleteHabits(habitAdapter._habitList);

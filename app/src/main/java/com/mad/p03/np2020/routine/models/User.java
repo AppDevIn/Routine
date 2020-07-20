@@ -295,9 +295,10 @@ public class User implements Parcelable {
                 // to retrieve the data from each snapshot and insert them into SQLiteDatabase
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     Habit habit = new Habit();
-                    habit.setHabitID(singleSnapshot.child("habitID").getValue(Long.class));
+                    long habitID = singleSnapshot.child("habitID").getValue(Long.class);
+                    habit.setHabitID(habitID);
                     habit.setTitle((String) singleSnapshot.child("title").getValue());
-                    habit.setCount(singleSnapshot.child("count").getValue(Integer.class));
+                    habit.setCount(habitDBHelper.getHabitCount(habitID));
                     habit.setOccurrence(singleSnapshot.child("occurrence").getValue(Integer.class));
                     habit.setPeriod(singleSnapshot.child("period").getValue(Integer.class));
                     habit.setHolder_color((String) singleSnapshot.child("holder_color").getValue());

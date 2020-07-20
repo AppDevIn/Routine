@@ -140,4 +140,29 @@ public class HabitRepetitionDBHelper extends DBHelper {
         return cal.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is used to update the count of the habit in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * */
+    public void updateCount(Habit habit){
+        Log.d(TAG, "Habit: updateCount");
+
+        // get the readable database
+        SQLiteDatabase db = this.getReadableDatabase();
+        // the query of updating the row
+        String query =
+                "UPDATE " + HabitRepetition.TABLE_NAME +
+                        " SET " + HabitRepetition.COLUMN_HABIT_COUNT +"=" + habit.getCount() +
+                        " WHERE " + HabitRepetition.COLUMN_HABIT_ID + "=" + habit.getHabitID() +
+                        " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + getTodayTimestamp();
+
+        db.execSQL(query); // execute the query
+        db.close(); // close the db connection
+    }
+
+
+
 }
