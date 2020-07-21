@@ -49,7 +49,6 @@
         <activity android:name=".HabitAddActivity" />
 
         <activity android:name=".HabitEditActivity" />
-        <activity android:name=".HabitViewActivity" />
         <activity android:name=".HabitGroupActivity" />
         <activity
             android:name=".FocusActivity"

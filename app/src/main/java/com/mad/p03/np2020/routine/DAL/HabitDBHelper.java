@@ -201,28 +201,6 @@ public class HabitDBHelper extends DBHelper{
 
     /**
      *
-     * This method is used to update the count of the habit in the SQLiteDatabase.
-     *
-     * @param habit This parameter is to get the habit object.
-     *
-     * */
-    public void updateCount(Habit habit){
-        Log.d(TAG, "Habit: updateCount");
-
-        // get the readable database
-        SQLiteDatabase db = this.getReadableDatabase();
-        // the query of updating the row
-        String query =
-                "UPDATE " + Habit.TABLE_NAME +
-                        " SET " + Habit.COLUMN_HABIT_COUNT +"=" + habit.getCount() +
-                        " WHERE " + Habit.COLUMN_ID + "=" + habit.getHabitID();
-
-        db.execSQL(query); // execute the query
-        db.close(); // close the db connection
-    }
-
-    /**
-     *
      * This method is used to update the habit object in the SQLiteDatabase.
      *
      * @param habit This parameter is to get the habit object.
@@ -240,7 +218,6 @@ public class HabitDBHelper extends DBHelper{
         ContentValues values = new ContentValues();
         values.put(Habit.COLUMN_HABIT_TITLE, habit.getTitle());
         values.put(Habit.COLUMN_HABIT_OCCURRENCE, habit.getOccurrence());
-        values.put(Habit.COLUMN_HABIT_COUNT, habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD, habit.getPeriod());
         values.put(Habit.COLUMN_HABIT_HOLDERCOLOR, habit.getHolder_color());
 
@@ -395,7 +372,7 @@ public class HabitDBHelper extends DBHelper{
         long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
         String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
         int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
-        int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
+        int count = getHabitCount(id);
         int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
         String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
         String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
@@ -444,7 +421,7 @@ public class HabitDBHelper extends DBHelper{
         long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
         String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
         int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
-        int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
+        int count = getHabitCount(id);
         int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
         String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
         String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
@@ -491,7 +468,6 @@ public class HabitDBHelper extends DBHelper{
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
         values.put(Habit.COLUMN_USERID,UID);
         values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
-        values.put(Habit.COLUMN_HABIT_COUNT,habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD,habit.getPeriod());
         values.put(Habit.COLUMN_HABIT_TIMECREATED,habit.getTime_created());
         values.put(Habit.COLUMN_HABIT_HOLDERCOLOR,habit.getHolder_color());

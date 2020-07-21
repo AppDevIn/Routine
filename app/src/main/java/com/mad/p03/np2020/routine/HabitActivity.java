@@ -389,8 +389,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckAdapter.notifyDataSetChanged();
         habitRepetitionDBHelper.updateCount(habit); //update the habit count in the SQLiteDatabase
 
-        writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
-
         HabitRepetition habitRepetition = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habit.getHabitID());
         writeHabitRepetition_Firebase(habitRepetition, user.getUID());
 

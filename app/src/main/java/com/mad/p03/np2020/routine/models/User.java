@@ -298,7 +298,6 @@ public class User implements Parcelable {
                     long habitID = singleSnapshot.child("habitID").getValue(Long.class);
                     habit.setHabitID(habitID);
                     habit.setTitle((String) singleSnapshot.child("title").getValue());
-                    habit.setCount(habitDBHelper.getHabitCount(habitID));
                     habit.setOccurrence(singleSnapshot.child("occurrence").getValue(Integer.class));
                     habit.setPeriod(singleSnapshot.child("period").getValue(Integer.class));
                     habit.setHolder_color((String) singleSnapshot.child("holder_color").getValue());
