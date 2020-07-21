@@ -34,6 +34,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
 import com.mad.p03.np2020.routine.Task.Fragment.TaskSettings;
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
@@ -224,7 +225,9 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     @Override
     public boolean onLongClick(View view) {
         Log.d(TAG, "onLongClick: Clicked");
-        settingsInit();
+        if(mSection.getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            settingsInit();
+        }
         return false;
     }
 

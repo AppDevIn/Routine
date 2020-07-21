@@ -107,6 +107,7 @@ public class GetTaskSectionWorker extends Worker {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Section section = Section.fromDataSnapShot(dataSnapshot);
                             mSectionDBHelper.insertSection(section, section.getUID());
+                            addTask(section.getID());
                         }
 
                         @Override
@@ -310,5 +311,84 @@ public class GetTaskSectionWorker extends Worker {
 
             }
         });
+    }
+
+    private void addTask(String sectionID){
+        DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("Task");
+
+        taskRef.orderByChild("sectionID").equalTo(sectionID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+                    String id = snapshot.child("taskID").getValue(String.class);
+
+                    //Check if the task exist in the database
+                    if(!mTaskDBHelper.hasID(id) && mSectionDBHelper.hasID(sectionID)) {
+                        Task task = Task.fromDataSnapShot(snapshot);
+                        mTaskDBHelper.insertTask(task);
+                        //Get all the checks under this task
+                        addCheck(task.getTaskID());
+                    }
+                    else if (mSectionDBHelper.hasID(sectionID)){ //If doesn't exist it means it needs to be updated
+                        Task task = Task.fromDataSnapShot(snapshot);
+                        Task taskDataBase = mTaskDBHelper.getTask(id);
+                        if(!task.equals(taskDataBase)){
+                            Log.d(TAG, "onChildAdded(): This has been changed so updating......");
+                            mTaskDBHelper.update(task);
+                        }
+                    }
+                }
+
+
+                //Remove value listener
+                taskRef.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addCheck(String TaskID){
+        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("Check");
+
+        checkRef.orderByChild("taskID").equalTo(TaskID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //Loop trough the children
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+
+                    String id = snapshot.getKey();
+
+                    //Check if the task exist in the database
+                    if(!mCheckDBHelper.hasID(id) && mTaskDBHelper.hasID(TaskID)) {
+                        Check check = Check.fromDataSnapShot(snapshot);
+                        mCheckDBHelper.insertCheck(check);
+                    }
+                    else if(mTaskDBHelper.hasID(TaskID)){ //If doesn't exist it means it needs to be updated
+                        Check check = Check.fromDataSnapShot(snapshot);
+                        Check checkDataBase = mCheckDBHelper.getCheck(id);
+                        if(!check.equals(checkDataBase)){
+                            Log.d(TAG, "onChildAdded(): This has been changed so updating......");
+                            mCheckDBHelper.update(check);
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

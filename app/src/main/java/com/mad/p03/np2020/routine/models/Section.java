@@ -170,7 +170,7 @@ public class Section implements Serializable {
 
         Map<String, String> teamList = new HashMap<>();
         
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String UID = snapshot.child("uid").getValue(String.class);
         String name = snapshot.child("name").getValue(String.class);
         int icon = snapshot.child("bmiIcon").getValue(Integer.class) == null ? 0 : snapshot.child("bmiIcon").getValue(Integer.class);
         int color = snapshot.child("backgroundColor").getValue(Integer.class) == null ? 0 : snapshot.child("backgroundColor").getValue(Integer.class);

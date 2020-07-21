@@ -62,6 +62,8 @@ public class UploadSectionWorker extends Worker {
         //Set the section id in user
         userDatabase.child(id).setValue(id);
 
+
+
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");
 
         return Result.success();

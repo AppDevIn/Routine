@@ -169,7 +169,7 @@ public class SectionDBHelper extends DBHelper{
 
         // Select All Query
 
-        String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME + " WHERE " + Section.COLUMN_USERID + "='" + UID +"' ORDER BY " +
+        String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME +" ORDER BY " +
                 Section.COLUMN_POSITION + " ASC;";
 
         SQLiteDatabase db = this.getWritableDatabase();
