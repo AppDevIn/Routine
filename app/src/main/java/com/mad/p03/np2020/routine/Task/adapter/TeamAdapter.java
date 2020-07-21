@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mad.p03.np2020.routine.DAL.TeamDBHelper;
+
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
@@ -83,20 +83,12 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
             this.notify();
         }
 
-        //Send to SQL
-        TeamDBHelper teamDBHelper = new TeamDBHelper(mContext);
-        teamDBHelper.insert(mTeam.getSectionID(), email);
-
         //Send to the firebase
         mTeam.excuteFirebaseUpload(email);
 
     }
 
     private void deleteEmail(int position){
-
-        //Delete from SQL
-        TeamDBHelper teamDBHelper = new TeamDBHelper(mContext);
-        teamDBHelper.delete(mTeam.getSectionID(), mTeam.getEmail().get(position));
 
         //Delete from the firebase
         mTeam.excuteEmailDeleteFirebase(position);

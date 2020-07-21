@@ -60,6 +60,7 @@ public class Team  {
     List<String> email = new ArrayList<>();
 
     public Team() {
+        email = new ArrayList<>();
     }
 
 

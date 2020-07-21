@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mad.p03.np2020.routine.DAL.TeamDBHelper;
+
 import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
@@ -104,12 +104,8 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     public void onStart() {
         super.onStart();
 
-        TeamDBHelper teamDBHelper = new TeamDBHelper(getContext());
-        team = teamDBHelper.getTeam(mSectionID);
-
-        if(team.getSectionID() == null){
-            team.setSectionID(mSectionID);
-        }
+        Team team = new Team();
+        team.setSectionID(mSectionID);
 
 
         initRecyclerView(getView(), team);
@@ -177,8 +173,6 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
      * and the recyclerview will scroll to the last item
      */
     private void showNewEntry(){
-        //scroll to the last item of the recyclerview
-        mRecyclerView.smoothScrollToPosition(team.getEmail().size());
 
         //auto hide keyboard after entry
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

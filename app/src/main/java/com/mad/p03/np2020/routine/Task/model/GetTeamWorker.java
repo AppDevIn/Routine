@@ -34,14 +34,14 @@ public class GetTeamWorker extends Worker {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Section").child(sectionID).child("Team");
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if(mTeamDataListener != null){
-                    dataSnapshot.getChildren().forEach(ds -> {
+                    for (DataSnapshot ds:
+                    dataSnapshot.getChildren()) {
                         mTeamDataListener.onDataAdd(ds.getValue(String.class));
-                    });
+                    }
                 }
             }
 

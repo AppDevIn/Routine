@@ -58,7 +58,6 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(HabitGroup.CREATE_GROUPS_TABLE); //Create habit group database
         sqLiteDatabase.execSQL(Focus.CREATE_SQL); //Create focus database
         sqLiteDatabase.execSQL(Check.SQL_CREATE_ENTRIES); //Create focus database
-        sqLiteDatabase.execSQL(Team.SQL_CREATE_ENTRIES); //Create Team database
     }
 
     /**
@@ -81,7 +80,6 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Habit.DROP_HABITS_TABLE);
         sqLiteDatabase.execSQL(HabitGroup.DROP_GROUPS_TABLE);
         sqLiteDatabase.execSQL(Focus.SQL_DELETE_ENTRIES);
-        sqLiteDatabase.execSQL(Team.SQL_DELETE_ENTRIES);
         onCreate(sqLiteDatabase);
 
         //Add previous data

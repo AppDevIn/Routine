@@ -34,12 +34,13 @@ public class DeleteTeamWorker extends Worker {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                dataSnapshot.getChildren().forEach(ds -> {
+                for (DataSnapshot ds:
+                        dataSnapshot.getChildren()) {
                     if(ds.getValue().equals(emailDel)){
                         mDatabase.child(ds.getKey()).removeValue();
                         mDatabase.removeEventListener(this);
                     }
-                });
+                }
 
 
             }
