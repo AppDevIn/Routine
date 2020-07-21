@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.Card.CardActivity;
 import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
+import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder;
@@ -139,16 +140,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         }
 
 
-
         //Check if the box has been changed
-        holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
+                boolean b = !mTaskList.get(position).isChecked();
                 mTaskList.get(position).setChecked(b);
                 mTaskDBHelper.update(task.getTaskID(), b);
 
-                task.executeUpdateFirebase(null);
+                holder.mCheckBox.setChecked(b);
 
+                task.executeUpdateFirebase(null);
             }
         });
 
