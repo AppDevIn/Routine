@@ -27,6 +27,8 @@ import com.mad.p03.np2020.routine.models.Focus;
 public class FocusWorker extends Worker {
 
     private DatabaseReference mDatabase;
+    private DatabaseReference aDatabase;
+
     private Focus focusData;
     private Task<Void> result;
 
@@ -62,6 +64,7 @@ public class FocusWorker extends Worker {
 
         //Referencing Data
         mDatabase = FirebaseDatabase.getInstance().getReference().child("focusData").child(UID);
+        aDatabase = FirebaseDatabase.getInstance().getReference().child("archiveFocusData").child(UID);
 
         if ((REFERENCE_STATUS)) {
             deleteToFirebase();
@@ -79,13 +82,10 @@ public class FocusWorker extends Worker {
     private void writeToFirebase() {
         //Write Data to firebase
         Log.i("Focus", "Focus Data being uploaded");
-        mDatabase.child(focusData.getFbID()).setValue(focusData).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                result = mDatabase.child(focusData.getFbID()).setValue(focusData);
-                Log.i("Focus", String.valueOf(result));
+        mDatabase.child(focusData.getFbID()).setValue(focusData).addOnSuccessListener(aVoid -> {
+            result = mDatabase.child(focusData.getFbID()).setValue(focusData);
+            Log.i("Focus", String.valueOf(result));
 
-            }
         });
     }
 
@@ -94,13 +94,16 @@ public class FocusWorker extends Worker {
      * Delete firebase entry on WorkerManager
      * */
     private void deleteToFirebase() {
-        Log.i("Focus", "Focus Data being deleted with the uid of " + focusData.getFbID());
-        mDatabase.child(focusData.getFbID()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                result = mDatabase.child(focusData.getFbID()).removeValue();
-            }
+        //Write Data to firebase
+        Log.i("Focus", "Focus Data being uploaded");
+        aDatabase.child(focusData.getFbID()).setValue(focusData).addOnSuccessListener(aVoid -> {
+            result = aDatabase.child(focusData.getFbID()).setValue(focusData);
+            Log.i("Focus", String.valueOf(result));
+
         });
+
+        Log.i("Focus", "Focus Data being deleted with the uid of " + focusData.getFbID());
+        mDatabase.child(focusData.getFbID()).removeValue().addOnSuccessListener(aVoid -> result = mDatabase.child(focusData.getFbID()).removeValue());
     }
 
     /**

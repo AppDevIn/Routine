@@ -245,6 +245,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         mappingDate = getMapWeek(ldt);
 
+
+        setArrow();
+        displayWeek();
+
+    }
+
+    public void setArrow(){
         Date min = user.getMinFocus();
         if(min.before(mappingDate.get(1))){
             prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
@@ -253,16 +260,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
         }
 
-        Date max = user.getMinFocus();
+        Date max = user.getMaxFocus();
         if(max.after(mappingDate.get(7))){
             nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
         }else{
             Log.v(TAG, "Change Color");
             nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
         }
-
-        displayWeek();
-
     }
 
     /**
@@ -418,14 +422,14 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mappingDate = getMapWeek(ldt);
             displayWeek();
 
-        }else{
-            Log.v(TAG, "Change Color");
-            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
         }
+        setArrow();
+
     }
 
     public void setNextWeek() throws ParseException {
         Log.v(TAG, "Setting next week");
+
 
         Date max = user.getMaxFocus();
         if(max.after(mappingDate.get(7))){
@@ -438,9 +442,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mappingDate = getMapWeek(ldt);
             displayWeek();
 
-        }else{
-            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
         }
+        setArrow();
+
     }
 
 

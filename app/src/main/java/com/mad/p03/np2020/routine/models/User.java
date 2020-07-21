@@ -3,10 +3,8 @@ package com.mad.p03.np2020.routine.models;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.nfc.FormatException;
-import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.format.DateUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,7 +31,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import org.threeten.bp.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +95,8 @@ public class User implements Parcelable {
     private String mPPID;
     private List<Label> mListLabel = new ArrayList<>();
     private ArrayList<Focus> mFocusList = new ArrayList<>();
+    private ArrayList<Focus> aFocusList = new ArrayList<>();
+
     private DatabaseReference myRef;
     private FocusDBHelper focusDBHelper;
     private HabitDBHelper habitDBHelper;
@@ -181,11 +180,18 @@ public class User implements Parcelable {
     }
 
     public Date getMinFocus() {
+        if(dateArrayList.size() == 0){
 
+            return new Date();
+        }
         return Collections.min(dateArrayList);
     }
 
     public Date getMaxFocus() {
+        if(dateArrayList.size() == 0){
+
+            return new Date();
+        }
         return Collections.max(dateArrayList);
 
     }
@@ -311,12 +317,30 @@ public class User implements Parcelable {
     }
 
     /**
+     * Method to set all FocusList for current User
+     *
+     * @return ArrayList of archive focus object
+     */
+    public void setaFocusList(ArrayList<Focus> mFocusList) throws ParseException {
+        this.aFocusList = mFocusList;
+    }
+
+    /**
      * Method to add focus object to Focus List
      *
      * @param focus Set object focus to the focus
      */
     public void addFocusList(Focus focus) {
         this.mFocusList.add(focus);
+    }
+
+    /**
+     * Method to add focus object to Focus List
+     *
+     * @param focus Set object focus to the focus
+     */
+    public void addaFocusList(Focus focus) {
+        this.aFocusList.add(focus);
     }
 
     /**
@@ -327,11 +351,57 @@ public class User implements Parcelable {
     }
 
     /**
+     * Method to clear Focus List
+     */
+    public void clearaFocusList() throws ParseException {
+        setaFocusList(new ArrayList<Focus>());
+    }
+
+    /**
      * Read the firebase of User
      *
      * @param context set context to the current content
      */
     public void readFocusFirebase(Context context) {
+        myRef = FirebaseDatabase.getInstance().getReference().child("archiveFocusData").child(getUID());
+        focusDBHelper = new FocusDBHelper(context);
+
+        //Clear all data since there is a change to the database so it can be updated
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                focusDBHelper.deleteAllArchive();
+                try {
+                    clearaFocusList();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    Focus focus = new Focus();
+                    focus.setFbID((String) singleSnapshot.child("fbID").getValue());
+                    focus.setmCompletion((String) singleSnapshot.child("mCompletion").getValue());
+                    focus.setmDateTime((String) singleSnapshot.child("mDateTime").getValue());
+                    focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
+                    focus.setmTask((String) singleSnapshot.child("mTask").getValue());
+                    focus.setmTimeTaken((long) singleSnapshot.child("mTimeTaken").getValue());
+
+                    addaFocusList(focus);
+                    focusDBHelper.addArchiveData(focus);
+                }
+                try {
+                    setaFocusList(focusDBHelper.getAllArchiveData());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
         myRef = FirebaseDatabase.getInstance().getReference().child("focusData").child(getUID());
         focusDBHelper = new FocusDBHelper(context);
 
@@ -340,7 +410,7 @@ public class User implements Parcelable {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                focusDBHelper.deleteAll();
+                focusDBHelper.deleteAllMain();
                 try {
                     clearFocusList();
                 } catch (ParseException e) {
@@ -353,11 +423,13 @@ public class User implements Parcelable {
                     focus.setmDateTime((String) singleSnapshot.child("mDateTime").getValue());
                     focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
                     focus.setmTask((String) singleSnapshot.child("mTask").getValue());
+                    focus.setmTimeTaken((long) singleSnapshot.child("mTimeTaken").getValue());
+
                     addFocusList(focus);
                     focusDBHelper.addData(focus);
                 }
                 try {
-                    setmFocusList(focusDBHelper.getAllData());
+                    setmFocusList(focusDBHelper.getAllMainData());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -368,6 +440,8 @@ public class User implements Parcelable {
                 Log.e(TAG, "Failed to read value.", error.toException());
             }
         });
+
+
     }
 
     /**
