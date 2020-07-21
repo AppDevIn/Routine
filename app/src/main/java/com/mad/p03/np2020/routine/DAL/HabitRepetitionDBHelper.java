@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitGroup;
+import com.mad.p03.np2020.routine.models.HabitReminder;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 
 import java.util.Calendar;
@@ -305,7 +307,6 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + id + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + getTodayTimestamp();
-        Log.d(TAG, "getTodayHabitRepetitionByID: "+query);
         Cursor res =  db.rawQuery( query, null );
         if (res.getCount() > 0){
             res.moveToFirst();
@@ -321,6 +322,31 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close();
 
         return hr;
+
+    }
+
+    public void writeAllToFirebase(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from " + HabitRepetition.TABLE_NAME;
+
+        Cursor res =  db.rawQuery( query, null );
+        res.moveToFirst();
+        while(!res.isAfterLast()){
+            HabitRepetition hr = new HabitRepetition();
+            hr.setRow_id(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID)));
+            hr.setHabitID(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_ID)));
+            hr.setTimestamp(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_TIMESTAMP)));
+            hr.setCycle(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE)));
+            hr.setCycle_day(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY)));
+            hr.setCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT)));
+            hr.setConCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT)));
+
+            writeHabitRepetition_Firebase(hr, FirebaseAuth.getInstance().getCurrentUser().getUid() );
+            res.moveToNext();
+        }
+
+        db.close();
+
 
     }
 
@@ -372,6 +398,62 @@ public class HabitRepetitionDBHelper extends DBHelper {
         Gson gson = new Gson();
         Log.i(TAG,"Object serialize");
         return gson.toJson(habitRepetition);
+    }
+
+    /**This method is used to delete the all habit object in the SQLiteDatabase.* */
+    public void deleteAllHabitRepetitions(){
+        Log.d(TAG, "Habit: deleteAllHabitRepetitions: ");
+
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete the habit table
+        db.delete(HabitRepetition.TABLE_NAME,null,null);
+
+        db.close(); //close the db connection
+    }
+
+    /**
+     *
+     * This method is used to insert the habit to the habit column in the SQLiteDatabase from firebase.
+     *
+     * @param hr This parameter is to get the habitRepetition object.
+     *
+     * @param UID This parameter is the get the UID to refer which habit column is going to be inserted.
+     *
+     * */
+    public void insertHabitRepetitionFromFirebase(HabitRepetition hr, String UID) {
+
+        Log.d(TAG, "insertHabitFromFirebase: "+UID);
+
+        // insert the values
+        ContentValues values = new ContentValues();
+        values.put(HabitRepetition.COLUMN_HABIT_ID, hr.getHabitID());
+        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, hr.getTimestamp());
+        values.put(HabitRepetition.COLUMN_HABIT_COUNT, hr.getCount());
+        values.put(HabitRepetition.COLUMN_HABIT_CONCOUNT, hr.getConCount());
+        int cycle = hr.getCycle();
+        if (cycle == 0){
+            values.putNull(HabitRepetition.COLUMN_HABIT_CYCLE);
+        }else{
+            values.put(HabitRepetition.COLUMN_HABIT_CYCLE, cycle);
+        }
+        values.put(HabitRepetition.COLUMN_HABIT_CYCLE_DAY, hr.getCycle_day());
+
+        // get the writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // insert the habit
+        long id =  db.insert(HabitRepetition.TABLE_NAME, null, values);
+        if (id == -1){ // if id is equal to 1, there is error inserting the habit
+            Log.d(TAG, "HabitRepetition: insertHabitRepetition: " + "Error");
+        }else{ // if id is not equal to 1, there is no error inserting the habit
+            Log.d(TAG, "HabitRepetition: insertHabitRepetition: " + "Successful");
+
+        }
+        // close the database
+        db.close();
+
     }
 
 }

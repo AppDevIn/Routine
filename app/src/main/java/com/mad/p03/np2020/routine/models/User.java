@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.helpers.GetTaskSectionWorker;
 import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
@@ -93,6 +94,7 @@ public class User implements Parcelable {
     private FocusDBHelper focusDBHelper;
     private HabitDBHelper habitDBHelper;
     private HabitGroupDBHelper habitGroupDBHelper;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
     private Habit.HabitList habitList;
     private ArrayList<HabitGroup> habitGroupsList;
 
@@ -280,7 +282,7 @@ public class User implements Parcelable {
      *
      * @param context This is to get the context of the activity
      */
-    public void readHabit_Firebase(Context context) {
+    public void readHabit_Firebase(Context context, boolean action) {
         Log.d(TAG, "read Habit_Firebase: ");
 
         habitDBHelper = new HabitDBHelper(context);
@@ -329,8 +331,50 @@ public class User implements Parcelable {
 
                 }
 
-                setHabitList(habitDBHelper.getAllHabits());
+                if (action){
+                    setHabitList(habitDBHelper.getAllHabits());
+                }
 
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * This method is read the habits from firebase
+     *
+     * @param context This is to get the context of the activity
+     */
+    public void readHabitRepetition_Firebase(Context context) {
+        Log.d(TAG, "read HabitRepetition_Firebase: ");
+
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
+
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
+        myRef.child("habitRepetition").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // delete all the habit
+                habitRepetitionDBHelper.deleteAllHabitRepetitions();
+                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    HabitRepetition hr = new HabitRepetition();
+                    hr.setHabitID(singleSnapshot.child("habitID").getValue(Long.class));
+                    hr.setTimestamp(singleSnapshot.child("timestamp").getValue(Long.class));
+                    hr.setCycle(singleSnapshot.child("cycle").getValue(Integer.class));
+                    hr.setCycle_day(singleSnapshot.child("cycle_day").getValue(Integer.class));
+                    hr.setCount(singleSnapshot.child("count").getValue(Integer.class));
+                    hr.setConCount(singleSnapshot.child("conCount").getValue(Integer.class));
+
+                    habitRepetitionDBHelper.insertHabitRepetitionFromFirebase(hr, getUID());
+                    Log.d(TAG, "reading HabitRepetition Lines");
+
+                }
             }
 
             @Override

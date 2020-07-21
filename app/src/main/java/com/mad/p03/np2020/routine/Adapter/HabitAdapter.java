@@ -63,7 +63,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         this.user = user;
         this.habitCheckAdapter = habitCheckAdapter;
 
-        user.readHabit_Firebase(c);
+        user.readHabit_Firebase(c, true);
         eventListener();
     }
 
