@@ -42,7 +42,7 @@ public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implem
     @NonNull
     @Override
     public MyCheckViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.check_items, parent, false);
 
         mContext = parent.getContext();
         mCheckDBHelper = new CheckDBHelper(parent.getContext());
