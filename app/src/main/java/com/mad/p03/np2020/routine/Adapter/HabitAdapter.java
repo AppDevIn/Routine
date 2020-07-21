@@ -56,16 +56,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
     /**This method is a constructor for habitAdapter*/
 
-    public HabitAdapter(Context c, Habit.HabitList habitList, User user) {
-        this.c = c;
-        this._habitList = habitList;
-        dbHandler = new HabitDBHelper(c);
-        this.user = user;
-
-        user.readHabit_Firebase(c);
-        eventListener();
-    }
-
     public HabitAdapter(Context c, Habit.HabitList habitList, User user,HabitCheckAdapter habitCheckAdapter) {
         this.c = c;
         this._habitList = habitList;
@@ -313,8 +303,11 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
      * Notify Item changed if user delete or add data
      */
     public void notifyItemChanged() {
-        _habitList = initDummyList(user.getHabitList());
+        Habit.HabitList habitList = initDummyList(user.getHabitList());
+        _habitList = habitList;
+        habitCheckAdapter.habitList = habitList;
         this.notifyDataSetChanged();
+        habitCheckAdapter.notifyDataSetChanged();
 
         int n = checkIncompleteHabits(_habitList);
 

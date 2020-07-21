@@ -245,7 +245,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
         habitCheckAdapter.setOnItemClickListener(this);
 
-        habitAdapter = new HabitAdapter(this, habitArrayList, user);
+        habitAdapter = new HabitAdapter(this, habitArrayList, user, habitCheckAdapter);
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
@@ -382,7 +382,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void onHabitCheckItemClick(int position) {
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         habit.addCount(); // add the count by 1
-        Log.d(TAG, "onHabitCheckItemClick: "+ habit.getCount());
+
         habitAdapter.notifyDataSetChanged(); // notify the data set has changed
         habitCheckAdapter.notifyDataSetChanged();
         habitRepetitionDBHelper.updateCount(habit); //update the habit count in the SQLiteDatabase

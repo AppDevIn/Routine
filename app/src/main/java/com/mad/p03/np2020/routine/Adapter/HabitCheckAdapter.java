@@ -25,7 +25,7 @@ import static com.mad.p03.np2020.routine.HabitActivity.remind_text;
 public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 
     final static String TAG = "HabitCheckAdapter";
-    private Habit.HabitList habitList;
+    public Habit.HabitList habitList;
     Context c;
     private HabitCheckItemClickListener mListener;
     private static View view;
@@ -40,8 +40,8 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
         this.habitList = habitList;
         this.user = user;
 
-        user.readHabit_Firebase(c);
-        eventListener();
+//        user.readHabit_Firebase(c);
+//        eventListener();
     }
 
 
