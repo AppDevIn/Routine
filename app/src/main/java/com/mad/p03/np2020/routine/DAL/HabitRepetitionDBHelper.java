@@ -428,6 +428,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         // insert the values
         ContentValues values = new ContentValues();
+        values.put(HabitRepetition.COLUMN_ID, hr.getRow_id());
         values.put(HabitRepetition.COLUMN_HABIT_ID, hr.getHabitID());
         values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, hr.getTimestamp());
         values.put(HabitRepetition.COLUMN_HABIT_COUNT, hr.getCount());

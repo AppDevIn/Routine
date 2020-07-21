@@ -64,7 +64,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         this.habitCheckAdapter = habitCheckAdapter;
 
         user.readHabit_Firebase(c, true);
-        eventListener();
+        user.readHabitRepetition_Firebase(c);
+        habitEventListener();
+        habitRepetitionEventListener();
     }
 
     /**
@@ -284,12 +286,12 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     /**
      * Listen to firebase data change to update views on the recyclerView
      */
-    private void eventListener() {
+    private void habitEventListener() {
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
         myRef.child("habit").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifyItemChanged();
+                notifyHabitChanged();
             }
 
             @Override
@@ -302,7 +304,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     /**
      * Notify Item changed if user delete or add data
      */
-    public void notifyItemChanged() {
+    public void notifyHabitChanged() {
         Habit.HabitList habitList = initDummyList(user.getHabitList());
         _habitList = habitList;
         habitCheckAdapter.habitList = habitList;
@@ -345,6 +347,46 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
             }
         }
         return n;
+    }
+
+    /**
+     * Listen to firebase data change to update views on the recyclerView
+     */
+    private void habitRepetitionEventListener() {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        myRef.child("habitRepetition").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notifyHabitRepetitionChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * Notify Item changed if user delete or add data
+     */
+    public void notifyHabitRepetitionChanged() {
+        Habit.HabitList habitList = initDummyList(dbHandler.getAllHabits());
+        _habitList = habitList;
+        habitCheckAdapter.habitList = habitList;
+        this.notifyDataSetChanged();
+        habitCheckAdapter.notifyDataSetChanged();
+
+        int n = checkIncompleteHabits(_habitList);
+
+        if (n == 0){
+            remind_text.setText("You have completed all habits today!");
+        }else if (n == 1){
+            remind_text.setText("You still have 1 habit to do today");
+        }else{
+            remind_text.setText(String.format("You still have %d habits to do today",n));
+        }
+        Log.v(TAG, "Data is changed from other server");
     }
 }
 

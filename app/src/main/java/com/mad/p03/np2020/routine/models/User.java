@@ -365,6 +365,7 @@ public class User implements Parcelable {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     HabitRepetition hr = new HabitRepetition();
                     hr.setHabitID(singleSnapshot.child("habitID").getValue(Long.class));
+                    hr.setRow_id(singleSnapshot.child("row_id").getValue(Long.class));
                     hr.setTimestamp(singleSnapshot.child("timestamp").getValue(Long.class));
                     hr.setCycle(singleSnapshot.child("cycle").getValue(Integer.class));
                     hr.setCycle_day(singleSnapshot.child("cycle_day").getValue(Integer.class));
