@@ -21,7 +21,6 @@ public class HabitRepetitionWorker extends Worker {
     private static final String TAG = "HabitRepetitionWorker";
     private DatabaseReference mDatabase;
     private HabitRepetition habitRepetition;
-    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     /**This method is a constructor for habitGroupWorker*/
     public HabitRepetitionWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -80,7 +79,7 @@ public class HabitRepetitionWorker extends Worker {
      * */
     private void deleteToFirebase() {
         Log.d(TAG, "writeToFirebase: HabitRepetition Data being deleted)");
-        habitRepetitionDBHelper = new HabitRepetitionDBHelper(getApplicationContext());
+
         ArrayList<Long> arr = habitRepetition.getRowList();
         Log.d(TAG, "deleteToFirebase: "+arr.size());
 
