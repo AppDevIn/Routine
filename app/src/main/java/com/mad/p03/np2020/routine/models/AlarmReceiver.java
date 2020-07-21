@@ -12,6 +12,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
@@ -33,6 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private String channelId = "001";
     private static HabitDBHelper habitDBHelper;
     private Habit.HabitList habitList;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     /**
      *
@@ -72,6 +74,29 @@ public class AlarmReceiver extends BroadcastReceiver {
             habitList = habitDBHelper.getAllHabits();
 
             re_registerAlarm(context, habitList);
+        }
+
+        if (intent.getAction().equals("RepeatingHabit")){
+            Bundle bundle = intent.getExtras();
+            int id = bundle.getInt("id");
+            PendingIntent pendingIntent = PendingIntent.getActivity(context,id, new Intent(context, HabitActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            Notification notify = new NotificationCompat.Builder(context, channelId)
+                    .setSmallIcon(R.drawable.logo)
+                    .setContentTitle("Habit Tracker")
+                    .setContentText("Your habit has reset!")
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent).setNumber(1)
+                    .setShowWhen(true)
+                    .setWhen(Calendar.getInstance().getTimeInMillis())
+                    .build();
+
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.notify(id, notify);
+
+            habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
+            habitRepetitionDBHelper.repeatingHabit();
+
         }
     }
 

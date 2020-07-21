@@ -530,7 +530,7 @@ public class HabitDBHelper extends DBHelper{
         }
 
         return 0;
-        
+
     }
 
     public long getTodayTimestamp(){

@@ -1,8 +1,11 @@
 package com.mad.p03.np2020.routine;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -42,10 +45,14 @@ import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.helpers.HabitHorizontalDivider;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
+import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitReminder;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+
+import java.util.Calendar;
 
 /**
  *
@@ -203,6 +210,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         habitRepetitionDBHelper.repeatingHabit();
 //        habitRepetitionDBHelper.writeAllToFirebase();
+        setRepeatingHabit();
 
 
     }
@@ -542,7 +550,41 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         return gson.toJson(habitRepetition);
     }
 
+    /**
+     *
+     * This method is used to call to reset the repeat the habit.
+     *
+     * */
+    public void setRepeatingHabit(){
+        int id = 873162723;
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        intent.setAction("Repeating Habit");
+        intent.putExtra("id", id);
+        // This initialise the pending intent which will be sent to the broadcastReceiver
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int type = AlarmManager.RTC_WAKEUP;
 
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
 
+        if (System.currentTimeMillis() > cal.getTimeInMillis()){
+            // increment one day to prevent setting for past alarm
+            cal.add(Calendar.DATE, 1);
+        }
+
+        long time = cal.getTime().getTime();
+
+        Log.d(TAG, "setReminder for RepeatingHabit" + " at " + cal.getTime());
+        // AlarmManager set the daily repeating alarm on time chosen by the user.
+        // The broadcastReceiver will receive the pending intent on the time.
+        assert am != null;
+        am.cancel(pi);
+        am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
+    }
 
 }

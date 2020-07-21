@@ -17,8 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitGroup;
-import com.mad.p03.np2020.routine.models.HabitReminder;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 
 import java.util.Calendar;

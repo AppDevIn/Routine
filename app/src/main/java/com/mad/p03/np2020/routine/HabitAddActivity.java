@@ -688,7 +688,7 @@ public class HabitAddActivity extends AppCompatActivity {
 
         long time = c.getTime().getTime();
 
-        Log.d(TAG, "setReminder for ID "+ reminder.getId() + " at " + c.getTime());
+        Log.d(TAG, "setReminder for ID "+ reminder.getId() + " at " + time);
         // AlarmManager set the daily repeating alarm on time chosen by the user.
         // The broadcastReceiver will receive the pending intent on the time.
         am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
