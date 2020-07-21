@@ -7,7 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 
@@ -25,6 +33,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
     private final String TAG = "HabitRepetitionDatabase";
     private HabitDBHelper habitDBHelper;
+    private Context context;
 
     /**
      *
@@ -35,6 +44,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
     public HabitRepetitionDBHelper(@Nullable Context context) {
         super(context);
         habitDBHelper = new HabitDBHelper(context);
+        this.context = context;
     }
 
     /**
@@ -192,11 +202,13 @@ public class HabitRepetitionDBHelper extends DBHelper {
             Habit habit = habitDBHelper.getHabitByID(id);
             Log.d(TAG, "repeatingHabit: " + habit.getTitle());
 
+            boolean isUpdated = false;
             switch (habit.getPeriod()){
                 case 1:
                     Log.d(TAG, "repeatingHabit: DAILY");
                     if (!checkTodayRepetition(id)){
                         insertNewRepetitionHabit(id, -1, ++day, 0);
+                        isUpdated = true;
                     }
                     break;
 
@@ -205,10 +217,12 @@ public class HabitRepetitionDBHelper extends DBHelper {
                     if (day == 7){
                         if (!checkTodayRepetition(id)){
                             insertNewRepetitionHabit(id, ++cycle, 1, 0);
+                            isUpdated = true;
                         }
                     }else{
                         if (!checkTodayRepetition(id)){
                             insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
+                            isUpdated = true;
                         }
                     }
                     break;
@@ -218,14 +232,21 @@ public class HabitRepetitionDBHelper extends DBHelper {
                     if (day == 30){
                         if (!checkTodayRepetition(id)){
                             insertNewRepetitionHabit(id, ++cycle, 1, 0);
+                            isUpdated = true;
                         }
                     }
                     else{
                         if (!checkTodayRepetition(id)){
                             insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
+                            isUpdated = true;
                         }
                     }
                     break;
+            }
+
+            if (isUpdated){
+                HabitRepetition habitRepetition = getTodayHabitRepetitionByID(habit.getHabitID());
+                writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
 
             res.moveToNext(); // move to the next result
@@ -301,6 +322,56 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         return hr;
 
+    }
+
+    /**
+     *
+     * This method is used to send the work request
+     *  to the HabitWorker(WorkManager) to do the writing firebase action
+     *  when the network is connected.
+     *
+     * @param habitRepetition This parameter is used to get the habit object
+     *
+     * @param UID This parameter is used to get the userID
+     *
+     * */
+    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID){
+        Log.i(TAG, "Uploading to Firebase");
+
+        // set constraint that the network must be connected
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        // put data in a data builder
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitRepetition", habitRepetition_serializeToJson(habitRepetition))
+                .build();
+
+        // send a work request
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitRepetitionWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(context).enqueue(mywork);
+    }
+
+    /**
+     *
+     * This method is used to serialize a single object. (into Json String)
+     *
+     * @param habitRepetition This parameter is used to get the habitRepetition object
+     *
+     * @return String This returns the serialized object.
+     *
+     * */
+    public String habitRepetition_serializeToJson(HabitRepetition habitRepetition) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habitRepetition);
     }
 
 }
