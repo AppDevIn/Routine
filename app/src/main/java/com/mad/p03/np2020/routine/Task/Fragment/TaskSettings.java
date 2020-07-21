@@ -82,7 +82,11 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
                 Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("Settings");
 
                 if(fragment != null)
-                    getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.exit_to_bottom, R.anim.slide_in_bottom).remove(fragment).commit();
+                    getActivity().getSupportFragmentManager().
+                            beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom, R.anim.slide_in_bottom, R.anim.slide_in_bottom)
+                            .replace(R.id.fragmentContainer, new Fragment())
+                            .commit();
             }
         });
 
@@ -159,7 +163,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTeamAdapter = new TeamAdapter(team, getContext());
+        mTeamAdapter = new TeamAdapter(team,getContext());
         mRecyclerView.setAdapter(mTeamAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

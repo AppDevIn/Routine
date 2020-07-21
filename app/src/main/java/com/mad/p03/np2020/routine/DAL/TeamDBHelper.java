@@ -110,6 +110,25 @@ public class TeamDBHelper extends DBHelper {
     }
 
 
+    public void delete(String sectionID, String email){
+
+        Log.d(TAG, "delete(): Will be deleting ID " + sectionID );
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        db.delete(
+                Team.TABLE_NAME,  // The table to delete from
+                Team.COLUMN_SectionID + " = ? AND " + Team.COLUMN_EMAIL + " = ?", //The condition
+                new String[]{sectionID, email} // The args will be replaced by ?
+        );
+
+
+        Log.d(TAG, "delete(): Removed from database");
+
+
+        db.close();
+    }
 
 
 

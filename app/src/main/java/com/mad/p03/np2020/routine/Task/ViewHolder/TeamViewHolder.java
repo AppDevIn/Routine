@@ -14,7 +14,7 @@ public class TeamViewHolder extends RecyclerView.ViewHolder {
     public TeamViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        txtEmail = itemView.findViewById(R.id.txtListName);
+        txtEmail = itemView.findViewById(android.R.id.text1);
 
     }
 }

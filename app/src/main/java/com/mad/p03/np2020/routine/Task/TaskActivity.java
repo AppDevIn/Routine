@@ -442,7 +442,11 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         TaskSettings fragment = new TaskSettings(mSection.getID());
         fragmentTransaction.replace(R.id.fragmentContainer, fragment, "Settings");
+
         fragmentTransaction.commit();
+
+
+
     }
 
 

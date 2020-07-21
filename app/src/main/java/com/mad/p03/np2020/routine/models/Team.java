@@ -1,10 +1,34 @@
 package com.mad.p03.np2020.routine.models;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Log;
+
+import com.mad.p03.np2020.routine.Task.model.DeleteTeamWorker;
+import com.mad.p03.np2020.routine.Task.model.GetTeamWorker;
+import com.mad.p03.np2020.routine.Task.model.TeamDataListener;
+import com.mad.p03.np2020.routine.Task.model.UploadTaskWorker;
+import com.mad.p03.np2020.routine.Task.model.UploadTeamWorker;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Team {
+import androidx.annotation.NonNull;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
+public class Team  {
+
+    final static private String TAG = "Team";
 
     /**The table name of this class in SQL*/
     public static final String TABLE_NAME = "Team";
@@ -35,6 +59,10 @@ public class Team {
     String sectionID;
     List<String> email = new ArrayList<>();
 
+    public Team() {
+    }
+
+
     public String getSectionID() {
         return sectionID;
     }
@@ -54,4 +82,99 @@ public class Team {
     public void addEmail(String email){
         this.email.add(email);
     }
+
+    public void excuteFirebaseUpload(String email){
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseTeamData = new Data.Builder()
+                .putString("sectionID",this.sectionID)
+                .putString("email", email)
+                .build();
+
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(UploadTeamWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseTeamData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+
+
+        Log.d(TAG, "executeFirebaseUpload(): Put in queue");
+
+    }
+
+    public void excuteEmailDeleteFirebase(int position){
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseTeamData = new Data.Builder()
+                .putString("sectionID",this.sectionID)
+                .putString("email", this.getEmail().get(position))
+                .build();
+
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(DeleteTeamWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseTeamData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+
+
+        Log.d(TAG, "executeFirebaseUpload(): Put in queue");
+
+    }
+
+    public void getTeamFirebase(TeamDataListener teamDataListener){
+
+        //Setting condition
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        GetTeamWorker.setOnTeamChangeListener(teamDataListener);
+
+        //Adding data which will be received from the worker
+        @SuppressLint("RestrictedApi") Data firebaseTeamData = new Data.Builder()
+                .putString("sectionID",this.sectionID)
+                .build();
+
+
+        //Create the request
+        OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.
+                Builder(GetTeamWorker.class)
+                .setConstraints(constraints)
+                .setInputData(firebaseTeamData)
+                .build();
+
+        //Enqueue the request
+        WorkManager.getInstance().enqueue(uploadTask);
+
+
+        Log.d(TAG, "executeFirebaseUpload(): Put in queue");
+
+
+
+    }
+
 }

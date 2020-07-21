@@ -462,7 +462,6 @@ public class Task implements Serializable {
 
             if(owner != null) {
 
-
                 WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
                         .observe(owner, new Observer<WorkInfo>() {
                             @Override
