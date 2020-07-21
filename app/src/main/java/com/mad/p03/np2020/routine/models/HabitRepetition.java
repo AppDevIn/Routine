@@ -46,6 +46,7 @@ public class HabitRepetition {
     public static final String DROP_HABITS_Repetition_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
+    private long row_id;
     private long habitID;
     private long timestamp;
     private int cycle;
@@ -99,5 +100,13 @@ public class HabitRepetition {
 
     public void setConCount(int conCount) {
         this.conCount = conCount;
+    }
+
+    public long getRow_id() {
+        return row_id;
+    }
+
+    public void setRow_id(long row_id) {
+        this.row_id = row_id;
     }
 }

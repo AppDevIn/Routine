@@ -279,4 +279,28 @@ public class HabitRepetitionDBHelper extends DBHelper {
         return isExisted;
     }
 
+    public HabitRepetition getTodayHabitRepetitionByID(long id){
+        HabitRepetition hr = new HabitRepetition();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + id + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + getTodayTimestamp();
+        Log.d(TAG, "getTodayHabitRepetitionByID: "+query);
+        Cursor res =  db.rawQuery( query, null );
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            hr.setRow_id(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID)));
+            hr.setHabitID(id);
+            hr.setTimestamp(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_TIMESTAMP)));
+            hr.setCycle(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE)));
+            hr.setCycle_day(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY)));
+            hr.setCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT)));
+            hr.setConCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT)));
+        }
+
+        db.close();
+
+        return hr;
+
+    }
+
 }

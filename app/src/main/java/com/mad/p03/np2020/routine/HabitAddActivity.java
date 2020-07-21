@@ -31,10 +31,12 @@ import androidx.work.WorkManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.HabitReminder;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
@@ -328,8 +330,10 @@ public class HabitAddActivity extends AppCompatActivity {
                     writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase
 
                     long hrID = habitRepetitionDBHelper.insertHabitRepetition(habit, cnt);
+                    HabitRepetition habitRepetition = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habitID);
+                    writeHabitRepetition_Firebase(habitRepetition, user.getUID());
 
-                    Log.d(TAG, "onClick: "+habit.getHabitID());
+
                     // toast a message to alert the habit has been created
                     Toast.makeText(HabitAddActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                 }
@@ -688,5 +692,55 @@ public class HabitAddActivity extends AppCompatActivity {
         // AlarmManager set the daily repeating alarm on time chosen by the user.
         // The broadcastReceiver will receive the pending intent on the time.
         am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
+    }
+
+    /**
+     *
+     * This method is used to send the work request
+     *  to the HabitWorker(WorkManager) to do the writing firebase action
+     *  when the network is connected.
+     *
+     * @param habitRepetition This parameter is used to get the habit object
+     *
+     * @param UID This parameter is used to get the userID
+     *
+     * */
+    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID){
+        Log.i(TAG, "Uploading to Firebase");
+
+        // set constraint that the network must be connected
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        // put data in a data builder
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitRepetition", habitRepetition_serializeToJson(habitRepetition))
+                .build();
+
+        // send a work request
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitRepetitionWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    /**
+     *
+     * This method is used to serialize a single object. (into Json String)
+     *
+     * @param habitRepetition This parameter is used to get the habitRepetition object
+     *
+     * @return String This returns the serialized object.
+     *
+     * */
+    public String habitRepetition_serializeToJson(HabitRepetition habitRepetition) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habitRepetition);
     }
 }
