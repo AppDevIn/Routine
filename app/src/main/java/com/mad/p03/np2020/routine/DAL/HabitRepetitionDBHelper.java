@@ -103,6 +103,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         // insert the values
         ContentValues values = new ContentValues();
+        values.put(HabitRepetition.COLUMN_ID, getLastAssignedRowID());
         values.put(HabitRepetition.COLUMN_HABIT_ID, habit.getHabitID());
         values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, getTodayTimestamp());
         values.put(HabitRepetition.COLUMN_HABIT_COUNT, habitCount);
@@ -455,6 +456,18 @@ public class HabitRepetitionDBHelper extends DBHelper {
         // close the database
         db.close();
 
+    }
+
+    public long getLastAssignedRowID(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res =  db.rawQuery( "select max(_id) from " + HabitRepetition.TABLE_NAME , null );
+        if (res.getCount() > 0){
+            res.moveToFirst(); //Only getting the first value
+            return res.getLong(res.getColumnIndex("max(_id)")) + 1;
+        }else{
+            return 1;
+        }
     }
 
 }

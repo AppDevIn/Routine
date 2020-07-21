@@ -521,15 +521,16 @@ public class HabitDBHelper extends DBHelper{
         String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " = " + getTodayTimestamp();
 
         Cursor res =  db.rawQuery( query  , null );
-        if (res != null){
+        if (res.getCount() > 0){
             res.moveToFirst(); //Only getting the first value
+            int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
+            int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
+
+            return count+conCount;
         }
 
-        int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
-        int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
-
-        return count+conCount;
-
+        return 0;
+        
     }
 
     public long getTodayTimestamp(){
