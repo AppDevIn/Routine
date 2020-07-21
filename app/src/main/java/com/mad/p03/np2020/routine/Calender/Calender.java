@@ -49,10 +49,7 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         setContentView(R.layout.activity_calender);
 
 
-        CustomCalenderView calendarView = findViewById(R.id.calendar);
-        currentDate = calendarView.getDate();
 
-        calendarView.setDateListener(this);
 
 
 
@@ -87,7 +84,14 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     protected void onResume() {
         super.onResume();
 
+        CustomCalenderView calendarView = findViewById(R.id.calendar);
+        currentDate = calendarView.getDate();
+
+        calendarView.setDateListener(this);
+
         initRecyclerView(currentDate);
+
+
 
         //Bottom Navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
