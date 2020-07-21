@@ -96,13 +96,18 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+                //Will be used as the parameter
+                Calendar tempCalender = (Calendar) mCalender.clone();
+
+
                 mCalender.setTime(dates.get(position));
                 //If not null trigger the listener
                 if(mDateChangeListener != null){
                     mDateChangeListener.onDateChange(mCalender.getTime());
                 }
 
-                UpdateCalender();
+                UpdateCalender(tempCalender);
+
 
             }
         });
@@ -151,34 +156,45 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
 
         datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", (dialog, which) -> {
 
+            //Will be used as the parameter
+            Calendar tempCalender = (Calendar) mCalender.clone();
+
+
             //Set the date to the calender
             mCalender.set(Calendar.YEAR, datePickerDialog.getDatePicker().getYear());
             mCalender.set(Calendar.MONTH, datePickerDialog.getDatePicker().getMonth());
             mCalender.set(Calendar.DAY_OF_MONTH, datePickerDialog.getDatePicker().getDayOfMonth());
 
-            //Re create the calender
-            UpdateCalender();
 
             //If not null trigger the listener
             if(mDateChangeListener != null){
                 mDateChangeListener.onDateChange(mCalender.getTime());
             }
 
+            //Re create the calender
+            UpdateCalender(tempCalender);
         });
 
 
     }
 
-    private void UpdateCalender() {
+    private void UpdateCalender(Calendar calendar) {
 
-        //Update the calender date
-        String currentDate = dateFormat.format(mCalender.getTime());
-        txtCalender.setText(currentDate);
 
-        //Update the color
-        mGridViewAdapter.setCurrentDate(mCalender);
-        mGridViewAdapter.notifyDataSetChanged();
+        int displayMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentMonth = mCalender.get(Calendar.MONTH) + 1;
 
+        if(displayMonth != currentMonth) {
+         SetUpCalender();
+        }else{
+            //Update the calender date
+            String currentDate = dateFormat.format(mCalender.getTime());
+            txtCalender.setText(currentDate);
+
+            //Update the color
+            mGridViewAdapter.setCurrentDate(mCalender);
+            mGridViewAdapter.notifyDataSetChanged();
+        }
 
 
 

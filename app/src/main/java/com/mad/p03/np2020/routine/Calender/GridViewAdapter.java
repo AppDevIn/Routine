@@ -87,6 +87,7 @@ class GridViewAdapter extends ArrayAdapter {
 
 
         linearLayout.setBackground(null);
+        txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
         if(displayMonth == currentMonth && displayYear == currentYear){
 
 
@@ -96,7 +97,7 @@ class GridViewAdapter extends ArrayAdapter {
             }else {
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
 
-                if(dayNo == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+                if( dateFormat.format(dateCalender.getTime()).equals(dateFormat.format(Calendar.getInstance().getTime())) ){
                     txtDay.setTextColor(view.getContext().getResources().getColor(R.color.red));
                 }
 
@@ -129,7 +130,7 @@ class GridViewAdapter extends ArrayAdapter {
     public Object getItem(int position) {
         return dates.get(position);
     }
-    
+
 
     public void setCurrentDate(Calendar selectedDSate) {
         this.selectedDSate = selectedDSate;
