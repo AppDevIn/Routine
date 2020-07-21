@@ -17,8 +17,10 @@ import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,7 +61,7 @@ public class GetTaskSectionWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-
+        CheckSectionToDelete();
         listenOneTime();
         startListenSection();
         startListenTask();
@@ -390,5 +392,33 @@ public class GetTaskSectionWorker extends Worker {
             }
         });
 
+    }
+
+    private void CheckSectionToDelete(){
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("Section");
+        List<Section> sectionList = mSectionDBHelper.getAllSections("");
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //Check which has a child
+                for (int i = 0; i < sectionList.size(); i++) {
+                    //Remove the ones with the child
+                    if(!dataSnapshot.hasChild(sectionList.get(i).getID())) {
+                        Log.d(TAG, "onDataChange: Deleting section " + sectionList.get(i).getName());
+                        mSectionDBHelper.delete(sectionList.get(i).getID());
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
