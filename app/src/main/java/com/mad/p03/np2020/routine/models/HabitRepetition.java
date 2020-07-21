@@ -1,5 +1,7 @@
 package com.mad.p03.np2020.routine.models;
 
+import java.util.ArrayList;
+
 /**
  *
  * Model used to manage the habitRepetition
@@ -53,6 +55,7 @@ public class HabitRepetition {
     private int cycle_day;
     private int count;
     private int conCount;
+    private ArrayList<Long> rowList;
 
     public long getHabitID() {
         return habitID;
@@ -108,5 +111,13 @@ public class HabitRepetition {
 
     public void setRow_id(long row_id) {
         this.row_id = row_id;
+    }
+
+    public ArrayList<Long> getRowList() {
+        return rowList;
+    }
+
+    public void setRowList(ArrayList<Long> rowList) {
+        this.rowList = rowList;
     }
 }

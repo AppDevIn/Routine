@@ -31,14 +31,18 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.HabitReminder;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static java.lang.String.format;
@@ -64,6 +68,7 @@ public class HabitEditActivity extends AppCompatActivity {
 
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     //User
     private User user;
@@ -106,6 +111,7 @@ public class HabitEditActivity extends AppCompatActivity {
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         // set new user
         user = new User();
@@ -313,8 +319,13 @@ public class HabitEditActivity extends AppCompatActivity {
 
                         // delete the habit
                         habit_dbHandler.deleteHabit(habit); // delete the habit in SQLiteDatabase
+                        ArrayList<Long> arr = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+                        HabitRepetition hr = new HabitRepetition();
+                        hr.setRowList(arr);
+                        habitRepetitionDBHelper.deleteHabitRepetition(habit);
 
                         writeHabit_Firebase(habit, user.getUID(), true); // delete the habit in the firebase
+                        writeHabitRepetition_Firebase(hr, user.getUID(), true);
 
                         // go back to habit activity
                         Intent activityName = new Intent(HabitEditActivity.this, HabitActivity.class);
@@ -721,6 +732,57 @@ public class HabitEditActivity extends AppCompatActivity {
         assert mgr != null;
         mgr.hideSoftInputFromWindow(habit_name.getWindowToken(), 0);
         Log.i(TAG, "Hide Keyboard");
+    }
+
+    /**
+     *
+     * This method is used to send the work request
+     *  to the HabitWorker(WorkManager) to do the writing firebase action
+     *  when the network is connected.
+     *
+     * @param habitRepetition This parameter is used to get the habit object
+     *
+     * @param UID This parameter is used to get the userID
+     *
+     * */
+    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID, boolean isDeletion){
+        Log.i(TAG, "Uploading to Firebase");
+
+        // set constraint that the network must be connected
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        // put data in a data builder
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitRepetition", habitRepetition_serializeToJson(habitRepetition))
+                .putBoolean("deletion", isDeletion)
+                .build();
+
+        // send a work request
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitRepetitionWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    /**
+     *
+     * This method is used to serialize a single object. (into Json String)
+     *
+     * @param habitRepetition This parameter is used to get the habitRepetition object
+     *
+     * @return String This returns the serialized object.
+     *
+     * */
+    public String habitRepetition_serializeToJson(HabitRepetition habitRepetition) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habitRepetition);
     }
 
 }

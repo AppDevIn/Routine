@@ -11,13 +11,17 @@ import androidx.work.WorkerParameters;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
+
+import java.util.ArrayList;
 
 public class HabitRepetitionWorker extends Worker {
 
     private static final String TAG = "HabitRepetitionWorker";
     private DatabaseReference mDatabase;
     private HabitRepetition habitRepetition;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     /**This method is a constructor for habitGroupWorker*/
     public HabitRepetitionWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -34,6 +38,7 @@ public class HabitRepetitionWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        boolean isDeletion = getInputData().getBoolean("deletion", false);
         String UID = getInputData().getString("ID");
 
         //Deserialization from jsonObject
@@ -42,7 +47,12 @@ public class HabitRepetitionWorker extends Worker {
         //Referencing Data
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("habitRepetition");
 
-        writeToFirebase();
+        Log.d(TAG, "doWork: "+isDeletion);
+        if (isDeletion) {
+            deleteToFirebase();
+        } else {
+            writeToFirebase();
+        }
 
         // return the work result
         return ListenableWorker.Result.success();
@@ -60,6 +70,24 @@ public class HabitRepetitionWorker extends Worker {
 
         mDatabase.child(String.valueOf(habitRepetition.getRow_id())).setValue(habitRepetition);
 
+    }
+
+    /**
+     *
+     * This method is used to
+     *  delete the habit object from the firebase.
+     *
+     * */
+    private void deleteToFirebase() {
+        Log.d(TAG, "writeToFirebase: HabitRepetition Data being deleted)");
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(getApplicationContext());
+        ArrayList<Long> arr = habitRepetition.getRowList();
+        Log.d(TAG, "deleteToFirebase: "+arr.size());
+
+        for (long rowID : arr){
+            Log.d(TAG, "deleteToFirebase: "+ rowID);
+            mDatabase.child(String.valueOf(rowID)).removeValue();
+        }
     }
 
     /**

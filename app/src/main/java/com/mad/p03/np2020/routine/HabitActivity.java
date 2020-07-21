@@ -399,7 +399,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitRepetitionDBHelper.updateCount(habit); //update the habit count in the SQLiteDatabase
 
         HabitRepetition habitRepetition = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habit.getHabitID());
-        writeHabitRepetition_Firebase(habitRepetition, user.getUID());
+        writeHabitRepetition_Firebase(habitRepetition, user.getUID(), false);
 
         int n = checkIncompleteHabits(habitAdapter._habitList);
 
@@ -511,7 +511,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
      * @param UID This parameter is used to get the userID
      *
      * */
-    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID){
+    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID, boolean isDeletion){
         Log.i(TAG, "Uploading to Firebase");
 
         // set constraint that the network must be connected
@@ -523,6 +523,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         Data firebaseUserData = new Data.Builder()
                 .putString("ID", UID)
                 .putString("habitRepetition", habitRepetition_serializeToJson(habitRepetition))
+                .putBoolean("deletion", isDeletion)
                 .build();
 
         // send a work request
@@ -558,7 +559,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void setRepeatingHabit(){
         int id = 873162723;
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        intent.setAction("Repeating Habit");
+        intent.setAction("RepeatingHabit");
         intent.putExtra("id", id);
         // This initialise the pending intent which will be sent to the broadcastReceiver
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -571,6 +572,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         int date  = cal.get(Calendar.DATE);
         cal.clear();
         cal.set(year, month, date);
+        cal.add(Calendar.SECOND,10);
 
         if (System.currentTimeMillis() > cal.getTimeInMillis()){
             // increment one day to prevent setting for past alarm

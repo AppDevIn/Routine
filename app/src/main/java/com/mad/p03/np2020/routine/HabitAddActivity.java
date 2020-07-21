@@ -331,7 +331,7 @@ public class HabitAddActivity extends AppCompatActivity {
 
                     long hrID = habitRepetitionDBHelper.insertHabitRepetition(habit, cnt);
                     HabitRepetition habitRepetition = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habitID);
-                    writeHabitRepetition_Firebase(habitRepetition, user.getUID());
+                    writeHabitRepetition_Firebase(habitRepetition, user.getUID(),false);
 
 
                     // toast a message to alert the habit has been created
@@ -705,7 +705,7 @@ public class HabitAddActivity extends AppCompatActivity {
      * @param UID This parameter is used to get the userID
      *
      * */
-    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID){
+    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID, boolean isDeletion){
         Log.i(TAG, "Uploading to Firebase");
 
         // set constraint that the network must be connected
@@ -717,6 +717,7 @@ public class HabitAddActivity extends AppCompatActivity {
         Data firebaseUserData = new Data.Builder()
                 .putString("ID", UID)
                 .putString("habitRepetition", habitRepetition_serializeToJson(habitRepetition))
+                .putBoolean("isDeletion", isDeletion)
                 .build();
 
         // send a work request

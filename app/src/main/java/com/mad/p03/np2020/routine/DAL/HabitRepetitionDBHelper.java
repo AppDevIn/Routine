@@ -19,6 +19,7 @@ import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -466,6 +467,57 @@ public class HabitRepetitionDBHelper extends DBHelper {
         }else{
             return 1;
         }
+    }
+
+    /**
+     *
+     * This method is used to delete the habitRepetition object in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * */
+    public void deleteHabitRepetition(Habit habit){
+        Log.d(TAG, "Habit: deleteHabit: ");
+
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = HabitRepetition.COLUMN_HABIT_ID + "=?"; // specify to delete based on the column id
+
+        // put the column id
+        String[] whereArgs = new String[] { String.valueOf(habit.getHabitID()) };
+
+        // delete the habit column
+        db.delete(HabitRepetition.TABLE_NAME, whereClause, whereArgs);
+
+        db.close(); // close the db connection
+    }
+
+    public ArrayList<Long> getAllHabitRepetitionsByHabitID(long habitID) {
+        ArrayList<Long> arr = new ArrayList<>();
+
+        // get the readable database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID;
+        Log.d(TAG, "getAllHabitRepetitionsByHabitID: "+query);
+        // run the query
+        Cursor res = db.rawQuery(query, null);
+
+        if (res.getCount() > 0) {
+            Log.d(TAG, "getAllHabitRepetitionsByHabitIDCount: "+res.getCount());
+            res.moveToFirst(); // move to the first result found
+
+            while (!res.isAfterLast()) {
+                long id = res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID));
+                Log.d(TAG, "getAllHabitRepetitionsByHabitID: "+id);
+                arr.add(id);
+                res.moveToNext();
+            }
+        }
+
+        db.close();
+        return arr;
     }
 
 }
