@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.Home.models;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mad.p03.np2020.routine.models.Section;
@@ -55,6 +56,9 @@ public class UploadSectionWorker extends Worker {
 //        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("section").child(String.valueOf(id));
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Section").child(String.valueOf(id));
         DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("Section");
+        DatabaseReference teamDatabase = FirebaseDatabase.getInstance().getReference().child("Section").child(String.valueOf(id)).child("Team");
+
+
 
         //Setting value using object
         mDatabase.setValue(new Section(name, color, image, id, position, UID));
@@ -62,6 +66,8 @@ public class UploadSectionWorker extends Worker {
         //Set the section id in user
         userDatabase.child(id).setValue(id);
 
+        //Set the email for this section in Team
+        teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail() + " (Owner)");
 
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");

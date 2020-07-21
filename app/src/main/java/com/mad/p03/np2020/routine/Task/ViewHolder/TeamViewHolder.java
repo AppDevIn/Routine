@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TeamViewHolder extends RecyclerView.ViewHolder {
 
     public TextView txtEmail;
+    public TextView txtName;
     public TeamViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        txtEmail = itemView.findViewById(android.R.id.text1);
+        txtEmail = itemView.findViewById(R.id.email);
+        txtName = itemView.findViewById(R.id.name);
 
     }
 }
