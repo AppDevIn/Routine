@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mad.p03.np2020.routine.Calender.Calender;
 import com.mad.p03.np2020.routine.Home.Home;
+import com.mad.p03.np2020.routine.Profile.ProfileActivity;
 
 import java.util.Calendar;
 
@@ -72,10 +73,13 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
                 mContext.startActivity(intent2, options.toBundle());
                 break;
             case R.id.profile:
+
+                /*
                 Toast.makeText(mContext, "Profile will be implemented in stage 2", Toast.LENGTH_SHORT).show();
+                 */
                 //TODO: Stage 2 implement
-//                Intent intent5 = new Intent(mContext, Main5Activity.class);
-//                mContext.startActivity(intent5, options.toBundle());
+                Intent intent5 = new Intent(mContext, ProfileActivity.class);
+                mContext.startActivity(intent5, options.toBundle());
                 break;
         }
 
