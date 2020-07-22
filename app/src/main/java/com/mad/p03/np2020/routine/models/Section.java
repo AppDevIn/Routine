@@ -390,6 +390,7 @@ public class Section implements Serializable {
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString("ID", ID)
                 .putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .putBoolean("Admin", this.isAdmin())
                 .build();
 
         //Create the request

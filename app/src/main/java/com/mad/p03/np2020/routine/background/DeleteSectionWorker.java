@@ -44,12 +44,16 @@ public class DeleteSectionWorker extends Worker {
     public Result doWork() {
 
         final String ID = getInputData().getString("ID");
-        final String UID = getInputData().getString("UID") ;
+        final String UID = getInputData().getString("UID");
+        final Boolean isAdmin = getInputData().getBoolean("Admin", false);
 
         Log.d("HomeDelete", "doWork: " + UID);
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("Section").child(String.valueOf(ID)).removeValue();
-
+        if(isAdmin){
+            FirebaseDatabase.getInstance().getReference().child("Section").child(String.valueOf(ID)).removeValue();
+        }else {
+            FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("Section").child(String.valueOf(ID)).removeValue();
+        }
 
         return Result.success();
     }
