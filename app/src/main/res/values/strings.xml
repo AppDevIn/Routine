@@ -129,6 +129,7 @@
     <string name="shared_with">Shared with people </string>
     <string name="add_people">Add people</string>
     <string name="arrow_pointing_down">Arrow pointing down</string>
+    <string name="team_no_internet">To access the team feature please connect to the internet.</string>
 
 </resources>
 

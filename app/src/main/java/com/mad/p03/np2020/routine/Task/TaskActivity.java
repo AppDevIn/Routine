@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Task;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,9 +18,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,6 +31,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +41,8 @@ import android.widget.ViewSwitcher;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
+import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
+import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Task.Fragment.TaskSettings;
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
@@ -226,7 +233,14 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     public boolean onLongClick(View view) {
         Log.d(TAG, "onLongClick: Clicked");
 
-        settingsInit();
+        //IF no internet show pop
+        if(!checkConnectivity()){
+            //Show pop
+            showCustomDialog();
+        }else {
+
+            settingsInit();
+        }
 
         return false;
     }
@@ -451,6 +465,53 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
 
     }
+
+
+    private boolean checkConnectivity(){
+        ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cm.getActiveNetworkInfo();
+        return nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+    }
+
+
+    @SuppressLint("ResourceAsColor")
+    private void showCustomDialog() {
+
+        Button mBtnOk, mBtnCancel;
+
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.task_no_internet_dialog, null, false);
+
+        mBtnOk = dialogView.findViewById(R.id.btnOk);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+
+        //When the add button is clicked
+        mBtnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick(): Add button is pressed ");
+
+                alertDialog.cancel();
+            }
+        });
+
+    }
+
+
+
 
 
 
