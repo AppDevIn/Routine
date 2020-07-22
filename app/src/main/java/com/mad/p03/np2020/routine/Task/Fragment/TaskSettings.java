@@ -65,6 +65,9 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
         CardView cardView = view.findViewById(R.id.mainCard);
 
+        //Get the section object
+        mSection = new SectionDBHelper(getContext()).getSection(mSectionID);
+
         //Set the background of the cardview
         float radius[] = {50f,50f,50f,50f,0f,0f,0f,0f};
 
@@ -95,6 +98,9 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         EditText editText = view.findViewById(R.id.addUser);
         editText.setOnEditorActionListener(this);
 
+        if(!mSection.isAdmin())
+            editText.setVisibility(View.GONE);
+
         return view;
 
 
@@ -109,8 +115,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         Team team = new Team();
         team.setSectionID(mSectionID);
 
-        //Get the section object
-        mSection = new SectionDBHelper(getContext()).getSection(mSectionID);
+
 
 
         initRecyclerView(getView(), team);
