@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
@@ -49,6 +50,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     List<String> emailList;
     String mSectionID;
     Team team;
+    Section mSection;
 
     public TaskSettings(String id) {
         mSectionID = id;
@@ -107,6 +109,9 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         Team team = new Team();
         team.setSectionID(mSectionID);
 
+        //Get the section object
+        mSection = new SectionDBHelper(getContext()).getSection(mSectionID);
+
 
         initRecyclerView(getView(), team);
 
@@ -159,7 +164,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTeamAdapter = new TeamAdapter(team,getContext());
+        mTeamAdapter = new TeamAdapter(team,getContext(), mSection);
         mRecyclerView.setAdapter(mTeamAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

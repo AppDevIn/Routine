@@ -67,7 +67,7 @@ public class UploadSectionWorker extends Worker {
         userDatabase.child(id).setValue(id);
 
         //Set the email for this section in Team
-        teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail() + " (Owner)");
+        teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");

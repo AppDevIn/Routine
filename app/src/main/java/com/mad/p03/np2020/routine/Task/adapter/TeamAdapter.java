@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
 import com.mad.p03.np2020.routine.Task.model.TeamDataListener;
+import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Team;
 
 import java.util.ArrayList;
@@ -29,16 +30,18 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
 
     Team mTeam;
     Context mContext;
+    Section mSection;
 
     final static String TAG = "TeamAdapter";
 
-    public TeamAdapter(Team team, Context context) {
+    public TeamAdapter(Team team, Context context, Section section) {
         mTeam = team;
         mTeam.setEmail(new ArrayList<>());
+        mSection = section;
+
+        //This will trigger the TeamDataListener
         mTeam.getTeamFirebase(this);
         mContext = context;
-
-
     }
 
     @NonNull
@@ -139,9 +142,17 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
                             dataSnapshot.getChildren()) {
 
                         name[0] = snap.child("Name").getValue(String.class);
+
+                        //if its the owner add the owner text
+                        if(snap.getKey().equals(mSection.getUID())){
+                            name[0] = name[0] + " (Owner)";
+                        }
+
                         mTextView.setText(name[0]);
 
                         //TODO: Get the ICON
+
+
 
 
 
