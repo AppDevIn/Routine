@@ -290,7 +290,10 @@ public class Section implements Serializable {
     }
 
 
+    public boolean isAdmin(){
 
+        return this.getUID().equals(FirebaseAuth.getInstance().getUid());
+    }
 
     /**
      *

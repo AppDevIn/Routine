@@ -225,9 +225,9 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     @Override
     public boolean onLongClick(View view) {
         Log.d(TAG, "onLongClick: Clicked");
-        if(mSection.getUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-            settingsInit();
-        }
+
+        settingsInit();
+
         return false;
     }
 

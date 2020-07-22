@@ -270,8 +270,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
         //Set the message in the view
         TextView txtMessage = dialogLayout.findViewById(R.id.txtMessage);// Find id in the custom dialog
+
         //Setting the message using HTML format so I can have a bold and normal text
-        txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete<br/>"+ "<b>" + section.getName() + "?</b></div>"));
+        //if is the admin message than will be different from just a user
+        if(section.isAdmin())
+            txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete, all the users share will lose this list<br/>"+ "<b>" + section.getName() + "?</b></div>"));
+        else
+            txtMessage.setText(Html.fromHtml( "<div>Are you sure you want to delete<br/>"+ "<b>" + section.getName() + "?</b></div>"));
 
         //Set trash in image view
         ImageView imgTrash = dialogLayout.findViewById(R.id.imgTrash); //Find the image view in the custom dialog
