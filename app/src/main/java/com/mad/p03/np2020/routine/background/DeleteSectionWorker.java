@@ -4,7 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -52,7 +56,30 @@ public class DeleteSectionWorker extends Worker {
         if(isAdmin){
             FirebaseDatabase.getInstance().getReference().child("Section").child(String.valueOf(ID)).removeValue();
         }else {
+
             FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("Section").child(String.valueOf(ID)).removeValue();
+
+            FirebaseDatabase.getInstance().getReference().child("Section").child(String.valueOf(ID))
+                    .child("Team")
+                    .orderByValue().equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot:
+                                 dataSnapshot.getChildren()) {
+                                snapshot.getRef().removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
         }
 
         return Result.success();
