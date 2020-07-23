@@ -15,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -47,7 +45,6 @@ import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitReminder;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
@@ -381,7 +378,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         Log.d(TAG, "Editing habit " + habit.getTitle());
 
-        Intent activityName = new Intent(HabitActivity.this, HabitView.class);
+        Intent activityName = new Intent(HabitActivity.this, HabitViewActivity.class);
         Bundle extras = new Bundle();
         extras.putString("recorded_habit", habit_serializeToJson(habit));
         activityName.putExtras(extras);

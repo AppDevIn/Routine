@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +18,7 @@ import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 
-public class HabitView extends AppCompatActivity {
+public class HabitViewActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitViewActivity";
 
@@ -70,7 +69,7 @@ public class HabitView extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(HabitView.this, HabitActivity.class);
+                Intent activityName = new Intent(HabitViewActivity.this, HabitActivity.class);
                 activityName.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(activityName);
                 finish();
@@ -82,7 +81,7 @@ public class HabitView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // go the edit habit activity
-                Intent activityName = new Intent(HabitView.this, HabitEditActivity.class);
+                Intent activityName = new Intent(HabitViewActivity.this, HabitEditActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);

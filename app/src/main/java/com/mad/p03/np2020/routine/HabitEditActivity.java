@@ -287,7 +287,7 @@ public class HabitEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // go back to habit view activity
                 Habit initial_habit = habit_dbHandler.getHabit(habit);
-                Intent activityName = new Intent(HabitEditActivity.this, HabitView.class);
+                Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(initial_habit));
                 activityName.putExtras(extras);
@@ -415,7 +415,7 @@ public class HabitEditActivity extends AppCompatActivity {
                 writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
 
                 // go back to habit view activity
-                Intent activityName = new Intent(HabitEditActivity.this, HabitView.class);
+                Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("recorded_habit", habit_serializeToJson(habit));
                 activityName.putExtras(extras);

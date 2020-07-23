@@ -41,7 +41,7 @@
             android:name=".Settings"
             android:exported="true" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".HabitView" />
+        <activity android:name=".HabitViewActivity" />
         <activity
             android:name=".Task.TaskActivity"
             android:fitsSystemWindows="true"
