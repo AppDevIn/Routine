@@ -319,7 +319,7 @@ public class HabitEditActivity extends AppCompatActivity {
 
                         // delete the habit
                         habit_dbHandler.deleteHabit(habit); // delete the habit in SQLiteDatabase
-                        ArrayList<Long> arr = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+                        ArrayList<Long> arr = habitRepetitionDBHelper.getAllHabitRepetitionsIDByHabitID(habit.getHabitID());
                         HabitRepetition hr = new HabitRepetition();
                         hr.setRowList(arr);
                         habitRepetitionDBHelper.deleteHabitRepetition(habit);

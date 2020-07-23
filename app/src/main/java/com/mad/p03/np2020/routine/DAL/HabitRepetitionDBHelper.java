@@ -493,24 +493,24 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close(); // close the db connection
     }
 
-    public ArrayList<Long> getAllHabitRepetitionsByHabitID(long habitID) {
+    public ArrayList<Long> getAllHabitRepetitionsIDByHabitID(long habitID) {
         ArrayList<Long> arr = new ArrayList<>();
 
         // get the readable database
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID;
-        Log.d(TAG, "getAllHabitRepetitionsByHabitID: "+query);
+        Log.d(TAG, "getAllHabitRepetitionsIDByHabitID: "+query);
         // run the query
         Cursor res = db.rawQuery(query, null);
 
         if (res.getCount() > 0) {
-            Log.d(TAG, "getAllHabitRepetitionsByHabitIDCount: "+res.getCount());
+            Log.d(TAG, "getAllHabitRepetitionsIDByHabitIDCount: "+res.getCount());
             res.moveToFirst(); // move to the first result found
 
             while (!res.isAfterLast()) {
                 long id = res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID));
-                Log.d(TAG, "getAllHabitRepetitionsByHabitID: "+id);
+                Log.d(TAG, "getAllHabitRepetitionsIDByHabitID: "+id);
                 arr.add(id);
                 res.moveToNext();
             }
@@ -519,5 +519,83 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close();
         return arr;
     }
+
+    public ArrayList<HabitRepetition> getAllHabitRepetitionsByHabitID(long habitID) {
+        ArrayList<HabitRepetition> arr = new ArrayList<>();
+
+        // get the readable database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID;
+        // run the query
+        Cursor res = db.rawQuery(query, null);
+
+        if (res.getCount() > 0) {
+            Log.d(TAG, "getAllHabitRepetitionsByHabitID: ");
+            res.moveToFirst(); // move to the first result found
+
+            while (!res.isAfterLast()) {
+                HabitRepetition hr = new HabitRepetition();
+                hr.setRow_id(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID)));
+                hr.setHabitID(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_ID)));
+                hr.setCycle(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE)));
+                hr.setCycle_day(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY)));
+                hr.setTimestamp(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_TIMESTAMP)));
+                hr.setCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT)));
+                hr.setConCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT)));
+                arr.add(hr);
+
+                res.moveToNext();
+            }
+        }
+
+        db.close();
+        return arr;
+    }
+
+    public int getMaxCycle(long habitID){
+        int cycle = 0;
+        // get the readable database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select max(cycle) from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID;
+        // run the query
+        Cursor res = db.rawQuery(query, null);
+
+        if (res.getCount() > 0) {
+            Log.d(TAG, "getAllHabitRepetitionsByHabitID: ");
+            res.moveToFirst(); // move to the first result found
+
+            cycle = res.getInt(res.getColumnIndex("max(cycle)"));
+
+        }
+
+        db.close();
+
+        return cycle;
+    }
+
+    public int getMaxCountByCycle(long habitID, int cycle){
+        int count = 0;
+        // get the readable database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select max(count+conCount) from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_CYCLE + " = " + cycle;
+        // run the query
+        Cursor res = db.rawQuery(query, null);
+
+        if (res.getCount() > 0) {
+            Log.d(TAG, "getAllHabitRepetitionsByHabitID: ");
+            res.moveToFirst(); // move to the first result found
+
+            count = res.getInt(res.getColumnIndex("max(count+conCount)"));
+
+        }
+
+        db.close();
+
+        return count;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import android.content.Intent;
+import android.icu.math.MathContext;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,15 +16,19 @@ import androidx.cardview.widget.CardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
+
+import java.util.ArrayList;
 
 public class HabitViewActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitViewActivity";
 
     // Widgets
-    private TextView title, goal_text;
+    private TextView title, goal_text, curr_streak_text, best_streak_text;
     private CardView habit_card;
     private ImageView back_btn, editBtn;
     // Habit
@@ -31,6 +36,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
     // HabitDBHandler
     private HabitDBHelper habit_dbHandler;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     // User
     private User user;
@@ -49,6 +55,11 @@ public class HabitViewActivity extends AppCompatActivity {
         back_btn = findViewById(R.id.habit_back);
         editBtn = findViewById(R.id.habit_view_edit);
         goal_text = findViewById(R.id.habit_goal);
+        curr_streak_text = findViewById(R.id.current_streak);
+        best_streak_text = findViewById(R.id.best_streak);
+
+        habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         // set user
         user = new User();
@@ -66,6 +77,7 @@ public class HabitViewActivity extends AppCompatActivity {
         title.setText(capitalise(habit.getTitle()));
         habit_card.setCardBackgroundColor(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         setGoalText();
+        calculateStreak();
 
         // set onClickListener on close button
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +172,41 @@ public class HabitViewActivity extends AppCompatActivity {
         }
 
         goal_text.setText(String.format("%d Times a %s",occurrence,period));
+
+    }
+
+    public void calculateStreak(){
+        int occurrence = habit.getOccurrence();
+        int period = habit.getPeriod();
+        long habitID = habit.getHabitID();
+
+        ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habitID);
+
+
+        int curr_streak = 0, max_streak = 0;
+        switch (period){
+            case 1:
+                for (HabitRepetition hr : habitRepetitionArrayList){
+                    int count = hr.getCount();
+                    curr_streak = (count >= occurrence) ? ++curr_streak : 0;
+                    max_streak = Math.max(max_streak, curr_streak);
+                }
+                break;
+
+            case 7:
+
+            case 30:
+                int max_cycle = habitRepetitionDBHelper.getMaxCycle(habitID);
+                for (int i = 1; i < max_cycle+1; i++){
+                    int max_count = habitRepetitionDBHelper.getMaxCountByCycle(habitID, i);
+                    curr_streak = (max_count >= occurrence) ? ++ curr_streak : 0;
+                    max_streak = Math.max(max_streak, curr_streak);
+                }
+                break;
+        }
+
+        curr_streak_text.setText(String.format("Current streak: %d",curr_streak));
+        best_streak_text.setText(String.format("Best streak: %d", max_streak));
 
     }
 }
