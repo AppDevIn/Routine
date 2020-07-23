@@ -160,16 +160,6 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="@color/colorBlack" />
 
-            <Button
-                android:background="@drawable/habit_btn_background"
-                android:id="@+id/yearly_period"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="YEARLY"
-                android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/colorBlack" />
-
-
         </LinearLayout>
 
     </LinearLayout>

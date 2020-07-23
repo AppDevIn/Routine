@@ -489,7 +489,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     int id = btn.getId(); // retrieve the buttonID
 
-                    for (int i = 0; i < 4; i++){
+                    for (int i = 0; i < 3; i++){
                         Button _btn = dialogView.findViewById(Habit.period_buttonIDS[i]);
                         if (id == Habit.period_buttonIDS[i]){
                             // if is selected by the user, add a grey background.
@@ -630,7 +630,7 @@ public class HabitAddActivity extends AppCompatActivity {
      *   */
     public void habit_edit_initialise_periodSection(HabitAddActivity dialogView, final Habit habit, final int[] period, final TextView period_text){
         // initialise the color of button at period section based on the habit period of the habit
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 3; i++){
             if (Habit.period_countList[i] == habit.getPeriod()){ // loop to find matches value
                 period[0] = Habit.period_countList[i]; // update the chosen period
                 period_text.setText(Habit.period_textList[i]); // set the period text

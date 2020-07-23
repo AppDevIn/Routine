@@ -164,42 +164,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
             holder.habit_finished.setVisibility(View.INVISIBLE);
         }
 
-//        holder.addBtn.setBackgroundColor(Color.TRANSPARENT);
-//        // set onClickListener on add button
-//        holder.addBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // this will trigger the habit class add count method
-//                habit.addCount(); // add the count by 1
-//                notifyDataSetChanged(); // notify the data set has changed
-//                dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
-//                writeHabit_Firebase(habit, UID, false); // write the habit to the firebase
-//
-//            }
-//        });
-//
-//        // set the period text based on its period attribute value
-//        switch (habit.getPeriod()){
-//            case 1:
-//                holder.mPeriod.setText("TODAY:");
-//                break;
-//            case 7:
-//                holder.mPeriod.setText("THIS WEEK:");
-//                break;
-//            case 30:
-//                holder.mPeriod.setText("THIS MONTH:");
-//                break;
-//            case 365:
-//                holder.mPeriod.setText("THIS YEAR:");
-//                break;
-//        }
-
-//        if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
-//            holder.addBtn.setImageResource(R.drawable.habit_tick_white); // replace the add button as a tick button
-//        }else{ // if habit count < habit occurrence
-//            holder.addBtn.setImageResource(R.drawable.habit_add_white); // set the add button
-//        }
-
     }
 
     /**@return int This return the size of the data set, habitList*/

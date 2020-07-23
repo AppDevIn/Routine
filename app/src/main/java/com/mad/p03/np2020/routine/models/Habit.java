@@ -80,8 +80,8 @@ public class Habit {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     // set values for period section
-    public static final int[] period_buttonIDS = new int[]{R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
-    public static final String[] period_textList = new String[]{"DAY", "WEEK", "MONTH", "YEAR"};
+    public static final int[] period_buttonIDS = new int[]{R.id.daily_period, R.id.weekly_period, R.id.monthly_period};
+    public static final String[] period_textList = new String[]{"DAY", "WEEK", "MONTH"};
     public static final int[] period_countList = new int[]{1, 7, 30, 365};
 
     // set values for color section
