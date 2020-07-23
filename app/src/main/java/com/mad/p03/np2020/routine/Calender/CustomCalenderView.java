@@ -42,7 +42,7 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
     List<Date> dates = new ArrayList<>();
     List<Task> taskList = new ArrayList<>();
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM YYYY", Locale.ENGLISH);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.ENGLISH);
     SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
     SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
 

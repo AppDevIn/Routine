@@ -84,6 +84,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     protected void onResume() {
         super.onResume();
 
+        viewSwitcher.reset();
+
         CustomCalenderView calendarView = findViewById(R.id.calendar);
         currentDate = calendarView.getDate();
 
@@ -241,5 +243,15 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
             isZero = true;
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(isZero){
+            viewSwitcher.showNext();
+        }
+    }
+
 
 }

@@ -140,16 +140,18 @@ public class TaskDBHelper extends DBHelper {
         if (cursor != null)
             cursor.moveToFirst(); //Only getting the first value
 
-        //Prepare a section object
-        assert cursor != null;
-        Task task = Task.fromCursor(cursor);
-        Log.d(TAG, "getAllSections(): Reading data" + task.toString() );
-
-
         //Close the DB connection
         db.close();
 
-        return task;
+        //Prepare a section object
+        if(cursor!=null) {
+            Task task = Task.fromCursor(cursor);
+            Log.d(TAG, "getAllSections(): Reading data" + task.toString());
+            return task;
+        }else
+            return null;
+
+
 
     }
 

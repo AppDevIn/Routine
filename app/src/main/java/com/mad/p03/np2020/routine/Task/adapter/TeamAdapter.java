@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,20 +57,23 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
     public void onBindViewHolder(@NonNull TeamViewHolder holder, int position) {
 
         //Excute the runner to get profile details
-        AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner(holder.txtName, mTeam.getEmail().get(position));
+        AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner(holder, mTeam.getEmail().get(position));
         asyncTaskRunner.execute();
 
         holder.txtEmail.setText(mTeam.getEmail().get(position));
-        holder.txtEmail.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Log.d(TAG, "onLongClick: " + mTeam.getEmail().get(position) + " is being removed from " + mTeam.getSectionID());
+        if(!mTeam.getEmail().get(position).equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+            holder.mConstraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Log.d(TAG, "onLongClick: " + mTeam.getEmail().get(position) + " is being removed from " + mTeam.getSectionID());
 
-                deleteEmail(position);
+                    deleteEmail(position);
 
-                return false;
-            }
-        });
+                    return false;
+                }
+            });
+        }
+
     }
 
     @Override
@@ -123,9 +127,11 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
 
         String email;
         TextView mTextView;
-        public AsyncTaskRunner(TextView view, String email) {
+        TeamViewHolder mHolder;
+        public AsyncTaskRunner(TeamViewHolder holder, String email) {
             this.email = email;
-            mTextView = view;
+            mTextView = holder.txtName;
+            mHolder = holder;
         }
 
         @Override
@@ -146,6 +152,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
                         //if its the owner add the owner text
                         if(snap.getKey().equals(mSection.getUID())){
                             name[0] = name[0] + " (Owner)";
+
                         }
 
                         mTextView.setText(name[0]);

@@ -360,7 +360,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //Date format that I want example(WEDNESDAY, 29 APRIL)
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM");
+        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM yyyy");
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());
