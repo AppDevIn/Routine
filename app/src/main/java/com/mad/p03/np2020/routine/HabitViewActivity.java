@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -28,9 +29,10 @@ public class HabitViewActivity extends AppCompatActivity {
     private static final String TAG = "HabitViewActivity";
 
     // Widgets
-    private TextView title, goal_text, curr_streak_text, best_streak_text;
+    private TextView title, goal_text, curr_streak_text, best_streak_text, progress_text, curr_period, best_period, progress_text_period;
     private CardView habit_card;
     private ImageView back_btn, editBtn;
+    private ProgressBar progressBar;
     // Habit
     private Habit habit;
 
@@ -57,6 +59,11 @@ public class HabitViewActivity extends AppCompatActivity {
         goal_text = findViewById(R.id.habit_goal);
         curr_streak_text = findViewById(R.id.current_streak);
         best_streak_text = findViewById(R.id.best_streak);
+        progressBar = findViewById(R.id.habit_progressBar);
+        progress_text = findViewById(R.id.progress_text);
+        curr_period = findViewById(R.id.current_streak_period);
+        best_period = findViewById(R.id.best_streak_period);
+        progress_text_period = findViewById(R.id.progress_text_period);
 
         habit_dbHandler = new HabitDBHelper(this);
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
@@ -154,10 +161,9 @@ public class HabitViewActivity extends AppCompatActivity {
 //        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
-    public void setGoalText(){
-        int occurrence = habit.getOccurrence();
+    public String getPeriodText(int periodCnt){
         String period;
-        switch (habit.getPeriod()){
+        switch (periodCnt){
             case 7:
                 period = "Week";
                 break;
@@ -171,8 +177,14 @@ public class HabitViewActivity extends AppCompatActivity {
                 break;
         }
 
-        goal_text.setText(String.format("%d Times a %s",occurrence,period));
+        return period;
+    }
 
+    public void setGoalText(){
+        int occurrence = habit.getOccurrence();
+        String period = getPeriodText(habit.getPeriod());
+
+        goal_text.setText(String.format("%d Times a %s",occurrence,period));
     }
 
     public void calculateStreak(){
@@ -182,31 +194,58 @@ public class HabitViewActivity extends AppCompatActivity {
 
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habitID);
 
-
         int curr_streak = 0, max_streak = 0;
+        int max_cycle = 0, completion = 0;
         switch (period){
             case 1:
                 for (HabitRepetition hr : habitRepetitionArrayList){
                     int count = hr.getCount();
                     curr_streak = (count >= occurrence) ? ++curr_streak : 0;
                     max_streak = Math.max(max_streak, curr_streak);
+                    ++max_cycle;
+                    completion = (count >= occurrence) ? ++completion : completion;
                 }
                 break;
 
             case 7:
 
             case 30:
-                int max_cycle = habitRepetitionDBHelper.getMaxCycle(habitID);
+                max_cycle = habitRepetitionDBHelper.getMaxCycle(habitID);
                 for (int i = 1; i < max_cycle+1; i++){
                     int max_count = habitRepetitionDBHelper.getMaxCountByCycle(habitID, i);
                     curr_streak = (max_count >= occurrence) ? ++ curr_streak : 0;
                     max_streak = Math.max(max_streak, curr_streak);
+                    completion = (max_count >= occurrence) ? ++completion : completion;
                 }
                 break;
         }
 
-        curr_streak_text.setText(String.format("Current streak: %d",curr_streak));
-        best_streak_text.setText(String.format("Best streak: %d", max_streak));
+        curr_streak_text.setText(String.valueOf(curr_streak));
+        best_streak_text.setText(String.valueOf(max_streak));
+
+        String period_text = getPeriodText(period).toLowerCase();
+        String curr_period_text = period_text;
+        String best_period_text = period_text;
+        if (curr_streak > 1){
+            curr_period_text += "s";
+        }
+
+        if (max_streak > 1){
+            best_period_text += "s";
+        }
+
+        curr_period.setText(curr_period_text);
+        best_period.setText(best_period_text);
+
+        int completeProgress = Math.min((int) ((completion/(double)max_cycle) * 100),100);
+        progressBar.setProgress(completeProgress);
+        progress_text.setText(String.format("%d",completeProgress)+"%");
+        String goal_period_text = period_text;
+        if (max_cycle > 1){
+            goal_period_text += "s";
+        }
+        progress_text_period.setText(String.format("%d/%d %s",completion,max_cycle,goal_period_text));
+        Log.d(TAG, "calculateStreak: "+completion + "/" + max_cycle);
 
     }
 }

@@ -124,6 +124,7 @@
     <string name="my_calender">My Calender</string>
     <string name="task">Task</string>
     <string name="noTime">No Time</string>
+    <string name="current_streak">Current Streak</string>
 
 </resources>
 

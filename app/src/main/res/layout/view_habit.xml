@@ -9,17 +9,16 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/habit_card"
-        app:cardBackgroundColor="@color/colorSlightDesBlue"
         android:layout_width="match_parent"
         android:layout_height="154dp"
+        app:cardBackgroundColor="@color/colorSlightDesBlue"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,8 +28,8 @@
                 android:id="@+id/habit_back"
                 android:layout_width="37dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:contentDescription="@string/background"
 
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,35 +84,155 @@
 
     </androidx.cardview.widget.CardView>
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="214.272dp"
+        android:layout_height="200.448dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/habit_card">
+
+        <ProgressBar
+            android:id="@+id/habit_progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/circle_shape"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="65"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/goal_met"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:textSize="18sp"
+            android:text="Goal Met"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/goal_met"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="50%"
+            android:textSize="40sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:letterSpacing="0.05"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/progress_text"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/progress_text_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="50%"
+            android:textSize="16sp"
+            android:textColor="@color/blackGrey" />
+
+    </RelativeLayout>
+
     <TextView
+        android:id="@+id/current_streak_text"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="@string/current_streak"
+        android:textAlignment="center"
+
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/relativeLayout2"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/habit_card" />
+
+    <TextView
+        android:layout_marginTop="5dp"
         android:id="@+id/current_streak"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_regular"
+        android:text="1"
+        android:textAlignment="center"
+
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/relativeLayout2"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_streak_text" />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/current_streak_period"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="day"
+        android:textAlignment="center"
+        android:textColor="@color/blackGrey"
+
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/relativeLayout2"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_streak" />
+
+    <TextView
+        android:id="@+id/best_streak_text"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Best     Streak"
+
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/habit_card"
-        app:layout_constraintVertical_bias="0.263" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/habit_card" />
 
     <TextView
         android:id="@+id/best_streak"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/montserrat_regular"
+        android:text="10"
+
         android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/best_streak_text" />
 
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/habit_card"
-        app:layout_constraintVertical_bias="0.326" />
+    <TextView
+        android:id="@+id/best_streak_period"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="days"
+        android:textColor="@color/blackGrey"
 
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/best_streak" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
