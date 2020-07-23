@@ -454,7 +454,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     private void settingsInit(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_out_bottom, R.anim.slide_in_bottom, R.anim.slide_out_bottom, R.anim.slide_in_bottom);
 
 
         TaskSettings fragment = new TaskSettings(mSection.getID());

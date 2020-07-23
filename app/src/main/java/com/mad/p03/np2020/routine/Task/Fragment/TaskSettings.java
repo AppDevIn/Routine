@@ -51,6 +51,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     String mSectionID;
     Team team;
     Section mSection;
+    EditText editText;
 
     public TaskSettings(String id) {
         mSectionID = id;
@@ -95,7 +96,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
             }
         });
 
-        EditText editText = view.findViewById(R.id.addUser);
+        editText = view.findViewById(R.id.addUser);
         editText.setOnEditorActionListener(this);
 
         if(!mSection.isAdmin())
@@ -149,6 +150,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
             //Add this object to the list
             mTeamAdapter.addEmail(textView.getText().toString());
 
+            editText.setText("");
 
 
             //Hide and scroll the last task

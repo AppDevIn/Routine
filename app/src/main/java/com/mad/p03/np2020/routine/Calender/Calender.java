@@ -84,7 +84,6 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     protected void onResume() {
         super.onResume();
 
-        viewSwitcher.reset();
 
         CustomCalenderView calendarView = findViewById(R.id.calendar);
         currentDate = calendarView.getDate();
@@ -221,6 +220,13 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
         mTaskList = new TaskDBHelper(this).getAllTask(date);
 
+        //if empty display the image if not the recyclerview
+        if(mTaskList.size() == 0){
+            viewSwitcher.showNext();
+            isZero = true;
+        }
+
+
         mRecyclerView = findViewById(R.id.rcTask);
         mRecyclerView.setHasFixedSize(true);
 
@@ -237,11 +243,6 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         mTaskAdapter.setMyTaskTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-        //if empty display the image if not the recyclerview
-        if(mTaskList.size() == 0){
-            viewSwitcher.showNext();
-            isZero = true;
-        }
     }
 
     @Override
