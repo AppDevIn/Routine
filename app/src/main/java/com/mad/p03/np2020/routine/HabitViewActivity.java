@@ -23,7 +23,7 @@ public class HabitViewActivity extends AppCompatActivity {
     private static final String TAG = "HabitViewActivity";
 
     // Widgets
-    private TextView title;
+    private TextView title, goal_text;
     private CardView habit_card;
     private ImageView back_btn, editBtn;
     // Habit
@@ -48,6 +48,7 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_card = findViewById(R.id.habit_card);
         back_btn = findViewById(R.id.habit_back);
         editBtn = findViewById(R.id.habit_view_edit);
+        goal_text = findViewById(R.id.habit_goal);
 
         // set user
         user = new User();
@@ -64,6 +65,7 @@ public class HabitViewActivity extends AppCompatActivity {
         // set text on input fields based on the habit object
         title.setText(capitalise(habit.getTitle()));
         habit_card.setCardBackgroundColor(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
+        setGoalText();
 
         // set onClickListener on close button
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -138,5 +140,26 @@ public class HabitViewActivity extends AppCompatActivity {
         return txt;
 
 //        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
+    }
+
+    public void setGoalText(){
+        int occurrence = habit.getOccurrence();
+        String period;
+        switch (habit.getPeriod()){
+            case 7:
+                period = "Week";
+                break;
+
+            case 30:
+                period = "Month";
+                break;
+
+            default:
+                period = "Day";
+                break;
+        }
+
+        goal_text.setText(String.format("%d Times a %s",occurrence,period));
+
     }
 }

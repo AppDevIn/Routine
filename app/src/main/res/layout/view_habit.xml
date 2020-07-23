@@ -57,20 +57,19 @@
                 app:layout_constraintStart_toEndOf="@+id/habit_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <TextView-->
-<!--                android:visibility="invisible"-->
-<!--                android:id="@+id/habit_completion"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
+            <TextView
+                android:id="@+id/habit_goal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
 
-<!--                android:fontFamily="@font/montserrat_regular"-->
-<!--                android:text="@string/my_habits"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="14sp"-->
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/my_habits"
+                android:textColor="@color/black"
+                android:textSize="14sp"
 
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/habit_back"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/habit_view_title" />-->
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/habit_back"
+                app:layout_constraintTop_toBottomOf="@id/habit_view_title" />
 
             <ImageView
                 android:id="@+id/habit_view_edit"
