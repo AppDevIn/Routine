@@ -414,6 +414,10 @@ public class HabitEditActivity extends AppCompatActivity {
                 habit_dbHandler.updateHabit(habit); // update the habit in SQLiteDatabase
                 writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
 
+                habitRepetitionDBHelper.updateCount(habit);
+                HabitRepetition habitRepetition = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habit.getHabitID());
+                writeHabitRepetition_Firebase(habitRepetition, user.getUID(), false);
+
                 // go back to habit view activity
                 Intent activityName = new Intent(HabitEditActivity.this, HabitViewActivity.class);
                 Bundle extras = new Bundle();
@@ -786,5 +790,6 @@ public class HabitEditActivity extends AppCompatActivity {
         Log.i(TAG,"Object serialize");
         return gson.toJson(habitRepetition);
     }
+
 
 }
