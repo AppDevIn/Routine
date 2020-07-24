@@ -15,12 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
@@ -285,7 +288,7 @@ public class HabitViewActivity extends AppCompatActivity {
         data.setValueFormatter(new IntegerFormatter());
 
         habit_barChart.setData(data);
-        habit_barChart.animateY(1000);
+        habit_barChart.animateY(750);
         habit_barChart.setDrawBarShadow(false);
         habit_barChart.setDrawValueAboveBar(true);
         habit_barChart.setVisibleXRangeMaximum(5);
@@ -294,6 +297,8 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.setDrawGridBackground(true);
         habit_barChart.getAxisRight().setEnabled(false);
         habit_barChart.getLegend().setEnabled(false);
+        habit_barChart.setClickable(false);
+        habit_barChart.setDoubleTapToZoomEnabled(false);
 
         Description description = new Description();
         description.setText("");
@@ -304,7 +309,10 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+        xAxis.setTextSize(12);
 
+        YAxis yAxis = habit_barChart.getAxisLeft();
+        yAxis.setTextSize(12);
 
     }
 
@@ -318,6 +326,5 @@ public class HabitViewActivity extends AppCompatActivity {
 
         return mMonth+"/"+mDay;
     }
-
 
 }
