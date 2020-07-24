@@ -10,8 +10,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar5"
-        android:layout_width="407dp"
-        android:layout_height="65dp"
+        android:layout_width="409dp"
+        android:layout_height="68dp"
         android:background="@color/purple"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -20,6 +20,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar5"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar5"
+        app:layout_constraintStart_toStartOf="@+id/toolbar5"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/profilePicture"

@@ -85,6 +85,12 @@
     <string name="home">Home</string>
 
     <string name="profile">Profile</string>
+    <string name="more">More</string>
+    <string name="logout">Logout</string>
+    <string name="changeName">Change Name</string>
+    <string name="changePassword">Change Password</string>
+    <string name="reportAProblem">Report A Problem</string>
+    <string name="rateOurApp">Rate Our App</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1560805060745865</string>
@@ -124,12 +130,7 @@
     <string name="my_calender">My Calender</string>
     <string name="task">Task</string>
     <string name="noTime">No Time</string>
-    <string name="more">More</string>
-    <string name="logout">Logout</string>
-    <string name="changeName">Change Name</string>
-    <string name="changePassword">Change Password</string>
-    <string name="reportAProblem">Report A Problem</string>
-    <string name="rateOurApp">Rate Our App</string>
+
 
 </resources>
 
