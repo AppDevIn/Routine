@@ -483,8 +483,87 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public void displayYearBarChart(){
+        ArrayList<String> timeStampList = new ArrayList<>();
+        timeStampList.add("dummy");
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
 
+        int x = 0;
+
+        long initial_ms = getYear(habit.getTime_created());
+        long next_ms = getNextYearFromMs(initial_ms);
+
+        boolean isNextYear;
+
+        do{
+            int count = habitRepetitionDBHelper.getCountBetweenYear(habit.getHabitID(), initial_ms, next_ms);
+            barEntries.add(new BarEntry(++x, count));
+            timeStampList.add(getYearByTimeStamp(initial_ms));
+
+            initial_ms = next_ms;
+            next_ms = getNextYearFromMs(next_ms);
+            isNextYear = habitRepetitionDBHelper.isNextYear(habit.getHabitID(), initial_ms);
+
+        }while(isNextYear);
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
+        barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        barDataSet.setValueTextSize(14);
+
+        BarData data = new BarData(barDataSet);
+        if (barEntries.size() >= 3){
+            data.setBarWidth(0.7f);
+        }else if (barEntries.size() == 2){
+            data.setBarWidth(0.5f);
+        }else{
+            data.setBarWidth(0.3f);
+        }
+
+        data.setValueFormatter(new IntegerFormatter());
+
+        habit_barChart.setData(data);
+        habit_barChart.animateY(750);
+        habit_barChart.setDrawBarShadow(false);
+        habit_barChart.setDrawValueAboveBar(true);
+        habit_barChart.setVisibleXRangeMaximum(5);
+        habit_barChart.moveViewToX(x);
+        habit_barChart.setPinchZoom(false);
+        habit_barChart.setDrawGridBackground(true);
+        habit_barChart.getAxisRight().setEnabled(false);
+        habit_barChart.getLegend().setEnabled(false);
+        habit_barChart.setClickable(false);
+        habit_barChart.setDoubleTapToZoomEnabled(false);
+
+        Description description = new Description();
+        description.setText("");
+        habit_barChart.setDescription(description);
+
+        XAxis xAxis = habit_barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+        xAxis.setTextSize(12);
+
+        YAxis yAxis = habit_barChart.getAxisLeft();
+        yAxis.setTextSize(12);
+        yAxis.setAxisMinimum(0f);
+//        float max_y = yAxis.getAxisMaximum();
+//        Log.d(TAG, "displayWeekBarChart: "+max_y);
+//        yAxis.setAxisMaximum(max_y+2);
+        yAxis.setLabelCount(5);
     }
+
+    public String getYearByTimeStamp(long timeStamp){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+       return String.valueOf(mYear);
+    }
+
 
     public String getMonthYearByTimeStamp(long timeStamp){
         Calendar calendar = Calendar.getInstance();
@@ -561,6 +640,8 @@ public class HabitViewActivity extends AppCompatActivity {
                 break;
 
             case 3:
+                Log.d(TAG, "displayCharts: Year");
+                resetChart();
                 displayYearBarChart();
                 break;
         }
@@ -620,6 +701,34 @@ public class HabitViewActivity extends AppCompatActivity {
         calendar.setTimeInMillis(ms);
 
         calendar.add(Calendar.MONTH, 1);
+
+        return calendar.getTimeInMillis();
+    }
+
+    public long getYear(String time){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date;
+        long ms = 0;
+        try {
+            date = dateFormat.parse(time);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            int year  = c.get(Calendar.YEAR);
+            c.clear();
+            c.set(year,0,1);
+            return c.getTimeInMillis();
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ms;
+    }
+
+    public long getNextYearFromMs(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+
+        calendar.add(Calendar.YEAR, 1);
 
         return calendar.getTimeInMillis();
     }
