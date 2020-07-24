@@ -598,5 +598,45 @@ public class HabitRepetitionDBHelper extends DBHelper {
         return count;
     }
 
+    public boolean isNextMonth(long habitID, long next_ms){
+        boolean isNextMonth = false;
+        // get the readable database
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select count(*) from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " >= " + next_ms;
+        // run the query
+        Cursor res = db.rawQuery(query, null);
+        if (res.getCount() > 0) {
+            res.moveToFirst(); // move to the first result found
+
+            int count = res.getInt(res.getColumnIndex("count(*)"));
+            if (count > 0){
+                isNextMonth = true;
+            }
+        }
+
+        db.close();
+
+        return isNextMonth;
+    }
+
+    public int getCountBetweenMonth(long habitID, long ms, long next_ms){
+        int count = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select sum(count) from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + ms + " <= " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " < " + next_ms;
+        // run the query
+        Cursor res = db.rawQuery(query, null);
+
+        if (res.getCount() > 0) {
+            res.moveToFirst(); // move to the first result found
+            count = res.getInt(res.getColumnIndex("sum(count)"));
+        }
+
+        db.close();
+
+        return count;
+    }
+
 
 }

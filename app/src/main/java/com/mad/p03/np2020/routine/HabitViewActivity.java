@@ -33,8 +33,13 @@ import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class HabitViewActivity extends AppCompatActivity {
 
@@ -274,7 +279,7 @@ public class HabitViewActivity extends AppCompatActivity {
         int x = 0;
         for (HabitRepetition hr : habitRepetitionArrayList){
             barEntries.add(new BarEntry(++x, hr.getCount()));
-            timeStampList.add(getDateByTimeStamp(hr.getTimestamp()));
+            timeStampList.add(getDayMonthByTimeStamp(hr.getTimestamp()));
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
@@ -324,7 +329,7 @@ public class HabitViewActivity extends AppCompatActivity {
 //        yAxis.setAxisMaximum(max_y+2);
         yAxis.setLabelCount(5);
     }
-
+//5
     public void displayWeekBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
@@ -344,13 +349,13 @@ public class HabitViewActivity extends AppCompatActivity {
 
             if (i+1 >= n){
                 barEntries.add(new BarEntry(++x, count));
-                timeStampList.add(getDateByTimeStamp(initial_timestamp));
+                timeStampList.add(getDayMonthByTimeStamp(initial_timestamp));
                 break;
             }
 
             if (c_timestamp == 604800000){
                 barEntries.add(new BarEntry(++x, count));
-                timeStampList.add(getDateByTimeStamp(initial_timestamp));
+                timeStampList.add(getDayMonthByTimeStamp(initial_timestamp));
                 count = 0;
                 c_timestamp = 0;
                 initial_timestamp = habitRepetitionArrayList.get(i+1).getTimestamp();
@@ -400,21 +405,88 @@ public class HabitViewActivity extends AppCompatActivity {
         YAxis yAxis = habit_barChart.getAxisLeft();
         yAxis.setTextSize(12);
         yAxis.setAxisMinimum(0f);
-        float max_y = yAxis.getAxisMaximum();
-        Log.d(TAG, "displayWeekBarChart: "+max_y);
+//        float max_y = yAxis.getAxisMaximum();
+//        Log.d(TAG, "displayWeekBarChart: "+max_y);
 //        yAxis.setAxisMaximum(max_y+2);
         yAxis.setLabelCount(5);
     }
 
     public void displayMonthBarChart(){
+        ArrayList<String> timeStampList = new ArrayList<>();
+        timeStampList.add("dummy");
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
 
+        int x = 0;
+
+        long initial_ms = getMonth(habit.getTime_created());
+        long next_ms = getNextMonthFromString(habit.getTime_created());
+
+        boolean isNextMonth;
+
+        do{
+            int count = habitRepetitionDBHelper.getCountBetweenMonth(habit.getHabitID(), initial_ms, next_ms);
+            barEntries.add(new BarEntry(++x, count));
+            timeStampList.add(getMonthYearByTimeStamp(initial_ms));
+
+            initial_ms = next_ms;
+            next_ms = getNextMonthFromMs(next_ms);
+            isNextMonth = habitRepetitionDBHelper.isNextMonth(habit.getHabitID(), initial_ms);
+
+        }while(isNextMonth);
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
+        barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        barDataSet.setValueTextSize(14);
+
+        BarData data = new BarData(barDataSet);
+        if (barEntries.size() >= 3){
+            data.setBarWidth(0.7f);
+        }else if (barEntries.size() == 2){
+            data.setBarWidth(0.5f);
+        }else{
+            data.setBarWidth(0.3f);
+        }
+
+        data.setValueFormatter(new IntegerFormatter());
+
+        habit_barChart.setData(data);
+        habit_barChart.animateY(750);
+        habit_barChart.setDrawBarShadow(false);
+        habit_barChart.setDrawValueAboveBar(true);
+        habit_barChart.setVisibleXRangeMaximum(5);
+        habit_barChart.moveViewToX(x);
+        habit_barChart.setPinchZoom(false);
+        habit_barChart.setDrawGridBackground(true);
+        habit_barChart.getAxisRight().setEnabled(false);
+        habit_barChart.getLegend().setEnabled(false);
+        habit_barChart.setClickable(false);
+        habit_barChart.setDoubleTapToZoomEnabled(false);
+
+        Description description = new Description();
+        description.setText("");
+        habit_barChart.setDescription(description);
+
+        XAxis xAxis = habit_barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+        xAxis.setTextSize(12);
+
+        YAxis yAxis = habit_barChart.getAxisLeft();
+        yAxis.setTextSize(12);
+        yAxis.setAxisMinimum(0f);
+//        float max_y = yAxis.getAxisMaximum();
+//        Log.d(TAG, "displayWeekBarChart: "+max_y);
+//        yAxis.setAxisMaximum(max_y+2);
+        yAxis.setLabelCount(5);
     }
 
     public void displayYearBarChart(){
 
     }
 
-    public String getDateByTimeStamp(long timeStamp){
+    public String getMonthYearByTimeStamp(long timeStamp){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeStamp);
 
@@ -422,7 +494,21 @@ public class HabitViewActivity extends AppCompatActivity {
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        return mMonth+"/"+mDay;
+        String[] shortMonths = new DateFormatSymbols().getShortMonths();
+
+        return shortMonths[mMonth];
+    }
+
+
+    public String getDayMonthByTimeStamp(long timeStamp){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        return mDay+"/"+mMonth;
     }
 
 
@@ -469,6 +555,8 @@ public class HabitViewActivity extends AppCompatActivity {
                 break;
 
             case 2:
+                Log.d(TAG, "displayCharts: Month");
+                resetChart();
                 displayMonthBarChart();
                 break;
 
@@ -482,6 +570,58 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.clear();
         habit_barChart.invalidate();
         habit_barChart.notifyDataSetChanged();
+    }
+
+    public long getMonth(String time) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date;
+        long ms = 0;
+        try {
+            date = dateFormat.parse(time);
+            Log.d(TAG, "getMonth: "+date);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            int year  = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            c.clear();
+            c.set(year,month,1);
+            return c.getTimeInMillis();
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ms;
+    }
+
+    public long getNextMonthFromString(String time) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date;
+        long ms = 0;
+        try {
+            date = dateFormat.parse(time);
+            Log.d(TAG, "getMonth: "+date);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            int year  = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            c.clear();
+            c.set(year,month,1);
+            c.add(Calendar.MONTH,1);
+            return c.getTimeInMillis();
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ms;
+    }
+
+    public long getNextMonthFromMs(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+
+        calendar.add(Calendar.MONTH, 1);
+
+        return calendar.getTimeInMillis();
     }
 
 
