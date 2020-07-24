@@ -12,13 +12,17 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class Settings extends AppCompatActivity {
 
+    /*
     Button systemButton;
+
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
         systemButton = findViewById(R.id.systemButton);
 
         systemButton.setOnClickListener(new View.OnClickListener() {
@@ -27,5 +31,7 @@ public class Settings extends AppCompatActivity {
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
             }
         });
+
+         */
     }
 }

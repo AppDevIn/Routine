@@ -124,6 +124,12 @@
     <string name="my_calender">My Calender</string>
     <string name="task">Task</string>
     <string name="noTime">No Time</string>
+    <string name="more">More</string>
+    <string name="logout">Logout</string>
+    <string name="changeName">Change Name</string>
+    <string name="changePassword">Change Password</string>
+    <string name="reportAProblem">Report A Problem</string>
+    <string name="rateOurApp">Rate Our App</string>
 
 </resources>
 
