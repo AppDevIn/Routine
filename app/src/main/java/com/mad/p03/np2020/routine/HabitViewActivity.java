@@ -101,7 +101,6 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_card.setCardBackgroundColor(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         setGoalText();
         calculateStreak();
-        displayBarChart();
         populateChartButtons();
 
         // set onClickListener on close button
@@ -265,18 +264,17 @@ public class HabitViewActivity extends AppCompatActivity {
         progress_text_period.setText(String.format("%d/%d %s",completion,max_cycle,goal_period_text));
     }
 
-    public void displayBarChart(){
+    public void displayDayBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
         ArrayList<String> timeStampList = new ArrayList<>();
         timeStampList.add("dummy");
         ArrayList<BarEntry> barEntries = new ArrayList<>();
 
-        int x = 1;
+        int x = 0;
         for (HabitRepetition hr : habitRepetitionArrayList){
-            barEntries.add(new BarEntry(x, hr.getCount()));
+            barEntries.add(new BarEntry(++x, hr.getCount()));
             timeStampList.add(getDateByTimeStamp(hr.getTimestamp()));
-            ++x;
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
@@ -322,7 +320,97 @@ public class HabitViewActivity extends AppCompatActivity {
         yAxis.setTextSize(12);
         yAxis.setAxisMinimum(0f);
         float max_y = yAxis.getAxisMaximum();
-        yAxis.setAxisMaximum(max_y+2);
+        Log.d(TAG, "displayDayBarChart: "+max_y);
+//        yAxis.setAxisMaximum(max_y+2);
+        yAxis.setLabelCount(5);
+    }
+
+    public void displayWeekBarChart(){
+        ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+
+        ArrayList<String> timeStampList = new ArrayList<>();
+        timeStampList.add("dummy");
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+
+        int n = habitRepetitionArrayList.size();
+        int x = 0, count = 0;
+        long c_timestamp = 0;
+        long initial_timestamp = habitRepetitionArrayList.get(0).getTimestamp();
+
+        for (int i = 0; i < n; i++){
+            HabitRepetition hr = habitRepetitionArrayList.get(i);
+            c_timestamp += 86400000;
+            count += hr.getCount();
+
+            if (i+1 >= n){
+                barEntries.add(new BarEntry(++x, count));
+                timeStampList.add(getDateByTimeStamp(initial_timestamp));
+                break;
+            }
+
+            if (c_timestamp == 604800000){
+                barEntries.add(new BarEntry(++x, count));
+                timeStampList.add(getDateByTimeStamp(initial_timestamp));
+                count = 0;
+                c_timestamp = 0;
+                initial_timestamp = habitRepetitionArrayList.get(i+1).getTimestamp();
+            }
+
+        }
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
+        barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        barDataSet.setValueTextSize(14);
+
+        BarData data = new BarData(barDataSet);
+        if (barEntries.size() >= 3){
+            data.setBarWidth(0.7f);
+        }else if (barEntries.size() == 2){
+            data.setBarWidth(0.5f);
+        }else{
+            data.setBarWidth(0.3f);
+        }
+
+        data.setValueFormatter(new IntegerFormatter());
+
+        habit_barChart.setData(data);
+        habit_barChart.animateY(750);
+        habit_barChart.setDrawBarShadow(false);
+        habit_barChart.setDrawValueAboveBar(true);
+        habit_barChart.setVisibleXRangeMaximum(5);
+        habit_barChart.moveViewToX(x);
+        habit_barChart.setPinchZoom(false);
+        habit_barChart.setDrawGridBackground(true);
+        habit_barChart.getAxisRight().setEnabled(false);
+        habit_barChart.getLegend().setEnabled(false);
+        habit_barChart.setClickable(false);
+        habit_barChart.setDoubleTapToZoomEnabled(false);
+
+        Description description = new Description();
+        description.setText("");
+        habit_barChart.setDescription(description);
+
+        XAxis xAxis = habit_barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+        xAxis.setTextSize(12);
+
+        YAxis yAxis = habit_barChart.getAxisLeft();
+        yAxis.setTextSize(12);
+        yAxis.setAxisMinimum(0f);
+        float max_y = yAxis.getAxisMaximum();
+        Log.d(TAG, "displayWeekBarChart: "+max_y);
+//        yAxis.setAxisMaximum(max_y+2);
+        yAxis.setLabelCount(5);
+    }
+
+    public void displayMonthBarChart(){
+
+    }
+
+    public void displayYearBarChart(){
 
     }
 
@@ -341,6 +429,7 @@ public class HabitViewActivity extends AppCompatActivity {
     public void populateChartButtons(){
         Button button = findViewById(chart_buttonIDS[0]);
         button.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
+        displayDayBarChart();
 
         for (final int iD : chart_buttonIDS){
             final Button btn = findViewById(iD);
@@ -355,6 +444,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
                         if (id == chart_buttonIDS[i]){
                             _btn.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
+                            displayCharts(i);
                         }else{
                             _btn.setBackgroundColor(Color.TRANSPARENT);
                         }
@@ -363,5 +453,37 @@ public class HabitViewActivity extends AppCompatActivity {
             });
         }
     }
+
+    public void displayCharts(int i){
+        switch (i){
+            case 0:
+                Log.d(TAG, "displayCharts: Day");
+                resetChart();
+                displayDayBarChart();
+                break;
+
+            case 1:
+                Log.d(TAG, "displayCharts: Week");
+                resetChart();
+                displayWeekBarChart();
+                break;
+
+            case 2:
+                displayMonthBarChart();
+                break;
+
+            case 3:
+                displayYearBarChart();
+                break;
+        }
+    }
+
+    public void resetChart(){
+        habit_barChart.clear();
+        habit_barChart.invalidate();
+        habit_barChart.notifyDataSetChanged();
+    }
+
+
 
 }
