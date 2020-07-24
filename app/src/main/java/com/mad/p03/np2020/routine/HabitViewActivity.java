@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine;
 
 import android.content.Intent;
-import android.icu.math.MathContext;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -23,8 +21,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -278,13 +274,29 @@ public class HabitViewActivity extends AppCompatActivity {
             ++x;
         }
 
+
         BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
         barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         barDataSet.setValueTextSize(14);
 
+//        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+//        int barWidth = 10px;
+//
+//        int count = 5; // bar count on each screen, not the total count
+//
+//        int totalWidth = screenWidth;// i used screen width dirctly
+//
+//        float ratio = barWidth * count / totalWidth;
 
         BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.7f);
+        if (barEntries.size() >= 3){
+            data.setBarWidth(0.7f);
+        }else{
+            data.setBarWidth(0.5f);
+        }
+
+
+
         data.setValueFormatter(new IntegerFormatter());
 
         habit_barChart.setData(data);
