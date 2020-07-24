@@ -1,10 +1,12 @@
 package com.mad.p03.np2020.routine;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,7 +23,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -38,6 +39,8 @@ import java.util.Calendar;
 public class HabitViewActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitViewActivity";
+
+    public static final int[] chart_buttonIDS = new int[]{R.id.habit_day_barChart,R.id.habit_week_barChart,R.id.habit_month_barChart,R.id.habit_year_barChart};
 
     // Widgets
     private TextView title, goal_text, curr_streak_text, best_streak_text, progress_text, curr_period, best_period, progress_text_period;
@@ -99,6 +102,7 @@ public class HabitViewActivity extends AppCompatActivity {
         setGoalText();
         calculateStreak();
         displayBarChart();
+        populateChartButtons();
 
         // set onClickListener on close button
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -331,6 +335,33 @@ public class HabitViewActivity extends AppCompatActivity {
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
         return mMonth+"/"+mDay;
+    }
+
+
+    public void populateChartButtons(){
+        Button button = findViewById(chart_buttonIDS[0]);
+        button.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
+
+        for (final int iD : chart_buttonIDS){
+            final Button btn = findViewById(iD);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = btn.getId();
+
+                    for (int i = 0; i < 4; i++){
+                        Button _btn = findViewById(chart_buttonIDS[i]);
+
+                        if (id == chart_buttonIDS[i]){
+                            _btn.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
+                        }else{
+                            _btn.setBackgroundColor(Color.TRANSPARENT);
+                        }
+                    }
+                }
+            });
+        }
     }
 
 }

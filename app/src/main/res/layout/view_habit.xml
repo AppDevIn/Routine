@@ -240,13 +240,82 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
+        app:layout_constraintGuide_percent="0.50" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/habit_barChart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_margin="5dp"
+            android:id="@+id/habit_day_barChart"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="65dp"
+            android:layout_height="37dp"
+            android:text="@string/day"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_margin="5dp"
+            android:id="@+id/habit_week_barChart"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="65dp"
+            android:layout_height="37dp"
+            android:text="@string/week"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_margin="5dp"
+            android:id="@+id/habit_month_barChart"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:text="@string/month"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_margin="5dp"
+            android:id="@+id/habit_year_barChart"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="65dp"
+            android:layout_height="37dp"
+            android:text="@string/year"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp" />
+
+    </LinearLayout>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/habit_barChart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_constraintTop_toBottomOf="@id/guideline"/>
-
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

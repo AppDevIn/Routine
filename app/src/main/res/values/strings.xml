@@ -125,6 +125,10 @@
     <string name="task">Task</string>
     <string name="noTime">No Time</string>
     <string name="current_streak">Current Streak</string>
+    <string name="day">day</string>
+    <string name="week">week</string>
+    <string name="month">month</string>
+    <string name="year">year</string>
 
 </resources>
 
