@@ -14,15 +14,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.helpers.IntegerFormatter;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class HabitViewActivity extends AppCompatActivity {
 
@@ -33,6 +44,7 @@ public class HabitViewActivity extends AppCompatActivity {
     private CardView habit_card;
     private ImageView back_btn, editBtn;
     private ProgressBar progressBar;
+    private BarChart habit_barChart;
     // Habit
     private Habit habit;
 
@@ -64,6 +76,7 @@ public class HabitViewActivity extends AppCompatActivity {
         curr_period = findViewById(R.id.current_streak_period);
         best_period = findViewById(R.id.best_streak_period);
         progress_text_period = findViewById(R.id.progress_text_period);
+        habit_barChart = findViewById(R.id.habit_barChart);
 
         habit_dbHandler = new HabitDBHelper(this);
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
@@ -85,6 +98,7 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_card.setCardBackgroundColor(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         setGoalText();
         calculateStreak();
+        displayBarChart();
 
         // set onClickListener on close button
         back_btn.setOnClickListener(new View.OnClickListener() {
@@ -245,7 +259,64 @@ public class HabitViewActivity extends AppCompatActivity {
             goal_period_text += "s";
         }
         progress_text_period.setText(String.format("%d/%d %s",completion,max_cycle,goal_period_text));
-        Log.d(TAG, "calculateStreak: "+completion + "/" + max_cycle);
+    }
+
+    public void displayBarChart(){
+        ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+
+        ArrayList<String> timeStampList = new ArrayList<>();
+        timeStampList.add("dummy");
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+
+        int x = 1;
+        for (HabitRepetition hr : habitRepetitionArrayList){
+            barEntries.add(new BarEntry(x, hr.getCount()));
+            timeStampList.add(getDateByTimeStamp(hr.getTimestamp()));
+            ++x;
+        }
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
+        barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        barDataSet.setValueTextSize(14);
+
+
+        BarData data = new BarData(barDataSet);
+        data.setBarWidth(0.7f);
+
+        habit_barChart.setData(data);
+        habit_barChart.animateY(1000);
+        habit_barChart.setDrawBarShadow(false);
+        habit_barChart.setDrawValueAboveBar(true);
+        habit_barChart.setVisibleXRangeMaximum(5);
+        habit_barChart.moveViewToX(x);
+        habit_barChart.setPinchZoom(false);
+        habit_barChart.setDrawGridBackground(true);
+        habit_barChart.getAxisRight().setEnabled(false);
+        habit_barChart.getLegend().setEnabled(false);
+
+        Description description = new Description();
+        description.setText("");
+        habit_barChart.setDescription(description);
+
+        XAxis xAxis = habit_barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+
 
     }
+
+    public String getDateByTimeStamp(long timeStamp){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        return mMonth+"/"+mDay;
+    }
+
+
 }
