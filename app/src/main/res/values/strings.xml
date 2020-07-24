@@ -85,6 +85,12 @@
     <string name="home">Home</string>
 
     <string name="profile">Profile</string>
+    <string name="more">More</string>
+    <string name="logout">Logout</string>
+    <string name="changeName">Change Name</string>
+    <string name="changePassword">Change Password</string>
+    <string name="reportAProblem">Report A Problem</string>
+    <string name="rateOurApp">Rate Our App</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1560805060745865</string>
@@ -130,6 +136,7 @@
     <string name="add_people">Add people</string>
     <string name="arrow_pointing_down">Arrow pointing down</string>
     <string name="team_no_internet">To access the team feature please connect to the internet.</string>
+
 
 </resources>
 
