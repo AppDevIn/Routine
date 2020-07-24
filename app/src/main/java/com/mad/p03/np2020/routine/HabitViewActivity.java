@@ -648,6 +648,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public void resetChart(){
+        habit_barChart.fitScreen();
         habit_barChart.clear();
         habit_barChart.invalidate();
         habit_barChart.notifyDataSetChanged();
