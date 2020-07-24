@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -274,28 +275,18 @@ public class HabitViewActivity extends AppCompatActivity {
             ++x;
         }
 
-
         BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
         barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         barDataSet.setValueTextSize(14);
 
-//        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
-//        int barWidth = 10px;
-//
-//        int count = 5; // bar count on each screen, not the total count
-//
-//        int totalWidth = screenWidth;// i used screen width dirctly
-//
-//        float ratio = barWidth * count / totalWidth;
-
         BarData data = new BarData(barDataSet);
         if (barEntries.size() >= 3){
             data.setBarWidth(0.7f);
-        }else{
+        }else if (barEntries.size() == 2){
             data.setBarWidth(0.5f);
+        }else{
+            data.setBarWidth(0.3f);
         }
-
-
 
         data.setValueFormatter(new IntegerFormatter());
 
@@ -325,6 +316,9 @@ public class HabitViewActivity extends AppCompatActivity {
 
         YAxis yAxis = habit_barChart.getAxisLeft();
         yAxis.setTextSize(12);
+        yAxis.setAxisMinimum(0f);
+        float max_y = yAxis.getAxisMaximum();
+        yAxis.setAxisMaximum(max_y+2);
 
     }
 
