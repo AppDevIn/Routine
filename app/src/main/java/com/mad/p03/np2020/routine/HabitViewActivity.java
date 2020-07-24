@@ -282,6 +282,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         BarData data = new BarData(barDataSet);
         data.setBarWidth(0.7f);
+        data.setValueFormatter(new IntegerFormatter());
 
         habit_barChart.setData(data);
         habit_barChart.animateY(1000);
