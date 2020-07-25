@@ -41,6 +41,7 @@ import android.widget.ViewSwitcher;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.Card.Fragments.CheckListFragment;
+import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.Task.Fragment.TaskSettings;
@@ -127,6 +128,23 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         TaskDBHelper.setMyDatabaseListener(this);
 
+        SectionDBHelper.setMyDatabaseListener(new MyDatabaseListener() {
+            @Override
+            public void onDataAdd(Object object) {
+
+            }
+
+            @Override
+            public void onDataUpdate(Object object) {
+                mSection = (Section) object;
+                startUpUI();
+            }
+
+            @Override
+            public void onDataDelete(String ID) {
+            }
+        });
+
 
         //*************For View Switcher********************
         // Declare in and out animations and load them using AnimationUtils class
@@ -157,6 +175,13 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         mTaskList = taskDBHelper.getAllTask(mSection.getID());
 
         startUpUI();
+        //if empty display the image if not the recyclerview
+        if(mTaskList.size() == 0){
+            viewSwitcher.showNext();
+        }
+
+
+
 
         initRecyclerView();
 
@@ -394,11 +419,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         shape.setShape(GradientDrawable.RECTANGLE);
         shape.setColor(mSection.getBackgroundColor());
         shape.setCornerRadii(radius);
-
-        //if empty display the image if not the recyclerview
-        if(mTaskList.size() == 0){
-            viewSwitcher.showNext();
-        }
 
 
 

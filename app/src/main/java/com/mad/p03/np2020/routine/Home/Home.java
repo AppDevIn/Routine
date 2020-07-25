@@ -236,6 +236,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         SectionDBHelper.setMyDatabaseListener(this);
 
+        //Update the list
+        if(mHomePageAdapter != null){
+            mHomePageAdapter.setSectionList(mSectionDBHelper.getAllSections(FirebaseAuth.getInstance().getUid()));
+        }
+
     }
 
     /**
@@ -307,6 +312,24 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     @Override
     public void onDataUpdate(Object object) {
 
+        Section section = (Section) object;
+
+        for (int position = 0; position < mSectionList.size(); position++) {
+
+
+            if(mSectionList.get(position).getID().equals(section.getID())){
+                final int finalPosition = position;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mHomePageAdapter.removeItem(finalPosition);
+                        mHomePageAdapter.addItem(section, finalPosition);
+                    }
+                });
+                break;
+            }
+        }
 
     }
 

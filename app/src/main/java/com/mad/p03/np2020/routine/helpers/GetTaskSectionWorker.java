@@ -102,23 +102,36 @@ public class GetTaskSectionWorker extends Worker {
 
 
                 //Check if it exist in the database
-                if(!mSectionDBHelper.hasID(id)) {
 
-                    mDatabase.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                mDatabase.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(!mSectionDBHelper.hasID(id)) {
                             Section section = Section.fromDataSnapShot(dataSnapshot);
                             mSectionDBHelper.insertSection(section, section.getUID());
                             addTask(section.getID());
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }else if(mSectionDBHelper.hasID(id)){
 
-                        }
-                    });
+                            Section section = Section.fromDataSnapShot(dataSnapshot);
+                            Section sectionDataBase = mSectionDBHelper.getSection(id);
+                            if(!section.equals(sectionDataBase)){
+                                Log.d(TAG, "onChildAdded(): This has been changed so updating......");
+                                mSectionDBHelper.updateSection(section);
+                            }
 
-                }
+                    }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
             }
 
             @Override

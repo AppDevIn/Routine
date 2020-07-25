@@ -136,6 +136,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         return mSectionList.size();
     }
 
+
+    public void setSectionList(List<Section> sectionList) {
+        mSectionList = sectionList;
+        synchronized(this){
+            this.notifyDataSetChanged();
+        }
+    }
+
     /**
      *
      * This is when the item is moved it will
@@ -230,6 +238,21 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         notifyItemInserted(mSectionList.size());
         Log.d(TAG, "New TODO added, " + section.toString());
     }
+
+    /**
+     * Adding the section to
+     * the list and notifying the adapter
+     * of the change
+     * @param section the section that will be added
+     */
+    public void addItem(Section section, int pos){
+        mSectionList.add(pos, section);
+
+        //Informing the adapter and view of the new item
+        notifyItemInserted(pos);
+        Log.d(TAG, "New TODO added, " + section.toString());
+    }
+
 
     /**
      * The place to delete the item in the list and notify the change
