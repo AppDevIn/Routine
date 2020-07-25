@@ -8,21 +8,31 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
+import android.widget.ViewSwitcher;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
+import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
+import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
+import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Task.adapter.TeamAdapter;
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
+import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.models.Team;
@@ -41,8 +51,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TaskSettings extends Fragment implements TextView.OnEditorActionListener {
+public class TaskSettings extends Fragment implements TextView.OnEditorActionListener, View.OnClickListener {
 
+    final private String TAG = "TaskSettings";
 
 
     TeamAdapter mTeamAdapter;
@@ -52,6 +63,11 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     Team team;
     Section mSection;
     EditText editText;
+    Spinner mColors;
+    Spinner mBackgrounds;
+    List<Integer> mBackgroundsList;
+    Integer[] mColorsList;
+    ViewSwitcher viewSwitcher;
 
     public TaskSettings(String id) {
         mSectionID = id;
@@ -101,6 +117,36 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
         if(!mSection.isAdmin())
             editText.setVisibility(View.GONE);
+
+
+        view.findViewById(R.id.btnSubmit).setOnClickListener(this);
+
+        //Move to another view
+        viewSwitcher = view.findViewById(R.id.fragmentSwitcher);
+
+        //Setup the editview
+
+        //Get the id of the spinner
+        mColors = view.findViewById(R.id.spinnerColor);
+        mBackgrounds = view.findViewById(R.id.spinnerImg);
+
+        setUpEdit(mColors, mBackgrounds, view.findViewById(R.id.txtAddList));
+
+        //*************For View Switcher********************
+        // Declare in and out animations and load them using AnimationUtils class
+        Animation in = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        Animation out = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
+
+        // set the animation type to ViewSwitcher
+        viewSwitcher.setInAnimation(in);
+        viewSwitcher.setOutAnimation(out);
+
+
+
+        view.findViewById(R.id.btnTeam).setOnClickListener(this);
+        view.findViewById(R.id.btnBack).setOnClickListener(this);
+
+
 
         return view;
 
@@ -162,7 +208,14 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         return false;
     }
 
-
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnTeam:switchView();break;
+            case R.id.btnBack:switchView();break;
+            case R.id.btnSubmit:addSection(getView().findViewById(R.id.txtAddList));break;
+        }
+    }
 
     private void initRecyclerView(View view, Team team) {
         mRecyclerView = view.findViewById(R.id.recyclerViewEmail);
@@ -191,6 +244,69 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         imm.hideSoftInputFromWindow(mRecyclerView.getWindowToken(), 0);
 
     }
+
+    private void setUpEdit(Spinner color, Spinner backgrounds, EditText editText){
+        //A list of possible colors to be user
+         mColorsList = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.green_yellow), getResources().getColor(R.color.turquoise)};
+
+        //A list of possible background to be user
+        mBackgroundsList = HomeIcon.getAllBackgrounds();
+
+        //Declaring a custom adapter
+        color.setAdapter(new MySpinnerColorAdapter( mColorsList)); // For the color
+        backgrounds.setAdapter(new MySpinnerIconsAdapter(mBackgroundsList)); //For the background
+
+        //Setting the value of the section view into the edittext
+        editText.setText(mSection.getName());
+
+
+        backgrounds.setSelection(mSection.getIconValue());
+
+
+        for (int c = 0; c < mColorsList.length; c++) {
+
+            if(mColorsList[c] == mSection.getBackgroundColor()){
+                color.setSelection(c);
+            }
+
+
+        }
+
+
+
+    }
+
+    /**
+     *
+     * To add the data into firebase and SQL from the card
+     * Create a section object.
+     *
+     * @param textView the is the edittext
+     */
+    private void addSection(TextView textView){
+        String listName = textView.getText().toString();
+        Log.i(TAG, "adding confirmed for " + listName);
+
+        //Create a Section Object for the user input
+        mSection.setName(textView.getText().toString().trim());
+        mSection.setBackgroundColor(mColorsList[mColors.getSelectedItemPosition()]);
+        mSection.setBmiIcon(HomeIcon.getValue(mBackgroundsList.get(mBackgrounds.getSelectedItemPosition())));
+
+        //Save to SQL
+        mSection.editSection(getContext());
+        Log.d(TAG, "updateCardUI(): Added to SQL");
+
+        //Save to firebase
+        mSection.executeFirebaseSectionUpload(FirebaseAuth.getInstance().getUid(), mSection.getID(), this,true);
+
+    }
+
+
+    private void switchView(){
+
+        viewSwitcher.showNext();
+    }
+
 
 
 

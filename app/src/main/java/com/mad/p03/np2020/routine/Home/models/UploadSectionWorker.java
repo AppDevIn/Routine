@@ -49,6 +49,8 @@ public class UploadSectionWorker extends Worker {
         int image = getInputData().getInt(Section.COLUMN_IMAGE, 0) ;
         int color = getInputData().getInt(Section.COLUMN_COLOR, 0);
         int position = getInputData().getInt(Section.COLUMN_POSITION, 0);
+        boolean update = getInputData().getBoolean("Update", false);
+
 
 
         //Getting a database reference to Users
@@ -60,14 +62,27 @@ public class UploadSectionWorker extends Worker {
 
 
 
-        //Setting value using object
-        mDatabase.setValue(new Section(name, color, image, id, position, UID));
+        if(update) {
 
-        //Set the section id in user
-        userDatabase.child(id).setValue(id);
+            //Change the name, icon and color
+            mDatabase.child("name").setValue(name);
+            mDatabase.child("bmiIcon").setValue(image);
+            mDatabase.child("backgroundColor").setValue(color);
 
-        //Set the email for this section in Team
-        teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+        }else{
+
+            //Setting value using object
+            mDatabase.setValue(new Section(name, color, image, id, position, UID));
+
+
+            //Set the section id in user
+            userDatabase.child(id).setValue(id);
+
+            //Set the email for this section in Team
+            teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        }
+
 
 
         Log.d("Register", "doInBackground(): Name, Email and DOB are uploaded");

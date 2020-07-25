@@ -207,7 +207,7 @@ public class Section implements Serializable {
     }
 
     public int getIconValue() {
-        return HomeIcon.getBackground(bmiIcon);
+        return bmiIcon;
     }
 
     /**@return String This return the name of this section*/
@@ -258,6 +258,15 @@ public class Section implements Serializable {
         mName = name;
     }
 
+
+    public void setBackgroundColor(int backgroundColor) {
+        mBackgroundColor = backgroundColor;
+    }
+
+    public void setBmiIcon(int bmiIcon) {
+        this.bmiIcon = bmiIcon;
+    }
+
     /**
      *
      * This method is used to delete
@@ -288,6 +297,14 @@ public class Section implements Serializable {
 
         sectionDBHelper.insertSection(this, mUID);
     }
+
+    public void editSection(Context context){
+
+        SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
+
+        sectionDBHelper.updateSection(this);
+    }
+
 
 
     public boolean isAdmin(){
@@ -323,7 +340,7 @@ public class Section implements Serializable {
      * @param ID To get the used in database as the key for firebase
      * @param owner to be used to observe my upload
      */
-    public void executeFirebaseSectionUpload(String UID,String ID, LifecycleOwner owner){
+    public void executeFirebaseSectionUpload(String UID,String ID, LifecycleOwner owner, boolean update){
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Preparing the upload");
 
@@ -341,8 +358,9 @@ public class Section implements Serializable {
                 .putString(COLUMN_USERID, UID)
                 .putString(COLUMN_NAME, getName())
                 .putInt(COLUMN_COLOR, getBackgroundColor())
-                .putInt(COLUMN_IMAGE, getBmiIcon())
+                .putInt(COLUMN_IMAGE, getIconValue())
                 .putInt(COLUMN_POSITION, getPosition())
+                .putBoolean("Update", update)
                 .build();
 
         //Create the request
@@ -367,6 +385,8 @@ public class Section implements Serializable {
                 });
 
     }
+
+
 
 
     /**

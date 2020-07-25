@@ -136,6 +136,10 @@
     <string name="add_people">Add people</string>
     <string name="arrow_pointing_down">Arrow pointing down</string>
     <string name="team_no_internet">To access the team feature please connect to the internet.</string>
+    <string name="edit_task_list">Edit Task List</string>
+    <string name="teams">Teams</string>
+    <string name="submit">Submit</string>
+
 
 
 </resources>

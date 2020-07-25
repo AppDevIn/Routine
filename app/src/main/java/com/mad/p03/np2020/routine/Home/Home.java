@@ -330,7 +330,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.d(TAG, "updateCardUI(): Added to SQL");
 
         //Save to firebase
-        section.executeFirebaseSectionUpload(mUID, section.getID(), this);
+        section.executeFirebaseSectionUpload(mUID, section.getID(), this, false);
 
     }
 

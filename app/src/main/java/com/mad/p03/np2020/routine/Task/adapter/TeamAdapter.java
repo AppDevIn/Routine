@@ -97,14 +97,17 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
 
     public void addEmail(String email){
 
-        //Add to the list
-        mTeam.addEmail(email);
-        synchronized(this){
-            this.notify();
+        if(!mTeam.getEmail().contains(email)){
+            //Add to the list
+            mTeam.addEmail(email);
+            synchronized(this){
+                this.notify();
+            }
+
+            //Send to the firebase
+            mTeam.excuteFirebaseUpload(email);
         }
 
-        //Send to the firebase
-        mTeam.excuteFirebaseUpload(email);
 
     }
 
@@ -128,6 +131,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
         String email;
         TextView mTextView;
         TeamViewHolder mHolder;
+
         public AsyncTaskRunner(TeamViewHolder holder, String email) {
             this.email = email;
             mTextView = holder.txtName;
