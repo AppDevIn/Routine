@@ -104,7 +104,7 @@ public class GetTaskSectionWorker extends Worker {
                 //Check if it exist in the database
 
 
-                mDatabase.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabase.child(id).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(!mSectionDBHelper.hasID(id)) {
