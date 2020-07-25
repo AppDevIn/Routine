@@ -56,8 +56,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.Fragment.AchievementFragment;
+import com.mad.p03.np2020.routine.models.Achievement;
 import com.mad.p03.np2020.routine.models.CircularProgressBar;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.User;
@@ -83,13 +87,18 @@ import static java.lang.String.valueOf;
  */
 
 
-public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
 
 
     //Fragment Variables
     HistoryFragment fragmentFocus;
+    AchievementFragment fragmentAchievements;
+
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
+    //Cloud storage
+    private StorageReference mStorageRef;
 
     AchievementFragment fragmentAchievement;
 
@@ -167,6 +176,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     //Local Database
     FocusDBHelper focusDBHelper;
+    AchievementDBHelper achievementDBHelper;
 
     //Power Manager
     PowerManager pm;
@@ -282,7 +292,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Initialize object
      */
     private void initialization() throws ParseException {
-        Log.v(TAG, "Database does not exist");
+        user.getAchievement();
+
         Intent intent = new Intent(getApplicationContext(), BoundService.class);
         startService(intent);
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
@@ -294,11 +305,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
             Log.v(TAG, "Database Exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
-            FirebaseDatabase();
+
         } else {
             Log.v(TAG, "Database does not exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
-            FirebaseDatabase();
             user.readFocusFirebase(this);
         }
 
@@ -336,6 +346,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 }
             }
         });
+
+        //Download image from google storage
+        achievementDBHelper = new AchievementDBHelper(FocusActivity.this);
+
+        for (Achievement a : achievementDBHelper.getAchievementData()){
+            user.addAchievementList(a);
+            Log.v(TAG, "add Achievement list(): " + a);
+
+        }
+
+        Log.v(TAG, "Achievement list " + user.getAchievementArrayList());
+
     }
 
 
@@ -431,6 +453,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private void writeToDatabase(Focus focus) {
         focusDBHelper.addData(focus); //Add to database
         user.addFocusList(focus); //Adding it to list
+
         writeDataFirebase(focus);
     }
 
@@ -801,9 +824,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     /**
      * Open Achievement Fragment
      */
-    public void openAchievement() { //Open history tab
+    public void openAchievement() {
 
-        fragmentAchievement = AchievementFragment.newInstance(user, focusDBHelper);
+        fragmentAchievements = AchievementFragment.newInstance(user, focusDBHelper, achievementDBHelper);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -812,7 +835,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         if (fragmentA == null) {
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "ACHIEVEMENT FRAGMENT").commit();
+            fragmentTransaction.add(R.id.fragment_container, fragmentAchievements, "ACHIEVEMENT FRAGMENT").commit();
         }
 
     }
@@ -1134,7 +1157,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             changeStatusPopUp.dismiss();
         });
 
-        achievement_item.setOnClickListener(view -> Toast.makeText(context, "Not Yet Done", Toast.LENGTH_SHORT).show());
+        achievement_item.setOnClickListener(view -> {
+            openAchievement();
+            changeStatusPopUp.dismiss();
+
+        });
 
         // Creating the PopupWindow
         changeStatusPopUp = new PopupWindow(context);

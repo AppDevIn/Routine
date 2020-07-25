@@ -1,91 +1,109 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.Fragment.AchievementFragment;
-import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.AchievementViewHolder;
-import com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder;
+import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
+import com.mad.p03.np2020.routine.models.Achievement;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHolder> {
 
     private List<Focus> focusList; //List of focus
+
     private Context context; //Current context
     private FocusDBHelper focusDBHelper;
-    private User user;
-    private String TAG = "FocusAdapter";
-    private AchievementFragment achievementFragment;
+    private AchievementDBHelper achievementDBHelper;
 
-    public AchievementAdapter(User user, Context context, FocusDBHelper focusDBHelper, AchievementFragment achievementFragment) {
+    private User user;
+    private String TAG = "AchievementAdapter";
+    private AchievementFragment achievementFragment;
+    HashMap<Integer, ArrayList<Achievement>>typeOfAchievements;
+    HashMap<Integer, String> achievementType = new HashMap<>();
+    int badges_achieved = 0;
+
+    public AchievementAdapter(User user, Context context, FocusDBHelper focusDBHelper, AchievementFragment achievementFragment, AchievementDBHelper achievementDBHelper) {
         this.context = context;
         this.focusDBHelper = focusDBHelper;
         this.user = user;
         this.achievementFragment = achievementFragment;
+        this.achievementDBHelper = achievementDBHelper;
 
-        user.readFocusFirebase(context);
-        eventListener();
+        typeOfAchievements = user.getAchievementArrayList();
+        Log.v(TAG, "Setting up achievement adapter");
+
+        achievementType.put(0, "Hours");
+        achievementType.put(1, "Cycle");
+        achievementType.put(2, "Consecutive");
+
     }
 
     @NonNull
     @Override
     public AchievementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View historyView = LayoutInflater.from(context).inflate(R.layout.layout_item_achievements, parent, false);
+        View historyView = LayoutInflater.from(context).inflate(R.layout.layout_gridview_achievements, parent, false);
+        Log.v(TAG, "Setting up achievement view holder");
+
         return new AchievementViewHolder(historyView, this, parent);
     }
 
+    //Set text
     @Override
     public void onBindViewHolder(@NonNull AchievementViewHolder holder, int position) {
+        Log.v(TAG, "Achieved at " + achievementType.get(position));
+        holder.achievementTitle.setText(achievementType.get(position) + " Badges");
+        User.achievementView achievementArrayList;
+        achievementArrayList = user.getAchievementListofPartiularType(position+1, context);
+        GridViewAdapterAchievements achievementAdapter = new GridViewAdapterAchievements(context, achievementArrayList);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 3); //Declare layoutManager
+        holder.gridViewItem.setItemViewCacheSize(20);
+        holder.gridViewItem.setDrawingCacheEnabled(true);
+        holder.gridViewItem.addItemDecoration(new DividerItemDecoration(5)); //Add Custom Spacing
+        holder.gridViewItem.setLayoutManager(layoutManager);
+        holder.gridViewItem.setHasFixedSize(true);
+        holder.gridViewItem.setItemAnimator(new DefaultItemAnimator());
+
+        holder.gridViewItem.setAdapter(achievementAdapter);
+        holder.highest_title.setText("You Spent : " + achievementArrayList.getValueOutput() +" " +achievementType.get(position));
+        holder.progressBar.setMax(achievementArrayList.getArrayList().size());
+        holder.progressBar.setProgress(achievementArrayList.getBadges());
+
+        if(achievementArrayList.getBadges() == achievementArrayList.getArrayList().size()){
+            holder.progressBar.getProgressDrawable().setColorFilter(
+                    Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
+        }else{
+            holder.progressBar.getProgressDrawable().setColorFilter(
+                    Color.YELLOW, android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+
+        holder.badge_achieved.setText(achievementArrayList.getBadges() + " / " + achievementArrayList.getArrayList().size());
+        badges_achieved = badges_achieved + achievementArrayList.getBadges();
+        achievementFragment.badgeIndicator.setText(String.valueOf(badges_achieved));
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return achievementType.size();
     }
 
-    /**
-     * Notify Item changed if user delete or add data
-     */
-    public void notifiyItemChange() {
-        focusList = user.getmFocusList();
-
-        this.notifyDataSetChanged();
-        Log.v(TAG, "Data is changed from other server");
-    }
-
-    /**
-     * Listen to firebase data change to update views on the recyclerView
-     */
-    private void eventListener() {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
-        myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifiyItemChange();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
 }

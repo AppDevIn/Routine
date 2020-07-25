@@ -274,12 +274,9 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
             if(cursor!=null) {
                 Log.v("Database", cursor.getCount() + " number");
                 if(cursor.getCount()>0) {
-                    if(cursor.getCount()>1) {
                         mDatabase.close();
                         return true;
-                    }else{
-                        return false;
-                    }
+
                 }
             }
             mDatabase.close();

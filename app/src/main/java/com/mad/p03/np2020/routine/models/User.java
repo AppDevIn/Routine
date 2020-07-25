@@ -20,12 +20,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.background.GetAchievementWorker;
 import com.mad.p03.np2020.routine.helpers.GetTaskSectionWorker;
 import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -96,9 +100,13 @@ public class User implements Parcelable {
     private List<Label> mListLabel = new ArrayList<>();
     private ArrayList<Focus> mFocusList = new ArrayList<>();
     private ArrayList<Focus> aFocusList = new ArrayList<>();
+    private HashMap<Integer, ArrayList<Achievement>> achievementArrayList = new HashMap<>();
+
 
     private DatabaseReference myRef;
     private FocusDBHelper focusDBHelper;
+    private AchievementDBHelper achievementDBHelper;
+
     private HabitDBHelper habitDBHelper;
     private HabitGroupDBHelper habitGroupDBHelper;
     ArrayList<Date> dateArrayList = new ArrayList<>();
@@ -180,7 +188,7 @@ public class User implements Parcelable {
     }
 
     public Date getMinFocus() {
-        if(dateArrayList.size() == 0){
+        if (dateArrayList.size() == 0) {
 
             return new Date();
         }
@@ -188,7 +196,7 @@ public class User implements Parcelable {
     }
 
     public Date getMaxFocus() {
-        if(dateArrayList.size() == 0){
+        if (dateArrayList.size() == 0) {
 
             return new Date();
         }
@@ -259,7 +267,35 @@ public class User implements Parcelable {
             }
         }
 
+        if (mFocusList.size() != 0) {
+            for (Focus item : aFocusList) {
+                if (item.getmCompletion().equals("True")) {
+                    SuccessList.add(item);
+                }
+            }
+        }
+
         return SuccessList;
+    }
+
+    public int getHighestReoccurence() {
+        int highestOccurence = 0;
+        int trace = 0;
+
+        if (mFocusList.size() != 0) {
+            for (Focus item : mFocusList) {
+                if (item.getmCompletion().equals("True")) {
+                    trace++;
+                } else {
+                    if (highestOccurence < trace) {
+                        highestOccurence = trace;
+                    }
+                    trace = 0;
+                }
+            }
+        }
+
+        return highestOccurence;
     }
 
     public ArrayList<Focus> getmUnsuccessFocusList(ArrayList<Focus> mFocusList) {
@@ -302,6 +338,133 @@ public class User implements Parcelable {
         return hours;
     }
 
+    public long getAllHours() {
+        long hours = 0;
+        for (Focus item : mFocusList) {
+            hours = hours + item.getmTimeTaken();
+            Log.v(TAG, "Adding to total hours: " + hours);
+
+        }
+
+        for (Focus item : aFocusList) {
+            hours = hours+item.getmTimeTaken();
+        }
+        Log.v(TAG, "Getting total hours: " + hours);
+        return hours;
+    }
+
+
+    //Get Hours Achievement List
+    public HashMap<Integer, ArrayList<Achievement>> getAchievementArrayList() {
+        return achievementArrayList;
+    }
+
+    //Used to be return two values for achievement page
+   public class achievementView {
+        private final ArrayList<Achievement> arrayList;
+        private final long valueOutput;
+        private final int badges;
+
+        public int getBadges() {
+            return badges;
+        }
+
+        public achievementView(ArrayList<Achievement> first, long second, int badges) {
+            this.arrayList = first;
+            this.valueOutput = second;
+            this.badges = badges;
+        }
+
+        public ArrayList<Achievement> getArrayList() {
+            return arrayList;
+        }
+
+        public long getValueOutput() {
+            return valueOutput;
+        }
+    }
+
+    //Check which achievement
+    public achievementView getAchievementListofPartiularType(int type, Context context) {
+
+        //This is to store
+        ArrayList<Achievement> newReturnAchievements = new ArrayList<>();
+        long viewValue = 0;
+        int badges = 0;
+        if (type == 1) {
+            //Used to check the hours
+            HashMap<Integer, ArrayList<Achievement>> hashMapAchievements = getAchievementArrayList();
+            ArrayList<Achievement> AchievementsDL = hashMapAchievements.get(type);
+            viewValue = getAllHours();
+
+            for (Achievement achievement : AchievementsDL) {
+                if (viewValue > (achievement.requirement * 3600000)) {
+                    String path = context.getFilesDir() + "/" + "1" + "/" + achievement.getFilename();
+                    Log.v(TAG, "Getting image from path : " + path);
+
+                    File file = new File(path);
+                    achievement.setPathImg(file);
+                    newReturnAchievements.add(achievement);
+                    badges = badges +  1;
+                }else{
+                    newReturnAchievements.add(null);
+                }
+            }
+            viewValue = (long) Math.floor(viewValue / 3600000);
+
+        } else if (type == 2) {
+            //Used to check the hours
+            HashMap<Integer, ArrayList<Achievement>> hashMapAchievements = getAchievementArrayList();
+            ArrayList<Achievement> AchievementsDL = hashMapAchievements.get(type);
+            int totalSuccessfulCycle = getmSuccessFocusList().size();
+
+            for (Achievement achievement : AchievementsDL) {
+                if (totalSuccessfulCycle > (achievement.requirement)) {
+                    String path = context.getFilesDir() + "/" + "2" + "/" + achievement.getFilename();
+                    Log.v(TAG, "Getting image from path : " + path);
+
+                    File file = new File(path);
+                    achievement.setPathImg(file);
+                    newReturnAchievements.add(achievement);
+                    badges = badges +  1;
+
+                }else{
+                    newReturnAchievements.add(null);
+                }
+            }
+
+            viewValue = totalSuccessfulCycle;
+        } else if (type == 3) {
+            //Used to check the hours
+            //Check the highest reoccurence
+            HashMap<Integer, ArrayList<Achievement>> hashMapAchievements = getAchievementArrayList();
+            ArrayList<Achievement> AchievementsDL = hashMapAchievements.get(type);
+            int totalSuccessfulCycle = getHighestReoccurence();
+
+            for (Achievement achievement : AchievementsDL) {
+                if (totalSuccessfulCycle > (achievement.requirement)) {
+                    String path = context.getFilesDir() + "/" + "3" + "/" + achievement.getFilename();
+                    Log.v(TAG, "Getting image from path : " + path);
+
+                    File file = new File(path);
+                    achievement.setPathImg(file);
+                    badges = badges +  1;
+                    newReturnAchievements.add(achievement);
+                }else{
+                    newReturnAchievements.add(null);
+                }
+            }
+            viewValue = totalSuccessfulCycle;
+        }
+
+        return new achievementView(newReturnAchievements, viewValue, badges);
+    }
+
+    //Get Hours Achievement List
+    public void setAchievementList(HashMap<Integer, ArrayList<Achievement>> achievementArrayList) {
+        this.achievementArrayList = achievementArrayList;
+    }
+
     /**
      * Method to set all FocusList for current User
      *
@@ -341,6 +504,19 @@ public class User implements Parcelable {
      */
     public void addaFocusList(Focus focus) {
         this.aFocusList.add(focus);
+    }
+
+    /**
+     * Method to add focus object to Focus List
+     *
+     * @param achievement Set object achievement to the focus
+     */
+    public void addAchievementList(Achievement achievement) {
+        if (!achievementArrayList.containsKey(achievement.typeAchievement)) {
+            this.achievementArrayList.put(achievement.typeAchievement, new ArrayList<>());
+        }
+
+        achievementArrayList.get(achievement.typeAchievement).add(achievement);
     }
 
     /**
@@ -442,6 +618,24 @@ public class User implements Parcelable {
         });
 
 
+    }
+
+
+    /***
+     * Achievement Database
+     */
+    public void getAchievement() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+
+        OneTimeWorkRequest getSectionTask = new OneTimeWorkRequest.
+                Builder(GetAchievementWorker.class)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance().enqueue(getSectionTask);
     }
 
     /**
