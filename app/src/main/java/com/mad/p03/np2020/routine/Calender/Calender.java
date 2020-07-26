@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -127,14 +128,7 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
             mRecyclerView.setAdapter(mTaskAdapter);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-            if(mTaskList.size() > 0 && isZero){
-                viewSwitcher.reset();
-                viewSwitcher.showNext();
-                isZero = false;
-            }else if (mTaskList.size() == 0 && !isZero){
-                viewSwitcher.showNext();
-                isZero = true;
-            }
+
         }
 
 
@@ -144,11 +138,6 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     @Override
     public void onDataAdd(Object object) {
 
-        if(mTaskList.size() == 0){
-            viewSwitcher.reset();
-            viewSwitcher.showNext();
-            isZero = false;
-        }
 
 
         Task task = (Task) object;
@@ -164,6 +153,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
             //Informing the adapter and view of the new item
             mTaskAdapter.notifyItemInserted(mTaskList.size());
         }
+
+        viewSwitch();
 
     }
 
@@ -189,9 +180,7 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     @Override
     public void onDataDelete(String ID) {
 
-        if(mTaskList.size() == 1){
-            viewSwitcher.showNext();
-        }
+
 
         Log.d(TAG, "onDataDelete(): Checking if " + ID + " exists");
 
@@ -208,6 +197,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
                 break;
             }
         }
+
+        viewSwitch();
     }
 
     //Initialize the recycler view
@@ -220,12 +211,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
         mTaskList = new TaskDBHelper(this).getAllTask(date);
 
-        //if empty display the image if not the recyclerview
-        if(mTaskList.size() == 0){
-            viewSwitcher.showNext();
-            isZero = true;
-        }
-
+        //Switch the view
+        viewSwitch();
 
         mRecyclerView = findViewById(R.id.rcTask);
         mRecyclerView.setHasFixedSize(true);
@@ -245,13 +232,21 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     }
 
+    private void viewSwitch(){
+        View zero = findViewById(R.id.view1);
+        View list = findViewById(R.id.view2);
+        if(mTaskList.size() == 0 && viewSwitcher.getNextView() == zero){
+            viewSwitcher.showNext();
+        }else if(mTaskList.size() != 0 && viewSwitcher.getNextView() == list){
+            viewSwitcher.showNext();
+
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
 
-        if(isZero){
-            viewSwitcher.showNext();
-        }
     }
 
 
