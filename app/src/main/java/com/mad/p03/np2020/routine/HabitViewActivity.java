@@ -386,6 +386,8 @@ public class HabitViewActivity extends AppCompatActivity {
 //            habit_barChart.setVisibleYRangeMaximum(max_y, YAxis.AxisDependency.LEFT);
         }
 
+        habit_barChart.getXAxis().resetAxisMinimum();
+        habit_barChart.getXAxis().setAvoidFirstLastClipping(false);
         habit_barChart.notifyDataSetChanged();
         habit_barChart.invalidate();
 
@@ -413,10 +415,13 @@ public class HabitViewActivity extends AppCompatActivity {
                     yAxis.setAxisMaximum(max_left_y);
                     habit_barChart.getAxisLeft().setLabelCount(5);
 //                    habit_barChart.setVisibleYRangeMaximum(max_left_y, YAxis.AxisDependency.LEFT);
-                    habit_barChart.notifyDataSetChanged();
-                    habit_barChart.invalidate();
+
                 }
                 habit_barChart.animateY(750);
+                habit_barChart.getXAxis().resetAxisMinimum();
+                habit_barChart.getXAxis().setAvoidFirstLastClipping(false);
+                habit_barChart.notifyDataSetChanged();
+                habit_barChart.invalidate();
 
             }
         });
@@ -448,6 +453,10 @@ public class HabitViewActivity extends AppCompatActivity {
                     habit_barChart.invalidate();
                 }
                 habit_barChart.animateY(750);
+                habit_barChart.getXAxis().resetAxisMinimum();
+                habit_barChart.getXAxis().setAvoidFirstLastClipping(false);
+                habit_barChart.notifyDataSetChanged();
+                habit_barChart.invalidate();
             }
         });
 
@@ -498,7 +507,7 @@ public class HabitViewActivity extends AppCompatActivity {
             barEntries.add(new BarEntry(++x[0], 0));
             ++lastDay;
         }
-        
+
         final int[] max_x = {x[0]};
 
         if (barEntries.size() <= 31){
@@ -914,6 +923,12 @@ public class HabitViewActivity extends AppCompatActivity {
         Log.d(TAG, "resetChart: ");
         range_indicator.setText("");
         habit_barChart.fitScreen();
+        habit_barChart.clearValues();
+        habit_barChart.getData().clearValues();
+        habit_barChart.getXAxis().resetAxisMinimum();
+        habit_barChart.getXAxis().resetAxisMaximum();
+        habit_barChart.getAxisLeft().resetAxisMaximum();
+        habit_barChart.getAxisLeft().resetAxisMaximum();
         habit_barChart.clear();
         habit_barChart.invalidate();
         habit_barChart.notifyDataSetChanged();
