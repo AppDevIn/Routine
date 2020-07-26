@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -31,6 +33,7 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
 import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Task.adapter.TeamAdapter;
+import com.mad.p03.np2020.routine.Task.model.GestureDetectorTaskSettings;
 import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
@@ -43,6 +46,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -67,7 +71,9 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     Spinner mBackgrounds;
     List<Integer> mBackgroundsList;
     Integer[] mColorsList;
-    ViewSwitcher viewSwitcher;
+    public ViewSwitcher viewSwitcher;
+
+
 
     public TaskSettings(String id) {
         mSectionID = id;
@@ -132,19 +138,24 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
         setUpEdit(mColors, mBackgrounds, view.findViewById(R.id.txtAddList));
 
-        //*************For View Switcher********************
-        // Declare in and out animations and load them using AnimationUtils class
-        Animation in = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
-        Animation out = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
-
-        // set the animation type to ViewSwitcher
-        viewSwitcher.setInAnimation(in);
-        viewSwitcher.setOutAnimation(out);
 
 
+        //Create the detector
+        GestureDetectorTaskSettings detectorTaskSettings = new GestureDetectorTaskSettings();
+        detectorTaskSettings.setActivity(this);
 
-        view.findViewById(R.id.btnTeam).setOnClickListener(this);
-        view.findViewById(R.id.btnBack).setOnClickListener(this);
+        //Set the detector in the compat
+        GestureDetectorCompat gestureDetectorCompat = new GestureDetectorCompat(getContext(), detectorTaskSettings);
+
+
+        //Have a swipe action
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetectorCompat.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
 
 
 
@@ -211,8 +222,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnTeam:switchView();break;
-            case R.id.btnBack:switchView();break;
+
             case R.id.btnSubmit:addSection(getView().findViewById(R.id.txtAddList));break;
         }
     }
@@ -227,8 +237,6 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         mTeamAdapter = new TeamAdapter(team,getContext(), mSection);
         mRecyclerView.setAdapter(mTeamAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
 
     }
 
@@ -302,7 +310,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     }
 
 
-    private void switchView(){
+    public void switchView(){
 
         viewSwitcher.showNext();
     }
