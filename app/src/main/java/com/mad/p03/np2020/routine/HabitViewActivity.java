@@ -328,13 +328,7 @@ public class HabitViewActivity extends AppCompatActivity {
         barDataSet.setValueTypeface(tf);
 
         BarData data = new BarData(barDataSet);
-        if (barEntries.size() >= 3){
-            data.setBarWidth(0.7f);
-        }else if (barEntries.size() == 2){
-            data.setBarWidth(0.5f);
-        }else{
-            data.setBarWidth(0.3f);
-        }
+        data.setBarWidth(0.7f);
         data.setValueFormatter(new IntegerFormatter());
 
         habit_barChart.setData(data);
@@ -532,7 +526,7 @@ public class HabitViewActivity extends AppCompatActivity {
         }
         chart_right.setVisibility(View.INVISIBLE);
 
-        displayMonthBarChartHelper(lastEntry, barEntries ,lastTimeStamp);
+        displayMonthBarChartHelper(lastEntry, lastTimeStamp);
 
         chart_left.setOnClickListener(v -> {
             resetChart();
@@ -540,7 +534,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 --eIndex[0];
                 initial_timestamp[0] = getLastMonthMs(initial_timestamp[0]);
                 range_indicator.setText(String.format("%s - %s",getStartOfTheMonth(initial_timestamp[0]), getEndOfTheMonth(initial_timestamp[0])));
-                displayMonthBarChartHelper(barEntries.get(eIndex[0]), barEntries, timeStampList.get(eIndex[0]));
+                displayMonthBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
                 if (eIndex[0] - 1 >= 0){
                     chart_left.setVisibility(View.VISIBLE);
                 }else{
@@ -557,7 +551,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 ++eIndex[0];
                 initial_timestamp[0] = getNextMonthMs(initial_timestamp[0]);
                 range_indicator.setText(String.format("%s - %s",getStartOfTheMonth(initial_timestamp[0]), getEndOfTheMonth(initial_timestamp[0])));
-                displayMonthBarChartHelper(barEntries.get(eIndex[0]), barEntries, timeStampList.get(eIndex[0]));
+                displayMonthBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
                 if (eIndex[0] + 1 < barEntries.size()){
                     chart_right.setVisibility(View.VISIBLE);
                 }else{
@@ -570,7 +564,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
     }
 
-    public void displayMonthBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<ArrayList<BarEntry>> barEntries, ArrayList<String> lastTimeStamp){
+    public void displayMonthBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<String> lastTimeStamp){
         BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Bar Chart");
 //        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
@@ -579,13 +573,7 @@ public class HabitViewActivity extends AppCompatActivity {
         barDataSet.setValueTypeface(tf);
 
         BarData data = new BarData(barDataSet);
-        if (barEntries.size() >= 3){
-            data.setBarWidth(0.7f);
-        }else if (barEntries.size() == 2){
-            data.setBarWidth(0.5f);
-        }else{
-            data.setBarWidth(0.3f);
-        }
+        data.setBarWidth(0.7f);
         data.setValueFormatter(new IntegerFormatter());
 
         habit_barChart.setData(data);
