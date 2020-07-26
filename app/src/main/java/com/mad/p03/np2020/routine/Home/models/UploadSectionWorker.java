@@ -66,15 +66,17 @@ public class UploadSectionWorker extends Worker {
 
             //Change the name, icon and color
             mDatabase.child("name").setValue(name);
-            mDatabase.child("bmiIcon").setValue(image);
+            mDatabase.child("iconValue").setValue(image);
             mDatabase.child("backgroundColor").setValue(color);
+
+
+
 
 
         }else{
 
             //Setting value using object
             mDatabase.setValue(new Section(name, color, image, id, position, UID));
-
 
             //Set the section id in user
             userDatabase.child(id).setValue(id);
