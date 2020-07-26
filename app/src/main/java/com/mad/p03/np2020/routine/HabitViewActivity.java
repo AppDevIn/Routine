@@ -464,18 +464,18 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public void displayWeekBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+        //fake
 //        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 15));
 //        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 5));
 //        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 10));
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 3));
-//        habitRepetitionArrayList.add(new HabitRepetition(getAugust1st(getNextDayTimestamp()), 30));
-//
+//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 16));
+//        habitRepetitionArrayList.add(new HabitRepetition(getAugust1st(getNextDayTimestamp()), 15));
 
-        ArrayList<String> timeStampList = new ArrayList<>();
+        ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
+        ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
+        ArrayList<BarEntry> first_barEntries = new ArrayList<>();
 
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-
-        final int[] x = {0};
+        int x = 0;
         final long[] initial_timestamp ={habitRepetitionArrayList.get(habitRepetitionArrayList.size()-1).getTimestamp()};
         String range = String.format("%s - %s",getStartOfTheMonth(initial_timestamp[0]), getEndOfTheMonth(initial_timestamp[0]));
         range_indicator.setText(range);
@@ -486,39 +486,99 @@ public class HabitViewActivity extends AppCompatActivity {
         long conTimeStamp = firstTimeStamp;
         int firstDay = getDayOfMonthFromMs(firstTimeStamp);
         for (int i = 1; i < firstDay; i++){
-            barEntries.add(new BarEntry(++x[0], 0));
+            first_barEntries.add(new BarEntry(++x, 0));
         }
 
-
         for (HabitRepetition hr : habitRepetitionArrayList){
-            barEntries.add(new BarEntry(++x[0], hr.getCount()));
             // to reset week
             if (getDayOfMonthFromMs(hr.getTimestamp()) == 1 && hr.getTimestamp() != firstTimeStamp){
+                barEntries.add(first_barEntries);
+                first_barEntries = new ArrayList<>();
+                x = 0;
                 conTimeStamp = getNextMonthFromMs(conTimeStamp);
                 Log.d(TAG, "displayWeekBarChart: "+conTimeStamp);
                 addDaysToTimeStampForMonth(timeStampList, getMaxDayOfTheMonth(conTimeStamp),getMonthString(conTimeStamp));
             }
+
+            first_barEntries.add(new BarEntry(++x, hr.getCount()));
         }
 
         int lastDay = getDayOfMonthFromMs(initial_timestamp[0]);
         int maxDay = getMaxDayOfTheMonth(initial_timestamp[0]);
 
         while (lastDay < maxDay){
-            barEntries.add(new BarEntry(++x[0], 0));
+            first_barEntries.add(new BarEntry(++x, 0));
             ++lastDay;
         }
 
-        final int[] max_x = {x[0]};
+        barEntries.add(first_barEntries);
 
-        if (barEntries.size() <= 31){
+        //fake
+//        x = 0;
+//        initial_timestamp[0] = getSep1st(initial_timestamp[0]);
+//        lastDay = getDayOfMonthFromMs(initial_timestamp[0]);
+//        maxDay = getMaxDayOfTheMonth(initial_timestamp[0]);
+//        first_barEntries = new ArrayList<>();
+//        while (lastDay < maxDay){
+//            first_barEntries.add(new BarEntry(++x, lastDay));
+//            ++lastDay;
+//        }
+//        barEntries.add(first_barEntries);
+//        addDaysToTimeStampForMonth(timeStampList, getMaxDayOfTheMonth(initial_timestamp[0]),getMonthString(initial_timestamp[0]));
+//
+//        Log.d(TAG, "displayWeekBarChart: "+barEntries);
+//        Log.d(TAG, "displayWeekBarChart: "+timeStampList);
+        ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
+        ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
+        final int[] eIndex = {barEntries.size() - 1};
+
+        if (barEntries.size() <= 1){
             chart_left.setVisibility(View.INVISIBLE);
-            chart_right.setVisibility(View.INVISIBLE);
         }else{
             chart_left.setVisibility(View.VISIBLE);
-            chart_right.setVisibility(View.INVISIBLE);
         }
+        chart_right.setVisibility(View.INVISIBLE);
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
+        displayMonthBarChartHelper(lastEntry, barEntries ,lastTimeStamp);
+
+        chart_left.setOnClickListener(v -> {
+            resetChart();
+            if (eIndex[0] - 1 >= 0){
+                --eIndex[0];
+                initial_timestamp[0] = getLastMonthMs(initial_timestamp[0]);
+                range_indicator.setText(String.format("%s - %s",getStartOfTheMonth(initial_timestamp[0]), getEndOfTheMonth(initial_timestamp[0])));
+                displayMonthBarChartHelper(barEntries.get(eIndex[0]), barEntries, timeStampList.get(eIndex[0]));
+                if (eIndex[0] - 1 >= 0){
+                    chart_left.setVisibility(View.VISIBLE);
+                }else{
+                    chart_left.setVisibility(View.INVISIBLE);
+                }
+                chart_right.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        chart_right.setOnClickListener(v ->{
+            resetChart();
+            if (eIndex[0] + 1 < barEntries.size()){
+                ++eIndex[0];
+                initial_timestamp[0] = getNextMonthMs(initial_timestamp[0]);
+                range_indicator.setText(String.format("%s - %s",getStartOfTheMonth(initial_timestamp[0]), getEndOfTheMonth(initial_timestamp[0])));
+                displayMonthBarChartHelper(barEntries.get(eIndex[0]), barEntries, timeStampList.get(eIndex[0]));
+                if (eIndex[0] + 1 < barEntries.size()){
+                    chart_right.setVisibility(View.VISIBLE);
+                }else{
+                    chart_right.setVisibility(View.INVISIBLE);
+                }
+                chart_left.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+    }
+
+    public void displayMonthBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<ArrayList<BarEntry>> barEntries, ArrayList<String> lastTimeStamp){
+        BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Bar Chart");
 //        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         barDataSet.setValueTextSize(14);
@@ -539,8 +599,8 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.animateY(750);
         habit_barChart.setDrawBarShadow(false);
         habit_barChart.setDrawValueAboveBar(false);
-        habit_barChart.setVisibleXRangeMaximum(getMaxDayOfTheMonth(initial_timestamp[0]));
-        habit_barChart.moveViewToX(x[0]);
+        habit_barChart.setVisibleXRangeMaximum(lastEntry.size());
+        habit_barChart.moveViewToX(lastEntry.size());
         habit_barChart.setPinchZoom(false);
         habit_barChart.setDrawGridBackground(true);
         habit_barChart.getAxisRight().setEnabled(false);
@@ -557,8 +617,8 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(5);
-        xAxis.setLabelCount(getMaxDayOfTheMonth(initial_timestamp[0]));
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+        xAxis.setLabelCount(lastEntry.size());
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(lastTimeStamp));
         xAxis.setTextSize(11);
         xAxis.setTypeface(tf);
 
@@ -572,90 +632,17 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.notifyDataSetChanged();
         habit_barChart.invalidate();
 
-        Log.d(TAG, String.valueOf(x[0]-getMaxDayOfTheMonth(initial_timestamp[0])) +" "+ String.valueOf(x[0]));
-        if (isRangeSumZero(barEntries, x[0]-getMaxDayOfTheMonth(initial_timestamp[0]), x[0])){
+        if (isRangeSumZero(lastEntry)){
             Log.d(TAG, "displayDayBarChart: zero");
         }else{
             yAxis.setAxisMinimum(0f);
-            double rangeMax = calculateRangeMaximum(barEntries, x[0]-getMaxDayOfTheMonth(initial_timestamp[0]), x[0]) * 1.0;
+            double rangeMax = calculateRangeMaximum(lastEntry) * 1.0;
             float max_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
             yAxis.setAxisMaximum(max_y);
-//            habit_barChart.setVisibleYRangeMaximum(max_y, YAxis.AxisDependency.LEFT);
         }
-
-        chart_left.setOnClickListener(v -> {
-            int curr = x[0];
-            int curr_day = getMaxDayOfTheMonth(initial_timestamp[0]);
-            if (curr - curr_day > 0){
-                x[0] = curr - curr_day;
-                initial_timestamp[0] = getLastMonthMs(initial_timestamp[0]);
-                int next_curr_day = getMaxDayOfTheMonth(initial_timestamp[0]);
-                habit_barChart.moveViewToX(x[0]- next_curr_day);
-                range_indicator.setText(String.format("%s - %s",getStartOfTheMonth(initial_timestamp[0]), getEndOfTheMonth(initial_timestamp[0])));
-                if (x[0] - next_curr_day > 0){
-                    chart_left.setVisibility(View.VISIBLE);
-                }else{
-                    chart_left.setVisibility(View.INVISIBLE);
-                }
-                chart_right.setVisibility(View.VISIBLE);
-                Log.d(TAG, String.valueOf(x[0]-next_curr_day) +" "+ String.valueOf(curr-curr_day));
-                if (isRangeSumZero(barEntries, x[0]-next_curr_day, curr-curr_day)){
-                    Log.d(TAG, "displayDayBarChart: zero");
-                }else{
-                    yAxis.setAxisMinimum(0f);
-                    double rangeMax = calculateRangeMaximum(barEntries, x[0]-next_curr_day, curr-curr_day) * 1.0;
-                    float max_left_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
-                    yAxis.setAxisMaximum(max_left_y);
-                    habit_barChart.getAxisLeft().setLabelCount(5);
-//                    habit_barChart.setVisibleYRangeMaximum(max_left_y, YAxis.AxisDependency.LEFT);
-                    habit_barChart.notifyDataSetChanged();
-                    habit_barChart.invalidate();
-                    habit_barChart.setVisibleXRangeMaximum(getMaxDayOfTheMonth(initial_timestamp[0]));
-
-                }
-                habit_barChart.animateY(750);
-
-
-            }
-        });
-
-        chart_right.setOnClickListener(v -> {
-            int curr = x[0];
-            initial_timestamp[0] = getNextMonthMs(initial_timestamp[0]);
-            int next_curr_day = getMaxDayOfTheMonth(initial_timestamp[0]);
-            int max = max_x[0];
-            if (curr + next_curr_day <= max){
-                x[0] = curr + next_curr_day;
-                habit_barChart.moveViewToX(x[0] + next_curr_day);
-                range_indicator.setText(String.format("%s - %s",getStartOfTheMonth(initial_timestamp[0]), getEndOfTheMonth(initial_timestamp[0])));
-                if (x[0] + next_curr_day <= max){
-                    chart_right.setVisibility(View.VISIBLE);
-                }else{
-                    chart_right.setVisibility(View.INVISIBLE);
-                }
-                chart_left.setVisibility(View.VISIBLE);
-                Log.d(TAG, String.valueOf(curr) +" "+ String.valueOf(x[0]));
-                if (isRangeSumZero(barEntries, curr, x[0])){
-                    Log.d(TAG, "displayDayBarChart: zero");
-                }else{
-                    yAxis.setAxisMinimum(0f);
-                    float max_right_y = (float) Math.ceil(calculateRangeMaximum(barEntries, curr, x[0]) * 1.0);
-                    yAxis.setAxisMaximum(max_right_y);
-                    habit_barChart.getAxisLeft().setLabelCount(5);
-//                    habit_barChart.setVisibleYRangeMaximum(max_right_y, YAxis.AxisDependency.LEFT);
-                    habit_barChart.notifyDataSetChanged();
-                    habit_barChart.invalidate();
-                    habit_barChart.setVisibleXRangeMaximum(getMaxDayOfTheMonth(initial_timestamp[0]));
-
-                }
-                habit_barChart.animateY(750);
-            }
-        });
-
-
     }
 
-    public void displayMonthBarChart(){
+    public void displayMonthaBarChart(){
         ArrayList<String> timeStampList = new ArrayList<>();
         timeStampList.add("dummy");
         ArrayList<BarEntry> barEntries = new ArrayList<>();
@@ -880,7 +867,7 @@ public class HabitViewActivity extends AppCompatActivity {
             case 2:
                 Log.d(TAG, "displayCharts: Year");
                 resetChart();
-                displayMonthBarChart();
+                displayMonthaBarChart();
                 break;
         }
     }
@@ -1089,9 +1076,27 @@ public class HabitViewActivity extends AppCompatActivity {
         return max;
     }
 
+    public int calculateRangeMaximum(ArrayList<BarEntry> arr){
+        int max = 0;
+        for (int i = 0; i < arr.size(); i++){
+            max = (int) Math.max(max, arr.get(i).getY());
+        }
+
+        return max;
+    }
+
     public boolean isRangeSumZero(ArrayList<BarEntry> arr, int start, int end){
         int sum = 0;
         for (int i = start; i < end; i++){
+            sum += arr.get(i).getY();
+        }
+
+        return sum == 0;
+    }
+
+    public boolean isRangeSumZero(ArrayList<BarEntry> arr){
+        int sum = 0;
+        for (int i = 0; i < arr.size(); i++){
             sum += arr.get(i).getY();
         }
 
@@ -1132,17 +1137,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return cal.get(Calendar.MONTH)+1;
     }
 
-    public void addDaysToTimeStampForMonth(ArrayList<String> timestampList, int max_of_month, int month){
+    public void addDaysToTimeStampForMonth(ArrayList<ArrayList<String>> timestampList, int max_of_month, int month){
+        ArrayList<String> arr = new ArrayList<>();
         for (int i = 1; i <= max_of_month; i++){
             String x = String.format("%d/%d",i,month);
-            timestampList.add(x);
-//            if (i%5 == 1){
-////                String x = String.format("%d/%d",i,month);
-////                timestampList.add(x);
-////            }else{
-////
-////            }
+            arr.add(x);
+//            if (i%5 == 1)
         }
+        timestampList.add(arr);
+
     }
 
     public int getDayOfMonthFromMs(long ms){
@@ -1180,6 +1183,17 @@ public class HabitViewActivity extends AppCompatActivity {
 
     }
 
+    public long getSep1st(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.setTimeInMillis(ms);
+        calendar.add(Calendar.MONTH,1);
+        calendar.set(Calendar.DATE, 1);
+
+        return calendar.getTimeInMillis();
+
+    }
+
     public long getNextDayTimestamp(){
         Calendar cal = Calendar.getInstance();
         int year  = cal.get(Calendar.YEAR);
@@ -1191,6 +1205,5 @@ public class HabitViewActivity extends AppCompatActivity {
 
         return cal.getTimeInMillis();
     }
-
 
 }
