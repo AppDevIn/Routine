@@ -129,6 +129,8 @@
     <string name="week">week</string>
     <string name="month">month</string>
     <string name="year">year</string>
+    <string name="chart_left">chart_left</string>
+    <string name="chart_right">chart_right</string>
 
 </resources>
 

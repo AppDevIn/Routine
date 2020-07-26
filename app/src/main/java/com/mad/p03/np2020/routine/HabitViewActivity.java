@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -45,14 +47,15 @@ public class HabitViewActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitViewActivity";
 
-    public static final int[] chart_buttonIDS = new int[]{R.id.habit_day_barChart,R.id.habit_week_barChart,R.id.habit_month_barChart,R.id.habit_year_barChart};
+    public static final int[] chart_buttonIDS = new int[]{R.id.habit_week_barChart,R.id.habit_month_barChart,R.id.habit_year_barChart};
 
     // Widgets
-    private TextView title, goal_text, curr_streak_text, best_streak_text, progress_text, curr_period, best_period, progress_text_period;
+    private TextView title, goal_text, curr_streak_text, best_streak_text, progress_text, curr_period, best_period, progress_text_period, range_indicator;
     private CardView habit_card;
     private ImageView back_btn, editBtn;
     private ProgressBar progressBar;
     private BarChart habit_barChart;
+    private Typeface tf;
     // Habit
     private Habit habit;
 
@@ -85,6 +88,9 @@ public class HabitViewActivity extends AppCompatActivity {
         best_period = findViewById(R.id.best_streak_period);
         progress_text_period = findViewById(R.id.progress_text_period);
         habit_barChart = findViewById(R.id.habit_barChart);
+        range_indicator = findViewById(R.id.range_indicator);
+
+        tf = ResourcesCompat.getFont(this, R.font.montserrat_regular);
 
         habit_dbHandler = new HabitDBHelper(this);
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
@@ -235,7 +241,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 max_cycle = habitRepetitionDBHelper.getMaxCycle(habitID);
                 for (int i = 1; i < max_cycle+1; i++){
                     int max_count = habitRepetitionDBHelper.getMaxCountByCycle(habitID, i);
-                    curr_streak = (max_count >= occurrence) ? ++ curr_streak : 0;
+                    curr_streak = (max_count >= occurrence) ? ++curr_streak : 0;
                     max_streak = Math.max(max_streak, curr_streak);
                     completion = (max_count >= occurrence) ? ++completion : completion;
                 }
@@ -272,19 +278,59 @@ public class HabitViewActivity extends AppCompatActivity {
     public void displayDayBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
+        // fake
+        HabitRepetition _hr = new HabitRepetition();
+        _hr.setCount(10);
+        _hr.setConCount(0);
+        _hr.setTimestamp(getNextDayTimestamp());
+        habitRepetitionArrayList.add(_hr);
+
         ArrayList<String> timeStampList = new ArrayList<>();
         timeStampList.add("dummy");
         ArrayList<BarEntry> barEntries = new ArrayList<>();
 
         int x = 0;
+        long initial_timestamp = habitRepetitionArrayList.get(0).getTimestamp();
+        int firstDay = getDayOfWeekFromMs(initial_timestamp);
+        String range = String.format("%s - %s",getStartOfTheWeek(initial_timestamp), getEndOfTheWeek(initial_timestamp));
+        range_indicator.setText(range);
+
+
+        // initial the day before the habit
+        if (firstDay != 1){
+            addDaysToTimeStamp(timeStampList);
+        }
+
+        for (int i = 1; i < firstDay; i++){
+            barEntries.add(new BarEntry(++x, 0));
+        }
+
+
         for (HabitRepetition hr : habitRepetitionArrayList){
             barEntries.add(new BarEntry(++x, hr.getCount()));
-            timeStampList.add(getDayMonthByTimeStamp(hr.getTimestamp()));
+            if (getDayOfWeekFromMs(hr.getTimestamp()) == 1){
+                addDaysToTimeStamp(timeStampList);
+            }
+
+            // set a star sign to indicate today
+            if (hr.getTimestamp() == getTodayTimestamp()){
+                String ts = timeStampList.get(x);
+                timeStampList.set(x, ts+"*");
+            }
+//            timeStampList.add(getDayMonthByTimeStamp(hr.getTimestamp()));
+        }
+
+        // fake
+        for (int i = 1; i < 7; i++){
+            barEntries.add(new BarEntry(++x, i));
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
+//        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         barDataSet.setValueTextSize(14);
+        barDataSet.setDrawValues(false);
+        barDataSet.setValueTypeface(tf);
 
         BarData data = new BarData(barDataSet);
         if (barEntries.size() >= 3){
@@ -297,18 +343,21 @@ public class HabitViewActivity extends AppCompatActivity {
 
         data.setValueFormatter(new IntegerFormatter());
 
+
         habit_barChart.setData(data);
         habit_barChart.animateY(750);
         habit_barChart.setDrawBarShadow(false);
-        habit_barChart.setDrawValueAboveBar(true);
-        habit_barChart.setVisibleXRangeMaximum(5);
-        habit_barChart.moveViewToX(x);
+        habit_barChart.setDrawValueAboveBar(false);
+        habit_barChart.setVisibleXRangeMaximum(7);
+//        habit_barChart.moveViewToX(x);
         habit_barChart.setPinchZoom(false);
         habit_barChart.setDrawGridBackground(true);
         habit_barChart.getAxisRight().setEnabled(false);
         habit_barChart.getLegend().setEnabled(false);
         habit_barChart.setClickable(false);
         habit_barChart.setDoubleTapToZoomEnabled(false);
+        habit_barChart.setTouchEnabled(false);
+
 
         Description description = new Description();
         description.setText("");
@@ -319,7 +368,8 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
-        xAxis.setTextSize(12);
+        xAxis.setTextSize(11);
+        xAxis.setTypeface(tf);
 
         YAxis yAxis = habit_barChart.getAxisLeft();
         yAxis.setTextSize(12);
@@ -383,7 +433,7 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.setDrawBarShadow(false);
         habit_barChart.setDrawValueAboveBar(true);
         habit_barChart.setVisibleXRangeMaximum(5);
-        habit_barChart.moveViewToX(x);
+//        habit_barChart.moveViewToX(x);
         habit_barChart.setPinchZoom(false);
         habit_barChart.setDrawGridBackground(true);
         habit_barChart.getAxisRight().setEnabled(false);
@@ -400,7 +450,8 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
-        xAxis.setTextSize(12);
+        xAxis.setTextSize(11);
+        xAxis.setTypeface(tf);
 
         YAxis yAxis = habit_barChart.getAxisLeft();
         yAxis.setTextSize(12);
@@ -454,7 +505,7 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.setDrawBarShadow(false);
         habit_barChart.setDrawValueAboveBar(true);
         habit_barChart.setVisibleXRangeMaximum(5);
-        habit_barChart.moveViewToX(x);
+//        habit_barChart.moveViewToX(x);
         habit_barChart.setPinchZoom(false);
         habit_barChart.setDrawGridBackground(true);
         habit_barChart.getAxisRight().setEnabled(false);
@@ -471,7 +522,8 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
-        xAxis.setTextSize(12);
+        xAxis.setTextSize(11);
+        xAxis.setTypeface(tf);
 
         YAxis yAxis = habit_barChart.getAxisLeft();
         yAxis.setTextSize(12);
@@ -604,7 +656,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     int id = btn.getId();
 
-                    for (int i = 0; i < 4; i++){
+                    for (int i = 0; i < 3; i++){
                         Button _btn = findViewById(chart_buttonIDS[i]);
 
                         if (id == chart_buttonIDS[i]){
@@ -622,36 +674,62 @@ public class HabitViewActivity extends AppCompatActivity {
     public void displayCharts(int i){
         switch (i){
             case 0:
-                Log.d(TAG, "displayCharts: Day");
+                Log.d(TAG, "displayCharts: Week");
                 resetChart();
                 displayDayBarChart();
                 break;
 
             case 1:
-                Log.d(TAG, "displayCharts: Week");
+                Log.d(TAG, "displayCharts: Month");
                 resetChart();
                 displayWeekBarChart();
+
                 break;
 
             case 2:
-                Log.d(TAG, "displayCharts: Month");
-                resetChart();
-                displayMonthBarChart();
-                break;
-
-            case 3:
                 Log.d(TAG, "displayCharts: Year");
                 resetChart();
-                displayYearBarChart();
+                displayMonthBarChart();
                 break;
         }
     }
 
     public void resetChart(){
+        range_indicator.setText("");
         habit_barChart.fitScreen();
         habit_barChart.clear();
         habit_barChart.invalidate();
         habit_barChart.notifyDataSetChanged();
+    }
+
+    public String getStartOfTheWeek(long ms){
+        DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ms);
+        cal.set(Calendar.DAY_OF_WEEK, 2);
+        Date d = cal.getTime();
+        String date = dateFormat.format(d);
+        return date;
+    }
+
+    public String getEndOfTheWeek(long ms){
+        DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ms);
+        cal.set(Calendar.DAY_OF_WEEK, 7);
+        cal.add(Calendar.DAY_OF_MONTH,1);
+        Date d = cal.getTime();
+        String date = dateFormat.format(d);
+        return date;
+    }
+
+    public int getDayOfWeekFromMs(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        int format = (day==1) ? 7 : --day;
+
+        return format;
     }
 
     public long getMonth(String time) {
@@ -734,6 +812,38 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    public void addDaysToTimeStamp(ArrayList<String> timestampList){
+        Log.d(TAG, "addDaysToTimeStamp: next week");
+        timestampList.add("MON");
+        timestampList.add("TUE");
+        timestampList.add("WED");
+        timestampList.add("THU");
+        timestampList.add("FRI");
+        timestampList.add("SAT");
+        timestampList.add("SUN");
+    }
 
+    public long getNextDayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        cal.add(Calendar.DAY_OF_MONTH,1);
+
+        return cal.getTimeInMillis();
+    }
+
+    public long getTodayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+
+        return cal.getTimeInMillis();
+    }
 
 }
