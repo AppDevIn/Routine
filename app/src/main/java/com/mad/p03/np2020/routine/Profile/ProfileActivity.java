@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,12 +15,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.LoginActivity;
 import com.mad.p03.np2020.routine.R;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, UsernameDialog.UsernameDialogListener, PasswordDialog.PasswordDialogListener {
 
     private final String TAG = "ProfileActivity";
 
     FirebaseAuth mAuth;
+    Button changeName;
+    Button changePassword;
+    Button reportProblem;
+    Button rateApp;
     Button logoutButton;
+    TextView username;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +35,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         mAuth = FirebaseAuth.getInstance();
 
+        username = findViewById(R.id.username);
+        //TO-DO: Set username from database
+
+        changeName = findViewById(R.id.changeNameButton);
+        changePassword = findViewById(R.id.changePasswordButton);
+        reportProblem = findViewById(R.id.reportProblemButton);
+        rateApp = findViewById(R.id.rateAppButton);
         logoutButton = findViewById(R.id.logoutButton);
 
         /*
@@ -41,9 +54,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
             }
         });
-
          */
 
+        changeName.setOnClickListener(this);
+        changePassword.setOnClickListener(this);
+        reportProblem.setOnClickListener(this);
+        rateApp.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
     }
 
@@ -57,7 +73,50 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                 mAuth.signOut();
                 startActivity(intent);
+                break;
+
+            case R.id.changeNameButton:
+                Log.v(TAG, "User changing name!");
+                changeUsername();
+                break;
+
+            case R.id.changePasswordButton:
+                Log.v(TAG, "User changing password");
+                changePassword();
+                break;
+
+            case R.id.reportProblemButton:
+                Log.v(TAG, "User reporting a problem");
+                break;
+
+            case R.id.rateAppButton:
+                Log.v(TAG, "User rating app");
+                break;
         }
+
+    }
+
+    public void changeUsername()
+    {
+        UsernameDialog usernameDialog = new UsernameDialog();
+        usernameDialog.show(getSupportFragmentManager(), "Change Username Dialog");
+    }
+
+    @Override
+    public void getNewUsername(String newUsername)
+    {
+        username.setText(newUsername);
+        //TO-DO: Update database with new username
+    }
+
+    public void changePassword()
+    {
+        PasswordDialog passwordDialog = new PasswordDialog();
+        passwordDialog.show(getSupportFragmentManager(), "Change Password Dialog");
+    }
+
+    @Override
+    public void getNewPassword(String oldPassword, String newPassword, String reNewPassword) {
 
     }
 }

@@ -58,6 +58,7 @@
 
         <activity android:name=".Profile.ProfileActivity" />
 
+
         <receiver
             android:name=".models.AlarmReceiver"
             android:enabled="true"
