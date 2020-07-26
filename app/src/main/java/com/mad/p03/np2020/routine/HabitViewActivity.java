@@ -373,16 +373,22 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setTypeface(tf);
 
         YAxis yAxis = habit_barChart.getAxisLeft();
-        yAxis.setTextSize(12);
+        yAxis.setTextSize(11);
+        yAxis.setTypeface(tf);
         yAxis.setLabelCount(5);
 
         if (isRangeSumZero(barEntries, x[0]-7, x[0])){
             Log.d(TAG, "displayDayBarChart: zero");
         }else{
             yAxis.setAxisMinimum(0f);
-            float max_y = (float) (calculateRangeMaximum(barEntries,x[0]-7,x[0]) * 1);
+            double rangeMax = calculateRangeMaximum(barEntries, x[0]-7, x[0]) * 1.0;
+            float max_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
             yAxis.setAxisMaximum(max_y);
+            habit_barChart.setVisibleYRangeMaximum(max_y, YAxis.AxisDependency.LEFT);
         }
+
+        habit_barChart.notifyDataSetChanged();
+        habit_barChart.invalidate();
 
         chart_left.setOnClickListener(v -> {
             int curr = x[0];
@@ -401,10 +407,14 @@ public class HabitViewActivity extends AppCompatActivity {
                     Log.d(TAG, "displayDayBarChart: zero");
                 }else{
                     yAxis.setAxisMinimum(0f);
-                    float max_left_y = (float) (calculateRangeMaximum(barEntries, x[0]-7, curr-7));
+                    double rangeMax = calculateRangeMaximum(barEntries, x[0]-7, curr-7) * 1.0;
+                    float max_left_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
                     yAxis.setAxisMaximum(max_left_y);
+                    habit_barChart.getAxisLeft().setLabelCount(5);
+                    habit_barChart.setVisibleYRangeMaximum(max_left_y, YAxis.AxisDependency.LEFT);
+                    habit_barChart.notifyDataSetChanged();
+                    habit_barChart.invalidate();
                 }
-                habit_barChart.notifyDataSetChanged();
                 habit_barChart.animateY(750);
 
             }
@@ -428,9 +438,12 @@ public class HabitViewActivity extends AppCompatActivity {
                     Log.d(TAG, "displayDayBarChart: zero");
                 }else{
                     yAxis.setAxisMinimum(0f);
-                    float max_right_y = (float) (calculateRangeMaximum(barEntries, curr, x[0]));
+                    float max_right_y = (float) Math.ceil(calculateRangeMaximum(barEntries, curr, x[0]) * 1.0);
                     yAxis.setAxisMaximum(max_right_y);
+                    habit_barChart.getAxisLeft().setLabelCount(5);
+                    habit_barChart.setVisibleYRangeMaximum(max_right_y, YAxis.AxisDependency.LEFT);
                     habit_barChart.notifyDataSetChanged();
+                    habit_barChart.invalidate();
                 }
                 habit_barChart.animateY(750);
             }
