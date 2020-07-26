@@ -57,6 +57,14 @@ public class HabitRepetition {
     private int conCount;
     private ArrayList<Long> rowList;
 
+    public HabitRepetition() {
+    }
+
+    public HabitRepetition(long timestamp, int count) {
+        this.timestamp = timestamp;
+        this.count = count;
+    }
+
     public long getHabitID() {
         return habitID;
     }
