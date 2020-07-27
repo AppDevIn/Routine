@@ -36,7 +36,6 @@ import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -274,7 +273,7 @@ public class HabitViewActivity extends AppCompatActivity {
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
         ArrayList<String> timeStampList = new ArrayList<>();
-        timeStampList.add("dummy");
+        timeStampList.add("0");
         ArrayList<BarEntry> barEntries = new ArrayList<>();
 
         final int[] x = {0};
@@ -364,7 +363,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         Log.d(TAG, String.valueOf(x[0]-7) + String.valueOf(x[0]));
         if (isRangeSumZero(barEntries, x[0]-7, x[0])){
-            Log.d(TAG, "displayDayBarChart: zero");
+            Log.d(TAG, "displayWeekBarChart: zero");
         }else{
             yAxis.setAxisMinimum(0f);
             double rangeMax = calculateRangeMaximum(barEntries, x[0]-7, x[0]) * 1.0;
@@ -393,8 +392,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 chart_right.setVisibility(View.VISIBLE);
                 Log.d(TAG, String.valueOf(x[0]-7) + String.valueOf(curr-7));
                 if (isRangeSumZero(barEntries, x[0]-7, curr-7)){
-
-                    Log.d(TAG, "displayDayBarChart: zero");
+                    Log.d(TAG, "displayWeekBarChart: zero");
                 }else{
                     yAxis.setAxisMinimum(0f);
                     double rangeMax = calculateRangeMaximum(barEntries, x[0]-7, curr-7) * 1.0;
@@ -429,7 +427,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 chart_left.setVisibility(View.VISIBLE);
                 Log.d(TAG, String.valueOf(curr) + String.valueOf(x[0]));
                 if (isRangeSumZero(barEntries, curr, x[0])){
-                    Log.d(TAG, "displayDayBarChart: zero");
+                    Log.d(TAG, "displayWeekBarChart: zero");
                 }else{
                     yAxis.setAxisMinimum(0f);
                     float max_right_y = (float) Math.ceil(calculateRangeMaximum(barEntries, curr, x[0]) * 1.0);
@@ -565,7 +563,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public void displayMonthBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<String> lastTimeStamp){
-        BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Bar Chart");
+        BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Month Bar Chart");
 //        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         barDataSet.setValueTextSize(14);
@@ -614,7 +612,7 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.invalidate();
 
         if (isRangeSumZero(lastEntry)){
-            Log.d(TAG, "displayDayBarChart: zero");
+            Log.d(TAG, "displayMonthBarChartHelper: zero");
         }else{
             yAxis.setAxisMinimum(0f);
             double rangeMax = calculateRangeMaximum(lastEntry) * 1.0;
@@ -624,12 +622,26 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public void displayYearBarChart(){
-        ArrayList<String> timeStampList = new ArrayList<>();
-        timeStampList.add("dummy");
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+
+        ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
+        ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
+        ArrayList<BarEntry> first_barEntries = new ArrayList<>();
 
         int x = 0;
-        int max_y = 0;
+        final long[] initial_timestamp ={habitRepetitionArrayList.get(habitRepetitionArrayList.size()-1).getTimestamp()};
+        String range = String.format("%s - %s",getStartOfTheYear(initial_timestamp[0]), getEndOfTheYear(initial_timestamp[0]));
+        range_indicator.setText(range);
+
+        // initial the month before the habit
+        addMonthsToTimeStampForYear(timeStampList);
+        long firstTimeStamp = habitRepetitionArrayList.get(0).getTimestamp();
+        int firstMonth = getMonthOfYearFromMs(firstTimeStamp);
+        for (int i = 0; i < firstMonth; i++){
+            first_barEntries.add(new BarEntry(++x, 0));
+        }
+
+
         long initial_ms = getMonth(habit.getTime_created());
         long next_ms = getNextMonthFromString(habit.getTime_created());
 
@@ -637,9 +649,13 @@ public class HabitViewActivity extends AppCompatActivity {
 
         do{
             int count = habitRepetitionDBHelper.getCountBetweenMonth(habit.getHabitID(), initial_ms, next_ms);
-            barEntries.add(new BarEntry(++x, count));
-            max_y = Math.max(max_y, count);
-            timeStampList.add(getMonthYearByTimeStamp(initial_ms));
+            first_barEntries.add(new BarEntry(++x, count));
+            if (getMonthFromMs(next_ms) == 0 && next_ms > firstTimeStamp){
+                barEntries.add(first_barEntries);
+                first_barEntries = new ArrayList<>();
+                x = 0;
+                addMonthsToTimeStampForYear(timeStampList);
+            }
 
             initial_ms = next_ms;
             next_ms = getNextMonthFromMs(next_ms);
@@ -647,33 +663,89 @@ public class HabitViewActivity extends AppCompatActivity {
 
         }while(isNextMonth);
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
-        barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        barDataSet.setValueTextSize(14);
+        int lastMonth = getMonthFromMs(initial_timestamp[0]);
+        int maxMonth = 11;
 
-        BarData data = new BarData(barDataSet);
-        if (barEntries.size() >= 3){
-            data.setBarWidth(0.7f);
-        }else if (barEntries.size() == 2){
-            data.setBarWidth(0.5f);
-        }else{
-            data.setBarWidth(0.3f);
+        while (lastMonth < maxMonth){
+            first_barEntries.add(new BarEntry(++x, 0));
+            ++lastMonth;
         }
 
+        barEntries.add(first_barEntries);
+
+        ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
+        ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
+        final int[] eIndex = {barEntries.size() - 1};
+
+        if (barEntries.size() <= 1){
+            chart_left.setVisibility(View.INVISIBLE);
+        }else{
+            chart_left.setVisibility(View.VISIBLE);
+        }
+        chart_right.setVisibility(View.INVISIBLE);
+
+        displayYearBarChartHelper(lastEntry, lastTimeStamp);
+
+        chart_left.setOnClickListener(v -> {
+            resetChart();
+            if (eIndex[0] - 1 >= 0){
+                --eIndex[0];
+                initial_timestamp[0] = getLastMonthMs(initial_timestamp[0]);
+                range_indicator.setText(String.format("%s - %s",getStartOfTheYear(initial_timestamp[0]), getEndOfTheYear(initial_timestamp[0])));
+                displayYearBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
+                if (eIndex[0] - 1 >= 0){
+                    chart_left.setVisibility(View.VISIBLE);
+                }else{
+                    chart_left.setVisibility(View.INVISIBLE);
+                }
+                chart_right.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        chart_right.setOnClickListener(v ->{
+            resetChart();
+            if (eIndex[0] + 1 < barEntries.size()){
+                ++eIndex[0];
+                initial_timestamp[0] = getNextMonthMs(initial_timestamp[0]);
+                range_indicator.setText(String.format("%s - %s",getStartOfTheYear(initial_timestamp[0]), getEndOfTheYear(initial_timestamp[0])));
+                displayYearBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
+                if (eIndex[0] + 1 < barEntries.size()){
+                    chart_right.setVisibility(View.VISIBLE);
+                }else{
+                    chart_right.setVisibility(View.INVISIBLE);
+                }
+                chart_left.setVisibility(View.VISIBLE);
+
+            }
+        });
+    }
+
+    public void displayYearBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<String> lastTimeStamp){
+        BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Year Bar Chart");
+//        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
+        barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        barDataSet.setValueTextSize(14);
+        barDataSet.setDrawValues(false);
+        barDataSet.setValueTypeface(tf);
+
+        BarData data = new BarData(barDataSet);
+        data.setBarWidth(0.7f);
         data.setValueFormatter(new IntegerFormatter());
 
         habit_barChart.setData(data);
         habit_barChart.animateY(750);
         habit_barChart.setDrawBarShadow(false);
-        habit_barChart.setDrawValueAboveBar(true);
-        habit_barChart.setVisibleXRangeMaximum(5);
-//        habit_barChart.moveViewToX(x);
+        habit_barChart.setDrawValueAboveBar(false);
+        habit_barChart.setVisibleXRangeMaximum(lastEntry.size());
+        habit_barChart.moveViewToX(lastEntry.size());
         habit_barChart.setPinchZoom(false);
         habit_barChart.setDrawGridBackground(true);
         habit_barChart.getAxisRight().setEnabled(false);
         habit_barChart.getLegend().setEnabled(false);
         habit_barChart.setClickable(false);
         habit_barChart.setDoubleTapToZoomEnabled(false);
+        habit_barChart.setTouchEnabled(false);
 
         Description description = new Description();
         description.setText("");
@@ -683,29 +755,29 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+        xAxis.setLabelCount(lastEntry.size());
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(lastTimeStamp));
         xAxis.setTextSize(11);
         xAxis.setTypeface(tf);
 
         YAxis yAxis = habit_barChart.getAxisLeft();
-        yAxis.setTextSize(12);
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum((float) (max_y*1.2));
+        yAxis.setTextSize(11);
+        yAxis.setTypeface(tf);
         yAxis.setLabelCount(5);
-    }
 
+        habit_barChart.getXAxis().resetAxisMinimum();
+        habit_barChart.getXAxis().setAvoidFirstLastClipping(false);
+        habit_barChart.notifyDataSetChanged();
+        habit_barChart.invalidate();
 
-    public String getMonthYearByTimeStamp(long timeStamp){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timeStamp);
-
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH);
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        String[] shortMonths = new DateFormatSymbols().getShortMonths();
-
-        return shortMonths[mMonth];
+        if (isRangeSumZero(lastEntry)){
+            Log.d(TAG, "displayYearBarChartHelper: zero");
+        }else{
+            yAxis.setAxisMinimum(0f);
+            double rangeMax = calculateRangeMaximum(lastEntry) * 1.0;
+            float max_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
+            yAxis.setAxisMaximum(max_y);
+        }
     }
 
     public void populateChartButtons(){
@@ -858,6 +930,14 @@ public class HabitViewActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return ms;
+    }
+
+    public int getMonthFromMs(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+
+
+        return calendar.get(Calendar.MONTH);
     }
 
     public long getNextMonthFromMs(long ms){
@@ -1027,6 +1107,55 @@ public class HabitViewActivity extends AppCompatActivity {
         cal.add(Calendar.DAY_OF_MONTH,1);
 
         return cal.getTimeInMillis();
+    }
+
+    public String getStartOfTheYear(long ms){
+        DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ms);
+        cal.set(Calendar.DAY_OF_YEAR, 1);
+        Date d = cal.getTime();
+        String date = dateFormat.format(d);
+        return date;
+    }
+
+    public String getEndOfTheYear(long ms){
+        DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ms);
+        cal.set(Calendar.MONTH,11);
+        Date d = cal.getTime();
+        String date = dateFormat.format(d);
+        return date;
+    }
+
+    public void addMonthsToTimeStampForYear(ArrayList<ArrayList<String>> arr){
+        Log.d(TAG, "addMonthsToTimeStampForYear: ");
+        ArrayList<String> timestampList = new ArrayList<>();
+        timestampList.add("0");
+        timestampList.add("J");
+        timestampList.add("F");
+        timestampList.add("M");
+        timestampList.add("A");
+        timestampList.add("M");
+        timestampList.add("J");
+        timestampList.add("J");
+        timestampList.add("A");
+        timestampList.add("S");
+        timestampList.add("O");
+        timestampList.add("N");
+        timestampList.add("D");
+
+        arr.add(timestampList);
+
+    }
+
+    public int getMonthOfYearFromMs(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        int day = calendar.get(Calendar.MONTH);
+
+        return day;
     }
 
 }
