@@ -319,7 +319,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
             @Override
             public void onAnimationStart(Animation animation) {
-                
+
 
             }
 
