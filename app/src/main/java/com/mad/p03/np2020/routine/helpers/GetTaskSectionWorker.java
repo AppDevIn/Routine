@@ -102,7 +102,7 @@ public class GetTaskSectionWorker extends Worker {
 
 
                 //Check if it exist in the database
-                mDatabase.child(id).addChildEventListener(new ChildEventListener() {
+                mDatabase.orderByKey().equalTo(id).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         if(!mSectionDBHelper.hasID(id)) {
@@ -124,7 +124,12 @@ public class GetTaskSectionWorker extends Worker {
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                        Section section = Section.fromDataSnapShot(dataSnapshot);
+                        Section sectionDataBase = mSectionDBHelper.getSection(id);
+                        if (!section.equals(sectionDataBase)) {
+                            Log.d(TAG, "onChildChanged(): This has been changed so updating......");
+                            mSectionDBHelper.updateSection(section);
+                        }
                     }
 
                     @Override

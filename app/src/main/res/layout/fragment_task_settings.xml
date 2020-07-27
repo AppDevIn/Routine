@@ -126,6 +126,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
             <LinearLayout
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
@@ -158,6 +159,7 @@
                     android:id="@+id/addUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
 
                     android:layout_marginTop="16dp"
                     android:autofillHints=""
@@ -170,14 +172,16 @@
                     />
 
 
-
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewEmail"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="16dp"
                     />
+
+
+
+
 
             </LinearLayout>
 

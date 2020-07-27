@@ -32,7 +32,6 @@ public class GestureDetectorTaskSettings extends GestureDetector.SimpleOnGesture
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.d("GestureTaskSettings", "onFling: ");
 
         // Get swipe delta value in x axis.
         float deltaX = e1.getX() - e2.getX();

@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Task.Fragment;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
@@ -40,6 +42,9 @@ import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.models.Team;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +90,8 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+
         View view = inflater.inflate(R.layout.fragment_task_settings, container, false);
 
         CardView cardView = view.findViewById(R.id.mainCard);
@@ -114,6 +121,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
         editText = view.findViewById(R.id.addUser);
         editText.setOnEditorActionListener(this);
+
 
         if(!mSection.isAdmin())
             editText.setVisibility(View.GONE);
@@ -150,6 +158,16 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
                 return true;
             }
         });
+
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        // write your code
+                        mTeamAdapter.notifyDataSetChanged();
+                    }
+                });
 
 
 
@@ -190,6 +208,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
 
+
         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 actionId == EditorInfo.IME_ACTION_DONE ||
                 event.getAction() == KeyEvent.ACTION_DOWN &&
@@ -218,6 +237,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         switch (view.getId()) {
 
             case R.id.btnSubmit:addSection(getView().findViewById(R.id.txtAddList));break;
+
         }
     }
 
@@ -244,6 +264,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         //auto hide keyboard after entry
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mRecyclerView.getWindowToken(), 0);
+
 
     }
 
@@ -346,8 +367,22 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         getView().startAnimation(trans);
     }
 
+    /**
+     *
+     * Show the keyboard the the focused view
+     *
+     * @param view The view that wants to receive the soft keyboard input
+     */
+    private void showKeyboard(View view) {
+        Log.i(TAG, "Show soft keyboard");
 
+        view.requestFocus();
 
+        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert mgr != null;
+        mgr.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+
+    }
 
 
 }

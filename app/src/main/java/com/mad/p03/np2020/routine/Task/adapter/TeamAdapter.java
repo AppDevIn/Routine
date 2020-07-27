@@ -101,7 +101,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
             //Add to the list
             mTeam.addEmail(email);
             synchronized(this){
-                this.notify();
+                this.notifyItemInserted(mTeam.getEmail().size());
             }
 
             //Send to the firebase
