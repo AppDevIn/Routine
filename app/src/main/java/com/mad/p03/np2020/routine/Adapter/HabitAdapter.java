@@ -280,9 +280,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         if (n == 0){
             remind_text.setText("You have completed all habits today!");
         }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do today");
+            remind_text.setText("You still have 1 habit to do");
         }else{
-            remind_text.setText(String.format("You still have %d habits to do today",n));
+            remind_text.setText(String.format("You still have %d habits to do",n));
         }
         Log.v(TAG, "Data is changed from other server");
     }
@@ -346,9 +346,9 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         if (n == 0){
             remind_text.setText("You have completed all habits today!");
         }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do today");
+            remind_text.setText("You still have 1 habit to do");
         }else{
-            remind_text.setText(String.format("You still have %d habits to do today",n));
+            remind_text.setText(String.format("You still have %d habits to do",n));
         }
         Log.v(TAG, "Data is changed from other server");
     }

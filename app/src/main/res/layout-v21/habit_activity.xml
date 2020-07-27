@@ -188,7 +188,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_regular"
         android:textColor="@color/colorBlack"
-        android:text="@string/habit_remind_text"
         android:textAlignment="center"
         android:textSize="14sp"
 
