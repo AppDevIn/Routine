@@ -106,9 +106,10 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
     public void onBindViewHolder(@NonNull MyHomeViewHolder holder, final int position) {
         //***************** Set values into view *****************//
 
+        Section section = mSectionList.get(position);
 
         //For the TextView
-        holder.mTextViewListName.setText(mSectionList.get(position).getName());
+        holder.mTextViewListName.setText(section.getName());
 
 
         //Setup drawable
@@ -123,6 +124,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
 
         //Setting the image icon
         holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());
+
+        //Shows the team icon if its from team
+        if(!section.isAdmin())
+            holder.mTeamIcon.setVisibility(View.VISIBLE);
+        else
+            holder.mTeamIcon.setVisibility(View.INVISIBLE);
+
 
     }
 
