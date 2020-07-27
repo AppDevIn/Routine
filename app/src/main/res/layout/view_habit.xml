@@ -98,11 +98,11 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/circle_shape"
+            android:background="@drawable/habit_circle_shape"
             android:indeterminate="false"
             android:max="100"
             android:progress="65"
-            android:progressDrawable="@drawable/circular_progress_bar"
+            android:progressDrawable="@drawable/habit_progress_bar"
             tools:visibility="visible" />
 
         <TextView
@@ -240,7 +240,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50" />
+        app:layout_constraintGuide_begin="366dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -251,7 +251,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline">
+        app:layout_constraintTop_toBottomOf="@id/relativeLayout2">
 
 
         <com.google.android.material.button.MaterialButton
