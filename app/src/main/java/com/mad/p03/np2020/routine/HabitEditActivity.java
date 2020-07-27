@@ -355,6 +355,11 @@ public class HabitEditActivity extends AppCompatActivity {
 
                 // update habit title if modified
                 if (!habit.getTitle().equals(habit_name.getText().toString())){
+                    if (habit_name.getText().toString().equalsIgnoreCase("")){
+                        // set Error Message if the user never input the habit title
+                        habit_name.setError("Please enter habit name!");
+                        return;
+                    }
                     Log.d(TAG, "Habit: Update habit title");
                     habit.modifyTitle(habit_name.getText().toString()); // modify the title
                     if (habit.getHabitReminder() != null){
@@ -362,8 +367,15 @@ public class HabitEditActivity extends AppCompatActivity {
                     }
                 }
 
+                HabitRepetition hr = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habit.getHabitID());
                 // update habit count if modified
-                if (habit.getCount() != Integer.parseInt(habit_count.getText().toString())){
+                int count_field = Integer.parseInt(habit_count.getText().toString());
+                if (habit.getCount() != count_field){
+                    if (count_field - hr.getConCount() < 0){
+                        habit_count.requestFocus();
+                        habit_count.setError("Please input a bigger number!");
+                        return;
+                    }
                     Log.d(TAG, "Habit: Update habit count");
                     habit.setCount(Integer.parseInt(habit_count.getText().toString())); // modify the occurrence
                 }

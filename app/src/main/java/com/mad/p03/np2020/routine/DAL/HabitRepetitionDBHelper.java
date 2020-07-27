@@ -174,7 +174,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
         HabitRepetition hr = getTodayHabitRepetitionByID(habit.getHabitID());
         int count = habit.getCount() - hr.getConCount();
         // get the readable database
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         // the query of updating the row
         String query =
                 "UPDATE " + HabitRepetition.TABLE_NAME +
@@ -637,4 +637,5 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         return count;
     }
+
 }
