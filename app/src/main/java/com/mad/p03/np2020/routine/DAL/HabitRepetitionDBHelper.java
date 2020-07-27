@@ -150,18 +150,6 @@ public class HabitRepetitionDBHelper extends DBHelper {
         return cal.getTimeInMillis();
     }
 
-    public long getYesterdayTimestamp(){
-        Calendar cal = Calendar.getInstance();
-        int year  = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int date  = cal.get(Calendar.DATE);
-        cal.clear();
-        cal.set(year, month, date);
-        cal.add(Calendar.DATE, -1);
-
-        return cal.getTimeInMillis();
-    }
-
     /**
      *
      * This method is used to update the count of the habit in the SQLiteDatabase.
@@ -191,7 +179,8 @@ public class HabitRepetitionDBHelper extends DBHelper {
         // get the readable database
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + getYesterdayTimestamp() + " ORDER BY " + HabitRepetition.COLUMN_HABIT_ID + " ASC ";
+        long todayTimeStamp = getTodayTimestamp();
+        String query = "select *,max(timestamp) from " + HabitRepetition.TABLE_NAME + " GROUP BY " + HabitRepetition.COLUMN_HABIT_ID;
         // run the query
         Cursor res =  db.rawQuery( query, null );
         res.moveToFirst(); // move to the first result found
@@ -202,55 +191,54 @@ public class HabitRepetitionDBHelper extends DBHelper {
             int day = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY));
             int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
             int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
+            long currTimeStamp = res.getLong(res.getColumnIndex("max(timestamp)"));
             Habit habit = habitDBHelper.getHabitByID(id);
-            Log.d(TAG, "repeatingHabit: " + habit.getTitle());
 
-            boolean isUpdated = false;
-            switch (habit.getPeriod()){
-                case 1:
-                    Log.d(TAG, "repeatingHabit: DAILY");
-                    if (!checkTodayRepetition(id)){
-                        insertNewRepetitionHabit(id, -1, ++day, 0);
+            while (currTimeStamp < todayTimeStamp){
+                boolean isUpdated = false;
+                long timestamp = currTimeStamp + 86400000;
+                switch (habit.getPeriod()){
+                    case 1:
+                        Log.d(TAG, "repeatingHabit: DAILY");
+                        insertNewRepetitionHabit(id, -1, ++day, 0, timestamp);
                         isUpdated = true;
-                    }
-                    break;
+                        currTimeStamp += 86400000;
+                        break;
 
-                case 7:
-                    Log.d(TAG, "repeatingHabit: WEEKLY");
-                    if (day == 7){
-                        if (!checkTodayRepetition(id)){
-                            insertNewRepetitionHabit(id, ++cycle, 1, 0);
+                    case 7:
+                        Log.d(TAG, "repeatingHabit: WEEKLY");
+                        if (day == 7){
+                            insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                            isUpdated = true;
+                        }else{
+                            insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
                             isUpdated = true;
                         }
-                    }else{
-                        if (!checkTodayRepetition(id)){
-                            insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
-                            isUpdated = true;
-                        }
-                    }
-                    break;
+                        currTimeStamp += 86400000;
+                        break;
 
-                case 30:
-                    Log.d(TAG, "repeatingHabit: MONTHLY");
-                    if (day == 30){
-                        if (!checkTodayRepetition(id)){
-                            insertNewRepetitionHabit(id, ++cycle, 1, 0);
+                    case 30:
+                        Log.d(TAG, "repeatingHabit: MONTHLY");
+                        if (day == 30){
+                            insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
                             isUpdated = true;
                         }
-                    }
-                    else{
-                        if (!checkTodayRepetition(id)){
-                            insertNewRepetitionHabit(id, cycle, ++day, conCount+count);
+                        else{
+                            insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
                             isUpdated = true;
                         }
-                    }
-                    break;
+                        currTimeStamp += 86400000;
+                        break;
+
+                }
+                if (isUpdated){
+                    Log.d(TAG, "repeatingHabit: "+habit.getHabitID()+ " AT " + timestamp );
+                    HabitRepetition habitRepetition = getHabitRepetitionByTimeStamp(habit.getHabitID(), timestamp);
+                    writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                }
             }
 
-            if (isUpdated){
-                HabitRepetition habitRepetition = getTodayHabitRepetitionByID(habit.getHabitID());
-                writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
-            }
+
 
             res.moveToNext(); // move to the next result
 
@@ -258,11 +246,11 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close();
     }
 
-    public void insertNewRepetitionHabit(long habitID, int cycle, int cycle_day, int conCount){
+    public void insertNewRepetitionHabit(long habitID, int cycle, int cycle_day, int conCount, long timestamp){
         // insert the values
         ContentValues values = new ContentValues();
         values.put(HabitRepetition.COLUMN_HABIT_ID, habitID);
-        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, getTodayTimestamp());
+        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, timestamp);
         values.put(HabitRepetition.COLUMN_HABIT_COUNT, 0);
         values.put(HabitRepetition.COLUMN_HABIT_CONCOUNT, conCount);
         if (cycle == -1){
@@ -288,21 +276,6 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close();
     }
 
-    public boolean checkTodayRepetition(long habitID){
-        boolean isExisted = false;
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor =  db.rawQuery( "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + getTodayTimestamp(), null );
-        if (cursor.getCount() > 0){
-            isExisted = true;
-        }
-
-        db.close();
-        Log.d(TAG, "checkTodayRepetition: " + isExisted);
-        return isExisted;
-    }
-
     public HabitRepetition getTodayHabitRepetitionByID(long id){
         HabitRepetition hr = new HabitRepetition();
 
@@ -324,6 +297,28 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         return hr;
 
+    }
+
+    public HabitRepetition getHabitRepetitionByTimeStamp(long id, long timestamp){
+        HabitRepetition hr = new HabitRepetition();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + id + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + timestamp;
+        Cursor res =  db.rawQuery( query, null );
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            hr.setRow_id(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID)));
+            hr.setHabitID(id);
+            hr.setTimestamp(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_TIMESTAMP)));
+            hr.setCycle(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE)));
+            hr.setCycle_day(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY)));
+            hr.setCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT)));
+            hr.setConCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT)));
+        }
+
+        db.close();
+
+        return hr;
     }
 
     public void writeAllToFirebase(){
