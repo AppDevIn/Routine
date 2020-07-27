@@ -206,7 +206,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         habitRepetitionDBHelper.repeatingHabit();
-//        habitRepetitionDBHelper.writeAllToFirebase();
         setRepeatingHabit();
 
 
