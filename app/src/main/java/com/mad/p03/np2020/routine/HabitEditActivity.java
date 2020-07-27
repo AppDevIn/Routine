@@ -360,6 +360,12 @@ public class HabitEditActivity extends AppCompatActivity {
                         habit_name.setError("Please enter habit name!");
                         return;
                     }
+                    if (habit_name.getText().toString().toLowerCase().equals("dummy")){
+                        // set Error Message if the user input a dummy habit name
+                        habit_name.setError("Please enter another habit name");
+                        return;
+                    }
+
                     Log.d(TAG, "Habit: Update habit title");
                     habit.modifyTitle(habit_name.getText().toString()); // modify the title
                     if (habit.getHabitReminder() != null){

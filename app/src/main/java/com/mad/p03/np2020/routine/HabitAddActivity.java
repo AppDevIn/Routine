@@ -294,6 +294,12 @@ public class HabitAddActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (name.toLowerCase().equals("dummy")){
+                    // set Error Message if the user input a dummy habit name
+                    habit_name.setError("Please enter another habit name");
+                    return;
+                }
+
                 int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
                 int cnt = Integer.parseInt(menu_count.getText().toString()); // retrieve the count of the habit from the input field
 
