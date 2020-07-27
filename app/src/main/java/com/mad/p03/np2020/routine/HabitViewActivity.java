@@ -510,9 +510,9 @@ public class HabitViewActivity extends AppCompatActivity {
 //        }
 //        barEntries.add(first_barEntries);
 //        addDaysToTimeStampForMonth(timeStampList, getMaxDayOfTheMonth(initial_timestamp[0]),getMonthString(initial_timestamp[0]));
-//
 //        Log.d(TAG, "displayWeekBarChart: "+barEntries);
 //        Log.d(TAG, "displayWeekBarChart: "+timeStampList);
+
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
         final int[] eIndex = {barEntries.size() - 1};
@@ -672,6 +672,23 @@ public class HabitViewActivity extends AppCompatActivity {
         }
 
         barEntries.add(first_barEntries);
+
+        //fake
+//        x = 0;
+//        initial_timestamp[0] = getJan2021();
+//        lastMonth = getMonthFromMs(initial_timestamp[0]);
+//        maxMonth = 11;
+//
+//        first_barEntries = new ArrayList<>();
+//        while (lastMonth <= maxMonth){
+//            first_barEntries.add(new BarEntry(++x, x));
+//            ++lastMonth;
+//        }
+//        barEntries.add(first_barEntries);
+//        addMonthsToTimeStampForYear(timeStampList);
+//
+//        Log.d(TAG, "displayWeekBarChart: "+barEntries);
+//        Log.d(TAG, "displayWeekBarChart: "+timeStampList);
 
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
@@ -1095,6 +1112,13 @@ public class HabitViewActivity extends AppCompatActivity {
 
         return calendar.getTimeInMillis();
 
+    }
+
+    public long getJan2021(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(2021,0,1);
+        return calendar.getTimeInMillis();
     }
 
     public long getNextDayTimestamp(){
