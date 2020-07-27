@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -107,14 +108,7 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("Settings");
-
-                if(fragment != null)
-                    getActivity().getSupportFragmentManager().
-                            beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom, R.anim.slide_in_bottom, R.anim.slide_in_bottom)
-                            .replace(R.id.fragmentContainer, new Fragment())
-                            .commit();
+                animateOut();
             }
         });
 
@@ -313,6 +307,43 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     public void switchView(){
 
         viewSwitcher.showNext();
+    }
+
+
+
+    public void animateOut()
+    {
+        TranslateAnimation trans=new TranslateAnimation(0,0, 0,300*getContext().getResources().getDisplayMetrics().density);
+        trans.setDuration(150);
+        trans.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+                
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+                Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("Settings");
+
+
+                if(fragment != null)
+                    getActivity().getSupportFragmentManager().
+                            beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_in_bottom, R.anim.slide_in_bottom, R.anim.slide_in_bottom)
+                            .replace(R.id.fragmentContainer, new Fragment())
+                            .commit();
+            }
+        });
+        getView().startAnimation(trans);
     }
 
 
