@@ -707,7 +707,7 @@ public class HabitViewActivity extends AppCompatActivity {
             resetChart();
             if (eIndex[0] - 1 >= 0){
                 --eIndex[0];
-                initial_timestamp[0] = getLastMonthMs(initial_timestamp[0]);
+                initial_timestamp[0] = getLastYearMs(initial_timestamp[0]);
                 range_indicator.setText(String.format("%s - %s",getStartOfTheYear(initial_timestamp[0]), getEndOfTheYear(initial_timestamp[0])));
                 displayYearBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
                 if (eIndex[0] - 1 >= 0){
@@ -724,7 +724,7 @@ public class HabitViewActivity extends AppCompatActivity {
             resetChart();
             if (eIndex[0] + 1 < barEntries.size()){
                 ++eIndex[0];
-                initial_timestamp[0] = getNextMonthMs(initial_timestamp[0]);
+                initial_timestamp[0] = getNextYearMs(initial_timestamp[0]);
                 range_indicator.setText(String.format("%s - %s",getStartOfTheYear(initial_timestamp[0]), getEndOfTheYear(initial_timestamp[0])));
                 displayYearBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
                 if (eIndex[0] + 1 < barEntries.size()){
@@ -1180,6 +1180,22 @@ public class HabitViewActivity extends AppCompatActivity {
         int day = calendar.get(Calendar.MONTH);
 
         return day;
+    }
+
+    public long getNextYearMs(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        calendar.add(Calendar.YEAR,1);
+
+        return calendar.getTimeInMillis();
+    }
+
+    public long getLastYearMs(long ms){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+        calendar.add(Calendar.YEAR,-1);
+
+        return calendar.getTimeInMillis();
     }
 
 }
