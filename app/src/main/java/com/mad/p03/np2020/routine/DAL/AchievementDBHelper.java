@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.DAL;
 
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
  * @since 22-07-2020
  */
 
+@SuppressLint("ParcelCreator")
 public class AchievementDBHelper extends DBHelper  implements Parcelable {
 
     private final String TAG = "Achievement Database";

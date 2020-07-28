@@ -2,6 +2,7 @@ package com.mad.p03.np2020.routine.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,10 +33,12 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.AchievementViewHolder;
 import com.mad.p03.np2020.routine.ViewHolder.ItemAchievementViewHolder;
 import com.mad.p03.np2020.routine.models.Achievement;
+import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.User;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -44,6 +49,8 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
     private final User.achievementView achievements;
     private String TAG = "Achievement";
 
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
 
     // 1
     public GridViewAdapterAchievements(Context context, User.achievementView achievements) {
@@ -104,7 +111,7 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
         // Define background and sticker asset URIs and attribution link URL
         Uri backgroundAssetUri = getImageUri(achievement.getPathImg());
         Uri stickerAssetUri = getImageUri(achievement.getPathImg());
-        String attributionLinkUrl = "https://www.my-aweseome-app.com/p/BhzbIOUBval/";
+        String attributionLinkUrl = "https://play.google.com/store/apps/details?id=com.mad.p03.np2020.routine&hl=en";
 
         // Instantiate implicit intent with ADD_TO_STORY action,
         // background asset, sticker asset, and attribution link
@@ -128,4 +135,49 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
         return FileProvider.getUriForFile(mContext.getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", imgFile);
     }
 
+
+    public void showBadgeAchieved(int position) {
+        if (dialog == null || !dialog.isShowing()) {
+
+            TextView badgeTitle, badgeDescription, close;
+            ImageView badgeImage;
+            ImageButton shareButton;
+            Achievement achievement = achievements.getArrayList().get(position);
+
+            builder = new AlertDialog.Builder(mContext, R.style.BadgeDialog);
+
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            View shareCustomLayout = inflater.inflate(R.layout.custom_share_layout, null);
+
+            badgeTitle = shareCustomLayout.findViewById(R.id.badgeTitle);
+            badgeDescription = shareCustomLayout.findViewById(R.id.badgeDescription);
+            close = shareCustomLayout.findViewById(R.id.closeViewAchievementPopup);
+            shareButton = shareCustomLayout.findViewById(R.id.shareButton);
+            badgeImage = shareCustomLayout.findViewById(R.id.badgeView);
+
+            close.setOnClickListener(view -> dialog.cancel());
+            shareButton.setOnClickListener(view -> shareFileToInstagram(position));
+
+            if (achievement == null) {
+                badgeTitle.setText("Achievement Locked");
+                badgeDescription.setText("You have to reached ??");
+                shareButton.setVisibility(View.INVISIBLE);
+            } else {
+                badgeTitle.setText("Achievement Unlocked");
+                badgeDescription.setText("You reached " + achievement.getRequirement() + " " + achievement.getAchievementName(achievement.getTypeAchievement() - 1));
+                File imgFile = achievement.getPathImg();
+                if (imgFile.exists()) {
+                    Glide.with(mContext).load(new File(imgFile.getAbsolutePath())).signature(new ObjectKey(String.valueOf(achievement.getBadgeUrl()))).transform(new CircleCrop()).into(badgeImage);
+                }
+            }
+
+            builder.setView(shareCustomLayout);
+
+            // create and show the alert dialog
+            dialog = builder.create();
+
+            dialog.show();
+
+        }
+    }
 }

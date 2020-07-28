@@ -105,15 +105,12 @@ public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnC
         builder.setNegativeButton("No", null);
 
         //Deletion to the view
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.v("AlertDialog", "Delete Item " + task);
-                try {
-                    adapter.remove(position, focus);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            Log.v("AlertDialog", "Delete Item " + task);
+            try {
+                adapter.remove(position, focus);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         });
 

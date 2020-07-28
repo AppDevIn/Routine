@@ -1,8 +1,10 @@
 package com.mad.p03.np2020.routine.models;
 
 import java.io.File;
+import java.util.HashMap;
 
 public class Achievement {
+
 
     public static final String TABLE_NAME = "achievement_task";
 
@@ -47,6 +49,16 @@ public class Achievement {
     }
 
     public Achievement() {
+    }
+
+    public static String getAchievementName(int type){
+        HashMap<Integer, String> achievementType = new HashMap<>();
+
+        achievementType.put(0, "Hours");
+        achievementType.put(1, "Cycle");
+        achievementType.put(2, "Consecutive");
+
+        return achievementType.get(type);
     }
 
     public String stageNo;

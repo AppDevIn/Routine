@@ -1,13 +1,16 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,13 +25,12 @@ import com.mad.p03.np2020.routine.models.Achievement;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.User;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHolder> {
-
-    private List<Focus> focusList; //List of focus
 
     private Context context; //Current context
     private FocusDBHelper focusDBHelper;
@@ -37,8 +39,8 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
     private User user;
     private String TAG = "AchievementAdapter";
     private AchievementFragment achievementFragment;
-    HashMap<Integer, ArrayList<Achievement>>typeOfAchievements;
-    HashMap<Integer, String> achievementType = new HashMap<>();
+    private int highestCount;
+    HashMap<Integer, ArrayList<Achievement>> typeOfAchievements;
     int badges_achieved = 0;
 
     public AchievementAdapter(User user, Context context, FocusDBHelper focusDBHelper, AchievementFragment achievementFragment, AchievementDBHelper achievementDBHelper) {
@@ -51,9 +53,6 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
         typeOfAchievements = user.getAchievementArrayList();
         Log.v(TAG, "Setting up achievement adapter");
 
-        achievementType.put(0, "Hours");
-        achievementType.put(1, "Cycle");
-        achievementType.put(2, "Consecutive");
 
     }
 
@@ -69,8 +68,8 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
     //Set text
     @Override
     public void onBindViewHolder(@NonNull AchievementViewHolder holder, int position) {
-        Log.v(TAG, "Achieved at " + achievementType.get(position));
-        holder.achievementTitle.setText(achievementType.get(position) + " Badges");
+        Log.v(TAG, "Achieved at " + Achievement.getAchievementName(position));
+        holder.achievementTitle.setText(Achievement.getAchievementName(position) + " Badges");
         User.achievementView achievementArrayList;
         achievementArrayList = user.getAchievementListofPartiularType(position+1, context);
         GridViewAdapterAchievements achievementAdapter = new GridViewAdapterAchievements(context, achievementArrayList);
@@ -83,7 +82,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
         holder.gridViewItem.setItemAnimator(new DefaultItemAnimator());
 
         holder.gridViewItem.setAdapter(achievementAdapter);
-        holder.highest_title.setText("You Spent : " + achievementArrayList.getValueOutput() +" " +achievementType.get(position));
+        holder.highest_title.setText("You Spent : " + achievementArrayList.getValueOutput() +" " +Achievement.getAchievementName(position));
         holder.progressBar.setMax(achievementArrayList.getArrayList().size());
         holder.progressBar.setProgress(achievementArrayList.getBadges());
 
@@ -103,7 +102,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
 
     @Override
     public int getItemCount() {
-        return achievementType.size();
+        return typeOfAchievements.size();
     }
 
 }
