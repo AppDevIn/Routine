@@ -8,12 +8,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -91,6 +95,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     private RelativeLayout nothing_view;
 
+    private int page_x = 4;
+
+    private GridLayoutManager manager;
+
 
     /**
      *
@@ -110,11 +118,49 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
+
+
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         viewSwitcher = findViewById(R.id.switcher);
+
+        double screenInches = getScreenInches();
+        Log.d(TAG,"Screen inches : " + screenInches);
+        if (screenInches <= 5.1){
+            float h = getResources().getDimension(R.dimen.habitvs_height);
+            ViewGroup.LayoutParams vs_param = viewSwitcher.getLayoutParams();
+            vs_param.height = (int) h;
+            viewSwitcher.setLayoutParams(vs_param);
+            page_x = 2;
+
+            manager = new GridLayoutManager(HabitActivity.this,1, GridLayoutManager.HORIZONTAL, false){
+                @Override
+                public boolean canScrollHorizontally() {
+                    return false;
+                }
+
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+
+        }else{
+            manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.VERTICAL, false){
+                @Override
+                public boolean canScrollHorizontally() {
+                    return false;
+                }
+
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+        }
 
         nothing_view = findViewById(R.id.nothing_view);
 
@@ -134,17 +180,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
         habitRecyclerView = findViewById(R.id.habit_recycler_view);
-        GridLayoutManager manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.VERTICAL, false){
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            }
 
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
+
         habitRecyclerView.setLayoutManager(manager);
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
 
@@ -162,11 +199,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                     int n = Integer.parseInt(num)-1;
                     indicator_num.setText(String.valueOf(n));
                     n--;
-                    if (n*4+1 <= habitAdapter._habitList.size()){
+                    if (n*page_x+1 <= habitAdapter._habitList.size()){
                         next_indicator.setVisibility(View.VISIBLE);
                     }
 
-                    int position = n*4;
+                    int position = n*page_x;
                     habitRecyclerView.scrollToPosition(position);
                 }
 
@@ -181,16 +218,21 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
               public void onClick(View v) {
                   String num = indicator_num.getText().toString();
                   int n = Integer.parseInt(num);
-                  int position = (n) *4;
+                  int position = (n) * page_x;
                   int arr_size = habitAdapter._habitList.size();
                   if (position+1 <= arr_size){
                       n++;
                       indicator_num.setText(String.valueOf(n));
-                      if (n*4+1 > arr_size) {
+                      if (n*page_x+1 > arr_size) {
                           next_indicator.setVisibility(View.INVISIBLE);
                       }
                       prev_indicator.setVisibility(View.VISIBLE);
-                      habitRecyclerView.scrollToPosition(position+3);
+                      // 2--> 1 4-->3
+                      int i = 3;
+                      if (page_x == 2){
+                          i = 1;
+                      }
+                      habitRecyclerView.scrollToPosition(position+i);
                   }
               }
           });
@@ -228,7 +270,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 indicator_num.setVisibility(View.INVISIBLE);
                 remind_text.setVisibility(View.INVISIBLE);
             }
-        }else if (habitArrayList.size() <= 4){
+        }else if (habitArrayList.size() <= page_x){
             if (viewSwitcher.getCurrentView() == nothing_view){
                 viewSwitcher.showPrevious();
             }
@@ -583,6 +625,15 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         assert am != null;
         am.cancel(pi);
         am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
+    }
+
+    public double getScreenInches() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+
+        return Math.sqrt(x+y);
     }
 
 }
