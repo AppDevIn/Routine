@@ -189,8 +189,6 @@ public class HabitRepetitionDBHelper extends DBHelper {
             long id = res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_ID));
             int cycle = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE));
             int day = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY));
-            int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
-            int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
             long currTimeStamp = res.getLong(res.getColumnIndex("max(timestamp)"));
             Habit habit = habitDBHelper.getHabitByID(id);
 
@@ -213,8 +211,11 @@ public class HabitRepetitionDBHelper extends DBHelper {
                             if (day == 7){
                                 insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
                                 isUpdated = true;
+                                day = 1;
+
                             }else{
-                                insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
+                                int count = getLastDayTotalCount(id, timestamp);
+                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
                                 isUpdated = true;
                             }
                         }
@@ -227,9 +228,11 @@ public class HabitRepetitionDBHelper extends DBHelper {
                             if (day == 30){
                                 insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
                                 isUpdated = true;
+                                day = 1;
                             }
                             else{
-                                insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
+                                int count = getLastDayTotalCount(id, timestamp);
+                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
                                 isUpdated = true;
                             }
                         }
@@ -629,6 +632,28 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close();
         Log.d(TAG, "checkTodayRepetition: " + isExisted);
         return isExisted;
+    }
+
+    public int getLastDayTotalCount(long habitID, long timestamp){
+        int total = 0;
+        timestamp -= 86400000;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " = " + timestamp;
+        // run the query
+        Cursor res = db.rawQuery(query, null);
+        if (res.getCount() > 0) {
+            res.moveToFirst(); // move to the first result found
+
+            int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
+            int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
+            total = count + conCount;
+        }
+
+        db.close();
+
+        return total;
+
     }
 
 
