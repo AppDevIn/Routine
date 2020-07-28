@@ -10,6 +10,7 @@
     <color name="colorHistory">#FCFFE9</color>
     <color name="ErrorColor">#EC6060</color>
     <color name="grey">#908989</color>
+    <color name="lightgrey">#D7D5D5</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorFieryRose">#F45B69</color>
