@@ -913,7 +913,6 @@ public class HabitViewActivity extends AppCompatActivity {
         long ms = 0;
         try {
             date = dateFormat.parse(time);
-            Log.d(TAG, "getMonth: "+date);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
             int year  = c.get(Calendar.YEAR);
