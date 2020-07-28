@@ -6,94 +6,79 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/focus_image_background_success"
-    android:outlineProvider="bounds"
     android:fadingEdgeLength="@dimen/cardview_compat_inset_shadow"
+    android:outlineProvider="bounds"
     android:stateListAnimator="@null">
 
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="33dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="6dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateView"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_conversion_absoluteHeight="20dp"
         tools:layout_conversion_absoluteWidth="20dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="35dp"
+        android:gravity="center"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="Task"
-            android:textSize="12sp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <TextView
             android:id="@+id/taskView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/montserrat_semibold"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/montserrat_regular"
             android:text="Task Name"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="18sp"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="0dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="Duration"
-            android:textSize="12sp"
-
-            />
-
-        <TextView
             android:id="@+id/duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/montserrat_semibold"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="@font/montserrat_regular"
             android:text="[Duration]"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="12sp"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="0dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="19dp" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/dateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="[]"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <TextView
-        android:id="@+id/dateView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/montserrat_regular"
-        android:text="[]"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

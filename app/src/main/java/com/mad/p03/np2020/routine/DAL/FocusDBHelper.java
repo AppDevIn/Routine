@@ -86,8 +86,32 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         cv.put(Focus.COLUMN_TASK_COMPLETE, focus.getmCompletion());
         cv.put(Focus.COLUMN_TASK_DURATION, focus.getmDuration());
         cv.put(Focus.COLUMN_TASK_DATE, focus.getmDateTime());
+        cv.put(Focus.COLUMN_TASK_TIME_TAKEN, focus.getmTimeTaken());
 
         long insert = db.insert(Focus.FOCUS_TABLE, null, cv); //if insert is -1 means fail
+        db.close();
+        return insert != -1;
+    }
+
+    /**
+     *
+     * This is called to add Data to existing Database
+     *
+     * @param focus set focus parameter for this content
+     * @return boolean returns success or fail on the insert of data
+     * */
+    public boolean addArchiveData(Focus focus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(Focus.COLUMN_TASK_fbID, focus.getFbID());
+        cv.put(Focus.COLUMN_TASK_NAME, focus.getmTask());
+        cv.put(Focus.COLUMN_TASK_COMPLETE, focus.getmCompletion());
+        cv.put(Focus.COLUMN_TASK_DURATION, focus.getmDuration());
+        cv.put(Focus.COLUMN_TASK_DATE, focus.getmDateTime());
+        cv.put(Focus.COLUMN_TASK_TIME_TAKEN, focus.getmTimeTaken());
+
+        long insert = db.insert(Focus.FOCUS_Archive_TABLE, null, cv); //if insert is -1 means fail
         db.close();
         return insert != -1;
     }
@@ -100,6 +124,10 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
      * @return boolean returns success or fail on the insert of data
      * */
     public boolean removeOneData(Focus focus){
+
+        //Add into Archive data
+        addArchiveData(focus);
+
         // Find database that match the row data. If it found, delete and return true
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -115,6 +143,7 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
             db.close();
             return false;
         }
+
     }
 
     /**
@@ -122,7 +151,7 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
      * This is called to Delete all Data to existing Database
      *
      * */
-    public void deleteAll()
+    public void deleteAllMain()
     {
         //This is called to destroy SQLite Database
         SQLiteDatabase db = this.getWritableDatabase();
@@ -132,11 +161,24 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
 
     /**
      *
+     * This is called to Delete all Data to existing archive Database
+     *
+     * */
+    public void deleteAllArchive()
+    {
+        //This is called to destroy SQLite Database
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Focus.FOCUS_Archive_TABLE,null,null);
+        db.close();
+    }
+
+    /**
+     *
      * This is called to get all Row data to existing Database
      *
      * @return ArrayList of focus that has retrieve from the local database
      * */
-    public ArrayList<Focus> getAllData() {
+    public ArrayList<Focus> getAllMainData() {
 
         //This is called to get all Data existing in the firebase database
         ArrayList<Focus> returnList = new ArrayList<>();
@@ -154,8 +196,51 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
                 String taskDate = cursor.getString(2);
                 String taskDuration = cursor.getString(3);
                 String taskCompletion = cursor.getString(4);
+                long timeTaken = cursor.getLong(5);
 
-                Focus newFocus = new Focus(fbId, taskDate, taskDuration, taskName, taskCompletion);
+                Focus newFocus = new Focus(fbId, taskDate, taskDuration, taskName, taskCompletion, timeTaken);
+                returnList.add(newFocus);
+
+            } while (cursor.moveToNext());
+        } else {
+            Log.v("SQL", "SQL Database Fail");
+        }
+
+        cursor.close();
+        db.close();
+
+        Log.v("SQL", "Focus Data has been initialized completed with " + returnList.size());
+
+        return returnList;
+    }
+
+    /**
+     *
+     * This is called to get all Row data to existing Database
+     *
+     * @return ArrayList of focus that has retrieve from the archive database
+     * */
+    public ArrayList<Focus> getAllArchiveData() {
+
+        //This is called to get all Data existing in the firebase database
+        ArrayList<Focus> returnList = new ArrayList<>();
+
+        String queryString = "Select * FROM " + Focus.FOCUS_Archive_TABLE;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String fbId = cursor.getString(0); //fbId
+                String taskName = cursor.getString(1);
+                String taskDate = cursor.getString(2);
+                String taskDuration = cursor.getString(3);
+                String taskCompletion = cursor.getString(4);
+                long timeTaken = cursor.getLong(5);
+
+                Focus newFocus = new Focus(fbId, taskDate, taskDuration, taskName, taskCompletion, timeTaken);
                 returnList.add(newFocus);
 
             } while (cursor.moveToNext());
@@ -187,9 +272,11 @@ public class FocusDBHelper extends DBHelper  implements Parcelable{
         String query = "select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'";
         try (Cursor cursor = mDatabase.rawQuery(query, null)) {
             if(cursor!=null) {
+                Log.v("Database", cursor.getCount() + " number");
                 if(cursor.getCount()>0) {
-                    mDatabase.close();
-                    return true;
+                        mDatabase.close();
+                        return true;
+
                 }
             }
             mDatabase.close();

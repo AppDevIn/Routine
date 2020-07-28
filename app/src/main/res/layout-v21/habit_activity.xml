@@ -22,10 +22,10 @@
 
 
         android:fontFamily="@font/montserrat_regular"
-        android:textColor="@color/black"
-
         android:text="@string/habit_tracker"
+
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="25sp"
 
         app:layout_constraintBottom_toTopOf="@+id/guideline"
