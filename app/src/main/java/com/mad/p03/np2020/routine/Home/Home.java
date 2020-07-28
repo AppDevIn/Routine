@@ -4,13 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,15 +61,12 @@ import java.util.Date;
 import java.util.List;
 
 
-
 /**
- *
  * The controller class for xml layout activity_home
  * This will manage things that are on the home activity
  *
  * @author Jeyavishnu
  * @since 04-06-2020
- *
  */
 public class Home extends AppCompatActivity implements MyDatabaseListener {
 
@@ -88,9 +89,15 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     boolean isListRun = false;
 
 
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
 
     /**
-     *
      * This is used to get the ID of for the view and initialize the recycler
      * view for the tasks. Setting the onclick lister too and also setting 2 custom
      * spinner adapter one for color and the other for icon
@@ -105,13 +112,13 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.d(TAG, "UI is being created");
-
+        verifyStoragePermissions(this);
         //Get user from the intent
         mUser = new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
 //        mUser = getIntent().getParcelableExtra("user");
 //        mUID = mUser.getUID();
 
-        if(mUser != null){
+        if (mUser != null) {
 
             Log.d(TAG, "onCreate: Get all the task and section");
             mUser.getAllSectionAndTask();
@@ -120,11 +127,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         try {
             mUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-
 
 
         //Find view by ID
@@ -149,10 +154,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-
-        if(mSectionList.size() != 0){
+        if (mSectionList.size() != 0) {
             listUI();
-        }else{
+        } else {
             emptyListUI();
         }
 
@@ -167,7 +171,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
                             Log.d(TAG, "onComplete: Done Running");
                             Log.d(TAG, "onComplete(): UID: " + mUID);
 //                            Toast.makeText(Home.this, mUID, Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             Log.d(TAG, "onComplete(): Never Subscribe yet");
 //                            Toast.makeText(Home.this, "Never subscribe yet", Toast.LENGTH_SHORT).show();
                         }
@@ -180,8 +184,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
             }
         });
-
-
 
 
     }
@@ -204,11 +206,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     }
 
     /**
-     *
      * Used when interacting with the user
      * This when the onClickListener for the buttons are at and
      * an OnEditorActionListener
-     *
      */
     @Override
     protected void onResume() {
@@ -236,11 +236,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         SectionDBHelper.setMyDatabaseListener(this);
 
-        //Update the list
-        if(mHomePageAdapter != null){
-            mHomePageAdapter.setSectionList(mSectionDBHelper.getAllSections(FirebaseAuth.getInstance().getUid()));
-        }
-
     }
 
     /**
@@ -259,11 +254,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         }
 
 
-
     }
 
     /**
-     *
      * Triggered to add to the current adapter list
      * when it is added to the sql
      *
@@ -273,7 +266,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     @Override
     public void onDataAdd(final Object object) {
         Log.d(TAG, "A new section has been added: " + object.toString());
-        if(mSectionList.size() == 0){
+        if (mSectionList.size() == 0) {
             listUI();
         }
         runOnUiThread(new Runnable() {
@@ -291,7 +284,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         for (int position = 0; position < mSectionList.size(); position++) {
 
 
-            if(mSectionList.get(position).getID().equals(ID)){
+            if (mSectionList.get(position).getID().equals(ID)) {
                 final int finalPosition = position;
 
                 runOnUiThread(new Runnable() {
@@ -304,7 +297,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             }
         }
 
-        if(mSectionList.size() == 0){
+        if (mSectionList.size() == 0) {
             emptyListUI();
         }
     }
@@ -312,36 +305,17 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     @Override
     public void onDataUpdate(Object object) {
 
-        Section section = (Section) object;
-
-        for (int position = 0; position < mSectionList.size(); position++) {
-
-
-            if(mSectionList.get(position).getID().equals(section.getID())){
-                final int finalPosition = position;
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHomePageAdapter.removeItem(finalPosition);
-                        mHomePageAdapter.addItem(section, finalPosition);
-                    }
-                });
-                break;
-            }
-        }
 
     }
 
 
     /**
-     *
      * To add the data into firebase and SQL from the card
      * Create a section object.
      *
      * @param textView the is the edittext
      */
-    private void addSection(TextView textView){
+    private void addSection(TextView textView) {
         String listName = textView.getText().toString();
         Log.i(TAG, "adding confirmed for " + listName);
 
@@ -353,18 +327,17 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.d(TAG, "updateCardUI(): Added to SQL");
 
         //Save to firebase
-        section.executeFirebaseSectionUpload(mUID, section.getID(), this, false);
+        section.executeFirebaseSectionUpload(mUID, section.getID(), this);
 
     }
 
     /**
-     *
      * To set the bottom nav to listen to item changes
      * and chose the item that have been selected
      *
      * @param bottomNavigationView The botomNav that needs to be set to listen
      */
-    private void bottomNavInit( BottomNavigationView bottomNavigationView){
+    private void bottomNavInit(BottomNavigationView bottomNavigationView) {
 
         //To set setOnNavigationItemSelectedListener
         NavBarHelper navBarHelper = new NavBarHelper(this);
@@ -379,11 +352,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     }
 
 
-    private void getTxtDate(TextView textView){
+    private void getTxtDate(TextView textView) {
 
         //Date format that I want example(WEDNESDAY, 29 APRIL)
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd MMMM YYYY");
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());
@@ -394,7 +367,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         textView.setText(dateValue);
     }
 
-    private void emptyListUI(){
+    private void emptyListUI() {
 
         //IDs
         TextView mTextViewListName = findViewById(R.id.listName);
@@ -437,7 +410,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
     }
 
-    private void listUI(){
+    private void listUI() {
 
         //Make it visible
         mGridView.setVisibility(View.VISIBLE);
@@ -447,7 +420,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         findViewById(R.id.emptyUI).setVisibility(View.GONE);
 
 
-        if(!isListRun) {
+        if (!isListRun) {
 
             //Recycler view setup
             mGridView.setLayoutManager(new GridLayoutManager(Home.this, 2)); //Setting the layout manager with the column of 2
@@ -488,7 +461,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         final EditText mEditAddList = dialogView.findViewById(R.id.txtAddList);
 
         //Declaring a custom adapter
-        mSpinnerColor.setAdapter(new MySpinnerColorAdapter( mColors)); // For the color
+        mSpinnerColor.setAdapter(new MySpinnerColorAdapter(mColors)); // For the color
         mSpinnerIcons.setAdapter(new MySpinnerIconsAdapter(mBackgrounds)); //For the background
 
         //Now we need an AlertDialog.Builder object
@@ -547,7 +520,25 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     }
 
 
+    /**
+     * Checks if the app has permission to write to device storage
+     * <p>
+     * If the app does not has permission then the user will be prompted to grant permissions
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
 
 }

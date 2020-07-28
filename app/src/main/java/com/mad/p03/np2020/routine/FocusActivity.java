@@ -1,12 +1,13 @@
 package com.mad.p03.np2020.routine;
 
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -14,7 +15,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -28,7 +31,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -50,7 +56,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.DAL.UserDBHelper;
+import com.mad.p03.np2020.routine.Fragment.AchievementFragment;
+import com.mad.p03.np2020.routine.models.Achievement;
 import com.mad.p03.np2020.routine.models.CircularProgressBar;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.User;
@@ -59,6 +70,7 @@ import com.mad.p03.np2020.routine.background.BoundService;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -75,13 +87,20 @@ import static java.lang.String.valueOf;
  */
 
 
-public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
 
 
     //Fragment Variables
     HistoryFragment fragmentFocus;
+    AchievementFragment fragmentAchievements;
+
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
+    //Cloud storage
+    private StorageReference mStorageRef;
+
+    AchievementFragment fragmentAchievement;
 
     public CircularProgressBar circularProgressBar;
     public CardView cdView;
@@ -89,13 +108,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Button for timer
      */
     public Button focusButton;
-    ImageButton imageButton;
+    public ImageButton imageButton;
 
     /**
      * Timer for minutes and seconds
      */
     private int thours, tmins, tsecs = 0;
-
+    private long timeTaken = 0;
     /**
      * This button state is used to track the timer button next state
      */
@@ -157,6 +176,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     //Local Database
     FocusDBHelper focusDBHelper;
+    AchievementDBHelper achievementDBHelper;
 
     //Power Manager
     PowerManager pm;
@@ -168,6 +188,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     //Keyboard
     boolean keyboardShow = false;
 
+    //Focus item selector
+    PopupWindow changeStatusPopUp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +200,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
-        initialization(); //Process of data
+        try {
+            initialization(); //Process of data
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         //ImageButton
         imageButton = findViewById(R.id.history);
@@ -247,7 +274,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -265,8 +291,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Get Local Database Data
      * Initialize object
      */
-    private void initialization() {
-        Log.v(TAG, "Database does not exist");
+    private void initialization() throws ParseException {
+        user.getAchievement();
+
         Intent intent = new Intent(getApplicationContext(), BoundService.class);
         startService(intent);
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
@@ -274,15 +301,14 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         focusDBHelper = new FocusDBHelper(FocusActivity.this);
         if (focusDBHelper.isTableExists("focus")) {
 
-            user.setmFocusList(focusDBHelper.getAllData());
+            user.setmFocusList(focusDBHelper.getAllMainData());
 
             Log.v(TAG, "Database Exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
-            FirebaseDatabase();
+
         } else {
             Log.v(TAG, "Database does not exist");
             focusDBHelper = new FocusDBHelper(FocusActivity.this);
-            FirebaseDatabase();
             user.readFocusFirebase(this);
         }
 
@@ -294,7 +320,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
 
         //Add it to LocalDatabase List
-        Log.v(TAG, "Local database: " + focusDBHelper.getAllData().toString());
+        Log.v(TAG, "Local database: " + focusDBHelper.getAllMainData().toString());
 
         mInstance = this;
         // addObserver of user
@@ -320,6 +346,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 }
             }
         });
+
+        //Download image from google storage
+        achievementDBHelper = new AchievementDBHelper(FocusActivity.this);
+
+        for (Achievement a : achievementDBHelper.getAchievementData()){
+            user.addAchievementList(a);
+            Log.v(TAG, "add Achievement list(): " + a);
+
+        }
+
+        Log.v(TAG, "Achievement list " + user.getAchievementArrayList());
+
     }
 
 
@@ -363,7 +401,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 timeRunner();
                 long totaltime = (thours * 60 * 60) + (tmins * 60) + tsecs;
                 millisInput = totaltime * 1000;
-
+                timeTaken = millisInput;
                 Log.v(TAG, valueOf(millisInput));
                 BUTTON_STATE = "Fail";
                 StartTimer(millisInput);
@@ -382,7 +420,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 mCompletion = "True";
                 totalTimeSeconds = (thours * 60 * 60) + (tmins * 60) + tsecs;
                 String dateSuccess = new SimpleDateFormat("ddMMyyyy HH:mm:ss", Locale.getDefault()).format(new Date());
-                Focus focusViewHolder = new Focus(dateTimeTask, String.valueOf(totalTimeSeconds), currentTask, mCompletion);
+                Focus focusViewHolder = new Focus(dateTimeTask, String.valueOf(totalTimeSeconds), currentTask, mCompletion, timeTaken);
                 focusViewHolder.setFbID(dateSuccess);
                 writeToDatabase(focusViewHolder);
                 break;
@@ -390,17 +428,17 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
             case "Fail":
                 Log.v(TAG, "Button Fail Task is clicked");
                 circularProgressBar.setColor(Color.RED);
-                hour.setText("00");
-                min.setText("00");
-                sec.setText("00");
+
                 textDisplay.setText(R.string.FAIL_STATUS);
                 timerFail();
+                timeTaken = timeTaken - mTimeLeftInMillis;
                 mCountDownTimer.cancel(); //Pause timer
                 BUTTON_STATE = "Reset";
                 mCompletion = "False";
                 totalTimeSeconds = (thours * 60 * 60) + (tmins * 60) + tsecs;
+
                 String dateFail = new SimpleDateFormat("ddMMyyyy HH:mm:ss", Locale.getDefault()).format(new Date());
-                Focus focus = new Focus(dateTimeTask, String.valueOf(totalTimeSeconds), currentTask, mCompletion);
+                Focus focus = new Focus(dateTimeTask, String.valueOf(totalTimeSeconds), currentTask, mCompletion, timeTaken);
                 focus.setFbID(dateFail);
                 writeToDatabase(focus);
                 break;
@@ -415,6 +453,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private void writeToDatabase(Focus focus) {
         focusDBHelper.addData(focus); //Add to database
         user.addFocusList(focus); //Adding it to list
+
         writeDataFirebase(focus);
     }
 
@@ -522,13 +561,13 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         Log.v(TAG, "Counting down");
         Log.v(TAG, String.valueOf(mTimeLeftInMillis));
         Log.v(TAG, String.valueOf(millisInput));
-        long percentage = (long) ((float) mTimeLeftInMillis / millisInput *100);
+        long percentage = (long) ((float) mTimeLeftInMillis / millisInput * 100);
 
         hour.setText(format(Locale.US, "%02d", hours));
         min.setText(format(Locale.US, "%02d", minutes));
         sec.setText(format(Locale.US, "%02d", seconds));
 
-        circularProgressBar.setProgress(100- percentage);
+        circularProgressBar.setProgress(100 - percentage);
 
 
     }
@@ -539,12 +578,26 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      *
      * @param v Passing the current view to this content
      */
+    @SuppressLint("RestrictedApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.history: //Open history page
-                openHistory();
-                Log.v(TAG, "Open History Page");
+                Log.v(TAG, "Open menu");
+                int[] location = new int[2];
+
+                // Get the x, y location and store it in the location[] array
+                // location[0] = x, location[1] = y.
+                v.getLocationOnScreen(location);
+
+                //Initialize the Point with x, and y positions
+                Point point = new Point();
+                point.x = location[0];
+                point.y = location[1];
+
+                showStatusPopup(FocusActivity.this, point);
+
+
                 break;
 
             case R.id.HourUp: //Increment hours
@@ -760,10 +813,29 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         Fragment fragmentA = getSupportFragmentManager().findFragmentByTag("HISTORY FRAGMENT");
 
-        if(fragmentA == null) {
+        if (fragmentA == null) {
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.add(R.id.fragment_container, fragmentFocus, "HISTORY FRAGMENT").commit();
+        }
+
+    }
+
+    /**
+     * Open Achievement Fragment
+     */
+    public void openAchievement() {
+
+        fragmentAchievements = AchievementFragment.newInstance(user, focusDBHelper, achievementDBHelper);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        Fragment fragmentA = getSupportFragmentManager().findFragmentByTag("ACHIEVEMENT FRAGMENT");
+
+        if (fragmentA == null) {
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.add(R.id.fragment_container, fragmentAchievements, "ACHIEVEMENT FRAGMENT").commit();
         }
 
     }
@@ -843,10 +915,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 Log.v(TAG, "OnTick: " + millisUntilFinished);
                 mTimeLeftInMillis = millisUntilFinished;
                 updateCountDownText();
+
             }
 
             @Override
             public void onFinish() {
+
                 Log.v(TAG, "Completed");
                 BUTTON_STATE = "Success";
                 focusTime();
@@ -1064,4 +1138,49 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
 
     };
+
+    //Popup layout to select
+    private void showStatusPopup(final Activity context, Point p) {
+        imageButton.setRotation(90);
+
+        ImageView history_item, achievement_item;
+
+        // Inflate the popup_layout.xml
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.layout_popup, null);
+
+        //Setting onclick listener
+        history_item = layout.findViewById(R.id.item_history);
+        achievement_item = layout.findViewById(R.id.item_achievements);
+        history_item.setOnClickListener(view -> {
+            openHistory();
+            changeStatusPopUp.dismiss();
+        });
+
+        achievement_item.setOnClickListener(view -> {
+            openAchievement();
+            changeStatusPopUp.dismiss();
+
+        });
+
+        // Creating the PopupWindow
+        changeStatusPopUp = new PopupWindow(context);
+        changeStatusPopUp.setContentView(layout);
+        changeStatusPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        changeStatusPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        changeStatusPopUp.setFocusable(true);
+
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int OFFSET_X = 14;
+        int OFFSET_Y = 130;
+
+        changeStatusPopUp.setBackgroundDrawable(context.getResources().getDrawable(R.color.fui_transparent));
+
+        // Displaying the popup at the specified location, + offsets.
+        changeStatusPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+
+        changeStatusPopUp.setOnDismissListener(() -> {
+            imageButton.setRotation(0);
+        });
+    }
 }

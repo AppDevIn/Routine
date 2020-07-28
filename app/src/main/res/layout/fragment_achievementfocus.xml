@@ -27,7 +27,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                app:cardBackgroundColor="#F1F1F1"
+                app:cardBackgroundColor="#FFFFC1"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
                 app:contentPaddingBottom="33dp">
@@ -37,7 +37,7 @@
                     android:layout_height="134dp">
 
                     <ImageButton
-                        android:id="@+id/closeFragment"
+                        android:id="@+id/closeAchievement"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -53,8 +53,8 @@
 
                     <TextView
                         android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="231dp"
+                        android:layout_height="35dp"
                         android:layout_marginStart="36dp"
                         android:layout_marginTop="52dp"
                         android:fontFamily="@font/montserrat_extrabold"
@@ -65,17 +65,19 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="5dp"
                         android:layout_marginTop="32dp"
-                        android:layout_marginEnd="28dp"
-                        app:srcCompat="@drawable/ic_achievement"
+                        android:layout_marginEnd="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toEndOf="@+id/title"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_achievement" />
 
                     <RelativeLayout
                         android:id="@+id/successIndicatorLayout"
-                        android:layout_width="95dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:layout_marginStart="37dp"
@@ -84,7 +86,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/title">
 
                         <Button
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignLeft="@+id/buttonLayout1"
                             android:layout_alignRight="@+id/buttonLayout1"
@@ -95,7 +97,7 @@
 
                         <LinearLayout
                             android:id="@+id/buttonLayout1"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignParentStart="true"
                             android:layout_marginStart="0dp"
@@ -107,12 +109,13 @@
                             <ImageView
                                 android:layout_width="41dp"
                                 android:layout_height="21dp"
-                                app:srcCompat="@drawable/icon_sun" />
+                                app:srcCompat="@drawable/ic_achievement" />
 
                             <TextView
-                                android:id="@+id/SuccessFocusIndicator"
+                                android:id="@+id/badgesAchieve"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
                                 android:layout_marginRight="15dp"
                                 android:fontFamily="@font/montserrat_semibold"
                                 android:gravity="center"
@@ -132,35 +135,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center_horizontal">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerHistory"
+                    android:id="@+id/recyclerAch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="5dp"
                     android:clipToPadding="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.492"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/nothing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/nothing"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/recyclerHistory"
-                    app:layout_constraintEnd_toEndOf="@+id/recyclerHistory"
-                    app:layout_constraintStart_toStartOf="@+id/recyclerHistory"
-                    app:layout_constraintTop_toTopOf="@+id/recyclerHistory">
-
-                </ImageView>
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

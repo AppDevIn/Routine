@@ -29,6 +29,7 @@ import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +62,6 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         this.context = context;
         this.focusDBHelper = focusDBHelper;
         this.user = user;
-        this.focusList = user.getmFocusList();
         this.historyFragment = historyFragment;
 
         user.readFocusFirebase(context);
@@ -91,7 +91,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
     public void onBindViewHolder(@NonNull FocusViewHolder holder, int position) {
         List<Integer> hrMinSec = ConvertSecondsToTime(Integer.parseInt(focusList.get(position).getmDuration()));
 
-        holder.duration.setText(String.format(Locale.US, "%dHr %dMin", hrMinSec.get(0), hrMinSec.get(1)));
+        holder.duration.setText(String.format(Locale.US, "%d Hr %d Min", hrMinSec.get(0), hrMinSec.get(1)));
         holder.Task.setText(focusList.get(position).getmTask());
         holder.date.setText(focusList.get(position).getmDateTime());
         boolean completed = focusList.get(position).getmCompletion().equals("True");
@@ -113,14 +113,16 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      * @param position         This parameter is used to set the position of the section
      * @param focusViewHolder  This parameter is used to set the FocusViewHolder of the section
      */
-    public void remove(int position, Focus focusViewHolder) {
+    public void remove(int position, Focus focusViewHolder) throws ParseException {
         focusList.remove(position);
         focusDBHelper.removeOneData(focusViewHolder);
 
         deleteDataFirebase(focusViewHolder);
 
         user.setmFocusList((ArrayList<Focus>) focusList);
-        historyFragment.updateTask(user);
+        ArrayList<Focus> focusArrayList = new ArrayList<>();
+        focusArrayList = (ArrayList<Focus>) focusList;
+        historyFragment.updateTask(focusArrayList);
 
         this.notifyItemRemoved(position);
     }
@@ -209,6 +211,12 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
                         .build();
 
         WorkManager.getInstance(context.getApplicationContext()).enqueue(mywork);
+    }
+
+    public void updateList(ArrayList<Focus> updateList){
+        focusList = updateList;
+        Log.v(TAG, "Set new list " + updateList);
+        this.notifyDataSetChanged();
     }
 
     /**
