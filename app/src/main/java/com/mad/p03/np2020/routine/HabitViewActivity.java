@@ -451,7 +451,6 @@ public class HabitViewActivity extends AppCompatActivity {
     public void displayMonthBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
         //fake
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 15));
 //        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 5));
 //        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 10));
 //        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 16));

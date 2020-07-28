@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitCheckHolder;
@@ -151,11 +153,17 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
         if (habitList.size() == 0) {return habitList;}
         int size = habitList.size();
 
-        int dummy_size = 4-(size % 4);
-        if (dummy_size == 4) {return habitList;}
+        if (getScreenInches() <= 5.1){
+            if (size % 2 != 0){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
+        }else{
+            int dummy_size = 4-(size % 4);
+            if (dummy_size == 4) {return habitList;}
 
-        for (int i = 0; i<dummy_size; i++){
-            habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            for (int i = 0; i<dummy_size; i++){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
         }
 
         return habitList;
@@ -170,5 +178,14 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
             }
         }
         return n;
+    }
+
+    public double getScreenInches() {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((HabitActivity) c).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+
+        return Math.sqrt(x+y);
     }
 }

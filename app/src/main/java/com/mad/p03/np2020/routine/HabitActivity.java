@@ -118,9 +118,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-
-
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
@@ -181,10 +178,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         habitRecyclerView = findViewById(R.id.habit_recycler_view);
 
-
         habitRecyclerView.setLayoutManager(manager);
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
-
 
         prev_indicator = findViewById(R.id.habit_indicator_prev);
         next_indicator = findViewById(R.id.habit_indicator_next);
@@ -243,7 +238,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_first_habit = findViewById(R.id.add_first_habit);
         add_first_habit.setOnClickListener(this);
 
-
         habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -264,7 +258,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         if(habitArrayList.size() == 0){
             if (viewSwitcher.getCurrentView() != nothing_view){
                 viewSwitcher.showNext();
-                add_habit.setVisibility(View.INVISIBLE);
+                add_habit.setVisibility(View.VISIBLE);
                 prev_indicator.setVisibility(View.INVISIBLE);
                 next_indicator.setVisibility(View.INVISIBLE);
                 indicator_num.setVisibility(View.INVISIBLE);
@@ -477,11 +471,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         if (habitList.size() == 0) {return habitList;}
         int size = habitList.size();
 
-        int dummy_size = 4-(size % 4);
-        if (dummy_size == 4) {return habitList;}
+        if (page_x == 2){
+            if (size % 2 != 0){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
+        }else{
+            int dummy_size = 4-(size % 4);
+            if (dummy_size == 4) {return habitList;}
 
-        for (int i = 0; i<dummy_size; i++){
-            habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            for (int i = 0; i<dummy_size; i++){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
         }
 
         return habitList;
