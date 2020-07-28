@@ -11,6 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/bg_guideline"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_percent="0.52"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:background="@color/slightGrey"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/bg_guideline"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:background="@color/colorWhite"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/bg_guideline"/>-->
+
         <androidx.cardview.widget.CardView
             android:id="@+id/habit_card"
             android:layout_width="match_parent"
@@ -262,7 +287,7 @@
                 android:textSize="12sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="20dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/colorWhite"
                 app:strokeWidth="2dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -276,7 +301,7 @@
                 android:textSize="12sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="20dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/colorWhite"
                 app:strokeWidth="2dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -290,7 +315,7 @@
                 android:textSize="12sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="20dp"
-                app:strokeColor="@color/white"
+                app:strokeColor="@color/colorWhite"
                 app:strokeWidth="2dp" />
 
         </LinearLayout>

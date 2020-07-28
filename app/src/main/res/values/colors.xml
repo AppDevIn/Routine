@@ -46,4 +46,5 @@
     <color name="pastelBlue">#AEC6CF</color>
     <color name="warmRed">#e74b3c</color>
     <color name="blackGrey">#545454</color>
+    <color name="slightGrey">#fafafa</color>
 </resources>
