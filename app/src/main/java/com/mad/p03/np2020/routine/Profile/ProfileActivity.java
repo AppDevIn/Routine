@@ -430,7 +430,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         storageProfilePicture.child(mAuth.getCurrentUser().getUid() + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-                Picasso.get().load(task.getResult()).into(profileImageView);
+                if(task.isSuccessful()) {
+                    Picasso.get().load(task.getResult()).into(profileImageView);
+                }
             }
         });
     }

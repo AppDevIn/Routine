@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Task.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,17 +10,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
 import com.mad.p03.np2020.routine.Task.model.TeamDataListener;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Team;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +168,18 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
                         mTextView.setText(name[0]);
 
                         //TODO: Get the ICON
+                        StorageReference storageProfilePicture = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
+
+
+                        storageProfilePicture.child(snap.getKey() + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if(task.isSuccessful()){
+                                    Picasso.get().load(task.getResult()).into(mHolder.mImgPP);
+                                }
+                            }
+                        });
+
 
 
 
@@ -175,6 +193,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
 
                 }
             });
+
 
             return name[0];
 
