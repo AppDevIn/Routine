@@ -242,6 +242,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * */
     private void firebaseAuthWithGoogle(String email, String password, final Context context) {
 
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -307,6 +308,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     }
                 });
+
+
     }
 
     /**

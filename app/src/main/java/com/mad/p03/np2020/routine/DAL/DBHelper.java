@@ -3,6 +3,7 @@ package com.mad.p03.np2020.routine.DAL;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 
 
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
@@ -106,5 +107,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db,oldVersion,newVersion);
     }
+
 
 }
