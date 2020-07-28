@@ -4,4 +4,8 @@
     <solid
         android:color="@color/colorNCS_Blue"
         />
+    <size
+        android:width="35dp"
+        android:height="35dp"/>
+
 </shape>

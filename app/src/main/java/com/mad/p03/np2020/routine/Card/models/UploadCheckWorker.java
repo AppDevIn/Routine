@@ -23,6 +23,9 @@ import androidx.work.WorkerParameters;
  * @since 02-06-2020
  *
  */
+
+
+
 public class UploadCheckWorker extends Worker {
 
     public UploadCheckWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -52,14 +55,38 @@ public class UploadCheckWorker extends Worker {
         boolean isCheck =  getInputData().getBoolean(Check.COLUMN_CHECKED, false);
 
         //Getting a database reference to Users
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("check").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(String.valueOf(ID));
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Check").child(String.valueOf(ID));
 
         //Setting data into the user portion
-        mDatabase.child(Check.COLUMN_NAME).setValue(Name);
-        mDatabase.child(Check.COLUMN_Check_ID).setValue(ID);
-        mDatabase.child(Check.COLUMN_TaskID).setValue(taskID);
-        mDatabase.child(Check.COLUMN_CHECKED).setValue(isCheck);
+//        mDatabase.child(Check.COLUMN_TaskID).setValue(taskID);
+//        mDatabase.child(Check.COLUMN_NAME).setValue(Name);
+//        mDatabase.child(Check.COLUMN_Check_ID).setValue(ID);
+//        mDatabase.child(Check.COLUMN_CHECKED).setValue(isCheck);
+
+        CheckFirebase checkFirebase = new CheckFirebase(taskID, isCheck, Name, ID);
+
+        mDatabase.setValue(new Check(Name, ID, isCheck ? "1":"0", 0, taskID));
 
         return Result.success();
+    }
+
+
+}
+
+
+class CheckFirebase{
+    String TaskID;
+    Boolean Checked;
+    String Name;
+    String CheckID;
+
+    public CheckFirebase() {
+    }
+
+    public CheckFirebase(String taskID, Boolean checked, String name, String checkID) {
+        TaskID = taskID;
+        Checked = checked;
+        Name = name;
+        CheckID = checkID;
     }
 }

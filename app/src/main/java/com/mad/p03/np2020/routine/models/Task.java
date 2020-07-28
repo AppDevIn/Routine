@@ -462,7 +462,6 @@ public class Task implements Serializable {
 
             if(owner != null) {
 
-
                 WorkManager.getInstance().getWorkInfoByIdLiveData(uploadTask.getId())
                         .observe(owner, new Observer<WorkInfo>() {
                             @Override
@@ -557,7 +556,8 @@ public class Task implements Serializable {
             boolean isSame = this.mTaskID.equals(task.getTaskID()) &&
                     sameNotes &&
                     this.isChecked() == task.isChecked() &&
-                    this.getName().equals(task.getName());
+                    this.getName().equals(task.getName()) &&
+                    ((this.getStringRemindDate() != null)&& (this.getStringRemindDate().equals(task.getStringRemindDate())));
 //                    this.getRemindDate().equals(task.getRemindDate());
             return (isSame);
         }else{

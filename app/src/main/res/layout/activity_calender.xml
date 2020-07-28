@@ -5,22 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".Calender.Calender"
-    >
+    tools:context=".Calender.Calender">
 
 
     <com.mad.p03.np2020.routine.Calender.CustomCalenderView
         android:id="@+id/calendar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
 
         android:layout_marginTop="8dp"
 
 
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <LinearLayout
         android:id="@+id/ll_border"
@@ -32,7 +31,7 @@
         android:weightSum="1"
         app:layout_constraintBottom_toTopOf="@+id/switcher"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendar">
+        app:layout_constraintTop_toBottomOf="@+id/guideline3">
 
 
         <LinearLayout
@@ -79,10 +78,42 @@
         app:layout_constraintTop_toBottomOf="@id/ll_border">
 
 
+        <RelativeLayout
+            android:id="@+id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
+
+            <ImageView
+                android:id="@+id/nothing"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+
+
+                android:src="@drawable/nothing"
+
+                android:contentDescription="@string/rubbish_bin" />
+
+            <TextView
+                android:id="@+id/timeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/your_tasklist_is_empty"
+                android:textAlignment="center"
+                android:textColor="#929292"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -103,64 +134,33 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            >
-
-
-            <ImageView
-                android:id="@+id/nothing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
-
-                android:src="@drawable/nothing"
-
-                />
-
-            <TextView
-                android:id="@+id/timeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-
-                android:fontFamily="@font/montserrat_regular"
-                android:text="@string/your_tasklist_is_empty"
-                android:textAlignment="center"
-                android:textColor="#929292"
-                android:textSize="15sp" />
-
-        </RelativeLayout>
-
-
-
-
-
     </ViewSwitcher>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.57" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavViewBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
-
-
         android:background="#FFFFFF"
+
+
+        app:itemIconTint="@drawable/bottom_nav_icon_color_selector"
+        app:labelVisibilityMode="unlabeled"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav"
-        />
+        app:menu="@menu/bottom_nav" />
 
 
 

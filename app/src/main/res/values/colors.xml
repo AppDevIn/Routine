@@ -47,4 +47,7 @@
     <color name="warmRed">#e74b3c</color>
     <color name="blackGrey">#545454</color>
     <color name="slightGrey">#fafafa</color>
+    <color name="purple">#BAAFFF</color>
+    <color name="darkBlue">#004B81</color>
+    <color name="stringGray">#6A6A6A</color>
 </resources>

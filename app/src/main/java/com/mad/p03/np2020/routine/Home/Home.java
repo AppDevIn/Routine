@@ -236,6 +236,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         SectionDBHelper.setMyDatabaseListener(this);
 
+        //Update the list
+        if(mHomePageAdapter != null){
+            mHomePageAdapter.setSectionList(mSectionDBHelper.getAllSections(FirebaseAuth.getInstance().getUid()));
+        }
+
     }
 
     /**
@@ -307,6 +312,24 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     @Override
     public void onDataUpdate(Object object) {
 
+        Section section = (Section) object;
+
+        for (int position = 0; position < mSectionList.size(); position++) {
+
+
+            if(mSectionList.get(position).getID().equals(section.getID())){
+                final int finalPosition = position;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mHomePageAdapter.removeItem(finalPosition);
+                        mHomePageAdapter.addItem(section, finalPosition);
+                    }
+                });
+                break;
+            }
+        }
 
     }
 
@@ -330,7 +353,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.d(TAG, "updateCardUI(): Added to SQL");
 
         //Save to firebase
-        section.executeFirebaseSectionUpload(mUID, section.getID(), this);
+        section.executeFirebaseSectionUpload(mUID, section.getID(), this, false);
 
     }
 
@@ -360,7 +383,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //Date format that I want example(WEDNESDAY, 29 APRIL)
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM YYYY");
+        SimpleDateFormat formatter= new SimpleDateFormat("EEEE, dd MMMM yyyy");
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());

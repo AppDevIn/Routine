@@ -62,19 +62,18 @@ public class CheckDBHelper extends DBHelper{
         //Get the data from sqlite
         Cursor cursor =  db.rawQuery( "SELECT * FROM " + Check.TABLE_NAME+ " where "+Check.COLUMN_Check_ID+"='"+id+"'", null );
 
-        if (cursor != null)
-            cursor.moveToFirst(); //Only getting the first value
+        if (cursor.moveToFirst()) {
 
-        //Prepare a section object
-        assert cursor != null;
-        Check check = Check.fromCursor(cursor);
-        Log.d(TAG, "getTask(): Reading data" + check.toString() );
-
+            //Prepare a section object
+            Check check = Check.fromCursor(cursor);
+            Log.d(TAG, "getTask(): Reading data" + check.toString());
+            return check;
+        }
 
         //Close the DB connection
         db.close();
 
-        return check;
+        return null;
 
     }
 

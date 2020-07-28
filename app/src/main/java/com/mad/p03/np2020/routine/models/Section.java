@@ -8,6 +8,9 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
@@ -23,7 +26,10 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
@@ -94,6 +100,7 @@ public class Section implements Serializable {
     private int position;
     private String ID;
     private String mUID;
+    Map<String, String> teamList = new HashMap<>();
 
 
 
@@ -161,13 +168,16 @@ public class Section implements Serializable {
      * @return This will return the section object
      */
     public static Section fromDataSnapShot(DataSnapshot snapshot){
+
+        Map<String, String> teamList = new HashMap<>();
         
-        
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String UID = snapshot.child("uid").getValue(String.class);
         String name = snapshot.child("name").getValue(String.class);
-        int icon = snapshot.child("bmiIcon").getValue(Integer.class) == null ? 0 : snapshot.child("bmiIcon").getValue(Integer.class);
+        int icon = snapshot.child("iconValue").getValue(Integer.class) == null ? 0 : snapshot.child("iconValue").getValue(Integer.class);
         int color = snapshot.child("backgroundColor").getValue(Integer.class) == null ? 0 : snapshot.child("backgroundColor").getValue(Integer.class);
         String id = snapshot.child("id").getValue(String.class);
+
+
 
         return new Section(name, color, icon, id, 0, UID);
 
@@ -198,7 +208,7 @@ public class Section implements Serializable {
     }
 
     public int getIconValue() {
-        return HomeIcon.getBackground(bmiIcon);
+        return bmiIcon;
     }
 
     /**@return String This return the name of this section*/
@@ -249,6 +259,15 @@ public class Section implements Serializable {
         mName = name;
     }
 
+
+    public void setBackgroundColor(int backgroundColor) {
+        mBackgroundColor = backgroundColor;
+    }
+
+    public void setBmiIcon(int bmiIcon) {
+        this.bmiIcon = bmiIcon;
+    }
+
     /**
      *
      * This method is used to delete
@@ -280,8 +299,19 @@ public class Section implements Serializable {
         sectionDBHelper.insertSection(this, mUID);
     }
 
+    public void editSection(Context context){
+
+        SectionDBHelper sectionDBHelper = new SectionDBHelper(context);
+
+        sectionDBHelper.updateSection(this);
+    }
 
 
+
+    public boolean isAdmin(){
+
+        return this.getUID().equals(FirebaseAuth.getInstance().getUid());
+    }
 
     /**
      *
@@ -311,7 +341,7 @@ public class Section implements Serializable {
      * @param ID To get the used in database as the key for firebase
      * @param owner to be used to observe my upload
      */
-    public void executeFirebaseSectionUpload(String UID,String ID, LifecycleOwner owner){
+    public void executeFirebaseSectionUpload(String UID,String ID, LifecycleOwner owner, boolean update){
 
         Log.d(TAG, "executeFirebaseSectionUpload(): Preparing the upload");
 
@@ -329,8 +359,9 @@ public class Section implements Serializable {
                 .putString(COLUMN_USERID, UID)
                 .putString(COLUMN_NAME, getName())
                 .putInt(COLUMN_COLOR, getBackgroundColor())
-                .putInt(COLUMN_IMAGE, getBmiIcon())
+                .putInt(COLUMN_IMAGE, getIconValue())
                 .putInt(COLUMN_POSITION, getPosition())
+                .putBoolean("Update", update)
                 .build();
 
         //Create the request
@@ -357,6 +388,8 @@ public class Section implements Serializable {
     }
 
 
+
+
     /**
      * Delete the section from firebase
      * when internet connectivity is present
@@ -378,6 +411,7 @@ public class Section implements Serializable {
         @SuppressLint("RestrictedApi") Data firebaseSectionData = new Data.Builder()
                 .putString("ID", ID)
                 .putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .putBoolean("Admin", this.isAdmin())
                 .build();
 
         //Create the request
@@ -420,6 +454,22 @@ public class Section implements Serializable {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Section section = (Section) o;
+        return mBackgroundColor == section.mBackgroundColor &&
+                bmiIcon == section.bmiIcon &&
+                position == section.position &&
+                Objects.equals(mName, section.mName) &&
+                Objects.equals(ID, section.ID) &&
+                Objects.equals(mUID, section.mUID) &&
+                Objects.equals(teamList, section.teamList);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(mName, mBackgroundColor, bmiIcon, position, ID, mUID, teamList);
+    }
 }

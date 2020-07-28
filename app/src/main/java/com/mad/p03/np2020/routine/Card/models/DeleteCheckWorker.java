@@ -49,7 +49,7 @@ public class DeleteCheckWorker extends Worker {
 
         Log.d("TaskDelete", "doWork: " + ID);
 
-        FirebaseDatabase.getInstance().getReference().child("check").child(UID).child(ID).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("Check").child(ID).removeValue();
 
 
         return Result.success();

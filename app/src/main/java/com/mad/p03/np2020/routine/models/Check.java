@@ -96,14 +96,14 @@ public class Check {
     }
 
     public static Check fromDataSnapShot(DataSnapshot check){
-        String name = check.child(COLUMN_NAME).getValue(String.class);
+        String name = check.child("name").getValue(String.class);
 //        int position = check.child(COLUMN_POSITION).getValue(Integer.class) == null ? 0 : check.child("position").getValue(Integer.class);
-        String ID = check.child(COLUMN_Check_ID).getValue(String.class);
-        String taskID = check.child(COLUMN_TaskID).getValue(String.class);
+        String ID = check.child("id").getValue(String.class);
+        String taskID = check.child("taskID").getValue(String.class);
 
         String checked;
-        if(check.child(COLUMN_CHECKED).getValue() != null){
-             checked = check.child(COLUMN_CHECKED).getValue(Boolean.class) ? "1":"0";
+        if(check.child("checked").getValue() != null){
+             checked = check.child("checked").getValue(Boolean.class) ? "1":"0";
         }else{
             checked = "0";
         }
@@ -117,7 +117,7 @@ public class Check {
         mID = UUID.randomUUID().toString();
     }
 
-    private Check(String name, String id, String checked, int position, String taskID){
+    public Check(String name, String id, String checked, int position, String taskID){
         mName = name;
         mID = id;
         mChecked = checked.equals("1");
@@ -358,7 +358,7 @@ public class Check {
 
 
         if(check != null){
-            boolean isSame = (check.isChecked() == this.isChecked());
+            boolean isSame = (check.isChecked() == this.isChecked()) && (check.getName().equals(this.getName()));
 
             return (isSame);
         }else{

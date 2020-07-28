@@ -85,6 +85,12 @@
     <string name="home">Home</string>
 
     <string name="profile">Profile</string>
+    <string name="more">More</string>
+    <string name="logout">Logout</string>
+    <string name="changeName">Change Name</string>
+    <string name="changePassword">Change Password</string>
+    <string name="reportAProblem">Report A Problem</string>
+    <string name="rateOurApp">Rate Our App</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1560805060745865</string>
@@ -131,6 +137,18 @@
     <string name="year">year</string>
     <string name="chart_left">chart_left</string>
     <string name="chart_right">chart_right</string>
+    <string name="_20">20</string>
+    <string name="calender_dot">Have event</string>
+    <string name="shared_with">Shared with people </string>
+    <string name="add_people">Add people</string>
+    <string name="arrow_pointing_down">Arrow pointing down</string>
+    <string name="team_no_internet">To access the team feature please connect to the internet.</string>
+    <string name="edit_task_list">Edit Task List</string>
+    <string name="teams">Teams</string>
+    <string name="submit">Submit</string>
+    <string name="rubbish_bin">Rubbish Bin</string>
+    <string name="unknown">Unknown</string>
+
 
 </resources>
 

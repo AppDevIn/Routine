@@ -9,12 +9,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
 import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +39,8 @@ public class GetTaskSectionWorker extends Worker {
     TaskDBHelper mTaskDBHelper;
     SectionDBHelper mSectionDBHelper;
     CheckDBHelper mCheckDBHelper;
+
+    Dictionary taskList = new Hashtable();
 
     final private static String TAG = "TaskSectionListener";
 
@@ -53,7 +61,7 @@ public class GetTaskSectionWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-
+        CheckSectionToDelete();
         listenOneTime();
         startListenSection();
         startListenTask();
@@ -77,7 +85,9 @@ public class GetTaskSectionWorker extends Worker {
         //Get the database reference got section
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").
                 child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("section");
+                .child("Section");
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Section");
 
         /*
             Listen to the data change in firebase
@@ -88,13 +98,57 @@ public class GetTaskSectionWorker extends Worker {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "onChildAdded(): " + dataSnapshot.getKey());
 
-                String id = dataSnapshot.child("id").getValue(String.class);
+                String id = dataSnapshot.getKey();
+
 
                 //Check if it exist in the database
-                if(!mSectionDBHelper.hasID(id)) {
-                    Section section = Section.fromDataSnapShot(dataSnapshot);
-                    mSectionDBHelper.insertSection(section, section.getUID());
-                }
+                mDatabase.orderByKey().equalTo(id).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        if(!mSectionDBHelper.hasID(id)) {
+                            Section section = Section.fromDataSnapShot(dataSnapshot);
+                            mSectionDBHelper.insertSection(section, section.getUID());
+                            addTask(section.getID());
+
+                        }else if(mSectionDBHelper.hasID(id)) {
+
+                            Section section = Section.fromDataSnapShot(dataSnapshot);
+                            Section sectionDataBase = mSectionDBHelper.getSection(id);
+                            if (!section.equals(sectionDataBase)) {
+                                Log.d(TAG, "onChildAdded(): This has been changed so updating......");
+                                mSectionDBHelper.updateSection(section);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        Section section = Section.fromDataSnapShot(dataSnapshot);
+                        Section sectionDataBase = mSectionDBHelper.getSection(id);
+                        if (!section.equals(sectionDataBase)) {
+                            Log.d(TAG, "onChildChanged(): This has been changed so updating......");
+                            mSectionDBHelper.updateSection(section);
+                        }
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
             }
 
             @Override
@@ -137,8 +191,7 @@ public class GetTaskSectionWorker extends Worker {
     private void startListenTask(){
 
         //Get the database reference for task
-        DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("task").
-                child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("Task");
 
 
         /*
@@ -151,13 +204,14 @@ public class GetTaskSectionWorker extends Worker {
                 Log.d(TAG, "onChildAdded(): " + dataSnapshot.getKey());
 
                 String id = dataSnapshot.child("taskID").getValue(String.class);
+                String sectionID = dataSnapshot.child("sectionID").getValue(String.class);
 
                 //Check if the task exist in the database
-                if(!mTaskDBHelper.hasID(id)) {
+                if(!mTaskDBHelper.hasID(id) && mSectionDBHelper.hasID(sectionID)) {
                     Task task = Task.fromDataSnapShot(dataSnapshot);
                     mTaskDBHelper.insertTask(task);
                 }
-                else{ //If doesn't exist it means it needs to be updated
+                else if (mSectionDBHelper.hasID(sectionID)){ //If doesn't exist it means it needs to be updated
                     Task task = Task.fromDataSnapShot(dataSnapshot);
                     Task taskDataBase = mTaskDBHelper.getTask(id);
                     if(!task.equals(taskDataBase)){
@@ -172,11 +226,13 @@ public class GetTaskSectionWorker extends Worker {
                 Log.d(TAG, "onChildChanged(): " + dataSnapshot.getValue());
 
                 String id = dataSnapshot.child("taskID").getValue(String.class);
+                String sectionID = dataSnapshot.child("sectionID").getValue(String.class);
+
 
                 Task task = Task.fromDataSnapShot(dataSnapshot);
                 Task taskDataBase = mTaskDBHelper.getTask(id);
                 //If exist in the database than update
-                if(mTaskDBHelper.hasID(id) && !task.equals(taskDataBase)) {
+                if(mTaskDBHelper.hasID(id) && !task.equals(taskDataBase) && mSectionDBHelper.hasID(sectionID)) {
                     mTaskDBHelper.update(task);
                 }
             }
@@ -217,8 +273,7 @@ public class GetTaskSectionWorker extends Worker {
     private void startListenCheck(){
 
         //Get the database reference for task
-        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("check").
-                child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("Check");
 
 
         /*
@@ -228,16 +283,17 @@ public class GetTaskSectionWorker extends Worker {
         checkRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String id = dataSnapshot.getKey();
 
+                String id = dataSnapshot.getKey();
+                String taskID = dataSnapshot.child("taskID").getValue(String.class);
                 Log.d(TAG, "onChildAdded(), startListenCheck(): Check ID to be " + id);
 
                 //Check if the task exist in the database
-                if(!mCheckDBHelper.hasID(id)) {
+                if(!mCheckDBHelper.hasID(id) && mTaskDBHelper.hasID(taskID)) {
                     Check check = Check.fromDataSnapShot(dataSnapshot);
                     mCheckDBHelper.insertCheck(check);
                 }
-                else{ //If doesn't exist it means it needs to be updated
+                else if(mTaskDBHelper.hasID(taskID)){ //If doesn't exist it means it needs to be updated
                     Check check = Check.fromDataSnapShot(dataSnapshot);
                     Check checkDataBase = mCheckDBHelper.getCheck(id);
                     if(!check.equals(checkDataBase)){
@@ -252,10 +308,12 @@ public class GetTaskSectionWorker extends Worker {
                 Log.d(TAG, "onChildChanged(): " + dataSnapshot.getValue());
 
                 String id = dataSnapshot.getKey();
+                String taskID = dataSnapshot.child("taskID").getValue(String.class);
+
                 Check check = Check.fromDataSnapShot(dataSnapshot);
                 Check checkDataBase = mCheckDBHelper.getCheck(id);
                 //If exist in the database than update
-                if(mCheckDBHelper.hasID(id) && !check.equals(checkDataBase)) {
+                if((checkDataBase != null)&&(mCheckDBHelper.hasID(id) && !check.equals(checkDataBase)) && mTaskDBHelper.hasID(taskID)) {
                     mCheckDBHelper.update(check);
                 }
             }
@@ -277,6 +335,115 @@ public class GetTaskSectionWorker extends Worker {
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addTask(String sectionID){
+        DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("Task");
+
+        taskRef.orderByChild("sectionID").equalTo(sectionID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+                    String id = snapshot.child("taskID").getValue(String.class);
+
+                    //Check if the task exist in the database
+                    if(!mTaskDBHelper.hasID(id) && mSectionDBHelper.hasID(sectionID)) {
+                        Task task = Task.fromDataSnapShot(snapshot);
+                        mTaskDBHelper.insertTask(task);
+                        //Get all the checks under this task
+                        addCheck(task.getTaskID());
+                    }
+                    else if (mSectionDBHelper.hasID(sectionID)){ //If doesn't exist it means it needs to be updated
+                        Task task = Task.fromDataSnapShot(snapshot);
+                        Task taskDataBase = mTaskDBHelper.getTask(id);
+                        if(!task.equals(taskDataBase)){
+                            Log.d(TAG, "onChildAdded(): This has been changed so updating......");
+                            mTaskDBHelper.update(task);
+                        }
+                    }
+                }
+
+
+                //Remove value listener
+                taskRef.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addCheck(String TaskID){
+        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("Check");
+
+        checkRef.orderByChild("taskID").equalTo(TaskID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //Loop trough the children
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+
+                    String id = snapshot.getKey();
+
+                    //Check if the task exist in the database
+                    if(!mCheckDBHelper.hasID(id) && mTaskDBHelper.hasID(TaskID)) {
+                        Check check = Check.fromDataSnapShot(snapshot);
+                        mCheckDBHelper.insertCheck(check);
+                    }
+                    else if(mTaskDBHelper.hasID(TaskID)){ //If doesn't exist it means it needs to be updated
+                        Check check = Check.fromDataSnapShot(snapshot);
+                        Check checkDataBase = mCheckDBHelper.getCheck(id);
+                        if(!check.equals(checkDataBase)){
+                            Log.d(TAG, "onChildAdded(): This has been changed so updating......");
+                            mCheckDBHelper.update(check);
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void CheckSectionToDelete(){
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("Section");
+        List<Section> sectionList = mSectionDBHelper.getAllSections("");
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                //Check which has a child
+                for (int i = 0; i < sectionList.size(); i++) {
+                    //Remove the ones with the child
+                    if (!dataSnapshot.hasChild(sectionList.get(i).getID())) {
+                        Log.d(TAG, "onDataChange: Deleting section " + sectionList.get(i).getName());
+                        mSectionDBHelper.delete(sectionList.get(i).getID());
+                    }
+                }
+
+
 
             }
 

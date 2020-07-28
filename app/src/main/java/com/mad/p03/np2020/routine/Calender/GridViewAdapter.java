@@ -4,15 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.models.Task;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -31,23 +35,24 @@ class GridViewAdapter extends ArrayAdapter {
     List<Task> taskList;
     LayoutInflater mInflater;
 
+    final private String TAG = "Calender";
+
 
     public GridViewAdapter(@NonNull Context context, List<Date> dates, Calendar selectedDSate,   List<Task> taskList) {
         super(context, R.layout.single_cell_layout);
         this.dates = dates;
         this.selectedDSate = selectedDSate;
-        this.taskList = taskList;
+        this.taskList = new TaskDBHelper(getContext()).getAllTask();;
 
         mInflater = LayoutInflater.from(context);
+
+
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-
-        //Get the task list
-        List<Task> taskList = new TaskDBHelper(getContext()).getAllTask();
 
 
         Date monthDate = dates.get(position);
@@ -66,7 +71,7 @@ class GridViewAdapter extends ArrayAdapter {
         }
 
         TextView txtDay = view.findViewById(R.id.calendar_day);
-        CardView cardView = view.findViewById(R.id.cardView);
+        LinearLayout linearLayout = view.findViewById(R.id.llDates);
         ImageView imageView = view.findViewById(R.id.alertEvent);
 
 
@@ -74,26 +79,28 @@ class GridViewAdapter extends ArrayAdapter {
         for (Task task:
              taskList) {
 
-            if(task.getRemindDate() != null && (dateFormat.format(task.getRemindDate()).equals(dateFormat.format(monthDate)))){
+            if(task.getRemindDate() != null && (dateFormat.format(task.getRemindDate()).equals(dateFormat.format(monthDate))))
                 imageView.setVisibility(View.VISIBLE);
-            }
+
+
         }
 
 
 
 
 
+        linearLayout.setBackground(null);
+        txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
         if(displayMonth == currentMonth && displayYear == currentYear){
 
 
             if(dayNo == selectedDSate.get(Calendar.DAY_OF_MONTH)){
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.white));
-                cardView.setCardBackgroundColor(view.getContext().getResources().getColor(R.color.colorNCS_Blue));
+                linearLayout.setBackground(view.getContext().getResources().getDrawable(R.drawable.calender_img_dot_normal));
             }else {
                 txtDay.setTextColor(view.getContext().getResources().getColor(R.color.black));
-                cardView.setCardBackgroundColor(view.getContext().getResources().getColor(android.R.color.transparent));
 
-                if(dayNo == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+                if( dateFormat.format(dateCalender.getTime()).equals(dateFormat.format(Calendar.getInstance().getTime())) ){
                     txtDay.setTextColor(view.getContext().getResources().getColor(R.color.red));
                 }
 
@@ -127,7 +134,11 @@ class GridViewAdapter extends ArrayAdapter {
         return dates.get(position);
     }
 
+
     public void setCurrentDate(Calendar selectedDSate) {
         this.selectedDSate = selectedDSate;
     }
+
+
+
 }
