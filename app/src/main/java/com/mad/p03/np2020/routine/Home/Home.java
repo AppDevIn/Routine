@@ -305,6 +305,24 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     @Override
     public void onDataUpdate(Object object) {
 
+        Section section = (Section) object;
+
+
+        for (int i = 0; i < mSectionList.size(); i++) {
+
+            if (mSectionList.get(i).getID().equals(section.getID())) {
+
+                //Remove and add the data
+                mSectionList.remove(i);
+                mSectionList.add(i, section);
+
+                //Notify the change
+                mHomePageAdapter.notifyItemChanged(i);
+
+                break;
+            }
+        }
+
 
     }
 
