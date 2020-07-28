@@ -200,32 +200,38 @@ public class HabitRepetitionDBHelper extends DBHelper {
                 switch (habit.getPeriod()){
                     case 1:
                         Log.d(TAG, "repeatingHabit: DAILY");
-                        insertNewRepetitionHabit(id, -1, ++day, 0, timestamp);
-                        isUpdated = true;
+                        if (!checkRepetitionExist(id, timestamp)){
+                            insertNewRepetitionHabit(id, -1, ++day, 0, timestamp);
+                            isUpdated = true;
+                        }
                         currTimeStamp += 86400000;
                         break;
 
                     case 7:
                         Log.d(TAG, "repeatingHabit: WEEKLY");
-                        if (day == 7){
-                            insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
-                            isUpdated = true;
-                        }else{
-                            insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
-                            isUpdated = true;
+                        if (!checkRepetitionExist(id, timestamp)){
+                            if (day == 7){
+                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                isUpdated = true;
+                            }else{
+                                insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
+                                isUpdated = true;
+                            }
                         }
                         currTimeStamp += 86400000;
                         break;
 
                     case 30:
                         Log.d(TAG, "repeatingHabit: MONTHLY");
-                        if (day == 30){
-                            insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
-                            isUpdated = true;
-                        }
-                        else{
-                            insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
-                            isUpdated = true;
+                        if (!checkRepetitionExist(id, timestamp)){
+                            if (day == 30){
+                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                isUpdated = true;
+                            }
+                            else{
+                                insertNewRepetitionHabit(id, cycle, ++day, conCount+count, timestamp);
+                                isUpdated = true;
+                            }
                         }
                         currTimeStamp += 86400000;
                         break;
@@ -632,5 +638,21 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         return count;
     }
+
+    public boolean checkRepetitionExist(long habitID, long timestamp){
+        boolean isExisted = false;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor =  db.rawQuery( "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + "=" + timestamp, null );
+        if (cursor.getCount() > 0){
+            isExisted = true;
+        }
+
+        db.close();
+        Log.d(TAG, "checkTodayRepetition: " + isExisted);
+        return isExisted;
+    }
+
 
 }
