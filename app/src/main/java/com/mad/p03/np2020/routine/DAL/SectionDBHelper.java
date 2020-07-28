@@ -110,15 +110,18 @@ public class SectionDBHelper extends DBHelper{
 
         // Insert the new row, returning the primary key value of the new row
         //If -1 means there is an error
-        long id = db.insert(Section.TABLE_NAME, null, values);
+        long id = -1;
+        if(validEntered(section))
+            id = db.insert(Section.TABLE_NAME, null, values);
 
         if(id == -1){
             Log.e(TAG, "insertSection(): There has been error inserting the data" );
         } else{
             Log.d(TAG, "insertSection(): Data inserted");
+            if (mMyDatabaseListener != null)
+                mMyDatabaseListener.onDataAdd(section);
         }
-        if (mMyDatabaseListener != null)
-            mMyDatabaseListener.onDataAdd(section);
+
 
         return String.valueOf(id);
     }
@@ -264,16 +267,18 @@ public class SectionDBHelper extends DBHelper{
         updateValues.put(Section.COLUMN_COLOR, section.getBackgroundColor());
         updateValues.put(Section.COLUMN_IMAGE, section.getIconValue());
         updateValues.put(Section.COLUMN_NAME, section.getName());
-        db.update(
-                Section.TABLE_NAME,
-                updateValues,
-                Section.COLUMN_SECTION_ID + " = ?",
-                new String[]{section.getID()}
-        );
 
-        if (mMyDatabaseListener != null)
-            mMyDatabaseListener.onDataUpdate(section);
+        if(validEntered(section)) {
+            db.update(
+                    Section.TABLE_NAME,
+                    updateValues,
+                    Section.COLUMN_SECTION_ID + " = ?",
+                    new String[]{section.getID()}
+            );
 
+            if (mMyDatabaseListener != null)
+                mMyDatabaseListener.onDataUpdate(section);
+        }
         db.close();
     }
 
@@ -296,6 +301,26 @@ public class SectionDBHelper extends DBHelper{
         Cursor cursor =  db.rawQuery( "select * from " + Section.TABLE_NAME+ " where "+ Section.COLUMN_SECTION_ID +"='"+id+"'", null );
 
         return cursor.moveToFirst();
+    }
+
+    private boolean validEntered(Section section){
+
+        boolean condition =
+                section.getBackgroundColor() != 0
+                && section.getID() != null
+                && section.getName() != null
+                && section.getUID() != null;
+
+        if(condition){
+
+            Log.i(TAG, "vaildEntere: Entre is true");
+
+        }else {
+            Log.e(TAG, "vaildEntere: Unable to add the section due to some null value");
+
+        }
+
+        return condition;
     }
 
 
