@@ -108,5 +108,17 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db,oldVersion,newVersion);
     }
 
+    public void deleteAll() {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        sqLiteDatabase.execSQL("DELETE FROM " + User.TABLE_NAME);
+        sqLiteDatabase.execSQL("DELETE FROM " + Section.TABLE_NAME);
+        sqLiteDatabase.execSQL("DELETE FROM " + Check.TABLE_NAME);
+        sqLiteDatabase.execSQL("DELETE FROM " + Task.TABLE_NAME);
+        sqLiteDatabase.execSQL("DELETE FROM " + Habit.TABLE_NAME);
+        sqLiteDatabase.execSQL("DELETE FROM " + HabitGroup.TABLE_NAME);
+        sqLiteDatabase.execSQL("DELETE FROM " + HabitRepetition.TABLE_NAME);
+        sqLiteDatabase.execSQL("DELETE FROM " + Focus.FOCUS_TABLE);
+    }
+
 
 }

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
 import com.mad.p03.np2020.routine.LoginActivity;
 import com.mad.p03.np2020.routine.R;
 
@@ -57,6 +58,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                 mAuth.signOut();
                 startActivity(intent);
+                DBHelper dbHelper = new DBHelper(this);
+                dbHelper.deleteAll();
+                break;
         }
 
     }
