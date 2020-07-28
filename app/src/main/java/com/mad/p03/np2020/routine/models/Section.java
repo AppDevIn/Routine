@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.DAL.CheckDBHelper;
 import com.google.firebase.database.DataSnapshot;
+import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.background.DeleteSectionWorker;
 import com.mad.p03.np2020.routine.Home.models.UploadSectionWorker;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
@@ -471,5 +472,8 @@ public class Section implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(mName, mBackgroundColor, bmiIcon, position, ID, mUID, teamList);
+    }
+
+    public void executeFirebaseSectionUpload(String mUID, String id, Home home) {
     }
 }

@@ -25,8 +25,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Register.RegisterActivity;
 import com.mad.p03.np2020.routine.models.User;
@@ -245,7 +248,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             mAuth.getAccessToken(true);
-                            Date d = new Date();
 
                             // Sign in success, update UI with the signed-in user's information
                             if (checkBox.isChecked()) {
@@ -259,32 +261,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String UID = fbuser.getUid();
                             myRef = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
 
-                            String pwd = et_Password.getText().toString();
-                            String name = myRef.child("Name").getKey();
-                            String DOB = myRef.child("DOB").getKey();
-                            String email = myRef.child("Email").getKey();
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            try {
-                                d = dateFormat.parse(DOB);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
+                                    String pwd = et_Password.getText().toString();
+                                    String name = dataSnapshot.child("Name").getValue(String.class);
+                                    String email = dataSnapshot.child("Email").getValue(String.class);
 
-                            //Storing user details into object to put into intent
-                            User user = new User(UID, name, pwd, email);
-                            userDatabase.insertUser(user);
+                                    //Storing user details into object to put into intent
+                                    User user = new User(UID, name, pwd, email);
+                                    userDatabase.insertUser(user);
 
-                            //Get All User Routine Data
-                            user.readHabitRepetition_Firebase(context);
-                            user.readHabitGroup_Firebase(context);
-                            user.getAllSectionAndTask();
-                            user.readHabit_Firebase(context, false);
+                                    //Get All User Routine Data
+                                    user.readHabitRepetition_Firebase(context);
+                                    user.readHabitGroup_Firebase(context);
+                                    user.getAllSectionAndTask();
+                                    user.readHabit_Firebase(context, false);
 
-                            Intent intent = new Intent(LoginActivity.this, Home.class);
-                            intent.putExtra("user", user);
-                            startActivity(intent);
-                            finish();
+                                    Intent intent = new Intent(LoginActivity.this, Home.class);
+                                    intent.putExtra("user", user);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
 
                         } else {
                             // If sign in fails, display a message to the user.
