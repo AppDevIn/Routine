@@ -131,6 +131,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
         }
 
+        viewSwitch();
+
 
 
     }

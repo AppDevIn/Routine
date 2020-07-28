@@ -474,6 +474,5 @@ public class Section implements Serializable {
         return Objects.hash(mName, mBackgroundColor, bmiIcon, position, ID, mUID, teamList);
     }
 
-    public void executeFirebaseSectionUpload(String mUID, String id, Home home) {
-    }
+
 }
