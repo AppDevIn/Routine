@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Task.ViewHolder;
 
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.R;
@@ -13,7 +14,7 @@ public class TeamViewHolder extends RecyclerView.ViewHolder {
 
     public TextView txtEmail;
     public TextView txtName;
-    public ConstraintLayout mConstraintLayout;
+    public LinearLayout mConstraintLayout;
     public TeamViewHolder(@NonNull View itemView) {
         super(itemView);
 
