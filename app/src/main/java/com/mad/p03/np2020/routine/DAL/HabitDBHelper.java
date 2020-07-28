@@ -295,6 +295,8 @@ public class HabitDBHelper extends DBHelper{
      * */
     public boolean isReminderExisted(Habit habit){
 
+        boolean isExisted = false;
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         Log.d(TAG, "isReminderExisted: ");
@@ -307,12 +309,12 @@ public class HabitDBHelper extends DBHelper{
         cursor.moveToFirst(); //Only getting the first value
 
         if (cursor.getString(cursor.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES)) != null ){
-            return true;
+            isExisted = true;
         }
 
         db.close();
 
-        return false;
+        return isExisted;
 
     }
 
@@ -516,6 +518,8 @@ public class HabitDBHelper extends DBHelper{
     public int getHabitCount(long habitID){
         Log.d(TAG, "getHabitRepetition: " + habitID);
 
+        int total = 0;
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " = " + getTodayTimestamp();
@@ -526,10 +530,12 @@ public class HabitDBHelper extends DBHelper{
             int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
             int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
 
-            return count+conCount;
+            total =  count+conCount;
         }
 
-        return 0;
+        db.close();
+
+        return total;
 
     }
 

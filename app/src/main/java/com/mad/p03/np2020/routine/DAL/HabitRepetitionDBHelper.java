@@ -326,32 +326,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         return hr;
     }
-
-    public void writeAllToFirebase(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "select * from " + HabitRepetition.TABLE_NAME;
-
-        Cursor res =  db.rawQuery( query, null );
-        res.moveToFirst();
-        while(!res.isAfterLast()){
-            HabitRepetition hr = new HabitRepetition();
-            hr.setRow_id(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID)));
-            hr.setHabitID(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_ID)));
-            hr.setTimestamp(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_TIMESTAMP)));
-            hr.setCycle(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE)));
-            hr.setCycle_day(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY)));
-            hr.setCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT)));
-            hr.setConCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT)));
-
-            writeHabitRepetition_Firebase(hr, FirebaseAuth.getInstance().getCurrentUser().getUid() );
-            res.moveToNext();
-        }
-
-        db.close();
-
-
-    }
-
+    
     /**
      *
      * This method is used to send the work request
@@ -461,14 +436,16 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
     public long getLastAssignedRowID(){
         SQLiteDatabase db = this.getReadableDatabase();
-
+        long id = 1;
         Cursor res =  db.rawQuery( "select max(_id) from " + HabitRepetition.TABLE_NAME , null );
         if (res.getCount() > 0){
             res.moveToFirst(); //Only getting the first value
-            return res.getLong(res.getColumnIndex("max(_id)")) + 1;
-        }else{
-            return 1;
+            id = res.getLong(res.getColumnIndex("max(_id)")) + 1;
         }
+
+        db.close();
+
+        return id;
     }
 
     /**
