@@ -184,7 +184,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         //Recycler View
         RecyclerView recyclerView = view.findViewById(R.id.recyclerHistory);
 
-        //recycler adapter
+
         focusAdapter = new FocusAdapter(user, getActivity(), focusDBHelper, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getActivity(), 2); //Declare layoutManager
 
@@ -221,6 +221,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             }
         });
         return view;
+
     }
 
     /**
@@ -229,7 +230,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private void initialisation() throws ParseException {
         textFragment.setText("My Focus History");
         Date date = new Date();
-        Log.v(TAG, "Start beforeChange Date init: " + date);
+        Log.v(TAG, "Start before Change Date init: " + date);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -260,7 +261,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
         }
 
-        Date max = user.getMaxFocus();
+        Date max = new Date();
         if(max.after(mappingDate.get(7))){
             nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
         }else{
@@ -303,6 +304,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         }else{
             nothing.setVisibility(View.INVISIBLE);
         }
+        focusAdapter.updateList(focusArrayList);
     }
 
     /**
@@ -430,8 +432,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     public void setNextWeek() throws ParseException {
         Log.v(TAG, "Setting next week");
 
-
-        Date max = user.getMaxFocus();
+        Date max = new Date();
         if(max.after(mappingDate.get(7))){
             Calendar cal = Calendar.getInstance();
             cal.setTime(mappingDate.get(7));
@@ -489,8 +490,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         dateRangeView.setText(dateAsStart + " - " + dateAsEnd);
 
-        focusAdapter.updateList(listUpdate);
         updateTask(listUpdate);
+        focusAdapter.notifyDataSetChanged();
+
 
     }
 

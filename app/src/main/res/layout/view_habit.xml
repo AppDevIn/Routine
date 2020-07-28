@@ -177,6 +177,7 @@
 
         <TextView
             android:id="@+id/current_streak_text"
+            android:layout_marginStart="10dp"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -191,6 +192,7 @@
             app:layout_constraintTop_toBottomOf="@+id/habit_card" />
 
         <TextView
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:id="@+id/current_streak"
             android:layout_width="100dp"
@@ -206,6 +208,7 @@
             app:layout_constraintTop_toBottomOf="@+id/current_streak_text" />
 
         <TextView
+            android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:id="@+id/current_streak_period"
             android:layout_width="100dp"
@@ -222,6 +225,7 @@
             app:layout_constraintTop_toBottomOf="@+id/current_streak" />
 
         <TextView
+            android:layout_marginEnd="10dp"
             android:id="@+id/best_streak_text"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -236,6 +240,7 @@
             app:layout_constraintTop_toBottomOf="@+id/habit_card" />
 
         <TextView
+            android:layout_marginEnd="10dp"
             android:id="@+id/best_streak"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -250,6 +255,7 @@
             app:layout_constraintTop_toBottomOf="@+id/best_streak_text" />
 
         <TextView
+            android:layout_marginEnd="10dp"
             android:id="@+id/best_streak_period"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

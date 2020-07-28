@@ -74,7 +74,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             habitList = habitDBHelper.getAllHabits();
 
             re_registerAlarm(context, habitList);
-            setRepeatingHabit(context);
+//            setRepeatingHabit(context);
         }
 
         if (intent.getAction().equals("RepeatingHabit")){
@@ -95,8 +95,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             assert manager != null;
             manager.notify(id, notify);
 
-            habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
-            habitRepetitionDBHelper.repeatingHabit();
+//            habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
+//            habitRepetitionDBHelper.repeatingHabit();
 
         }
     }

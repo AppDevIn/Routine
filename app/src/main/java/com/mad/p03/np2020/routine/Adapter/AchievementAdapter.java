@@ -102,6 +102,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHold
 
     @Override
     public int getItemCount() {
+        Log.v(TAG, "Item count: " + typeOfAchievements.size());
         return typeOfAchievements.size();
     }
 

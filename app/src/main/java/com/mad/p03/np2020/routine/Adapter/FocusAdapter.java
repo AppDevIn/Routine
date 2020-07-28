@@ -59,12 +59,14 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      * @param focusDBHelper This parameter is used to set the focus database of the section
      */
     public FocusAdapter(User user, Context context, FocusDBHelper focusDBHelper, HistoryFragment historyFragment) {
+
+
+
         this.context = context;
         this.focusDBHelper = focusDBHelper;
         this.user = user;
         this.historyFragment = historyFragment;
 
-        user.readFocusFirebase(context);
         eventListener();
     }
 
@@ -96,6 +98,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         holder.date.setText(focusList.get(position).getmDateTime());
         boolean completed = focusList.get(position).getmCompletion().equals("True");
         Log.v(TAG, focusList.get(position).getmCompletion());
+
         if (completed) {
             holder.iconComplete.setImageResource(R.drawable.ic_tick);
             holder.constraintLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.focus_image_background_success));
@@ -120,7 +123,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         deleteDataFirebase(focusViewHolder);
 
         user.setmFocusList((ArrayList<Focus>) focusList);
-        ArrayList<Focus> focusArrayList = new ArrayList<>();
+        ArrayList<Focus> focusArrayList;
         focusArrayList = (ArrayList<Focus>) focusList;
         historyFragment.updateTask(focusArrayList);
 
