@@ -327,7 +327,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         Log.d(TAG, "updateCardUI(): Added to SQL");
 
         //Save to firebase
-        section.executeFirebaseSectionUpload(mUID, section.getID(), this);
+        section.executeFirebaseSectionUpload(mUID, section.getID(), this, false);
 
     }
 
@@ -356,7 +356,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
 
         //Date format that I want example(WEDNESDAY, 29 APRIL)
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd MMMM YYYY");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd MMMM yyyy");
 
         //Get the current date and time
         Date date = new Date(System.currentTimeMillis());
