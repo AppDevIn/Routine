@@ -28,7 +28,7 @@ import java.text.ParseException;
  */
 public class FocusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView iconComplete;
-    public TextView Task, date, duration, sIndicator, usIndicator;
+    public TextView Task, date, duration;
     public FocusAdapter adapter;
     public ViewGroup parent;
     public ConstraintLayout constraintLayout;

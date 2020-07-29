@@ -60,8 +60,6 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      */
     public FocusAdapter(User user, Context context, FocusDBHelper focusDBHelper, HistoryFragment historyFragment) {
 
-
-
         this.context = context;
         this.focusDBHelper = focusDBHelper;
         this.user = user;
@@ -98,7 +96,6 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         holder.date.setText(focusList.get(position).getmDateTime());
         boolean completed = focusList.get(position).getmCompletion().equals("True");
         Log.v(TAG, focusList.get(position).getmCompletion());
-
         if (completed) {
             holder.iconComplete.setImageResource(R.drawable.ic_tick);
             holder.constraintLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.focus_image_background_success));
@@ -107,7 +104,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
             holder.constraintLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.focus_image_background_unsuccess));
         }
 
-        Log.v("FocusAdapter", "item is adding");
+        Log.v("FocusAdapter", "item is adding " + focusList.size());
     }
 
     /**
@@ -118,7 +115,6 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
      */
     public void remove(int position, Focus focusViewHolder) throws ParseException {
         focusList.remove(position);
-        focusDBHelper.removeOneData(focusViewHolder);
 
         deleteDataFirebase(focusViewHolder);
 
@@ -159,7 +155,6 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         myRef.child("FocusData").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifiyItemChange();
             }
 
             @Override

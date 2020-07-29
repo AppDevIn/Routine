@@ -141,7 +141,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         logoutButton.setOnClickListener(this);
         changeProfile.setOnClickListener(this);
 
-        getUserInfo();
+        try {
+            getUserInfo();
+        } catch (Exception e) {
+            Log.v(TAG, "No image uploaded");
+        }
     }
 
 
@@ -327,8 +331,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void logout()
     {
+        clearHabitAlarm(this);
+        cancelRepeatingHabit();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         mAuth.signOut();
+        DBHelper dbHelper = new DBHelper(this);
+        dbHelper.deleteAll();
         startActivity(intent);
     }
 

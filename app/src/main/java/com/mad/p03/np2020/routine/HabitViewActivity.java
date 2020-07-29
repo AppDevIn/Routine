@@ -272,11 +272,11 @@ public class HabitViewActivity extends AppCompatActivity {
     public void displayWeekBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
-        ArrayList<String> timeStampList = new ArrayList<>();
-        timeStampList.add("0");
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
+        ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
+        ArrayList<BarEntry> first_barEntries = new ArrayList<>();
 
-        final int[] x = {0};
+        int x = 0;
         final long[] initial_timestamp ={habitRepetitionArrayList.get(habitRepetitionArrayList.size()-1).getTimestamp()};
         String range = String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0]));
         range_indicator.setText(range);
@@ -286,40 +286,84 @@ public class HabitViewActivity extends AppCompatActivity {
         long firstTimeStamp = habitRepetitionArrayList.get(0).getTimestamp();
         int firstDay = getDayOfWeekFromMs(firstTimeStamp);
         for (int i = 1; i < firstDay; i++){
-            barEntries.add(new BarEntry(++x[0], 0));
+            first_barEntries.add(new BarEntry(++x, 0));
         }
 
         for (HabitRepetition hr : habitRepetitionArrayList){
-            barEntries.add(new BarEntry(++x[0], hr.getCount()));
             // to reset week
             if (getDayOfWeekFromMs(hr.getTimestamp()) == 1 && hr.getTimestamp() != firstTimeStamp){
+                barEntries.add(first_barEntries);
+                first_barEntries = new ArrayList<>();
+                x = 0;
                 addDaysToTimeStampForWeek(timeStampList);
             }
 
+            first_barEntries.add(new BarEntry(++x, hr.getCount()));
             // set a star sign to indicate today
             if (hr.getTimestamp() == getTodayTimestamp()){
-                String ts = timeStampList.get(x[0]);
-                timeStampList.set(x[0], ts+"*");
+                String ts = timeStampList.get(timeStampList.size()-1).get(x);
+                timeStampList.get(timeStampList.size()-1).set(x, ts+"*");
             }
         }
 
 
         // add dummy data
-        while (barEntries.size() % 7 != 0){
-            barEntries.add(new BarEntry(++x[0], 0));
+        while (first_barEntries.size() % 7 != 0){
+            first_barEntries.add(new BarEntry(++x, 0));
         }
 
-        final int[] max_x = {x[0]};
+        barEntries.add(first_barEntries);
+        
+        ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
+        ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
+        final int[] eIndex = {barEntries.size() - 1};
 
-        if (barEntries.size() <=7){
+        if (barEntries.size() <=1){
             chart_left.setVisibility(View.INVISIBLE);
-            chart_right.setVisibility(View.INVISIBLE);
         }else{
             chart_left.setVisibility(View.VISIBLE);
-            chart_right.setVisibility(View.INVISIBLE);
         }
+        chart_right.setVisibility(View.INVISIBLE);
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Habit Bar Chart");
+        displayWeekBarChartHelper(lastEntry, lastTimeStamp);
+
+        chart_left.setOnClickListener(v -> {
+            resetChart();
+            if (eIndex[0] - 1 >= 0){
+                --eIndex[0];
+                initial_timestamp[0] = getLastWeekMs(initial_timestamp[0]);
+                range_indicator.setText(String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0])));
+                displayWeekBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
+                if (eIndex[0] - 1 >= 0){
+                    chart_left.setVisibility(View.VISIBLE);
+                }else{
+                    chart_left.setVisibility(View.INVISIBLE);
+                }
+                chart_right.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        chart_right.setOnClickListener(v -> {
+            resetChart();
+            if (eIndex[0] + 1 < barEntries.size()){
+                ++eIndex[0];
+                initial_timestamp[0] = getNextWeekMs(initial_timestamp[0]);
+                range_indicator.setText(String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0])));
+                displayWeekBarChartHelper(barEntries.get(eIndex[0]), timeStampList.get(eIndex[0]));
+                if (eIndex[0] + 1 < barEntries.size()){
+                    chart_right.setVisibility(View.VISIBLE);
+                }else{
+                    chart_right.setVisibility(View.INVISIBLE);
+                }
+                chart_left.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    public void displayWeekBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<String> lastTimeStamp){
+        BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Bar Chart");
 //        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
         barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         barDataSet.setValueTextSize(14);
@@ -334,8 +378,8 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.animateY(750);
         habit_barChart.setDrawBarShadow(false);
         habit_barChart.setDrawValueAboveBar(false);
-        habit_barChart.setVisibleXRangeMaximum(7);
-        habit_barChart.moveViewToX(x[0]);
+        habit_barChart.setVisibleXRangeMaximum(lastEntry.size());
+        habit_barChart.moveViewToX(lastEntry.size());
         habit_barChart.setPinchZoom(false);
         habit_barChart.setDrawGridBackground(true);
         habit_barChart.getAxisRight().setEnabled(false);
@@ -352,7 +396,7 @@ public class HabitViewActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeStampList));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(lastTimeStamp));
         xAxis.setTextSize(11);
         xAxis.setTypeface(tf);
 
@@ -361,100 +405,26 @@ public class HabitViewActivity extends AppCompatActivity {
         yAxis.setTypeface(tf);
         yAxis.setLabelCount(5);
 
-        Log.d(TAG, String.valueOf(x[0]-7) + String.valueOf(x[0]));
-        if (isRangeSumZero(barEntries, x[0]-7, x[0])){
-            Log.d(TAG, "displayWeekBarChart: zero");
-            habit_barChart.getAxisLeft().resetAxisMinimum();
-        }else{
-            yAxis.setAxisMinimum(0f);
-            double rangeMax = calculateRangeMaximum(barEntries, x[0]-7, x[0]) * 1.0;
-            float max_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
-            yAxis.setAxisMaximum(max_y);
-        }
-
         habit_barChart.getXAxis().resetAxisMinimum();
         habit_barChart.getXAxis().setAvoidFirstLastClipping(false);
         habit_barChart.notifyDataSetChanged();
         habit_barChart.invalidate();
 
-        chart_left.setOnClickListener(v -> {
-            int curr = x[0];
-            if (curr-7 > 0){
-                x[0] = curr - 7;
-                habit_barChart.moveViewToX(x[0]-7);
-                initial_timestamp[0] = getLastWeekMs(initial_timestamp[0]);
-                range_indicator.setText(String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0])));
-                if (x[0] - 7 > 0){
-                    chart_left.setVisibility(View.VISIBLE);
-                }else{
-                    chart_left.setVisibility(View.INVISIBLE);
-                }
-                chart_right.setVisibility(View.VISIBLE);
-                Log.d(TAG, String.valueOf(x[0]-7) + String.valueOf(curr-7));
-                if (isRangeSumZero(barEntries, x[0]-7, curr-7)){
-                    Log.d(TAG, "displayWeekBarChart: zero");
-                    habit_barChart.getAxisLeft().resetAxisMinimum();
-                }else{
-                    yAxis.setAxisMinimum(0f);
-                    double rangeMax = calculateRangeMaximum(barEntries, x[0]-7, curr-7) * 1.0;
-                    float max_left_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
-                    yAxis.setAxisMaximum(max_left_y);
-                    habit_barChart.getAxisLeft().setLabelCount(5);
 
-                }
-                habit_barChart.animateY(750);
-                habit_barChart.getXAxis().resetAxisMinimum();
-                habit_barChart.getXAxis().setAvoidFirstLastClipping(false);
-                habit_barChart.notifyDataSetChanged();
-                habit_barChart.invalidate();
-
-            }
-        });
-
-        chart_right.setOnClickListener(v -> {
-            int curr = x[0];
-            int max = max_x[0];
-            if (curr+7 <= max){
-                x[0] = curr + 7;
-                habit_barChart.moveViewToX(x[0]+7);
-                initial_timestamp[0] = getNextWeekMs(initial_timestamp[0]);
-                range_indicator.setText(String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0])));
-                if (x[0] + 7 <= max){
-                    chart_right.setVisibility(View.VISIBLE);
-                }else{
-                    chart_right.setVisibility(View.INVISIBLE);
-                }
-                chart_left.setVisibility(View.VISIBLE);
-                Log.d(TAG, String.valueOf(curr) + String.valueOf(x[0]));
-                if (isRangeSumZero(barEntries, curr, x[0])){
-                    Log.d(TAG, "displayWeekBarChart: zero");
-                    habit_barChart.getAxisLeft().resetAxisMinimum();
-                }else{
-                    yAxis.setAxisMinimum(0f);
-                    double rangeMax = calculateRangeMaximum(barEntries, curr, x[0]) * 1.0;
-                    float max_right_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
-                    yAxis.setAxisMaximum(max_right_y);
-                    habit_barChart.getAxisLeft().setLabelCount(5);
-                    habit_barChart.notifyDataSetChanged();
-                    habit_barChart.invalidate();
-                }
-                habit_barChart.animateY(750);
-                habit_barChart.getXAxis().resetAxisMinimum();
-                habit_barChart.getXAxis().setAvoidFirstLastClipping(false);
-                habit_barChart.notifyDataSetChanged();
-                habit_barChart.invalidate();
-            }
-        });
+        if (isRangeSumZero(lastEntry)){
+            Log.d(TAG, "displayWeekBarChart: zero");
+            habit_barChart.getAxisLeft().resetAxisMinimum();
+        }else{
+            yAxis.setAxisMinimum(0f);
+            double rangeMax = calculateRangeMaximum(lastEntry) * 1.0;
+            float max_y = (float) (5*(Math.ceil(Math.abs(rangeMax/5))));
+            yAxis.setAxisMaximum(max_y);
+        }
 
     }
 
     public void displayMonthBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
-        //fake
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 5));
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 10));
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 16));
-//        habitRepetitionArrayList.add(new HabitRepetition(getAugust1st(getNextDayTimestamp()), 15));
 
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
@@ -497,21 +467,6 @@ public class HabitViewActivity extends AppCompatActivity {
         }
 
         barEntries.add(first_barEntries);
-
-        //fake
-//        x = 0;
-//        initial_timestamp[0] = getSep1st(initial_timestamp[0]);
-//        lastDay = getDayOfMonthFromMs(initial_timestamp[0]);
-//        maxDay = getMaxDayOfTheMonth(initial_timestamp[0]);
-//        first_barEntries = new ArrayList<>();
-//        while (lastDay < maxDay){
-//            first_barEntries.add(new BarEntry(++x, lastDay));
-//            ++lastDay;
-//        }
-//        barEntries.add(first_barEntries);
-//        addDaysToTimeStampForMonth(timeStampList, getMaxDayOfTheMonth(initial_timestamp[0]),getMonthString(initial_timestamp[0]));
-//        Log.d(TAG, "displayWeekBarChart: "+barEntries);
-//        Log.d(TAG, "displayWeekBarChart: "+timeStampList);
 
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
@@ -673,23 +628,6 @@ public class HabitViewActivity extends AppCompatActivity {
 
         barEntries.add(first_barEntries);
 
-        //fake
-//        x = 0;
-//        initial_timestamp[0] = getJan2021();
-//        lastMonth = getMonthFromMs(initial_timestamp[0]);
-//        maxMonth = 11;
-//
-//        first_barEntries = new ArrayList<>();
-//        while (lastMonth <= maxMonth){
-//            first_barEntries.add(new BarEntry(++x, x));
-//            ++lastMonth;
-//        }
-//        barEntries.add(first_barEntries);
-//        addMonthsToTimeStampForYear(timeStampList);
-//
-//        Log.d(TAG, "displayWeekBarChart: "+barEntries);
-//        Log.d(TAG, "displayWeekBarChart: "+timeStampList);
-
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
         final int[] eIndex = {barEntries.size() - 1};
@@ -789,6 +727,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         if (isRangeSumZero(lastEntry)){
             Log.d(TAG, "displayYearBarChartHelper: zero");
+            habit_barChart.getAxisLeft().resetAxisMinimum();
         }else{
             yAxis.setAxisMinimum(0f);
             double rangeMax = calculateRangeMaximum(lastEntry) * 1.0;
@@ -965,8 +904,10 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
-    public void addDaysToTimeStampForWeek(ArrayList<String> timestampList){
+    public void addDaysToTimeStampForWeek(ArrayList<ArrayList<String>> arr){
+        ArrayList<String> timestampList = new ArrayList<>();
         Log.d(TAG, "addDaysToTimeStamp: next week");
+        timestampList.add("0");
         timestampList.add("SUN");
         timestampList.add("MON");
         timestampList.add("TUE");
@@ -974,6 +915,7 @@ public class HabitViewActivity extends AppCompatActivity {
         timestampList.add("THU");
         timestampList.add("FRI");
         timestampList.add("SAT");
+        arr.add(timestampList);
     }
 
     public long getTodayTimestamp(){

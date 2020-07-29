@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,19 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.mad.p03.np2020.routine.HabitActivity;
-import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitCheckHolder;
+import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
-
-import static com.mad.p03.np2020.routine.HabitActivity.remind_text;
 
 public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 
@@ -42,8 +33,6 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
         this.habitList = habitList;
         this.user = user;
 
-//        user.readHabit_Firebase(c);
-//        eventListener();
     }
 
 
@@ -110,82 +99,4 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 //        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
-    /**
-     * Listen to firebase data change to update views on the recyclerView
-     */
-    private void eventListener() {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
-        myRef.child("habit").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifyItemChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-    /**
-     * Notify Item changed if user delete or add data
-     */
-    public void notifyItemChanged() {
-        habitList = initDummyList(user.getHabitList());
-        this.notifyDataSetChanged();
-
-        int n = checkIncompleteHabits(habitList);
-
-        if (n == 0){
-            remind_text.setText("You have completed all habits today!");
-        }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do");
-        }else{
-            remind_text.setText(String.format("You still have %d habits to do",n));
-        }
-
-        Log.v(TAG, "Data is changed from other server");
-    }
-
-    private Habit.HabitList initDummyList (Habit.HabitList habitList){
-
-        if (habitList.size() == 0) {return habitList;}
-        int size = habitList.size();
-
-        if (getScreenInches() <= 5.1){
-            if (size % 2 != 0){
-                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
-            }
-        }else{
-            int dummy_size = 4-(size % 4);
-            if (dummy_size == 4) {return habitList;}
-
-            for (int i = 0; i<dummy_size; i++){
-                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
-            }
-        }
-
-        return habitList;
-    }
-
-    public int checkIncompleteHabits(Habit.HabitList habitList){
-        int n = 0;
-        for (int i = 0; i < habitList.size(); i++){
-            Habit habit = habitList.getItemAt(i);
-            if (!habit.getTitle().toLowerCase().equals("dummy") && habit.getOccurrence() > habit.getCount() ){
-                n++;
-            }
-        }
-        return n;
-    }
-
-    public double getScreenInches() {
-        DisplayMetrics dm = new DisplayMetrics();
-        ((HabitActivity) c).getWindowManager().getDefaultDisplay().getMetrics(dm);
-        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
-        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
-
-        return Math.sqrt(x+y);
-    }
 }
