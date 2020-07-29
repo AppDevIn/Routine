@@ -101,7 +101,21 @@ public class UserDBHelper extends DBHelper {
             Log.d(TAG, "insertUser(): Data inserted");
         }
 
-        return id;
+         return id;
+    }
+
+    public void updateUser(String UID, User updateUser)
+    {
+        Log.v(TAG, "Updating database");
+
+        //Add values into the database
+        // Gets the data repository in write mode
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(User.COLUMN_NAME_NAME, updateUser.getName());
+
+        db.update(User.TABLE_NAME, values, User.COLUMN_NAME_ID + " = ?", new String[]{UID});
     }
 
 

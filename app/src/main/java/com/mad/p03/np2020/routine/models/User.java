@@ -90,6 +90,7 @@ public class User implements Parcelable {
     private List<Label> mListLabel = new ArrayList<>();
     private ArrayList<Focus> mFocusList = new ArrayList<>();
     private DatabaseReference myRef;
+    private DatabaseReference userRef;
     private FocusDBHelper focusDBHelper;
     private HabitDBHelper habitDBHelper;
     private HabitGroupDBHelper habitGroupDBHelper;
@@ -248,6 +249,34 @@ public class User implements Parcelable {
             }
         });
     }
+
+    /*
+    public void readUserFirebase()
+    {
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren())
+                {
+                    User user = new User();
+                    try {
+                        user.setName((String) singleSnapshot.child("Name").getValue());
+                    } catch (FormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        })
+    }
+
+     */
 
     /**
      * This method is read the habits from firebase
