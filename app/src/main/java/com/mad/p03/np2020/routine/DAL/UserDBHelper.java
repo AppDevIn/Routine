@@ -113,11 +113,7 @@ public class UserDBHelper extends DBHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(User.COLUMN_NAME_ID, updateUser.getUID());
         values.put(User.COLUMN_NAME_NAME, updateUser.getName());
-        values.put(User.COLUMN_NAME_EMAIL, updateUser.getEmailAdd());
-        values.put(User.COLUMN_NAME_PASSWORD, updateUser.getPassword());
-
 
         db.update(User.TABLE_NAME, values, User.COLUMN_NAME_ID + " = ?", new String[]{UID});
     }

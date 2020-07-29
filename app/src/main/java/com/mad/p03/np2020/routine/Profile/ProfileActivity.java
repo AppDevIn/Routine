@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Profile;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,7 +18,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +31,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.collection.LLRBNode;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.LoginActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.User;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+
+import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, UsernameDialog.UsernameDialogListener, PasswordDialog.PasswordDialogListener {
 
@@ -45,12 +57,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     Button changePassword;
     Button reportProblem;
     Button rateApp;
+    Button changeProfile;
     Button logoutButton;
     TextView username;
     String UID;
-    private DatabaseReference mDatabase;
-    DatabaseReference userRef;
     String name;
+    String myUri = "";
+    StorageTask uploadTask;
+    StorageReference storageProfilePicture;
+    DatabaseReference mDatabase;
+    DatabaseReference userRef;
+    private CircleImageView profileImageView;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +87,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         userRef = mDatabase.child("users").child(UID);
         userDBHelper = new UserDBHelper(getApplicationContext());
 
+        storageProfilePicture = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
+
         username = findViewById(R.id.username);
 
         userRef.addValueEventListener(new ValueEventListener() {
@@ -84,11 +104,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        profileImageView = findViewById(R.id.profilePicture);
         changeName = findViewById(R.id.changeNameButton);
         changePassword = findViewById(R.id.changePasswordButton);
         reportProblem = findViewById(R.id.reportProblemButton);
         rateApp = findViewById(R.id.rateAppButton);
         logoutButton = findViewById(R.id.logoutButton);
+        changeProfile = findViewById(R.id.changeProfileButton);
 
         /*
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +129,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         reportProblem.setOnClickListener(this);
         rateApp.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
+        changeProfile.setOnClickListener(this);
+
+        getUserInfo();
     }
 
 
@@ -138,8 +163,78 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Log.v(TAG, "User rating app");
                 rateApp();
                 break;
+
+            case R.id.changeProfileButton:
+                Log.v(TAG, "User changing profile picture");
+                changeProfilePicture();
+                break;
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null)
+        {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            imageUri = result.getUri();
+
+            profileImageView.setImageURI(imageUri);
+            uploadProfileImage();
+        }
+        else
+        {
+            MakeToast("Error, try again");
+        }
+    }
+
+    private void uploadProfileImage()
+    {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Set your profile");
+        progressDialog.setMessage("Please wait, while we are setting your data");
+        progressDialog.show();
+
+        if (imageUri != null)
+        {
+            final StorageReference fileRef = storageProfilePicture.child(mAuth.getCurrentUser().getUid() + ".jpg");
+
+            uploadTask = fileRef.putFile(imageUri);
+
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if (task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return fileRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful())
+                    {
+                        Uri downloadUri = task.getResult();
+                        myUri = downloadUri.toString();
+
+                        HashMap<String, Object> userMap = new HashMap<>();
+                        userMap.put("image", myUri);
+
+                        mDatabase.child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
+
+                        progressDialog.dismiss();
+                    }
+                }
+            });
+        }
+        else
+        {
+            progressDialog.dismiss();
+            MakeToast("Image not selected");
+        }
     }
 
     public void changeUsername()
@@ -239,5 +334,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         ReportDialog reportDialog = new ReportDialog();
         reportDialog.show(getSupportFragmentManager(), "Report a problem dialog");
+    }
+
+    public void changeProfilePicture()
+    {
+        CropImage.activity().setAspectRatio(1, 1).start(ProfileActivity.this);
+        uploadProfileImage();
+    }
+
+    public void getUserInfo()
+    {
+        storageProfilePicture.child(mAuth.getCurrentUser().getUid() + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Picasso.get().load(task.getResult()).into(profileImageView);
+            }
+        });
     }
 }
