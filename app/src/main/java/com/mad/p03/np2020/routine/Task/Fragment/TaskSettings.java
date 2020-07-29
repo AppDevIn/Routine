@@ -320,6 +320,10 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
             textView.setError("Section name cannot be empty");
             return;
         }
+        else if(textView.getText().toString().length() >= 12) {
+            textView.setError("Section name cannot be more than 12");
+            return;
+        }
 
         //Create a Section Object for the user input
         mSection.setName(textView.getText().toString().trim());
