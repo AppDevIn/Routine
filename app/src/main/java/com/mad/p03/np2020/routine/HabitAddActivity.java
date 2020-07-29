@@ -226,7 +226,7 @@ public class HabitAddActivity extends AppCompatActivity {
                             return;
                         }
                         int dialogCnt = Integer.parseInt(cntString); // retrieve the count from the input field
-                        if (dialogCnt > 1000 ){
+                        if (dialogCnt > 10000 ){
                             dialog_cnt.setError("Please enter a smaller number");
                             return;
                         }
@@ -301,6 +301,10 @@ public class HabitAddActivity extends AppCompatActivity {
                 }
 
                 int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
+                if (occur > 10000){
+                    habit_occur.setError("Please enter a smaller goal!");
+                    return;
+                }
                 int cnt = Integer.parseInt(menu_count.getText().toString()); // retrieve the count of the habit from the input field
 
                 Date date = new Date(); // call the date function
