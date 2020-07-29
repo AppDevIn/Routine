@@ -18,7 +18,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.FocusAdapter {
+      class com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter {
           - TAG : String
           - context : Context
           - focusList : List<Focus>
@@ -195,9 +195,9 @@ title __ADAPTER's Class Diagram__\n
   
 
   com.mad.p03.np2020.routine.Adapter.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.FocusAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.Class.User : user
   com.mad.p03.np2020.routine.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler

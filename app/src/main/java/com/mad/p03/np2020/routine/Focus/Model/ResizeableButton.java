@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.models;
+package com.mad.p03.np2020.routine.Focus.Model;
 
 import android.content.Context;
 import android.util.AttributeSet;

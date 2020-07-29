@@ -4,7 +4,7 @@ title __FRAGMENT's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Fragment {
-      class com.mad.p03.np2020.routine.Fragment.HistoryFragment {
+      class com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment {
           {static} - FOCUS_DATABASE : String
           - TAG : String
           {static} - USER_GET : String
@@ -29,7 +29,7 @@ title __FRAGMENT's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Fragment {
-      interface com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener {
+      interface com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment.OnFragmentInteractionListener {
           {abstract} + onFragmentInteraction()
       }
     }
@@ -66,11 +66,11 @@ title __FRAGMENT's Class Diagram__\n
   }
   
 
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment -up-|> androidx.fragment.app.Fragment
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener : mListener
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment +-down- com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment -up-|> androidx.fragment.app.Fragment
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment.OnFragmentInteractionListener : mListener
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment +-down- com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment.OnFragmentInteractionListener
   com.mad.p03.np2020.routine.Fragment.NotesFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.Fragment.NotesFragment o-- com.mad.p03.np2020.routine.Class.Task : mTask
   com.mad.p03.np2020.routine.Fragment.StepsFragment -up-|> androidx.fragment.app.Fragment

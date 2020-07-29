@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragment.HistoryFragment">
+    tools:context=".Focus.Fragment.HistoryFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -261,7 +261,7 @@
                 android:orientation="horizontal"
                 android:weightSum="9">
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/weekSelectLeft"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -272,7 +272,7 @@
                     android:rotation="270" />
 
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/mondayButton"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -283,7 +283,7 @@
                     android:text="Mo"
                     android:textSize="12sp" />
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/tuesdayButton"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -294,7 +294,7 @@
                     android:text="Tu"
                     android:textSize="12sp" />
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/wednesdayButton"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -305,7 +305,7 @@
                     android:text="We"
                     android:textSize="12sp" />
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/thursdayButton"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -316,7 +316,7 @@
                     android:text="Th"
                     android:textSize="12sp" />
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/fridayButton"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -327,7 +327,7 @@
                     android:text="Fr"
                     android:textSize="12sp" />
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/saturdayButton"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -338,7 +338,7 @@
                     android:text="Sa"
                     android:textSize="12sp" />
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/sundayButton"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -350,7 +350,7 @@
                     android:textSize="12sp" />
 
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
+                <com.mad.p03.np2020.routine.Focus.Model.ResizeableButton
                     android:id="@+id/weekSelectRight"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"

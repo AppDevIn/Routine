@@ -8,12 +8,11 @@ import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.models.Focus;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
 
 /**
  *

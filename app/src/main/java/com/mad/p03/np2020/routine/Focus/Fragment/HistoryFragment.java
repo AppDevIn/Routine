@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Fragment;
+package com.mad.p03.np2020.routine.Focus.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,27 +19,23 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
-import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
+import com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter;
 import com.mad.p03.np2020.routine.R.color;
-import com.mad.p03.np2020.routine.background.DatabaseObserver;
-import com.mad.p03.np2020.routine.models.Focus;
-import com.mad.p03.np2020.routine.models.ResizeableButton;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
+import com.mad.p03.np2020.routine.Focus.Model.ResizeableButton;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
-import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
+import com.mad.p03.np2020.routine.Focus.DAL.FocusDBHelper;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 
 import org.threeten.bp.DateTimeUtils;
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.temporal.WeekFields;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -47,10 +43,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.time.*;
-
-import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 /**
  * History fragment used to manage the fragment of Focus layout section
@@ -60,7 +52,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
  */
 
 
-public class HistoryFragment extends Fragment implements View.OnClickListener, DatabaseObserver {
+public class HistoryFragment extends Fragment implements View.OnClickListener, FocusDBObserver {
 
     private static final String USER_GET = "User Get";
     private static final String FOCUS_DATABASE = "FocusDatabase";
@@ -264,18 +256,18 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, D
     public void setArrow(){
         Date min = user.getMinFocus();
         if(min.before(mappingDate.get(1))){
-            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
+            prevWeek.setVisibility(View.VISIBLE);
         }else{
             Log.v(TAG, "Change Color");
-            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+            prevWeek.setVisibility(View.INVISIBLE);
         }
 
         Date max = new Date();
         if(max.after(mappingDate.get(7))){
-            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
+            nextWeek.setVisibility(View.VISIBLE);
         }else{
             Log.v(TAG, "Change Color");
-            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+            nextWeek.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.models;
+package com.mad.p03.np2020.routine.Focus.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 

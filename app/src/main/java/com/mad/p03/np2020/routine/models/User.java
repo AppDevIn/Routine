@@ -22,13 +22,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
-import com.mad.p03.np2020.routine.background.DatabaseObserver;
+import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
 import com.mad.p03.np2020.routine.background.GetAchievementWorker;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.helpers.GetTaskSectionWorker;
 import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
-import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
+import com.mad.p03.np2020.routine.Focus.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
 
@@ -50,7 +52,7 @@ import java.util.List;
  * @author Lee Quan Sheng and Jeyavishnu
  * @since 04-06-2020
  */
-public class User implements Parcelable, DatabaseObserver {
+public class User implements Parcelable, FocusDBObserver {
 
     /**
      * The table name for this model
@@ -562,11 +564,11 @@ public class User implements Parcelable, DatabaseObserver {
      *
      * @param context set context to the current content
      */
-    public void readFocusFirebase(Context context, DatabaseObserver databaseObserver) {
+    public void readFocusFirebase(Context context, FocusDBObserver focusDBObserver) {
 
         myRef = FirebaseDatabase.getInstance().getReference().child("archiveFocusData").child(getUID());
         focusDBHelper = new FocusDBHelper(context);
-        focusDBHelper.registerDbObserver(databaseObserver);
+        focusDBHelper.registerDbObserver(focusDBObserver);
         //Clear all data since there is a change to the database so it can be updated
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
