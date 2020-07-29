@@ -39,7 +39,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.HabitAdapter {
+      class com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter {
           {static} ~ TAG : String
           - UID : String
           - c : Context
@@ -58,7 +58,7 @@ title __ADAPTER's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter {
+      class com.mad.p03.np2020.routine.Habit.Adapter.HabitGroupAdapter {
           + _habitGroupList : ArrayList<HabitGroup>
           - c : Context
           {static} - view : View
@@ -198,12 +198,12 @@ title __ADAPTER's Class Diagram__\n
   com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
   com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
-  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitGroupAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
   com.mad.p03.np2020.routine.Adapter.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Interface.HomeItemTouchHelperAdapter
   com.mad.p03.np2020.routine.Adapter.HomePageAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback

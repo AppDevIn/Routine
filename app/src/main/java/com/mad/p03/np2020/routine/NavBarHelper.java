@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mad.p03.np2020.routine.Calender.Calender;
 import com.mad.p03.np2020.routine.Focus.FocusActivity;
+import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Profile.ProfileActivity;
 

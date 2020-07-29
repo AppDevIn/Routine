@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Adapter;
+package com.mad.p03.np2020.routine.Habit.Adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -17,12 +17,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder;
+import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitGroupHolder;
 import com.mad.p03.np2020.routine.models.User;
 
 import java.util.ArrayList;
-
-import static com.mad.p03.np2020.routine.HabitActivity.remind_text;
 
 /**
  *

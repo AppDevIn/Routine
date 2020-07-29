@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Adapter;
+package com.mad.p03.np2020.routine.Habit.Adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.ViewHolder.HabitCheckHolder;
+import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitCheckHolder;
 import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
