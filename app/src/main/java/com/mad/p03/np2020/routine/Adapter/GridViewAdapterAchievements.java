@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -109,7 +111,6 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
         Achievement achievement = achievements.getArrayList().get(position);
 
         // Define background and sticker asset URIs and attribution link URL
-        Uri backgroundAssetUri = getImageUri(achievement.getPathImg());
         Uri stickerAssetUri = getImageUri(achievement.getPathImg());
         String attributionLinkUrl = "https://play.google.com/store/apps/details?id=com.mad.p03.np2020.routine&hl=en";
 
@@ -117,9 +118,13 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
         // background asset, sticker asset, and attribution link
         Intent intent = new Intent("com.instagram.share.ADD_TO_STORY");
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setDataAndType(backgroundAssetUri, "image/jpeg");
+        intent.setType("image/jpeg");
         intent.putExtra("interactive_asset_uri", stickerAssetUri);
         intent.putExtra("content_url", attributionLinkUrl);
+        intent.putExtra("top_background_color", "#33FF33");
+        intent.putExtra("bottom_background_color", "#FF00FF");
+        intent.putExtra("content_url", attributionLinkUrl);
+
 
         // Instantiate activity and verify it will resolve implicit intent
         Activity activity = (Activity) mContext;
@@ -127,6 +132,8 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
                 "com.instagram.android", stickerAssetUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
         if (activity.getPackageManager().resolveActivity(intent, 0) != null) {
             activity.startActivityForResult(intent, 0);
+        }else{
+            Toast.makeText(mContext, "Instagram not found on your device", Toast.LENGTH_SHORT).show();
         }
 
     }

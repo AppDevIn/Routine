@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:cardBackgroundColor="#D3F5FF"
+        app:cardBackgroundColor="#CAF4F4"
         app:cardCornerRadius="8dp">
 
         <LinearLayout
@@ -62,8 +62,8 @@
 
                     <RelativeLayout
                         android:id="@+id/unSuccessIndicatorLayout"
-                        android:layout_width="54dp"
-                        android:layout_height="24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="9dp"
                         android:layout_marginTop="20dp"
@@ -71,8 +71,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/title">
 
                         <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignStart="@+id/buttonLayout"
                             android:layout_alignEnd="@+id/buttonLayout"
                             android:background="@null"
@@ -87,7 +87,7 @@
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:orientation="horizontal">
 
@@ -105,8 +105,8 @@
 
                                 <ImageView
                                     android:id="@+id/imageView"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="54dp"
+                                    android:layout_height="24dp"
                                     android:padding="2dp"
                                     app:srcCompat="@drawable/ic_thunder" />
                             </LinearLayout>
@@ -130,8 +130,8 @@
 
                     <RelativeLayout
                         android:id="@+id/successIndicatorLayout"
-                        android:layout_width="54dp"
-                        android:layout_height="24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="37dp"
                         android:layout_marginTop="20dp"
@@ -139,8 +139,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/title">
 
                         <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignStart="@+id/buttonLayout1"
                             android:layout_alignEnd="@+id/buttonLayout1"
                             android:background="@null"
@@ -176,8 +176,9 @@
                                     android:textSize="12sp" />
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="54dp"
+                                    android:layout_height="24dp"
+                                    android:padding="2dp"
                                     app:srcCompat="@drawable/icon_sun" />
 
                             </LinearLayout>
@@ -271,17 +272,6 @@
                     android:background="@drawable/arrow_up"
                     android:rotation="270" />
 
-                <com.mad.p03.np2020.routine.models.ResizeableButton
-                    android:id="@+id/sundayButton"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:textColor="@color/pastelBlue"
-                    android:background="@drawable/circle_float"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Su"
-                    android:textSize="12sp" />
 
                 <com.mad.p03.np2020.routine.models.ResizeableButton
                     android:id="@+id/mondayButton"
@@ -349,13 +339,24 @@
                     android:text="Sa"
                     android:textSize="12sp" />
 
+                <com.mad.p03.np2020.routine.models.ResizeableButton
+                    android:id="@+id/sundayButton"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle_float"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Su"
+                    android:textSize="12sp" />
+
 
                 <com.mad.p03.np2020.routine.models.ResizeableButton
                     android:id="@+id/weekSelectRight"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/arrow_up"
                     android:rotation="90" />
@@ -366,7 +367,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@drawable/dateselectorcard"
-                android:checkedButton="@+id/day"
+                android:checkedButton="@+id/week"
                 android:elevation="4dp"
                 android:orientation="horizontal">
 

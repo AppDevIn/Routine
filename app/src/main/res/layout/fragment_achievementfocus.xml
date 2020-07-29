@@ -10,11 +10,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="8dp"
-        app:cardBackgroundColor="#CAF4F4"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentTop="true"
+        app:cardBackgroundColor="#CAF4F4"
+        app:cardCornerRadius="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="134dp">
+                    android:layout_height="wrap_content">
 
                     <ImageButton
                         android:id="@+id/closeAchievement"
@@ -78,7 +78,7 @@
                     <RelativeLayout
                         android:id="@+id/successIndicatorLayout"
                         android:layout_width="wrap_content"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="37dp"
                         android:layout_marginTop="20dp"
@@ -87,7 +87,7 @@
 
                         <Button
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_alignLeft="@+id/buttonLayout1"
                             android:layout_alignRight="@+id/buttonLayout1"
                             android:background="@null"
@@ -95,35 +95,42 @@
 
                             />
 
-                        <LinearLayout
+                        <androidx.cardview.widget.CardView
                             android:id="@+id/buttonLayout1"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginStart="0dp"
-                            android:background="@drawable/rounded_button_green"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="#96EA9E"
+                            app:cardCornerRadius="10dp">
 
-
-                            <ImageView
-                                android:layout_width="41dp"
-                                android:layout_height="21dp"
-                                app:srcCompat="@drawable/ic_achievement" />
-
-                            <TextView
-                                android:id="@+id/badgesAchieve"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="15dp"
-                                android:fontFamily="@font/montserrat_semibold"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="0dp"
                                 android:gravity="center"
-                                android:text="1 / 10"
-                                android:textColor="@color/black"
-                                android:textSize="11sp" />
+                                android:orientation="horizontal">
 
-                        </LinearLayout>
+
+                                <ImageView
+                                    android:layout_width="41dp"
+                                    android:layout_height="21dp"
+                                    android:padding="3dp"
+                                    app:srcCompat="@drawable/ic_achievement" />
+
+                                <TextView
+                                    android:id="@+id/badgesAchieve"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginEnd="15dp"
+                                    android:fontFamily="@font/montserrat_semibold"
+                                    android:gravity="center"
+                                    android:text="1 / 10"
+                                    android:textColor="@color/black"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
 
                     </RelativeLayout>
 
