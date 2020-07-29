@@ -97,6 +97,13 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     };
 
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(0, 0);
+    }
+
+
     /**
      * This is used to get the ID of for the view and initialize the recycler
      * view for the tasks. Setting the onclick lister too and also setting 2 custom
@@ -111,6 +118,8 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        this.overridePendingTransition(0, 0);
+
         Log.d(TAG, "UI is being created");
         verifyStoragePermissions(this);
         //Get user from the intent

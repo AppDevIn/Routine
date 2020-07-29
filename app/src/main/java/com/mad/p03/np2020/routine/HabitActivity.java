@@ -97,6 +97,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     private GridLayoutManager manager;
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(0, 0);
+    }
 
     /**
      *
