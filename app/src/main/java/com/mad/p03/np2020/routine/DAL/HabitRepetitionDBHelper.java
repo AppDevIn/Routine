@@ -193,66 +193,66 @@ public class HabitRepetitionDBHelper extends DBHelper {
             int cycle = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE));
             int day = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY));
             long currTimeStamp = res.getLong(res.getColumnIndex("max(timestamp)"));
-            if (!habitDBHelper.isHabitIDExisted(id)){
-                res.moveToNext(); // move to the next result
-            }
-            Habit habit = habitDBHelper.getHabitByID(id);
-
-            while (currTimeStamp < todayTimeStamp){
-                boolean isUpdated = false;
-                long timestamp = currTimeStamp + 86400000;
-                switch (habit.getPeriod()){
-                    case 1:
-                        Log.d(TAG, "repeatingHabit: DAILY");
-                        if (!checkRepetitionExist(id, timestamp)){
-                            insertNewRepetitionHabit(id, -1, ++day, 0, timestamp);
-                            isUpdated = true;
-                        }
-                        currTimeStamp += 86400000;
-                        break;
-
-                    case 7:
-                        Log.d(TAG, "repeatingHabit: WEEKLY");
-                        if (!checkRepetitionExist(id, timestamp)){
-                            if (day == 7){
-                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
-                                isUpdated = true;
-                                day = 1;
-
-                            }else{
-                                int count = getLastDayTotalCount(id, timestamp);
-                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
+            if (habitDBHelper.isHabitIDExisted(id)){
+                Habit habit = habitDBHelper.getHabitByID(id);
+                while (currTimeStamp < todayTimeStamp){
+                    boolean isUpdated = false;
+                    long timestamp = currTimeStamp + 86400000;
+                    switch (habit.getPeriod()){
+                        case 1:
+                            Log.d(TAG, "repeatingHabit: DAILY");
+                            if (!checkRepetitionExist(id, timestamp)){
+                                insertNewRepetitionHabit(id, -1, ++day, 0, timestamp);
                                 isUpdated = true;
                             }
-                        }
-                        currTimeStamp += 86400000;
-                        break;
+                            currTimeStamp += 86400000;
+                            break;
 
-                    case 30:
-                        Log.d(TAG, "repeatingHabit: MONTHLY");
-                        if (!checkRepetitionExist(id, timestamp)){
-                            if (day == 30){
-                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
-                                isUpdated = true;
-                                day = 1;
-                            }
-                            else{
-                                int count = getLastDayTotalCount(id, timestamp);
-                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
-                                isUpdated = true;
-                            }
-                        }
-                        currTimeStamp += 86400000;
-                        break;
+                        case 7:
+                            Log.d(TAG, "repeatingHabit: WEEKLY");
+                            if (!checkRepetitionExist(id, timestamp)){
+                                if (day == 7){
+                                    insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                    isUpdated = true;
+                                    day = 1;
 
+                                }else{
+                                    int count = getLastDayTotalCount(id, timestamp);
+                                    insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
+                                    isUpdated = true;
+                                }
+                            }
+                            currTimeStamp += 86400000;
+                            break;
+
+                        case 30:
+                            Log.d(TAG, "repeatingHabit: MONTHLY");
+                            if (!checkRepetitionExist(id, timestamp)){
+                                if (day == 30){
+                                    insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                    isUpdated = true;
+                                    day = 1;
+                                }
+                                else{
+                                    int count = getLastDayTotalCount(id, timestamp);
+                                    insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
+                                    isUpdated = true;
+                                }
+                            }
+                            currTimeStamp += 86400000;
+                            break;
+
+                    }
+                    if (isUpdated){
+                        Log.d(TAG, "repeatingHabit: "+habit.getHabitID()+ " AT " + timestamp );
+                        HabitRepetition habitRepetition = getHabitRepetitionByTimeStamp(habit.getHabitID(), timestamp);
+                        writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    }
                 }
-                if (isUpdated){
-                    Log.d(TAG, "repeatingHabit: "+habit.getHabitID()+ " AT " + timestamp );
-                    HabitRepetition habitRepetition = getHabitRepetitionByTimeStamp(habit.getHabitID(), timestamp);
-                    writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
-                }
-            }
 
+
+
+            }
 
 
             res.moveToNext(); // move to the next result
