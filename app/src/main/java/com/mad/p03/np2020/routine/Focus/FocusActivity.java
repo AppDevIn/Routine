@@ -281,6 +281,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.v("Permission", "Code: " + requestCode);
         switch (requestCode) {
             case 2909: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -312,6 +313,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Initialize object
      */
     private void initialization() {
+
         Intent intent = new Intent(getApplicationContext(), BoundService.class);
         startService(intent);
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
@@ -333,6 +335,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         //Add it to LocalDatabase List
         Log.v(TAG, "Local database: " + focusDBHelper.getAllMainData().toString());
+        user.getAchievement(this);
 
         mInstance = this;
         // addObserver of user
