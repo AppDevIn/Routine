@@ -335,6 +335,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         cancelRepeatingHabit();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         mAuth.signOut();
+        DBHelper dbHelper = new DBHelper(this);
+        dbHelper.deleteAll();
         startActivity(intent);
     }
 

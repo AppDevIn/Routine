@@ -119,8 +119,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // set the HabitDBHelper
-        habit_dbHandler = new HabitDBHelper(this);
-        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         viewSwitcher = findViewById(R.id.switcher);
 
@@ -163,7 +161,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set User
         user = new User();
-        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
         // initialise the shared preferences
@@ -177,9 +174,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
         habitRecyclerView = findViewById(R.id.habit_recycler_view);
-
-        habitRecyclerView.setLayoutManager(manager);
-        habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
 
         prev_indicator = findViewById(R.id.habit_indicator_prev);
         next_indicator = findViewById(R.id.habit_indicator_next);
@@ -239,11 +233,13 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_first_habit.setOnClickListener(this);
 
         habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
+
+        habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
+
+        habitRecyclerView.setLayoutManager(manager);
+        habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        habitRepetitionDBHelper.repeatingHabit();
-        setRepeatingHabit();
-
 
     }
 
@@ -251,8 +247,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        habitRepetitionDBHelper.repeatingHabit();
+        setRepeatingHabit();
+
         user.setHabitList(habit_dbHandler.getAllHabits());
         // initialise the habitAdapter
+
         Habit.HabitList habitArrayList = initDummyList(user.getHabitList());
 
         if(habitArrayList.size() == 0){
