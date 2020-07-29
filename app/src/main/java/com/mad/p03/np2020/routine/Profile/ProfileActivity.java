@@ -131,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.reportProblemButton:
                 Log.v(TAG, "User reporting a problem");
-                reportAProblem("This app is great");
+                reportAProblem();
                 break;
 
             case R.id.rateAppButton:
@@ -235,8 +235,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         toast.show();
     }
 
-    public void reportAProblem(String message)
+    public void reportAProblem()
     {
-        mDatabase.child("feedback").child(UID).setValue(message);
+        ReportDialog reportDialog = new ReportDialog();
+        reportDialog.show(getSupportFragmentManager(), "Report a problem dialog");
     }
 }
