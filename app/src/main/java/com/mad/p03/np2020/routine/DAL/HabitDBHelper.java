@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.HabitReminder;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
+
+import java.util.Calendar;
 
 /**
  *
@@ -93,7 +96,6 @@ public class HabitDBHelper extends DBHelper{
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
         values.put(Habit.COLUMN_USERID,UID);
         values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
-        values.put(Habit.COLUMN_HABIT_COUNT,habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD,habit.getPeriod());
         values.put(Habit.COLUMN_HABIT_TIMECREATED,habit.getTime_created());
         values.put(Habit.COLUMN_HABIT_HOLDERCOLOR,habit.getHolder_color());
@@ -164,7 +166,7 @@ public class HabitDBHelper extends DBHelper{
             long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
             String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
             int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
-            int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
+            int count = getHabitCount(id);
             int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
             String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
             String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
@@ -199,28 +201,6 @@ public class HabitDBHelper extends DBHelper{
 
     /**
      *
-     * This method is used to update the count of the habit in the SQLiteDatabase.
-     *
-     * @param habit This parameter is to get the habit object.
-     *
-     * */
-    public void updateCount(Habit habit){
-        Log.d(TAG, "Habit: updateCount");
-
-        // get the readable database
-        SQLiteDatabase db = this.getReadableDatabase();
-        // the query of updating the row
-        String query =
-                "UPDATE " + Habit.TABLE_NAME +
-                        " SET " + Habit.COLUMN_HABIT_COUNT +"=" + habit.getCount() +
-                        " WHERE " + Habit.COLUMN_ID + "=" + habit.getHabitID();
-
-        db.execSQL(query); // execute the query
-        db.close(); // close the db connection
-    }
-
-    /**
-     *
      * This method is used to update the habit object in the SQLiteDatabase.
      *
      * @param habit This parameter is to get the habit object.
@@ -238,7 +218,6 @@ public class HabitDBHelper extends DBHelper{
         ContentValues values = new ContentValues();
         values.put(Habit.COLUMN_HABIT_TITLE, habit.getTitle());
         values.put(Habit.COLUMN_HABIT_OCCURRENCE, habit.getOccurrence());
-        values.put(Habit.COLUMN_HABIT_COUNT, habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD, habit.getPeriod());
         values.put(Habit.COLUMN_HABIT_HOLDERCOLOR, habit.getHolder_color());
 
@@ -316,24 +295,26 @@ public class HabitDBHelper extends DBHelper{
      * */
     public boolean isReminderExisted(Habit habit){
 
+        boolean isExisted = false;
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         Log.d(TAG, "isReminderExisted: ");
 
         Cursor cursor =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habit.getHabitID(), null );
-        if (cursor == null){
+        if (cursor.getCount() == 0){
             return false;
         }
 
         cursor.moveToFirst(); //Only getting the first value
 
         if (cursor.getString(cursor.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES)) != null ){
-            return true;
+            isExisted = true;
         }
 
         db.close();
 
-        return false;
+        return isExisted;
 
     }
 
@@ -393,7 +374,56 @@ public class HabitDBHelper extends DBHelper{
         long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
         String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
         int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
-        int count = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_COUNT));
+        int count = getHabitCount(id);
+        int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
+        String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
+        String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
+
+        int reminder_id = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_ID));
+        int reminder_hours = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_HOURS));
+        int reminder_minutes = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MINUTES));
+        String reminder_message = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_MESSAGES));
+        String reminder_customText = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT));
+
+        HabitReminder reminder = null;
+        if (reminder_message != null){ //check if habit reminder is null, if not set the object
+            reminder = new HabitReminder(reminder_message, reminder_id, reminder_minutes, reminder_hours, reminder_customText);
+        }
+
+        long group_id = res.getLong(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_ID));
+        String group_name = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_GROUP_NAME));
+        HabitGroup group = null;
+        if (group_name != null) {// check if habit group is null, if not set the object
+            group = new HabitGroup(group_id, group_name);
+        }
+
+        db.close();
+
+        return new Habit(id,title, occurrence, count, period, time_created, holder_color, reminder, group);
+    }
+
+    /**
+     *
+     * This method is used to get a specific reminder existed in the SQLiteDatabase.
+     *
+     * @param habitID This parameter is to parse the habitID
+     *
+     * @return boolean This will return the habitReminder object, and return null if no result found.
+     * */
+    public Habit getHabitByID(long habitID){
+        Log.d(TAG, "getHabit: ");
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res =  db.rawQuery( "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habitID, null );
+        if (res != null){
+            res.moveToFirst(); //Only getting the first value
+        }
+
+        long id = res.getLong(res.getColumnIndex(Habit.COLUMN_ID));
+        String title = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TITLE));
+        int occurrence = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_OCCURRENCE));
+        int count = getHabitCount(id);
         int period = res.getInt(res.getColumnIndex(Habit.COLUMN_HABIT_PERIOD));
         String time_created = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_TIMECREATED));
         String holder_color = res.getString(res.getColumnIndex(Habit.COLUMN_HABIT_HOLDERCOLOR));
@@ -440,7 +470,6 @@ public class HabitDBHelper extends DBHelper{
         values.put(Habit.COLUMN_HABIT_TITLE,habit.getTitle());
         values.put(Habit.COLUMN_USERID,UID);
         values.put(Habit.COLUMN_HABIT_OCCURRENCE,habit.getOccurrence());
-        values.put(Habit.COLUMN_HABIT_COUNT,habit.getCount());
         values.put(Habit.COLUMN_HABIT_PERIOD,habit.getPeriod());
         values.put(Habit.COLUMN_HABIT_TIMECREATED,habit.getTime_created());
         values.put(Habit.COLUMN_HABIT_HOLDERCOLOR,habit.getHolder_color());
@@ -485,5 +514,53 @@ public class HabitDBHelper extends DBHelper{
         db.close();
 
     }
+
+    public int getHabitCount(long habitID){
+        Log.d(TAG, "getHabitRepetition: " + habitID);
+
+        int total = 0;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " = " + getTodayTimestamp();
+
+        Cursor res =  db.rawQuery( query  , null );
+        if (res.getCount() > 0){
+            res.moveToFirst(); //Only getting the first value
+            int count = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT));
+            int conCount = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT));
+
+            total =  count+conCount;
+        }
+
+        db.close();
+
+        return total;
+
+    }
+
+    public long getTodayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+
+        return cal.getTimeInMillis();
+    }
+
+    public long getYesterdayTimestamp(){
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        cal.add(Calendar.DATE, -1);
+
+        return cal.getTimeInMillis();
+    }
+
 
 }

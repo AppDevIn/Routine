@@ -12,17 +12,20 @@
     android:orientation="vertical"
     tools:context=".FocusActivity">
 
+
     <ImageButton
         android:id="@+id/history"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_gravity="end|top"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/icon_history"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/rounded_button_pink"
+        android:padding="8dp"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.881"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_vert" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
@@ -140,7 +143,6 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
-
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -189,6 +191,7 @@
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/montserrat_regular"
+
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="@string/timer_ground"
@@ -227,11 +230,9 @@
                     android:text="@string/timer_center"
                     android:textColor="#000000"
                     android:textSize="42sp" />
-
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -271,7 +272,6 @@
                     android:layout_gravity="center"
                     android:rotation="180"
                     app:srcCompat="@drawable/arrow_up" />
-
             </LinearLayout>
 
 
@@ -359,12 +359,10 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavViewBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavViewBar"

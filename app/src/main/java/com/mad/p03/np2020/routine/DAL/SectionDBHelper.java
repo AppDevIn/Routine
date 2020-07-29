@@ -249,6 +249,35 @@ public class SectionDBHelper extends DBHelper{
         db.close();
     }
 
+    /**
+     *
+     * This method will update the position of the given
+     * row based on the ID
+     *
+     * @param section The object that needs to be updates
+     */
+    public void updateSection(Section section){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(Section.COLUMN_COLOR, section.getBackgroundColor());
+        updateValues.put(Section.COLUMN_IMAGE, section.getIconValue());
+        updateValues.put(Section.COLUMN_NAME, section.getName());
+        db.update(
+                Section.TABLE_NAME,
+                updateValues,
+                Section.COLUMN_SECTION_ID + " = ?",
+                new String[]{section.getID()}
+        );
+
+        if (mMyDatabaseListener != null)
+            mMyDatabaseListener.onDataUpdate(section);
+
+        db.close();
+    }
+
+
 
     /**
      *

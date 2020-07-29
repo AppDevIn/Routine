@@ -3,13 +3,16 @@ package com.mad.p03.np2020.routine.DAL;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 
 
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
+import com.mad.p03.np2020.routine.models.Achievement;
 import com.mad.p03.np2020.routine.models.Check;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.models.Team;
@@ -55,9 +58,12 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Task.SQL_CREATE_ENTRIES); //Create task database
         sqLiteDatabase.execSQL(User.SQL_CREATE_ENTRIES); //Create user database
         sqLiteDatabase.execSQL(Habit.CREATE_HABITS_TABLE); //Create habit database
+        sqLiteDatabase.execSQL(HabitRepetition.CREATE_HABITS_REPETITION_TABLE); // Create habitRepetition database
         sqLiteDatabase.execSQL(HabitGroup.CREATE_GROUPS_TABLE); //Create habit group database
         sqLiteDatabase.execSQL(Focus.CREATE_SQL); //Create focus database
+        sqLiteDatabase.execSQL(Focus.CREATE_ARCHIVE_SQL); //Create archive focus database
         sqLiteDatabase.execSQL(Check.SQL_CREATE_ENTRIES); //Create focus database
+        sqLiteDatabase.execSQL(Achievement.SQL_CREATE_ENTRIES); //Create achievement database
     }
 
     /**
@@ -77,9 +83,12 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Check.SQL_DELETE_ENTRIES); // Delete existing check
         sqLiteDatabase.execSQL(Task.SQL_DELETE_ENTRIES);
         sqLiteDatabase.execSQL(User.SQL_DELETE_ENTRIES);
-        sqLiteDatabase.execSQL(Habit.DROP_HABITS_TABLE);
-        sqLiteDatabase.execSQL(HabitGroup.DROP_GROUPS_TABLE);
+        sqLiteDatabase.execSQL(Habit.DROP_HABITS_TABLE);// Delete existing habit
+        sqLiteDatabase.execSQL(HabitGroup.DROP_GROUPS_TABLE); // Delete existing habit groups
+        sqLiteDatabase.execSQL(HabitRepetition.DROP_HABITS_Repetition_TABLE); // Delete existing habit repetition
         sqLiteDatabase.execSQL(Focus.SQL_DELETE_ENTRIES);
+        sqLiteDatabase.execSQL(Focus.SQL_DELETE_ENTRIES_ARCHIVE);
+        sqLiteDatabase.execSQL(Achievement.SQL_DELETE_ENTRIES_ACHIEVEMENT);
         onCreate(sqLiteDatabase);
 
         //Add previous data
@@ -98,5 +107,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db,oldVersion,newVersion);
     }
+
 
 }

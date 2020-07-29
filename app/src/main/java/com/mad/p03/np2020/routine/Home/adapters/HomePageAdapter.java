@@ -106,9 +106,10 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
     public void onBindViewHolder(@NonNull MyHomeViewHolder holder, final int position) {
         //***************** Set values into view *****************//
 
+        Section section = mSectionList.get(position);
 
         //For the TextView
-        holder.mTextViewListName.setText(mSectionList.get(position).getName());
+        holder.mTextViewListName.setText(section.getName());
 
 
         //Setup drawable
@@ -124,6 +125,13 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         //Setting the image icon
         holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());
 
+        //Shows the team icon if its from team
+        if(!section.isAdmin())
+            holder.mTeamIcon.setVisibility(View.VISIBLE);
+        else
+            holder.mTeamIcon.setVisibility(View.INVISIBLE);
+
+
     }
 
     /**
@@ -134,6 +142,14 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
     @Override
     public int getItemCount() {
         return mSectionList.size();
+    }
+
+
+    public void setSectionList(List<Section> sectionList) {
+        mSectionList = sectionList;
+        synchronized(this){
+            this.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -230,6 +246,21 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         notifyItemInserted(mSectionList.size());
         Log.d(TAG, "New TODO added, " + section.toString());
     }
+
+    /**
+     * Adding the section to
+     * the list and notifying the adapter
+     * of the change
+     * @param section the section that will be added
+     */
+    public void addItem(Section section, int pos){
+        mSectionList.add(pos, section);
+
+        //Informing the adapter and view of the new item
+        notifyItemInserted(pos);
+        Log.d(TAG, "New TODO added, " + section.toString());
+    }
+
 
     /**
      * The place to delete the item in the list and notify the change

@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,22 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.models.User;
+
+import static com.mad.p03.np2020.routine.HabitActivity.remind_text;
 
 /**
  *
@@ -40,18 +50,25 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     private HabitItemClickListener mListener;
     private static View view;
     private HabitDBHelper dbHandler;
-    private String UID;
+    private User user;
 
     /**Used as the adapter habitList*/
     public Habit.HabitList _habitList;
+    private HabitCheckAdapter habitCheckAdapter;
 
     /**This method is a constructor for habitAdapter*/
 
-    public HabitAdapter(Context c, Habit.HabitList habitList, String UID) {
+    public HabitAdapter(Context c, Habit.HabitList habitList, User user,HabitCheckAdapter habitCheckAdapter) {
         this.c = c;
         this._habitList = habitList;
-        this.UID = UID;
         dbHandler = new HabitDBHelper(c);
+        this.user = user;
+        this.habitCheckAdapter = habitCheckAdapter;
+
+        user.readHabit_Firebase(c, true);
+        user.readHabitRepetition_Firebase(c);
+        habitEventListener();
+        habitRepetitionEventListener();
     }
 
     /**
@@ -149,42 +166,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
             holder.habit_finished.setVisibility(View.INVISIBLE);
         }
 
-//        holder.addBtn.setBackgroundColor(Color.TRANSPARENT);
-//        // set onClickListener on add button
-//        holder.addBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // this will trigger the habit class add count method
-//                habit.addCount(); // add the count by 1
-//                notifyDataSetChanged(); // notify the data set has changed
-//                dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
-//                writeHabit_Firebase(habit, UID, false); // write the habit to the firebase
-//
-//            }
-//        });
-//
-//        // set the period text based on its period attribute value
-//        switch (habit.getPeriod()){
-//            case 1:
-//                holder.mPeriod.setText("TODAY:");
-//                break;
-//            case 7:
-//                holder.mPeriod.setText("THIS WEEK:");
-//                break;
-//            case 30:
-//                holder.mPeriod.setText("THIS MONTH:");
-//                break;
-//            case 365:
-//                holder.mPeriod.setText("THIS YEAR:");
-//                break;
-//        }
-
-//        if (habit.getCount() >= habit.getOccurrence()){ // if habit count > habit occurrence
-//            holder.addBtn.setImageResource(R.drawable.habit_tick_white); // replace the add button as a tick button
-//        }else{ // if habit count < habit occurrence
-//            holder.addBtn.setImageResource(R.drawable.habit_add_white); // set the add button
-//        }
-
     }
 
     /**@return int This return the size of the data set, habitList*/
@@ -268,5 +249,125 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 //        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
+    /**
+     * Listen to firebase data change to update views on the recyclerView
+     */
+    private void habitEventListener() {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        myRef.child("habit").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notifyHabitChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * Notify Item changed if user delete or add data
+     */
+    public void notifyHabitChanged() {
+        Habit.HabitList habitList = initDummyList(user.getHabitList());
+        _habitList = habitList;
+        habitCheckAdapter.habitList = habitList;
+        this.notifyDataSetChanged();
+        habitCheckAdapter.notifyDataSetChanged();
+
+        int n = checkIncompleteHabits(_habitList);
+
+        if (n == 0){
+            remind_text.setText("You have completed all habits today!");
+        }else if (n == 1){
+            remind_text.setText("You still have 1 habit to do");
+        }else{
+            remind_text.setText(String.format("You still have %d habits to do",n));
+        }
+        Log.v(TAG, "Data is changed from other server");
+    }
+
+    private Habit.HabitList initDummyList (Habit.HabitList habitList){
+
+        if (habitList.size() == 0) {return habitList;}
+        int size = habitList.size();
+
+        if (getScreenInches() <= 5.1){
+            if (size % 2 != 0){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
+        }else{
+            int dummy_size = 4-(size % 4);
+            if (dummy_size == 4) {return habitList;}
+
+            for (int i = 0; i<dummy_size; i++){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
+        }
+
+        return habitList;
+    }
+
+    public int checkIncompleteHabits(Habit.HabitList habitList){
+        int n = 0;
+        for (int i = 0; i < habitList.size(); i++){
+            Habit habit = habitList.getItemAt(i);
+            if (!habit.getTitle().toLowerCase().equals("dummy") && habit.getOccurrence() > habit.getCount() ){
+                n++;
+            }
+        }
+        return n;
+    }
+
+    /**
+     * Listen to firebase data change to update views on the recyclerView
+     */
+    private void habitRepetitionEventListener() {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        myRef.child("habitRepetition").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notifyHabitRepetitionChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * Notify Item changed if user delete or add data
+     */
+    public void notifyHabitRepetitionChanged() {
+        Habit.HabitList habitList = initDummyList(dbHandler.getAllHabits());
+        _habitList = habitList;
+        habitCheckAdapter.habitList = habitList;
+        this.notifyDataSetChanged();
+        habitCheckAdapter.notifyDataSetChanged();
+
+        int n = checkIncompleteHabits(_habitList);
+
+        if (n == 0){
+            remind_text.setText("You have completed all habits today!");
+        }else if (n == 1){
+            remind_text.setText("You still have 1 habit to do");
+        }else{
+            remind_text.setText(String.format("You still have %d habits to do",n));
+        }
+        Log.v(TAG, "Data is changed from other server");
+    }
+
+    public double getScreenInches() {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((HabitActivity) c).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+
+        return Math.sqrt(x+y);
+    }
 }
 

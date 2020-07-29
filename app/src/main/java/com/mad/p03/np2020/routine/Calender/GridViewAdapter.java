@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -44,6 +45,8 @@ class GridViewAdapter extends ArrayAdapter {
         this.taskList = new TaskDBHelper(getContext()).getAllTask();;
 
         mInflater = LayoutInflater.from(context);
+
+
     }
 
     @NonNull

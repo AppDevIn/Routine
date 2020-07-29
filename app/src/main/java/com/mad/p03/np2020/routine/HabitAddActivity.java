@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +10,12 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +30,13 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.HabitReminder;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
@@ -62,6 +69,7 @@ public class HabitAddActivity extends AppCompatActivity {
     private TextView group_indicate_text;
     private ImageButton add_btn;
     private ImageButton minus_btn;
+    private ImageButton modify_count;
     private Button buttonClose;
     private Button buttonOk;
 
@@ -70,6 +78,7 @@ public class HabitAddActivity extends AppCompatActivity {
 
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     //User
     private User user;
@@ -110,12 +119,14 @@ public class HabitAddActivity extends AppCompatActivity {
         minus_btn = findViewById(R.id.menu_minus_count);
         buttonClose = findViewById(R.id.habit_close);
         buttonOk = findViewById(R.id.create_habit);
+        modify_count = findViewById(R.id.menu_edit_count);
 
         // initialise dateFormat
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         // initialise user
         user = new User();
@@ -167,6 +178,66 @@ public class HabitAddActivity extends AppCompatActivity {
                 }
                 // set the count in the TextView
                 menu_count.setText(String.valueOf(count));
+            }
+        });
+
+        modify_count.setBackgroundColor(Color.TRANSPARENT);
+        // set onClickListener on modify count button
+        modify_count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Habit: Modify Count");
+                // Create an alert dialog (modify count)
+                AlertDialog.Builder builder = new AlertDialog.Builder(HabitAddActivity.this); // initialise the builder
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.habit_view_modifycnt_dialog, viewGroup, false); // inflate the view
+                builder.setView(dialogView); //set view to the builder
+                final AlertDialog alertDialog = builder.create(); // build the alert dialog
+
+                // initialise the widgets
+                final TextView dialog_title = dialogView.findViewById(R.id.habit_view_dialog_title);
+                final Button cancelBtn = dialogView.findViewById(R.id.cancel_dialog);
+                final Button saveBtn = dialogView.findViewById(R.id.save_dialog);
+                final EditText dialog_cnt = dialogView.findViewById(R.id.dialog_cnt);
+
+                // set text on the input fields based on the habit
+                dialog_title.setText(habit_name.getText().toString());
+                dialog_cnt.setHint(menu_count.getText().toString());
+
+                dialog_cnt.requestFocus();
+                alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                // set onClickListener on the cancel button
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                    }
+                });
+
+                // set onClickListener on the save button
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String cntString = dialog_cnt.getText().toString();
+                        if (cntString.equalsIgnoreCase("")){
+                            dialog_cnt.setError("Please enter a number");
+                            return;
+                        }
+                        int dialogCnt = Integer.parseInt(cntString); // retrieve the count from the input field
+                        if (dialogCnt > 1000 ){
+                            dialog_cnt.setError("Please enter a smaller number");
+                            return;
+                        }
+
+                        menu_count.setText(cntString);
+                        alertDialog.dismiss(); // dismiss the alert dialog (modify count)
+                        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                    }
+                });
+
+                alertDialog.show(); // show the alert dialog (modify count)
             }
         });
 
@@ -223,6 +294,12 @@ public class HabitAddActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (name.toLowerCase().equals("dummy")){
+                    // set Error Message if the user input a dummy habit name
+                    habit_name.setError("Please enter another habit name");
+                    return;
+                }
+
                 int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
                 int cnt = Integer.parseInt(menu_count.getText().toString()); // retrieve the count of the habit from the input field
 
@@ -248,7 +325,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 }
 
                 // create a habit object
-                Habit habit = new Habit(name, occur, cnt, period[0], dateFormat.format(date),color[0],hr,hg);
+                Habit habit = new Habit(name, occur, period[0], dateFormat.format(date),color[0],hr,hg);
 
                 // insert the habit into SQLiteDatabase
                 long habitID = habit_dbHandler.insertHabit(habit, user.getUID());
@@ -258,7 +335,11 @@ public class HabitAddActivity extends AppCompatActivity {
                     habit.setHabitID(habitID); // set the id to the habit
                     writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase
 
-                    Log.d(TAG, "onClick: "+habit.getHabitID());
+                    long hrID = habitRepetitionDBHelper.insertHabitRepetition(habit, cnt);
+                    HabitRepetition habitRepetition = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habitID);
+                    writeHabitRepetition_Firebase(habitRepetition, user.getUID(),false);
+
+
                     // toast a message to alert the habit has been created
                     Toast.makeText(HabitAddActivity.this, format("Habit %shas been created.",capitalise(name)), Toast.LENGTH_SHORT).show();
                 }
@@ -414,7 +495,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     int id = btn.getId(); // retrieve the buttonID
 
-                    for (int i = 0; i < 4; i++){
+                    for (int i = 0; i < 3; i++){
                         Button _btn = dialogView.findViewById(Habit.period_buttonIDS[i]);
                         if (id == Habit.period_buttonIDS[i]){
                             // if is selected by the user, add a grey background.
@@ -555,7 +636,7 @@ public class HabitAddActivity extends AppCompatActivity {
      *   */
     public void habit_edit_initialise_periodSection(HabitAddActivity dialogView, final Habit habit, final int[] period, final TextView period_text){
         // initialise the color of button at period section based on the habit period of the habit
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 3; i++){
             if (Habit.period_countList[i] == habit.getPeriod()){ // loop to find matches value
                 period[0] = Habit.period_countList[i]; // update the chosen period
                 period_text.setText(Habit.period_textList[i]); // set the period text
@@ -613,9 +694,60 @@ public class HabitAddActivity extends AppCompatActivity {
 
         long time = c.getTime().getTime();
 
-        Log.d(TAG, "setReminder for ID "+ reminder.getId() + " at " + c.getTime());
+        Log.d(TAG, "setReminder for ID "+ reminder.getId() + " at " + time);
         // AlarmManager set the daily repeating alarm on time chosen by the user.
         // The broadcastReceiver will receive the pending intent on the time.
         am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
+    }
+
+    /**
+     *
+     * This method is used to send the work request
+     *  to the HabitWorker(WorkManager) to do the writing firebase action
+     *  when the network is connected.
+     *
+     * @param habitRepetition This parameter is used to get the habit object
+     *
+     * @param UID This parameter is used to get the userID
+     *
+     * */
+    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID, boolean isDeletion){
+        Log.i(TAG, "Uploading to Firebase");
+
+        // set constraint that the network must be connected
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        // put data in a data builder
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitRepetition", habitRepetition_serializeToJson(habitRepetition))
+                .putBoolean("isDeletion", isDeletion)
+                .build();
+
+        // send a work request
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitRepetitionWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    /**
+     *
+     * This method is used to serialize a single object. (into Json String)
+     *
+     * @param habitRepetition This parameter is used to get the habitRepetition object
+     *
+     * @return String This returns the serialized object.
+     *
+     * */
+    public String habitRepetition_serializeToJson(HabitRepetition habitRepetition) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habitRepetition);
     }
 }

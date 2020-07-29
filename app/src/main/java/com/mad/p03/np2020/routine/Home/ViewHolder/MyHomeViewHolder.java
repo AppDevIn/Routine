@@ -37,6 +37,7 @@ public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.On
     public TextView mTextViewListName;
     public LinearLayout mBackGround;
     public ImageView mimgIcon;
+    public ImageView mTeamIcon;
 
     //Listener
     private HomeItemTouchHelperAdapter mHomeItemTouchHelperAdapter;
@@ -60,6 +61,7 @@ public class MyHomeViewHolder extends RecyclerView.ViewHolder implements View.On
         mTextViewListName = v.findViewById(R.id.listName);
         mBackGround = v.findViewById(R.id.backgroud);
         mimgIcon = v.findViewById(R.id.todoIcon);
+        mTeamIcon = v.findViewById(R.id.img_Teams);
 
 
         this.mHomeItemTouchHelperAdapter = homeItemTouchHelperAdapter;

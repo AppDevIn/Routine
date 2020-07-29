@@ -1,19 +1,23 @@
 package com.mad.p03.np2020.routine;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,13 +41,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Adapter.HabitCheckAdapter;
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.helpers.HabitHorizontalDivider;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
+import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+
+import java.util.Calendar;
 
 /**
  *
@@ -66,6 +77,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     // initialise the handler
     private HabitDBHelper habit_dbHandler;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     //User
     private User user;
@@ -75,13 +87,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     private ImageView prev_indicator, next_indicator;
 
-    private TextView indicator_num, remind_text;
-
+    private TextView indicator_num;
+    public static TextView remind_text;
     private ViewSwitcher viewSwitcher;
 
     private Button add_first_habit;
 
     private RelativeLayout nothing_view;
+
+    private int page_x = 4;
+
+    private GridLayoutManager manager;
 
 
     /**
@@ -104,13 +120,51 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set the HabitDBHelper
         habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
 
         viewSwitcher = findViewById(R.id.switcher);
+
+        double screenInches = getScreenInches();
+        Log.d(TAG,"Screen inches : " + screenInches);
+        if (screenInches <= 5.1){
+            float h = getResources().getDimension(R.dimen.habitvs_height);
+            ViewGroup.LayoutParams vs_param = viewSwitcher.getLayoutParams();
+            vs_param.height = (int) h;
+            viewSwitcher.setLayoutParams(vs_param);
+            page_x = 2;
+
+            manager = new GridLayoutManager(HabitActivity.this,1, GridLayoutManager.HORIZONTAL, false){
+                @Override
+                public boolean canScrollHorizontally() {
+                    return false;
+                }
+
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+
+        }else{
+            manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.VERTICAL, false){
+                @Override
+                public boolean canScrollHorizontally() {
+                    return false;
+                }
+
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+        }
 
         nothing_view = findViewById(R.id.nothing_view);
 
         // set User
         user = new User();
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
 
         // initialise the shared preferences
         initSharedPreferences();
@@ -123,20 +177,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
         habitRecyclerView = findViewById(R.id.habit_recycler_view);
-        GridLayoutManager manager = new GridLayoutManager(HabitActivity.this,2, GridLayoutManager.VERTICAL, false){
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            }
 
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
         habitRecyclerView.setLayoutManager(manager);
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
-
 
         prev_indicator = findViewById(R.id.habit_indicator_prev);
         next_indicator = findViewById(R.id.habit_indicator_next);
@@ -151,10 +194,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                     int n = Integer.parseInt(num)-1;
                     indicator_num.setText(String.valueOf(n));
                     n--;
-                    if (n*4+1 <= habitAdapter._habitList.size()){
+                    if (n*page_x+1 <= habitAdapter._habitList.size()){
                         next_indicator.setVisibility(View.VISIBLE);
                     }
-                    int position = n*4;
+
+                    int position = n*page_x;
                     habitRecyclerView.scrollToPosition(position);
                 }
 
@@ -167,20 +211,23 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         next_indicator.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-
                   String num = indicator_num.getText().toString();
                   int n = Integer.parseInt(num);
-                  int position = (n) *4;
+                  int position = (n) * page_x;
                   int arr_size = habitAdapter._habitList.size();
-
                   if (position+1 <= arr_size){
                       n++;
                       indicator_num.setText(String.valueOf(n));
-                      if (n*4+1 > arr_size) {
+                      if (n*page_x+1 > arr_size) {
                           next_indicator.setVisibility(View.INVISIBLE);
                       }
                       prev_indicator.setVisibility(View.VISIBLE);
-                      habitRecyclerView.scrollToPosition(position+3);
+                      // 2--> 1 4-->3
+                      int i = 3;
+                      if (page_x == 2){
+                          i = 1;
+                      }
+                      habitRecyclerView.scrollToPosition(position+i);
                   }
               }
           });
@@ -191,9 +238,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_first_habit = findViewById(R.id.add_first_habit);
         add_first_habit.setOnClickListener(this);
 
-
         habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        habitRepetitionDBHelper.repeatingHabit();
+        setRepeatingHabit();
 
 
     }
@@ -202,19 +251,20 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
+        user.setHabitList(habit_dbHandler.getAllHabits());
         // initialise the habitAdapter
-        Habit.HabitList habitArrayList = initDummyList(habit_dbHandler.getAllHabits());
+        Habit.HabitList habitArrayList = initDummyList(user.getHabitList());
 
         if(habitArrayList.size() == 0){
             if (viewSwitcher.getCurrentView() != nothing_view){
                 viewSwitcher.showNext();
-                add_habit.setVisibility(View.INVISIBLE);
+                add_habit.setVisibility(View.VISIBLE);
                 prev_indicator.setVisibility(View.INVISIBLE);
                 next_indicator.setVisibility(View.INVISIBLE);
                 indicator_num.setVisibility(View.INVISIBLE);
                 remind_text.setVisibility(View.INVISIBLE);
             }
-        }else if (habitArrayList.size() <= 4){
+        }else if (habitArrayList.size() <= page_x){
             if (viewSwitcher.getCurrentView() == nothing_view){
                 viewSwitcher.showPrevious();
             }
@@ -234,25 +284,25 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             remind_text.setVisibility(View.VISIBLE);
         }
 
-        habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList);
+        habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList, user);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
         habitCheckAdapter.setOnItemClickListener(this);
 
-        habitAdapter = new HabitAdapter(this, habitArrayList, user.getUID());
+        habitAdapter = new HabitAdapter(this, habitArrayList, user, habitCheckAdapter);
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
 
-        int n = checkIncompleteHabits(habitAdapter._habitList);
+        int n = checkIncompleteHabits(habitArrayList);
 
         if (n == 0){
             remind_text.setText("You have completed all habits today!");
         }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do today");
+            remind_text.setText("You still have 1 habit to do");
         }else{
-            remind_text.setText(String.format("You still have %d habits to do today",n));
+            remind_text.setText(String.format("You still have %d habits to do",n));
         }
 
         indicator_num.setText("1");
@@ -363,7 +413,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         Log.d(TAG, "Editing habit " + habit.getTitle());
 
-        Intent activityName = new Intent(HabitActivity.this, HabitView.class);
+        Intent activityName = new Intent(HabitActivity.this, HabitViewActivity.class);
         Bundle extras = new Bundle();
         extras.putString("recorded_habit", habit_serializeToJson(habit));
         activityName.putExtras(extras);
@@ -375,19 +425,22 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     public void onHabitCheckItemClick(int position) {
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
         habit.addCount(); // add the count by 1
+
         habitAdapter.notifyDataSetChanged(); // notify the data set has changed
         habitCheckAdapter.notifyDataSetChanged();
-        habit_dbHandler.updateCount(habit); // update the habit count in the SQLiteDatabase
-        writeHabit_Firebase(habit, user.getUID(), false); // write the habit to the firebase
+        habitRepetitionDBHelper.updateCount(habit); //update the habit count in the SQLiteDatabase
+
+        HabitRepetition habitRepetition = habitRepetitionDBHelper.getTodayHabitRepetitionByID(habit.getHabitID());
+        writeHabitRepetition_Firebase(habitRepetition, user.getUID(), false);
 
         int n = checkIncompleteHabits(habitAdapter._habitList);
 
         if (n == 0){
             remind_text.setText("You have completed all habits today!");
         }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do today");
+            remind_text.setText("You still have 1 habit to do");
         }else{
-            remind_text.setText(String.format("You still have %d habits to do today",n));
+            remind_text.setText(String.format("You still have %d habits to do",n));
         }
 
     }
@@ -418,11 +471,17 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         if (habitList.size() == 0) {return habitList;}
         int size = habitList.size();
 
-        int dummy_size = 4-(size % 4);
-        if (dummy_size == 4) {return habitList;}
+        if (page_x == 2){
+            if (size % 2 != 0){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
+        }else{
+            int dummy_size = 4-(size % 4);
+            if (dummy_size == 4) {return habitList;}
 
-        for (int i = 0; i<dummy_size; i++){
-            habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            for (int i = 0; i<dummy_size; i++){
+                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
+            }
         }
 
         return habitList;
@@ -479,7 +538,102 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         return n;
     }
 
+    /**
+     *
+     * This method is used to send the work request
+     *  to the HabitWorker(WorkManager) to do the writing firebase action
+     *  when the network is connected.
+     *
+     * @param habitRepetition This parameter is used to get the habit object
+     *
+     * @param UID This parameter is used to get the userID
+     *
+     * */
+    public void writeHabitRepetition_Firebase(HabitRepetition habitRepetition, String UID, boolean isDeletion){
+        Log.i(TAG, "Uploading to Firebase");
 
+        // set constraint that the network must be connected
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
 
+        // put data in a data builder
+        Data firebaseUserData = new Data.Builder()
+                .putString("ID", UID)
+                .putString("habitRepetition", habitRepetition_serializeToJson(habitRepetition))
+                .putBoolean("deletion", isDeletion)
+                .build();
+
+        // send a work request
+        OneTimeWorkRequest mywork =
+                new OneTimeWorkRequest.Builder(HabitRepetitionWorker.class)
+                        .setConstraints(myConstraints)
+                        .setInputData(firebaseUserData)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(mywork);
+    }
+
+    /**
+     *
+     * This method is used to serialize a single object. (into Json String)
+     *
+     * @param habitRepetition This parameter is used to get the habitRepetition object
+     *
+     * @return String This returns the serialized object.
+     *
+     * */
+    public String habitRepetition_serializeToJson(HabitRepetition habitRepetition) {
+        Gson gson = new Gson();
+        Log.i(TAG,"Object serialize");
+        return gson.toJson(habitRepetition);
+    }
+
+    /**
+     *
+     * This method is used to call to reset the repeat the habit.
+     *
+     * */
+    public void setRepeatingHabit(){
+        int id = 873162723;
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        intent.setAction("RepeatingHabit");
+        intent.putExtra("id", id);
+        // This initialise the pending intent which will be sent to the broadcastReceiver
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int type = AlarmManager.RTC_WAKEUP;
+
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        cal.add(Calendar.SECOND,10);
+
+        if (System.currentTimeMillis() > cal.getTimeInMillis()){
+            // increment one day to prevent setting for past alarm
+            cal.add(Calendar.DATE, 1);
+        }
+
+        long time = cal.getTime().getTime();
+
+        Log.d(TAG, "setReminder for RepeatingHabit" + " at " + cal.getTime());
+        // AlarmManager set the daily repeating alarm on time chosen by the user.
+        // The broadcastReceiver will receive the pending intent on the time.
+        assert am != null;
+        am.cancel(pi);
+        am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
+    }
+
+    public double getScreenInches() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+
+        return Math.sqrt(x+y);
+    }
 
 }

@@ -27,7 +27,7 @@ public class Habit {
     /**Column of the habit table, Used as the occurrence of the habit*/
     public static final String COLUMN_HABIT_OCCURRENCE = "occurrence";
     /**Column of the habit table, Used as the count of the habit*/
-    public static final String COLUMN_HABIT_COUNT = "count";
+//    public static final String COLUMN_HABIT_COUNT = "count";
     /**Column of the habit table, Used as the period of the habit*/
     public static final String COLUMN_HABIT_PERIOD = "period";
     /**Column of the habit table, Used as the time created of the habit*/
@@ -58,7 +58,7 @@ public class Habit {
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_HABIT_TITLE  + " TEXT," +
-                    COLUMN_HABIT_COUNT  + " INTEGER," +
+//                    COLUMN_HABIT_COUNT  + " INTEGER," +
                     COLUMN_HABIT_PERIOD  + " INTEGER," +
                     COLUMN_HABIT_OCCURRENCE  + " INTEGER," +
                     COLUMN_HABIT_HOLDERCOLOR  + " TEXT," +
@@ -73,7 +73,6 @@ public class Habit {
                     COLUMN_USERID + " INTEGER,"
                     + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES  " + User.TABLE_NAME + "(" + User.COLUMN_NAME_ID + "));";
 
-
     /**
      * The query to drop habit table
      */
@@ -81,8 +80,8 @@ public class Habit {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     // set values for period section
-    public static final int[] period_buttonIDS = new int[]{R.id.daily_period, R.id.weekly_period, R.id.monthly_period, R.id.yearly_period};
-    public static final String[] period_textList = new String[]{"DAY", "WEEK", "MONTH", "YEAR"};
+    public static final int[] period_buttonIDS = new int[]{R.id.daily_period, R.id.weekly_period, R.id.monthly_period};
+    public static final String[] period_textList = new String[]{"DAY", "WEEK", "MONTH"};
     public static final int[] period_countList = new int[]{1, 7, 30, 365};
 
     // set values for color section
@@ -121,6 +120,7 @@ public class Habit {
         this.holder_color = holder_color;
     }
 
+
     /**This method is a constructor for habit*/
     public Habit(long habitID, String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
         this.habitID = habitID;
@@ -135,10 +135,9 @@ public class Habit {
     }
 
     /**This method is a constructor for habit*/
-    public Habit(String title, int occurrence, int count, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
+    public Habit(String title, int occurrence, int period, String time_created, String holder_color, HabitReminder habitReminder, HabitGroup group) {
         this.title = title;
         this.occurrence = occurrence;
-        this.count = count;
         this.period = period;
         this.time_created = time_created;
         this.holder_color = holder_color;

@@ -12,6 +12,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
@@ -33,6 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private String channelId = "001";
     private static HabitDBHelper habitDBHelper;
     private Habit.HabitList habitList;
+    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     /**
      *
@@ -72,6 +74,30 @@ public class AlarmReceiver extends BroadcastReceiver {
             habitList = habitDBHelper.getAllHabits();
 
             re_registerAlarm(context, habitList);
+//            setRepeatingHabit(context);
+        }
+
+        if (intent.getAction().equals("RepeatingHabit")){
+            Bundle bundle = intent.getExtras();
+            int id = bundle.getInt("id");
+            PendingIntent pendingIntent = PendingIntent.getActivity(context,id, new Intent(context, HabitActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            Notification notify = new NotificationCompat.Builder(context, channelId)
+                    .setSmallIcon(R.drawable.logo)
+                    .setContentTitle("Habit Tracker")
+                    .setContentText("Your habit has reset!")
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent).setNumber(1)
+                    .setShowWhen(true)
+                    .setWhen(Calendar.getInstance().getTimeInMillis())
+                    .build();
+
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.notify(id, notify);
+
+//            habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
+//            habitRepetitionDBHelper.repeatingHabit();
+
         }
     }
 
@@ -161,5 +187,43 @@ public class AlarmReceiver extends BroadcastReceiver {
             // register the reminder again
             setReminder(context, title, minutes, hours, id, custom_text);
         }
+    }
+
+    /**
+     *
+     * This method is used to call to reset the repeat the habit.
+     *
+     * */
+    public void setRepeatingHabit(Context c){
+        int id = 873162723;
+        Intent intent = new Intent(c, AlarmReceiver.class);
+        intent.setAction("RepeatingHabit");
+        intent.putExtra("id", id);
+        // This initialise the pending intent which will be sent to the broadcastReceiver
+        PendingIntent pi = PendingIntent.getBroadcast(c, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+        int type = AlarmManager.RTC_WAKEUP;
+
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        cal.add(Calendar.SECOND,10);
+
+        if (System.currentTimeMillis() > cal.getTimeInMillis()){
+            // increment one day to prevent setting for past alarm
+            cal.add(Calendar.DATE, 1);
+        }
+
+        long time = cal.getTime().getTime();
+
+        Log.d(TAG, "setReminder for RepeatingHabit" + " at " + cal.getTime());
+        // AlarmManager set the daily repeating alarm on time chosen by the user.
+        // The broadcastReceiver will receive the pending intent on the time.
+        assert am != null;
+        am.cancel(pi);
+        am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
     }
 }

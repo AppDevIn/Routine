@@ -5,6 +5,14 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+
 /**
  *
  * Model used to manage the Focus
@@ -20,10 +28,13 @@ public class Focus implements Parcelable {
     private String mDuration;
     private String mTask;
     private String mCompletion;
+    private long mTimeTaken;
 
 
     /**Name for table,  to identify the name of the table*/
     public static final String FOCUS_TABLE = "focus";
+    public static final String FOCUS_Archive_TABLE = "focus_archive";
+
 
     /**Column task_name for table,  to identify the name of the section*/
     public static final String COLUMN_TASK_NAME = "TASK_NAME";
@@ -40,10 +51,21 @@ public class Focus implements Parcelable {
     /**Primary key for table,  to identify the row.*/
     public static final String COLUMN_TASK_fbID = "fbID";
 
-    public static final String CREATE_SQL = "CREATE TABLE " + FOCUS_TABLE + " (" + COLUMN_TASK_fbID + " TEXT PRIMARY KEY, " + COLUMN_TASK_NAME + " TEXT, " + COLUMN_TASK_DATE + " TEXT, " + COLUMN_TASK_DURATION + " TEXT, " + COLUMN_TASK_COMPLETE + " BOOL)";
+    /**Column task_duration for table,  to identify the name of the section*/
+    public static final String COLUMN_TASK_TIME_TAKEN = "TASK_TAKEN";
+
+
+    /**Main Database**/
+    public static final String CREATE_SQL = "CREATE TABLE " + FOCUS_TABLE + " (" + COLUMN_TASK_fbID + " TEXT PRIMARY KEY, " + COLUMN_TASK_NAME + " TEXT, " + COLUMN_TASK_DATE + " TEXT, " + COLUMN_TASK_DURATION + " TEXT, " + COLUMN_TASK_COMPLETE + " BOOL, " + COLUMN_TASK_TIME_TAKEN + " BIGINT)";
+
+    /**Archive Database**/
+    public static final String CREATE_ARCHIVE_SQL = "CREATE TABLE " + FOCUS_Archive_TABLE + " (" + COLUMN_TASK_fbID + " TEXT PRIMARY KEY, " + COLUMN_TASK_NAME + " TEXT, " + COLUMN_TASK_DATE + " TEXT, " + COLUMN_TASK_DURATION + " TEXT, " + COLUMN_TASK_COMPLETE + " BOOL, " + COLUMN_TASK_TIME_TAKEN + " BIGINT)";
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + FOCUS_TABLE;
+
+    public static final String SQL_DELETE_ENTRIES_ARCHIVE =
+            "DROP TABLE IF EXISTS " + FOCUS_Archive_TABLE;
 
     /**
      * Initialize Focus Activity with Focus object
@@ -54,11 +76,12 @@ public class Focus implements Parcelable {
      * @param mTask Task is used to capture the task of activity
      * @param mCompletion Completion is used to capture the success of the Focus
      */
-    public Focus(String mDate, String mDuration, String mTask, String mCompletion) {
+    public Focus(String mDate, String mDuration, String mTask, String mCompletion, long mTimeTaken) {
         this.mDateTime = mDate;
         this.mDuration = mDuration;
         this.mTask = mTask;
         this.mCompletion = mCompletion;
+        this.mTimeTaken = mTimeTaken;
     }
 
     /**
@@ -71,12 +94,13 @@ public class Focus implements Parcelable {
      * @param mTask Task is used to capture the task of activity
      * @param mCompletion Completion is used to capture the success of the Focus
      */
-    public Focus(String fbID, String mDate, String mDuration, String mTask, String mCompletion) {
+    public Focus(String fbID, String mDate, String mDuration, String mTask, String mCompletion, long mTimeTaken) {
         this.fbID = fbID;
         this.mDateTime = mDate;
         this.mDuration = mDuration;
         this.mTask = mTask;
         this.mCompletion = mCompletion;
+        this.mTimeTaken = mTimeTaken;
     }
 
     /**
@@ -99,6 +123,7 @@ public class Focus implements Parcelable {
         mDuration = in.readString();
         mTask = in.readString();
         mCompletion = in.readString();
+        mTimeTaken = in.readLong();
     }
 
     /**
@@ -124,6 +149,55 @@ public class Focus implements Parcelable {
      */
     public String getmDateTime() {
         return mDateTime;
+    }
+
+    /**
+     *
+     * Get DateTime of task
+     */
+    public String getsDate() throws ParseException {
+        Date date;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+        date = dateFormat.parse(mDateTime);
+
+        String pattern = "dd/MM/yyyy";
+        DateFormat df = new SimpleDateFormat(pattern);
+
+        String dateAsString = df.format(date);
+        return dateAsString;
+
+    }
+
+    public Date getdDate() throws ParseException {
+        Date date;
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+        date = dateFormat.parse(mDateTime);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        date = cal.getTime();
+        return date;
+
+    }
+
+    /**
+     *
+     * Set DateTime of task
+     */
+    public void setmTimeTaken(long mTimeTaken) {
+        this.mTimeTaken = mTimeTaken;
+    }
+
+    /**
+     *
+     * Get Duration of task
+     */
+    public long getmTimeTaken() {
+        return mTimeTaken;
     }
 
     /**

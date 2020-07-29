@@ -13,7 +13,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorFieryRose">#F45B69</color>
-    <color name="colorLightCoral">#FFC2B4</color>
+    <color name="colorLightCoral">#dfc8f2</color>
     <color name="colorNCS_Blue">#3498DB</color>
     <color name="colorGrey">#bcc0c8</color>
     <color name="colorSlightDesBlue">#9FC5E8</color>
@@ -45,6 +45,8 @@
     <color name="gray">#2C3E50</color>
     <color name="pastelBlue">#AEC6CF</color>
     <color name="warmRed">#e74b3c</color>
+    <color name="blackGrey">#545454</color>
+    <color name="slightGrey">#fafafa</color>
     <color name="purple">#BAAFFF</color>
     <color name="darkBlue">#004B81</color>
     <color name="stringGray">#6A6A6A</color>

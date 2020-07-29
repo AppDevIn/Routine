@@ -1,6 +1,7 @@
 package com.mad.p03.np2020.routine.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder;
+import com.mad.p03.np2020.routine.models.User;
 
 import java.util.ArrayList;
+
+import static com.mad.p03.np2020.routine.HabitActivity.remind_text;
 
 /**
  *
@@ -31,14 +40,20 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
     private Context c;
     private HabitItemClickListener mListener;
     private static View view;
+    private User user;
+    private static final String TAG = "HabitGroupAdapter";
 
     /**Used as the adapter habitGroupList*/
     public ArrayList<HabitGroup> _habitGroupList;
 
     /**This method is a constructor for habitGroupAdapter*/
-    public HabitGroupAdapter(ArrayList<HabitGroup> _habitGroupList, Context c) {
+    public HabitGroupAdapter(ArrayList<HabitGroup> _habitGroupList, Context c, User user) {
         this._habitGroupList = _habitGroupList;
         this.c = c;
+        this.user = user;
+
+        user.readHabitGroup_Firebase(c);
+        eventListener();
     }
 
     /**
@@ -93,5 +108,32 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
     @Override
     public int getItemCount() {
         return _habitGroupList.size();
+    }
+
+    /**
+     * Listen to firebase data change to update views on the recyclerView
+     */
+    private void eventListener() {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
+        myRef.child("habitGroup").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notifyItemChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * Notify Item changed if user delete or add data
+     */
+    public void notifyItemChanged() {
+        _habitGroupList = user.getHabitGroupsList();
+        this.notifyDataSetChanged();
+
     }
 }

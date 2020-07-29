@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
 
     <TableLayout
@@ -108,125 +109,125 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/second"
-        android:id="@+id/third"
-        android:layout_marginStart="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_below="@id/second"-->
+<!--        android:id="@+id/third"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:orientation="vertical">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:text="SET A GOAL PERIOD:"
-            android:letterSpacing="0.1"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/colorBlack"-->
+<!--            android:text="SET A GOAL PERIOD:"-->
+<!--            android:letterSpacing="0.1"/>-->
 
-        <LinearLayout
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <Button
+<!--            <Button-->
 
-                android:background="@drawable/habit_btn_background"
-                android:id="@+id/daily_period"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="DAILY"
-                android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/colorBlack" />
+<!--                android:background="@drawable/habit_btn_background"-->
+<!--                android:id="@+id/daily_period"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:text="DAILY"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                android:textColor="@color/colorBlack" />-->
 
-            <Button
-                android:background="@drawable/habit_btn_background"
-                android:id="@+id/weekly_period"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="WEEKLY"
-                android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/colorBlack" />
+<!--            <Button-->
+<!--                android:background="@drawable/habit_btn_background"-->
+<!--                android:id="@+id/weekly_period"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:text="WEEKLY"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                android:textColor="@color/colorBlack" />-->
 
-            <Button
-                android:background="@drawable/habit_btn_background"
-                android:id="@+id/monthly_period"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="MONTHLY"
-                android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/colorBlack" />
+<!--            <Button-->
+<!--                android:background="@drawable/habit_btn_background"-->
+<!--                android:id="@+id/monthly_period"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:text="MONTHLY"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                android:textColor="@color/colorBlack" />-->
 
-            <Button
-                android:background="@drawable/habit_btn_background"
-                android:id="@+id/yearly_period"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="YEARLY"
-                android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/colorBlack" />
+<!--            <Button-->
+<!--                android:background="@drawable/habit_btn_background"-->
+<!--                android:id="@+id/yearly_period"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:text="YEARLY"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                android:textColor="@color/colorBlack" />-->
 
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
-    <LinearLayout
-        android:layout_below="@id/third"
-        android:id="@+id/fourth"
-        android:layout_marginStart="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:layout_below="@id/third"-->
+<!--        android:id="@+id/fourth"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="90dp"-->
+<!--        android:orientation="vertical">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:text="SET YOUR GOAL:"
-            android:letterSpacing="0.1"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/colorBlack"-->
+<!--            android:text="SET YOUR GOAL:"-->
+<!--            android:letterSpacing="0.1"/>-->
 
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <EditText
-                android:inputType="number"
-                android:padding="10dp"
-                android:id="@+id/habit_occurence"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:fontFamily="@font/montserrat_regular"
-                android:background="@drawable/edit_text_background"
-                android:maxLines="1"
-                android:hint="1" />
+<!--            <EditText-->
+<!--                android:inputType="number"-->
+<!--                android:padding="10dp"-->
+<!--                android:id="@+id/habit_occurence"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                android:background="@drawable/edit_text_background"-->
+<!--                android:maxLines="1"-->
+<!--                android:hint="1" />-->
 
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:fontFamily="@font/montserrat_regular"
-                android:letterSpacing="0.1"
-                android:text="PER"
-                android:textColor="@color/colorBlack" />
+<!--            <TextView-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="15dp"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                android:letterSpacing="0.1"-->
+<!--                android:text="PER"-->
+<!--                android:textColor="@color/colorBlack" />-->
 
-            <TextView
-                android:layout_marginStart="7dp"
-                android:id="@+id/period_txt"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
-                android:letterSpacing="0.1"
-                android:text="DAY"
-                android:textColor="@color/colorBlack" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:layout_marginStart="7dp"-->
+<!--                android:id="@+id/period_txt"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/montserrat_regular"-->
+<!--                android:letterSpacing="0.1"-->
+<!--                android:text="DAY"-->
+<!--                android:textColor="@color/colorBlack" />-->
+<!--        </LinearLayout>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_marginStart="20dp"
@@ -255,6 +256,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:textSize="20dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:text="0"/>
 
 
@@ -272,6 +275,13 @@
                 android:layout_height="30dp"
                 android:src="@drawable/habit_add"
                 android:background="@drawable/edit_text_background"/>
+
+            <ImageButton
+                android:id="@+id/menu_edit_count"
+                android:layout_marginStart="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/habit_hashtag" />
 
         </LinearLayout>
 
@@ -402,11 +412,11 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:gravity="center_horizontal"
+    <RelativeLayout
+        android:gravity="center|bottom"
         android:id="@+id/btm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <Button
@@ -420,7 +430,8 @@
             android:textColor="@color/white"
             android:text="@string/delete" />
 
-    </LinearLayout>
+    </RelativeLayout>
+
 
     </TableLayout>
 
