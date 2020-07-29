@@ -207,6 +207,7 @@
         android:background="@color/white"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/logout"
+        android:textColor="@color/stringGray"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"

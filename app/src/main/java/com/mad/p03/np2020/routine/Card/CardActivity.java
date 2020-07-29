@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ActivityOptions;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -26,6 +27,7 @@ import com.mad.p03.np2020.routine.Card.Fragments.NotesFragment;
 import com.mad.p03.np2020.routine.Card.Fragments.ScheduleDialogFragment;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.Focus.FocusActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.CardNotification;
 import com.mad.p03.np2020.routine.models.Section;
@@ -200,6 +202,11 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void focus() {
+        ActivityOptions options =
+                ActivityOptions.makeCustomAnimation(this, 0, 0);
+        Intent intentFocus = new Intent(this, FocusActivity.class);
+        intentFocus.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intentFocus, options.toBundle());
     }
 
     private void checkList() {

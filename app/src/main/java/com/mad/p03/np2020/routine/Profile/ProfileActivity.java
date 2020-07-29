@@ -158,6 +158,31 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
 
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        UID = firebaseUser.getUid();
+        mUser = new UserDBHelper(this).getUser(mAuth.getUid());
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        userRef = mDatabase.child("users").child(UID);
+        userDBHelper = new UserDBHelper(getApplicationContext());
+        storageProfilePicture = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
+
+        username = findViewById(R.id.username);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                name = dataSnapshot.child("Name").getValue().toString();
+                username.setText(name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.v(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+
 
         try {
             getUserInfo();
@@ -286,7 +311,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         mDatabase.child("users").child(UID).child("Name").setValue(newUsername);
 
-        //userDBHelper.updateUser(UID, mUser);
+        userDBHelper.updateUserName(UID, mUser);
         username.setText(newUsername);
     }
 
@@ -303,7 +328,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         {
                             MakeToast("Password reset email sent!");
 
-                            logout();
+                            //logout();
                         }
                         else
                         {

@@ -116,6 +116,8 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DELETE FROM " + HabitGroup.TABLE_NAME);
         sqLiteDatabase.execSQL("DELETE FROM " + HabitRepetition.TABLE_NAME);
         sqLiteDatabase.execSQL("DELETE FROM " + Focus.FOCUS_TABLE);
+        sqLiteDatabase.execSQL("DELETE FROM " + Focus.FOCUS_Archive_TABLE);
+
     }
 
 
