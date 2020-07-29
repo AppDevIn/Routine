@@ -76,13 +76,10 @@ public class NavBarHelper implements BottomNavigationView.OnNavigationItemSelect
 
                 break;
             case R.id.profile:
+                Intent intentProfile = new Intent(mContext, ProfileActivity.class);
+                intentProfile.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
-                /*
-                Toast.makeText(mContext, "Profile will be implemented in stage 2", Toast.LENGTH_SHORT).show();
-                 */
-                //TODO: Stage 2 implement
-                Intent intent5 = new Intent(mContext, ProfileActivity.class);
-                mContext.startActivity(intent5, options.toBundle());
+                mContext.startActivity(intentProfile, options.toBundle());
                 break;
         }
 

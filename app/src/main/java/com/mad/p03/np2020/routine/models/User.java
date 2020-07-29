@@ -1,14 +1,22 @@
 package com.mad.p03.np2020.routine.models;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.nfc.FormatException;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -26,6 +34,7 @@ import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.GetAchievementWorker;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.helpers.GetTaskSectionWorker;
@@ -120,6 +129,17 @@ public class User implements Parcelable, FocusDBObserver {
     private Habit.HabitList habitList;
     private ArrayList<HabitGroup> habitGroupsList;
     ArrayList<Date> dateArrayList = new ArrayList<>();
+
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    //Dialog Builder
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
 
     /**
      * Parcelable constructor for custom object
@@ -711,19 +731,66 @@ public class User implements Parcelable, FocusDBObserver {
     /***
      * Achievement Database
      */
-    public void getAchievement() {
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
+    public void getAchievement(Activity activity) {
+
+        // Check if we have write permission
+        if (getPermission(activity)) {
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
 
 
-        OneTimeWorkRequest getSectionTask = new OneTimeWorkRequest.
-                Builder(GetAchievementWorker.class)
-                .setConstraints(constraints)
-                .build();
 
-        WorkManager.getInstance().enqueue(getSectionTask);
+            OneTimeWorkRequest getSectionTask = new OneTimeWorkRequest.
+                    Builder(GetAchievementWorker.class)
+                    .setConstraints(constraints)
+                    .build();
+
+            WorkManager.getInstance().enqueue(getSectionTask);
+        }
     }
+
+    public boolean getPermission(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+    public void showPermissionDescription(Activity activity){
+
+        TextView close;
+
+        builder = new AlertDialog.Builder(activity, R.style.BadgeDialog);
+
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        View shareCustomLayout = inflater.inflate(R.layout.popup_permission, null);
+
+        close = shareCustomLayout.findViewById(R.id.closePermissionDialog);
+
+        close.setOnClickListener(view -> {
+            dialog.cancel();
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        });
+
+        builder.setView(shareCustomLayout);
+
+        // create and show the alert dialog
+        dialog = builder.create();
+
+        dialog.show();
+
+    }
+
 
     public Habit.HabitList getHabitList() {
         return habitList;

@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
@@ -193,11 +194,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     PopupWindow changeStatusPopUp;
 
     @Override
-    public void onBackPressed() {
-
-    }
-
-    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         overridePendingTransition(0, 0);
@@ -213,11 +209,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
-        try {
-            initialization(); //Process of data
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        initialization(); //Process of data
 
         //ImageButton
         imageButton = findViewById(R.id.history);
@@ -286,6 +278,20 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 2909: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.e("Permission", "Granted");
+                    user.getAchievement(this);
+                } else {
+                    Log.e("Permission", "Denied");
+                }
+                return;
+            }
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -304,8 +310,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Get Local Database Data
      * Initialize object
      */
-    private void initialization() throws ParseException {
-        user.getAchievement();
+    private void initialization() {
         Intent intent = new Intent(getApplicationContext(), BoundService.class);
         startService(intent);
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
@@ -1170,8 +1175,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         });
 
         achievement_item.setOnClickListener(view -> {
-            openAchievement();
-            changeStatusPopUp.dismiss();
+            if(user.getPermission(this)) {
+                openAchievement();
+                changeStatusPopUp.dismiss();
+            }else{
+                user.showPermissionDescription(this);
+            }
 
         });
 

@@ -29,10 +29,15 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -42,6 +47,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.Home.adapters.HomePageAdapter;
 import com.mad.p03.np2020.routine.Home.models.MyHomeItemTouchHelper;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
@@ -56,6 +62,7 @@ import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -88,15 +95,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     Spinner mSpinnerColor, mSpinnerIcons;
     boolean isListRun = false;
 
-
-    // Storage Permissions
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -121,7 +119,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         this.overridePendingTransition(0, 0);
 
         Log.d(TAG, "UI is being created");
-        verifyStoragePermissions(this);
+
         //Get user from the intent
         mUser = new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
 //        mUser = getIntent().getParcelableExtra("user");
@@ -139,7 +137,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         } catch (NullPointerException e) {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
 
         //Find view by ID
         mGridView = findViewById(R.id.section_grid_view);
@@ -195,6 +192,9 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         });
 
 
+        if(!mUser.getPermission(this)){
+            mUser.showPermissionDescription(this);
+        }
     }
 
     /**
@@ -552,28 +552,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             }
         });
 
-    }
-
-
-    /**
-     * Checks if the app has permission to write to device storage
-     * <p>
-     * If the app does not has permission then the user will be prompted to grant permissions
-     *
-     * @param activity
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
     }
 
 }
