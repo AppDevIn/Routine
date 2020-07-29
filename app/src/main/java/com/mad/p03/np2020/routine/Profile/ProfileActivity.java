@@ -327,6 +327,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void logout()
     {
+        clearHabitAlarm(this);
+        cancelRepeatingHabit();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         mAuth.signOut();
         startActivity(intent);
