@@ -141,7 +141,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         logoutButton.setOnClickListener(this);
         changeProfile.setOnClickListener(this);
 
-        getUserInfo();
+        try {
+            getUserInfo();
+        } catch (Exception e) {
+            Log.v(TAG, "No image uploaded");
+        }
     }
 
 
@@ -432,7 +436,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         storageProfilePicture.child(mAuth.getCurrentUser().getUid() + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-                Picasso.get().load(task.getResult()).into(profileImageView);
+                try {
+                    Picasso.get().load(task.getResult()).into(profileImageView);
+                } catch (Exception e) {
+                    Log.v(TAG, e.getLocalizedMessage());
+                }
             }
         });
     }
