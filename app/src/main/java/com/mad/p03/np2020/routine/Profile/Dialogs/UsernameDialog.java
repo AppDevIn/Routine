@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Profile;
+package com.mad.p03.np2020.routine.Profile.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

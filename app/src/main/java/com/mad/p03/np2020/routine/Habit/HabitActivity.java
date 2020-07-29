@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.Habit;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
@@ -37,10 +37,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
-import com.mad.p03.np2020.routine.Adapter.HabitCheckAdapter;
+import com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter;
+import com.mad.p03.np2020.routine.Habit.Adapter.HabitCheckAdapter;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.NavBarHelper;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
@@ -411,7 +413,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
 
         //To set setOnNavigationItemSelectedListener
-        NavBarHelper  navBarHelper = new NavBarHelper(this);
+        NavBarHelper navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
 
         //To have the highlight

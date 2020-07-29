@@ -13,7 +13,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
-import com.mad.p03.np2020.routine.HabitActivity;
+import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 

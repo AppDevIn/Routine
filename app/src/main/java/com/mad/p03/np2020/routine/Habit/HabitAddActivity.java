@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.Habit;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -31,6 +31,7 @@ import androidx.work.WorkManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;

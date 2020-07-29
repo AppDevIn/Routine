@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.Habit;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.helpers.IntegerFormatter;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
@@ -929,15 +930,6 @@ public class HabitViewActivity extends AppCompatActivity {
         return cal.getTimeInMillis();
     }
 
-    public int calculateRangeMaximum(ArrayList<BarEntry> arr, int start, int end){
-        int max = 0;
-        for (int i = start; i < end; i++){
-            max = (int) Math.max(max, arr.get(i).getY());
-        }
-
-        return max;
-    }
-
     public int calculateRangeMaximum(ArrayList<BarEntry> arr){
         int max = 0;
         for (int i = 0; i < arr.size(); i++){
@@ -945,15 +937,6 @@ public class HabitViewActivity extends AppCompatActivity {
         }
 
         return max;
-    }
-
-    public boolean isRangeSumZero(ArrayList<BarEntry> arr, int start, int end){
-        int sum = 0;
-        for (int i = start; i < end; i++){
-            sum += arr.get(i).getY();
-        }
-
-        return sum == 0;
     }
 
     public boolean isRangeSumZero(ArrayList<BarEntry> arr){
@@ -1031,47 +1014,6 @@ public class HabitViewActivity extends AppCompatActivity {
         calendar.add(Calendar.MONTH,-1);
 
         return calendar.getTimeInMillis();
-    }
-
-    public long getAugust1st(long ms){
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.setTimeInMillis(ms);
-        calendar.add(Calendar.MONTH,1);
-        calendar.set(Calendar.DATE, 1);
-
-        return calendar.getTimeInMillis();
-
-    }
-
-    public long getSep1st(long ms){
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.setTimeInMillis(ms);
-        calendar.add(Calendar.MONTH,1);
-        calendar.set(Calendar.DATE, 1);
-
-        return calendar.getTimeInMillis();
-
-    }
-
-    public long getJan2021(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.set(2021,0,1);
-        return calendar.getTimeInMillis();
-    }
-
-    public long getNextDayTimestamp(){
-        Calendar cal = Calendar.getInstance();
-        int year  = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int date  = cal.get(Calendar.DATE);
-        cal.clear();
-        cal.set(year, month, date);
-        cal.add(Calendar.DAY_OF_MONTH,1);
-
-        return cal.getTimeInMillis();
     }
 
     public String getStartOfTheYear(long ms){

@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.Habit;
 
 import android.content.Intent;
 import android.os.Build;
@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitReminder;
 

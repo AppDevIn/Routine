@@ -124,12 +124,15 @@ public class GetTaskSectionWorker extends Worker {
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Section section = Section.fromDataSnapShot(dataSnapshot);
-                        Section sectionDataBase = mSectionDBHelper.getSection(id);
-                        if (!section.equals(sectionDataBase)) {
-                            Log.d(TAG, "onChildChanged(): This has been changed so updating......");
-                            mSectionDBHelper.updateSection(section);
+                        if(mSectionDBHelper.hasID(id)){
+                            Section section = Section.fromDataSnapShot(dataSnapshot);
+                            Section sectionDataBase = mSectionDBHelper.getSection(id);
+                            if (!section.equals(sectionDataBase)) {
+                                Log.d(TAG, "onChildChanged(): This has been changed so updating......");
+                                mSectionDBHelper.updateSection(section);
+                            }
                         }
+
                     }
 
                     @Override

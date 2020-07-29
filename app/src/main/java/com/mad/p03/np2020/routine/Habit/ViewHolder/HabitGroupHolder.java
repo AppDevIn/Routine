@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.ViewHolder;
+package com.mad.p03.np2020.routine.Habit.ViewHolder;
 
 import android.view.View;
 import android.widget.TextView;
