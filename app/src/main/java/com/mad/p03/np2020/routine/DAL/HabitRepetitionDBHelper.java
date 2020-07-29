@@ -183,6 +183,9 @@ public class HabitRepetitionDBHelper extends DBHelper {
         String query = "select *,max(timestamp) from " + HabitRepetition.TABLE_NAME + " GROUP BY " + HabitRepetition.COLUMN_HABIT_ID;
         // run the query
         Cursor res =  db.rawQuery( query, null );
+        if (res.getCount() <= 0){
+            return;
+        }
         res.moveToFirst(); // move to the first result found
 
         while(!res.isAfterLast()){
