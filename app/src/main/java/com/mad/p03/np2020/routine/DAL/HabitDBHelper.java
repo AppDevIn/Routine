@@ -562,5 +562,22 @@ public class HabitDBHelper extends DBHelper{
         return cal.getTimeInMillis();
     }
 
+    public boolean isHabitIDExisted(long habitID){
+        boolean isExisted = false;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + Habit.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID;
+
+        Cursor res =  db.rawQuery( query  , null );
+        if (res.getCount() > 0){
+           isExisted = true;
+        }
+
+        db.close();
+
+        return isExisted;
+    }
+
 
 }
