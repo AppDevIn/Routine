@@ -501,9 +501,14 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick(): Add button is pressed ");
-                addSection(mEditAddList);
-                alertDialog.cancel();
+                if (mEditAddList.getText().toString().isEmpty() || mEditAddList.getText().toString().trim().equals("")) {
+                    mEditAddList.setError("Section name cannot be empty");
+                } else {
+
+                    Log.d(TAG, "onClick(): Add button is pressed ");
+                    addSection(mEditAddList);
+                    alertDialog.cancel();
+                }
             }
         });
 

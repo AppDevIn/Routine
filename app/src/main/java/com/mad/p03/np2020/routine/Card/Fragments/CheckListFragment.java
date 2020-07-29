@@ -177,17 +177,23 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
                 event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
-
-            //Create a task object
-            Check check = new Check(textView.getText().toString());
-
-            //Add this object to the list
-            checkAdapter.addItem(check, getContext());
 
 
-            //Hide and scroll the last task
-            showNewEntry();
+            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")){
+                textView.setError("Check list name cannot be empty");
+            }else {
+                Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
+
+                //Create a task object
+                Check check = new Check(textView.getText().toString());
+
+                //Add this object to the list
+                checkAdapter.addItem(check, getContext());
+
+
+                //Hide and scroll the last task
+                showNewEntry();
+            }
 
 
             return true;

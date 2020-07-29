@@ -214,17 +214,22 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
                 event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
+            String EMAILPATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("") || !textView.getText().toString().trim().matches(EMAILPATTERN)){
+                textView.setError("Email is not valid");
+            }else {
+                //Add this object to the list
+                mTeamAdapter.addEmail(textView.getText().toString());
+
+                editText.setText("");
+
+
+                //Hide and scroll the last task
+                showNewEntry();
+            }
 
 
 
-            //Add this object to the list
-            mTeamAdapter.addEmail(textView.getText().toString());
-
-            editText.setText("");
-
-
-            //Hide and scroll the last task
-            showNewEntry();
 
 
             return true;
@@ -309,6 +314,12 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     private void addSection(TextView textView){
         String listName = textView.getText().toString();
         Log.i(TAG, "adding confirmed for " + listName);
+
+        //If this is false break put of this method
+        if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")){
+            textView.setError("Section name cannot be empty");
+            return;
+        }
 
         //Create a Section Object for the user input
         mSection.setName(textView.getText().toString().trim());

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -167,16 +169,18 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
 
                         mTextView.setText(name[0]);
 
-                        //TODO: Get the ICON
-                        StorageReference storageProfilePicture = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
+                        //Get the ICON
+                        StorageReference storageProfilePicture = FirebaseStorage.getInstance().getReference().child("ProfilePicture").child(snap.getKey() + ".jpg");
 
-
-                        storageProfilePicture.child(snap.getKey() + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        storageProfilePicture.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if(task.isSuccessful()){
-                                    Picasso.get().load(task.getResult()).into(mHolder.mImgPP);
-                                }
+                            public void onSuccess(Uri uri) {
+                                Picasso.get().load(uri).into(mHolder.mImgPP);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "onFailure: Image path doesn't exist");
                             }
                         });
 

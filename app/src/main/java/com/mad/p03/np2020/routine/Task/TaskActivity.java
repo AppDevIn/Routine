@@ -236,17 +236,21 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
                 event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
+            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")){
+                textView.setError("Task name cannot be empty");
+            }else {
+                Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
 
-            //Create a task object
-            Task task = new Task(textView.getText().toString(), mSection.getID());
+                //Create a task object
+                Task task = new Task(textView.getText().toString(), mSection.getID());
 
-            //Add this object to the list
-            mTaskAdapter.addItem(task, this);
+                //Add this object to the list
+                mTaskAdapter.addItem(task, this);
 
 
-            //Hide and scroll the last task
-            showNewEntry();
+                //Hide and scroll the last task
+                showNewEntry();
+            }
 
 
             return true;
