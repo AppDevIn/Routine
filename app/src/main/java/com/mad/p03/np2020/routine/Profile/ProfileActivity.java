@@ -152,16 +152,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         logoutButton.setOnClickListener(this);
         changeProfile.setOnClickListener(this);
 
-        try {
-            getUserInfo();
-        } catch (Exception e) {
-            Log.v(TAG, "No image uploaded");
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+
+        try {
+            getUserInfo();
+        } catch (Exception e) {
+            Log.v(TAG, "No image uploaded");
+        }
 
         bottomNavigationView = findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
