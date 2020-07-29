@@ -123,6 +123,7 @@ public class HomePageAdapter extends RecyclerView.Adapter<MyHomeViewHolder> impl
         holder.mBackGround.setBackground(shape);
 
         //Setting the image icon
+
         holder.mimgIcon.setImageResource(mSectionList.get(position).getBmiIcon());
 
         //Shows the team icon if its from team
