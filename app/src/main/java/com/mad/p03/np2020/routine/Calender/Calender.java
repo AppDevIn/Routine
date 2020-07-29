@@ -43,6 +43,7 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     List<Task> mTaskList;
     ViewSwitcher viewSwitcher;
     Boolean isZero = false;
+    CustomCalenderView calendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +87,12 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         super.onResume();
 
 
-        CustomCalenderView calendarView = findViewById(R.id.calendar);
+        calendarView = findViewById(R.id.calendar);
         currentDate = calendarView.getDate();
 
         calendarView.setDateListener(this);
+
+        calendarView.notifyData();
 
         initRecyclerView(currentDate);
 
@@ -124,10 +127,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
             mTaskList = new TaskDBHelper(this).getAllTask(date);
 
-            mTaskAdapter = new TaskAdapter(mTaskList, this);
-            mRecyclerView.setAdapter(mTaskAdapter);
-            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
+            mTaskAdapter.setTaskList(mTaskList);
+            mTaskAdapter.notifyDataSetChanged();
 
         }
 
@@ -139,7 +140,6 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     @Override
     public void onDataAdd(Object object) {
-
 
 
         Task task = (Task) object;
@@ -155,6 +155,9 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
             //Informing the adapter and view of the new item
             mTaskAdapter.notifyItemInserted(mTaskList.size());
         }
+
+        calendarView.notifyData();
+
 
         viewSwitch();
 
@@ -176,6 +179,8 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
                 break;
             }
         }
+
+        calendarView.notifyData();
 
     }
 
@@ -200,13 +205,13 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
             }
         }
 
+        calendarView.notifyData();
+
         viewSwitch();
     }
 
     //Initialize the recycler view
     public void initRecyclerView(Date date){
-
-
 
 
         Log.i(TAG, "onCreate: Date that needs to be retrieved: " + date.toString() );

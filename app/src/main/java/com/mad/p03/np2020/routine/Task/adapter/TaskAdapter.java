@@ -197,9 +197,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     @Override
     public void onItemSwiped(int position) {
         Log.d(TAG, "onItemSwiped(): Item swiped on position " + position);
+        Log.d(TAG, "Removing " + mTaskList.get(position));
 
+        Task task = mTaskList.get(position);
         //Delete the task
-        removeTask(position);
+        removeTask(task);
 
     }
 
@@ -243,12 +245,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
     /**
      * The place to delete the task in the list
-     * @param position The position from the data will be removed from
+     * @param task The position from the data will be removed from
      */
-    public void removeTask(int position){
-        Log.d(TAG, "Removing " + mTaskList.get(position));
+    public void removeTask(Task task){
 
-        Task task = mTaskList.get(position);
 
         //Delete from firebase
         task.executeFirebaseDelete(mOwner);
@@ -258,7 +258,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
     }
 
-
-
-
+    public void setTaskList(List<Task> taskList) {
+        mTaskList = taskList;
+    }
 }

@@ -210,4 +210,8 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
         this.mDateChangeListener = dateChangeListener;
     }
 
+    public void notifyData(){
+        SetUpCalender();
+    }
+
 }

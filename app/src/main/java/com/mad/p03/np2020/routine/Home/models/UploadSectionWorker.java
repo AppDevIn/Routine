@@ -83,16 +83,6 @@ public class UploadSectionWorker extends Worker {
                         mDatabase.child("name").setValue(name);
                         mDatabase.child("iconValue").setValue(image);
                         mDatabase.child("backgroundColor").setValue(color);
-                    }else {
-
-                        //Setting value using object
-                        mDatabase.setValue(new Section(name, color, image, id, position, UID));
-
-                        //Set the section id in user
-                        userDatabase.child(id).setValue(id);
-
-                        //Set the email for this section in Team
-                        teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     }
 
                 }

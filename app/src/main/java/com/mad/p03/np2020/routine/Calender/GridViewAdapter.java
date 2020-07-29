@@ -34,6 +34,7 @@ class GridViewAdapter extends ArrayAdapter {
     Calendar selectedDSate, currentDate;
     List<Task> taskList;
     LayoutInflater mInflater;
+    public View view;
 
     final private String TAG = "Calender";
 
@@ -54,7 +55,6 @@ class GridViewAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
 
-
         Date monthDate = dates.get(position);
         Calendar dateCalender = Calendar.getInstance();
         dateCalender.setTime(monthDate);
@@ -64,7 +64,7 @@ class GridViewAdapter extends ArrayAdapter {
         int currentMonth = selectedDSate.get(Calendar.MONTH) + 1;
         int currentYear = selectedDSate.get(Calendar.YEAR);
 
-        View view = convertView;
+        view = convertView;
 
         if(view == null){
             view = mInflater.inflate(R.layout.single_cell_layout, null);
@@ -134,6 +134,10 @@ class GridViewAdapter extends ArrayAdapter {
         return dates.get(position);
     }
 
+
+    public List<Date> getDates() {
+        return dates;
+    }
 
     public void setCurrentDate(Calendar selectedDSate) {
         this.selectedDSate = selectedDSate;
