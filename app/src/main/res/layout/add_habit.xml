@@ -96,7 +96,7 @@
            android:letterSpacing="0.1"/>
 
         <EditText
-            android:maxLength="20"
+            android:maxLength="16"
             android:inputType="text"
             android:id="@+id/add_habit_name"
             android:layout_marginTop="10dp"
