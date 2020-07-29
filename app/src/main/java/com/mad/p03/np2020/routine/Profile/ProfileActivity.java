@@ -332,8 +332,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(intent);
     }
 
-    }
-
     /**
      *
      * This method is used to re-register the habitReminder after rebooting(boot completed).
