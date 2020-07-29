@@ -231,11 +231,14 @@ public class GetTaskSectionWorker extends Worker {
                 String sectionID = dataSnapshot.child("sectionID").getValue(String.class);
 
 
-                Task task = Task.fromDataSnapShot(dataSnapshot);
-                Task taskDataBase = mTaskDBHelper.getTask(id);
-                //If exist in the database than update
-                if(mTaskDBHelper.hasID(id) && !task.equals(taskDataBase) && mSectionDBHelper.hasID(sectionID)) {
-                    mTaskDBHelper.update(task);
+
+                if(mSectionDBHelper.hasID(sectionID)) {
+                    Task task = Task.fromDataSnapShot(dataSnapshot);
+                    Task taskDataBase = mTaskDBHelper.getTask(id);
+                    //If exist in the database than update
+                    if (mTaskDBHelper.hasID(id) && !task.equals(taskDataBase)) {
+                        mTaskDBHelper.update(task);
+                    }
                 }
             }
 
