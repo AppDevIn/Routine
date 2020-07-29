@@ -425,11 +425,6 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public void displayMonthBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
-        //fake
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 5));
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 10));
-//        habitRepetitionArrayList.add(new HabitRepetition(getNextDayTimestamp(), 16));
-//        habitRepetitionArrayList.add(new HabitRepetition(getAugust1st(getNextDayTimestamp()), 15));
 
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
@@ -472,21 +467,6 @@ public class HabitViewActivity extends AppCompatActivity {
         }
 
         barEntries.add(first_barEntries);
-
-        //fake
-//        x = 0;
-//        initial_timestamp[0] = getSep1st(initial_timestamp[0]);
-//        lastDay = getDayOfMonthFromMs(initial_timestamp[0]);
-//        maxDay = getMaxDayOfTheMonth(initial_timestamp[0]);
-//        first_barEntries = new ArrayList<>();
-//        while (lastDay < maxDay){
-//            first_barEntries.add(new BarEntry(++x, lastDay));
-//            ++lastDay;
-//        }
-//        barEntries.add(first_barEntries);
-//        addDaysToTimeStampForMonth(timeStampList, getMaxDayOfTheMonth(initial_timestamp[0]),getMonthString(initial_timestamp[0]));
-//        Log.d(TAG, "displayWeekBarChart: "+barEntries);
-//        Log.d(TAG, "displayWeekBarChart: "+timeStampList);
 
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
@@ -647,23 +627,6 @@ public class HabitViewActivity extends AppCompatActivity {
         }
 
         barEntries.add(first_barEntries);
-
-        //fake
-//        x = 0;
-//        initial_timestamp[0] = getJan2021();
-//        lastMonth = getMonthFromMs(initial_timestamp[0]);
-//        maxMonth = 11;
-//
-//        first_barEntries = new ArrayList<>();
-//        while (lastMonth <= maxMonth){
-//            first_barEntries.add(new BarEntry(++x, x));
-//            ++lastMonth;
-//        }
-//        barEntries.add(first_barEntries);
-//        addMonthsToTimeStampForYear(timeStampList);
-//
-//        Log.d(TAG, "displayWeekBarChart: "+barEntries);
-//        Log.d(TAG, "displayWeekBarChart: "+timeStampList);
 
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
