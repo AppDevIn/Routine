@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Adapter;
+package com.mad.p03.np2020.routine.Habit.Adapter;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -22,15 +22,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
-import com.mad.p03.np2020.routine.HabitActivity;
+import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
+import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 
-import static com.mad.p03.np2020.routine.HabitActivity.displayView;
+import static com.mad.p03.np2020.routine.Habit.HabitActivity.displayView;
 
 /**
  *

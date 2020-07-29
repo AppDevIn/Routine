@@ -20,7 +20,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.HabitAdapter {
+      class com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter {
       }
     }
   }
@@ -28,7 +28,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter {
+      class com.mad.p03.np2020.routine.Habit.Adapter.HabitGroupAdapter {
       }
     }
   }
@@ -251,37 +251,37 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.HabitActivity {
+    class com.mad.p03.np2020.routine.Habit.HabitActivity {
     }
   }
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.HabitAddActivity {
+    class com.mad.p03.np2020.routine.Habit.HabitAddActivity {
     }
   }
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.HabitEditActivity {
+    class com.mad.p03.np2020.routine.Habit.HabitEditActivity {
     }
   }
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.HabitGroupActivity {
+    class com.mad.p03.np2020.routine.Habit.HabitGroupActivity {
     }
   }
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.HabitReminderActivity {
+    class com.mad.p03.np2020.routine.Habit.HabitReminderActivity {
     }
   }
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.HabitViewActivity {
+    class com.mad.p03.np2020.routine.Habit.HabitViewActivity {
     }
   }
   
@@ -394,7 +394,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
-      class com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder {
+      class com.mad.p03.np2020.routine.Habit.ViewHolder.HabitGroupHolder {
       }
     }
   }
@@ -402,7 +402,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
-      class com.mad.p03.np2020.routine.ViewHolder.HabitHolder {
+      class com.mad.p03.np2020.routine.Habit.ViewHolder.HabitHolder {
       }
     }
   }
@@ -580,12 +580,12 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
   com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler
-  com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
-  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitGroupAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Habit.Adapter.HabitGroupAdapter o-- com.mad.p03.np2020.routine.Interface.HabitItemClickListener : mListener
   com.mad.p03.np2020.routine.Adapter.HomePageAdapter .up.|> com.mad.p03.np2020.routine.Interface.HomeItemTouchHelperAdapter
   com.mad.p03.np2020.routine.Adapter.HomePageAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Adapter.MyHomeItemTouchHelper -up-|> androidx.recyclerview.widget.ItemTouchHelper.Callback
@@ -636,32 +636,32 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Fragment.NotesFragment o-- com.mad.p03.np2020.routine.Class.Task : mTask
   com.mad.p03.np2020.routine.Fragment.StepsFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.Fragment.StepsFragment o-- com.mad.p03.np2020.routine.Adapter.CardAdapter : cardAdapter
-  com.mad.p03.np2020.routine.HabitActivity .up.|> android.view.View.OnClickListener
-  com.mad.p03.np2020.routine.HabitActivity .up.|> com.mad.p03.np2020.routine.Interface.HabitItemClickListener
-  com.mad.p03.np2020.routine.HabitActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Adapter.HabitAdapter : habitAdapter
-  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
-  com.mad.p03.np2020.routine.HabitActivity o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.HabitAddActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.HabitAddActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
-  com.mad.p03.np2020.routine.HabitAddActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
-  com.mad.p03.np2020.routine.HabitAddActivity o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.HabitEditActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.HabitEditActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
-  com.mad.p03.np2020.routine.HabitEditActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
-  com.mad.p03.np2020.routine.HabitEditActivity o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.HabitGroupActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.HabitGroupActivity o-- com.mad.p03.np2020.routine.Adapter.HabitGroupAdapter : groupAdapter
-  com.mad.p03.np2020.routine.HabitGroupActivity o-- com.mad.p03.np2020.routine.database.HabitGroupDBHelper : group_dbhandler
-  com.mad.p03.np2020.routine.HabitGroupActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
-  com.mad.p03.np2020.routine.HabitGroupActivity o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.HabitReminderActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.HabitReminderActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
-  com.mad.p03.np2020.routine.HabitReminderActivity o-- com.mad.p03.np2020.routine.Class.HabitReminder : reminder
-  com.mad.p03.np2020.routine.HabitViewActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.HabitViewActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
-  com.mad.p03.np2020.routine.HabitViewActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
-  com.mad.p03.np2020.routine.HabitViewActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Habit.HabitActivity .up.|> android.view.View.OnClickListener
+  com.mad.p03.np2020.routine.Habit.HabitActivity .up.|> com.mad.p03.np2020.routine.Interface.HabitItemClickListener
+  com.mad.p03.np2020.routine.Habit.HabitActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Habit.HabitActivity o-- com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter : habitAdapter
+  com.mad.p03.np2020.routine.Habit.HabitActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
+  com.mad.p03.np2020.routine.Habit.HabitActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Habit.HabitAddActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Habit.HabitAddActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
+  com.mad.p03.np2020.routine.Habit.HabitAddActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
+  com.mad.p03.np2020.routine.Habit.HabitAddActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Habit.HabitEditActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Habit.HabitEditActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
+  com.mad.p03.np2020.routine.Habit.HabitEditActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
+  com.mad.p03.np2020.routine.Habit.HabitEditActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Habit.HabitGroupActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Habit.HabitGroupActivity o-- com.mad.p03.np2020.routine.Habit.Adapter.HabitGroupAdapter : groupAdapter
+  com.mad.p03.np2020.routine.Habit.HabitGroupActivity o-- com.mad.p03.np2020.routine.database.HabitGroupDBHelper : group_dbhandler
+  com.mad.p03.np2020.routine.Habit.HabitGroupActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
+  com.mad.p03.np2020.routine.Habit.HabitGroupActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Habit.HabitReminderActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Habit.HabitReminderActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
+  com.mad.p03.np2020.routine.Habit.HabitReminderActivity o-- com.mad.p03.np2020.routine.Class.HabitReminder : reminder
+  com.mad.p03.np2020.routine.Habit.HabitViewActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Habit.HabitViewActivity o-- com.mad.p03.np2020.routine.Class.Habit : habit
+  com.mad.p03.np2020.routine.Habit.HabitViewActivity o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habit_dbHandler
+  com.mad.p03.np2020.routine.Habit.HabitViewActivity o-- com.mad.p03.np2020.routine.Class.User : user
   com.mad.p03.np2020.routine.Home .up.|> com.mad.p03.np2020.routine.Interface.MyDatabaseListener
   com.mad.p03.np2020.routine.Home -up-|> androidx.appcompat.app.AppCompatActivity
   com.mad.p03.np2020.routine.Home o-- com.mad.p03.np2020.routine.Adapter.HomePageAdapter : mHomePageAdapter
@@ -690,8 +690,8 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder .up.|> android.view.View.OnClickListener
   com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder o-- com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter : adapter
-  com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.HabitHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Habit.ViewHolder.HabitGroupHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Habit.ViewHolder.HabitHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.View.OnTouchListener
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder

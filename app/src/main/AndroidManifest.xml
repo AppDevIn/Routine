@@ -25,7 +25,9 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true"
         android:windowSoftInputMode="adjustResize|adjustPan">
-        <activity android:name=".Calender.Calender"></activity>
+        <activity android:name=".Calender.Calender"
+            android:launchMode="singleTask"
+            ></activity>
         <activity
             android:name=".Card.CardActivity"
             android:fitsSystemWindows="true"
@@ -48,27 +50,29 @@
             android:name=".models.PopUp"
             android:theme="@style/AppTheme.NotificationTheme"></activity>
         <activity
-            android:name=".HabitActivity"
+            android:name=".Habit.HabitActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".Settings"
             android:exported="true" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".HabitViewActivity" />
+        <activity android:name=".Habit.HabitViewActivity" />
         <activity
             android:name=".Task.TaskActivity"
             android:fitsSystemWindows="true"
+            android:launchMode="singleTask"
            />
-        <activity android:name=".HabitAddActivity" />
+        <activity android:name=".Habit.HabitAddActivity" />
 
-        <activity android:name=".HabitEditActivity" />
-        <activity android:name=".HabitGroupActivity" />
+        <activity android:name=".Habit.HabitEditActivity" />
+        <activity android:name=".Habit.HabitGroupActivity" />
         <activity
             android:name=".Focus.FocusActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".HabitReminderActivity" />
+        <activity android:name=".Habit.HabitReminderActivity" />
 
-        <activity android:name=".Profile.ProfileActivity" />
+        <activity android:name=".Profile.ProfileActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>

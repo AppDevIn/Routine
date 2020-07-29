@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -45,15 +46,17 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     Boolean isZero = false;
     CustomCalenderView calendarView;
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        overridePendingTransition(0, 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender);
-
-
-
-
-
 
         //Set the listener
         TaskDBHelper.setMyDatabaseListener(this);
