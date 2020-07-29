@@ -236,7 +236,7 @@ public class HabitEditActivity extends AppCompatActivity {
                             return;
                         }
                         int dialogCnt = Integer.parseInt(cntString); // retrieve the count from the input field
-                        if (dialogCnt > 1000 ){
+                        if (dialogCnt > 10000 ){
                             dialog_cnt.setError("Please enter a smaller number");
                             return;
                         }
