@@ -354,6 +354,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         clearHabitAlarm(this);
         cancelRepeatingHabit();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mAuth.signOut();
         DBHelper dbHelper = new DBHelper(this);
         dbHelper.deleteAll();
