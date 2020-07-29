@@ -194,7 +194,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
             int day = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY));
             long currTimeStamp = res.getLong(res.getColumnIndex("max(timestamp)"));
             if (!habitDBHelper.isHabitIDExisted(id)){
-                continue;
+                res.moveToNext(); // move to the next result
             }
             Habit habit = habitDBHelper.getHabitByID(id);
 
