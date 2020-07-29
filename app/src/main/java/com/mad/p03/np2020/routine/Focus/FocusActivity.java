@@ -60,6 +60,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.Focus.Fragment.AchievementFragment;
+import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
