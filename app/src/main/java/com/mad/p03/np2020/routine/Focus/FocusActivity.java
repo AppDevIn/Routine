@@ -356,18 +356,12 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         });
 
         //Download image from google storage
-        achievementDBHelper = new AchievementDBHelper(FocusActivity.this);
-
-        for (Achievement a : achievementDBHelper.getAchievementData()) {
-            user.addAchievementList(a);
-            Log.v(TAG, "add Achievement list(): " + a);
-
-        }
+        user.setAchievementDBHelper(new AchievementDBHelper(FocusActivity.this));
+        user.renewAchievementList();
 
         Log.v(TAG, "Achievement list " + user.getAchievementArrayList());
 
     }
-
 
     //
     //This function is to track the button state so that it can show its respective view

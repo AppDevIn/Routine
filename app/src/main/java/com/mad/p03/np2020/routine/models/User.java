@@ -234,6 +234,10 @@ public class User implements Parcelable, FocusDBObserver {
 
     }
 
+    public void setAchievementDBHelper(AchievementDBHelper achievementDBHelper){
+        this.achievementDBHelper = achievementDBHelper;
+    }
+
     public ArrayList<Focus> getmFocusList(Date sDate, Date eDate) throws ParseException {
         ArrayList<Focus> focusArrayList = new ArrayList<>();
 
@@ -388,6 +392,7 @@ public class User implements Parcelable, FocusDBObserver {
     public HashMap<Integer, ArrayList<Achievement>> getAchievementArrayList() {
         return achievementArrayList;
     }
+
 
     @Override
     public void onDatabaseChanged() {
@@ -563,6 +568,20 @@ public class User implements Parcelable, FocusDBObserver {
         }
 
         achievementArrayList.get(achievement.typeAchievement).add(achievement);
+    }
+
+    /**
+     * Method to add focus object to Focus List
+     *
+     */
+
+    public void renewAchievementList() {
+        achievementArrayList = new HashMap<>();
+
+        for (Achievement a : achievementDBHelper.getAchievementData()) {
+            addAchievementList(a);
+            Log.v(TAG, "add Achievement list(): " + a);
+        }
     }
 
     /**
