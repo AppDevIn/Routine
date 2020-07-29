@@ -4,13 +4,11 @@
     <item
         android:id="@+id/habit"
         android:icon="@drawable/ic_focus"
-
         android:title="@string/habit"/>
 
     <item
         android:id="@+id/focus"
         android:icon="@drawable/habit"
-
         android:title="@string/FocusButton"
         />
 
