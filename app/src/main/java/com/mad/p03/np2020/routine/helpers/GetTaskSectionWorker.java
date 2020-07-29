@@ -476,6 +476,36 @@ public class GetTaskSectionWorker extends Worker {
                     if (!dataSnapshot.child(taskList.get(i).getTaskID()).exists()) {
                         Log.d(TAG, "onDataChange: Deleting task " + taskList.get(i).getName());
                         mTaskDBHelper.delete(taskList.get(i).getTaskID());
+                    }else{
+                        CheckCheckToDelete(taskList.get(i).getTaskID());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void CheckCheckToDelete(String taskID){
+
+        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("Check");
+        List<Check> checkList = mCheckDBHelper.getAllCheck(taskID);
+
+        checkRef.orderByChild("taskID").equalTo(taskID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //Check which has a child
+                for (int i = 0; i < checkList.size(); i++) {
+                    //Remove the ones with the child
+
+                    if (!dataSnapshot.child(checkList.get(i).getID()).exists()) {
+                        Log.d(TAG, "onDataChange: Deleting task " + checkList.get(i).getName());
+                        mCheckDBHelper.delete(checkList.get(i).getID());
                     }
                 }
 
