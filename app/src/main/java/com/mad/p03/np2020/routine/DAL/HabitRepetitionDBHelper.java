@@ -183,6 +183,9 @@ public class HabitRepetitionDBHelper extends DBHelper {
         String query = "select *,max(timestamp) from " + HabitRepetition.TABLE_NAME + " GROUP BY " + HabitRepetition.COLUMN_HABIT_ID;
         // run the query
         Cursor res =  db.rawQuery( query, null );
+        if (res.getCount() <= 0){
+            return;
+        }
         res.moveToFirst(); // move to the first result found
 
         while(!res.isAfterLast()){
@@ -190,6 +193,9 @@ public class HabitRepetitionDBHelper extends DBHelper {
             int cycle = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE));
             int day = res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY));
             long currTimeStamp = res.getLong(res.getColumnIndex("max(timestamp)"));
+            if (!habitDBHelper.isHabitIDExisted(id)){
+                continue;
+            }
             Habit habit = habitDBHelper.getHabitByID(id);
 
             while (currTimeStamp < todayTimeStamp){

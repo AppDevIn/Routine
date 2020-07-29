@@ -118,7 +118,7 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         ChannelDescription = "Channel for card notifications";
         ChannelImportance = NotificationManager.IMPORTANCE_DEFAULT;
         //Initialize notification channel
-        initialiseHabitNotificationChannel();
+        initialiseNotificationChannel();
 
         //Initializing buttons
         dateButton = v.findViewById(R.id.dateButton);
@@ -402,11 +402,11 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     }
 
 
-    public void initialiseHabitNotificationChannel(){
-        // if api > 28, create a notification channel named "HabitTracker"
+    public void initialiseNotificationChannel(){
+        // if api > 28, create a notification channel named "Card Notification"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelName = "HabitTracker";
-            int importance = NotificationManager.IMPORTANCE_HIGH; // set as high importance
+            ChannelName = "CardNotification";
+            ChannelImportance = NotificationManager.IMPORTANCE_HIGH; // set as high importance
         }
         createNotificationChannel(ChannelID, ChannelName, ChannelDescription, ChannelImportance);
     }
