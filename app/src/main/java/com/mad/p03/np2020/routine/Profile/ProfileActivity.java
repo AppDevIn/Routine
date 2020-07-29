@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Profile;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.app.AlarmManager;
@@ -376,6 +377,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void logout()
     {
+        //Remove animation
+        ActivityOptions options =
+                ActivityOptions.makeCustomAnimation(this, 0, 0);
+
         clearHabitAlarm(this);
         cancelRepeatingHabit();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
@@ -383,7 +388,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mAuth.signOut();
         DBHelper dbHelper = new DBHelper(this);
         dbHelper.deleteAll();
-        startActivity(intent);
+        startActivity(intent, options.toBundle());
     }
 
     /**
