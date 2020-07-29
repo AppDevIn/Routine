@@ -503,8 +503,11 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             public void onClick(View view) {
                 if (mEditAddList.getText().toString().isEmpty() || mEditAddList.getText().toString().trim().equals("")) {
                     mEditAddList.setError("Section name cannot be empty");
-                } else {
-
+                }
+                else if(mEditAddList.getText().toString().length() >= 12) {
+                    mEditAddList.setError("Section name cannot be more than 12");
+                }
+                else {
                     Log.d(TAG, "onClick(): Add button is pressed ");
                     addSection(mEditAddList);
                     alertDialog.cancel();
