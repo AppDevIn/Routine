@@ -3,7 +3,6 @@ package com.mad.p03.np2020.routine.background;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.util.Log;
@@ -13,18 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
-import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
-import com.mad.p03.np2020.routine.models.Achievement;
+import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

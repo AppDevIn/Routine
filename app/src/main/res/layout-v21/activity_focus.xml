@@ -10,7 +10,7 @@
     android:clickable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".FocusActivity">
+    tools:context=".Focus.FocusActivity">
 
 
     <ImageButton

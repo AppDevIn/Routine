@@ -3,19 +3,17 @@ package com.mad.p03.np2020.routine.DAL;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 
 
 import com.mad.p03.np2020.routine.helpers.MyDatabaseListener;
-import com.mad.p03.np2020.routine.models.Achievement;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.models.Check;
-import com.mad.p03.np2020.routine.models.Focus;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
-import com.mad.p03.np2020.routine.models.Team;
 import com.mad.p03.np2020.routine.models.User;
 
 import androidx.annotation.Nullable;

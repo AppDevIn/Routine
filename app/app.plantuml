@@ -12,7 +12,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace Adapter {
-      class com.mad.p03.np2020.routine.Adapter.FocusAdapter {
+      class com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter {
       }
     }
   }
@@ -221,14 +221,14 @@ title __APP's Class Diagram__\n
   
 
   namespace com.mad.p03.np2020.routine {
-    class com.mad.p03.np2020.routine.FocusActivity {
+    class com.mad.p03.np2020.routine.Focus.FocusActivity {
     }
   }
   
 
   namespace com.mad.p03.np2020.routine {
     namespace Fragment {
-      class com.mad.p03.np2020.routine.Fragment.HistoryFragment {
+      class com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment {
       }
     }
   }
@@ -386,7 +386,7 @@ title __APP's Class Diagram__\n
 
   namespace com.mad.p03.np2020.routine {
     namespace ViewHolder {
-      class com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder {
+      class com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder {
       }
     }
   }
@@ -577,9 +577,9 @@ title __APP's Class Diagram__\n
   
 
   com.mad.p03.np2020.routine.Adapter.CardAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.FocusAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
-  com.mad.p03.np2020.routine.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
+  com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter o-- com.mad.p03.np2020.routine.Class.User : user
   com.mad.p03.np2020.routine.Adapter.HabitAdapter -up-|> androidx.recyclerview.widget.RecyclerView.Adapter
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.Class.Habit.HabitList : _habitList
   com.mad.p03.np2020.routine.Adapter.HabitAdapter o-- com.mad.p03.np2020.routine.database.HabitDBHelper : dbHandler
@@ -617,21 +617,21 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
   com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.HabitDBHelper : habitDBHelper
   com.mad.p03.np2020.routine.Class.User o-- com.mad.p03.np2020.routine.database.HabitGroupDBHelper : habitGroupDBHelper
-  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnClickListener
-  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnFocusChangeListener
-  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnLongClickListener
-  com.mad.p03.np2020.routine.FocusActivity .up.|> android.view.View.OnTouchListener
-  com.mad.p03.np2020.routine.FocusActivity .up.|> androidx.lifecycle.LifecycleObserver
-  com.mad.p03.np2020.routine.FocusActivity .up.|> com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener
-  com.mad.p03.np2020.routine.FocusActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.background.BoundService : boundService
-  com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.Class.User : user
-  com.mad.p03.np2020.routine.FocusActivity o-- com.mad.p03.np2020.routine.FocusActivity.ValueChangeListener : visibilityChangeListener
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment -up-|> androidx.fragment.app.Fragment
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Fragment.HistoryFragment.OnFragmentInteractionListener : mListener
-  com.mad.p03.np2020.routine.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Focus.FocusActivity .up.|> android.view.View.OnClickListener
+  com.mad.p03.np2020.routine.Focus.FocusActivity .up.|> android.view.View.OnFocusChangeListener
+  com.mad.p03.np2020.routine.Focus.FocusActivity .up.|> android.view.View.OnLongClickListener
+  com.mad.p03.np2020.routine.Focus.FocusActivity .up.|> android.view.View.OnTouchListener
+  com.mad.p03.np2020.routine.Focus.FocusActivity .up.|> androidx.lifecycle.LifecycleObserver
+  com.mad.p03.np2020.routine.Focus.FocusActivity .up.|> com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment.OnFragmentInteractionListener
+  com.mad.p03.np2020.routine.Focus.FocusActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.mad.p03.np2020.routine.Focus.FocusActivity o-- com.mad.p03.np2020.routine.background.BoundService : boundService
+  com.mad.p03.np2020.routine.Focus.FocusActivity o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.Focus.FocusActivity o-- com.mad.p03.np2020.routine.Class.User : user
+  com.mad.p03.np2020.routine.Focus.FocusActivity o-- com.mad.p03.np2020.routine.Focus.FocusActivity.ValueChangeListener : visibilityChangeListener
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment -up-|> androidx.fragment.app.Fragment
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.database.FocusDBHelper : focusDBHelper
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment.OnFragmentInteractionListener : mListener
+  com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment o-- com.mad.p03.np2020.routine.Class.User : user
   com.mad.p03.np2020.routine.Fragment.NotesFragment -up-|> androidx.fragment.app.Fragment
   com.mad.p03.np2020.routine.Fragment.NotesFragment o-- com.mad.p03.np2020.routine.Class.Task : mTask
   com.mad.p03.np2020.routine.Fragment.StepsFragment -up-|> androidx.fragment.app.Fragment
@@ -687,9 +687,9 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.TaskActivity o-- com.mad.p03.np2020.routine.Adapter.TaskAdapter : mTaskAdapter
   com.mad.p03.np2020.routine.ViewHolder.CardViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.DividerItemDecoration -up-|> androidx.recyclerview.widget.RecyclerView.ItemDecoration
-  com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder .up.|> android.view.View.OnClickListener
-  com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
-  com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder o-- com.mad.p03.np2020.routine.Adapter.FocusAdapter : adapter
+  com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder .up.|> android.view.View.OnClickListener
+  com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
+  com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder o-- com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter : adapter
   com.mad.p03.np2020.routine.ViewHolder.HabitGroupHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.HabitHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.MyHomeViewHolder .up.|> android.view.GestureDetector.OnGestureListener
@@ -701,7 +701,7 @@ title __APP's Class Diagram__\n
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder -up-|> androidx.recyclerview.widget.RecyclerView.ViewHolder
   com.mad.p03.np2020.routine.ViewHolder.TaskViewHolder o-- com.mad.p03.np2020.routine.Interface.TaskTouchHelperAdapter : mTaskTouchHelperAdapter
   com.mad.p03.np2020.routine.background.BoundService -up-|> android.app.Service
-  com.mad.p03.np2020.routine.background.BoundService o-- com.mad.p03.np2020.routine.FocusActivity : mContext
+  com.mad.p03.np2020.routine.background.BoundService o-- com.mad.p03.np2020.routine.Focus.FocusActivity : mContext
   com.mad.p03.np2020.routine.background.DeleteSectionWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.DeleteTaskWorker -up-|> androidx.work.Worker
   com.mad.p03.np2020.routine.background.FCMSection -up-|> com.google.firebase.messaging.FirebaseMessagingService

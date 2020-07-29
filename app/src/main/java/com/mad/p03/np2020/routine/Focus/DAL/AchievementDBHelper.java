@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.DAL;
+package com.mad.p03.np2020.routine.Focus.DAL;
 
 
 import android.annotation.SuppressLint;
@@ -12,9 +12,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.models.Achievement;
-import com.mad.p03.np2020.routine.models.Section;
-import com.mad.p03.np2020.routine.models.Task;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 
 import java.util.ArrayList;
 
@@ -27,7 +26,7 @@ import java.util.ArrayList;
  */
 
 @SuppressLint("ParcelCreator")
-public class AchievementDBHelper extends DBHelper  implements Parcelable {
+public class AchievementDBHelper extends DBHelper implements Parcelable {
 
     private final String TAG = "Achievement Database";
 

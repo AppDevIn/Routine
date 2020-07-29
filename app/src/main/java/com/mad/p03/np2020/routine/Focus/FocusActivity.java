@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine;
+package com.mad.p03.np2020.routine.Focus;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -34,7 +34,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -58,18 +57,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
-import com.mad.p03.np2020.routine.DAL.UserDBHelper;
-import com.mad.p03.np2020.routine.Fragment.AchievementFragment;
-import com.mad.p03.np2020.routine.background.DatabaseObserver;
-import com.mad.p03.np2020.routine.models.Achievement;
+import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.Focus.Fragment.AchievementFragment;
+import com.mad.p03.np2020.routine.NavBarHelper;
+import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.models.CircularProgressBar;
-import com.mad.p03.np2020.routine.models.Focus;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.models.User;
-import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
+import com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.background.BoundService;
 import com.mad.p03.np2020.routine.background.FocusWorker;
-import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
+import com.mad.p03.np2020.routine.Focus.DAL.FocusDBHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -88,7 +88,7 @@ import static java.lang.String.valueOf;
  */
 
 
-public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver, DatabaseObserver {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver, FocusDBObserver {
 
 
     //Fragment Variables
@@ -191,6 +191,15 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     //Focus item selector
     PopupWindow changeStatusPopUp;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
