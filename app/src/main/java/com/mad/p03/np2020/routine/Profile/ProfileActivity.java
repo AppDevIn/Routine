@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
