@@ -605,7 +605,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "select sum(count) from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND " + ms + " <= " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " < " + next_ms;
+        String query = "select sum(count) from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID + " AND (" + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " >= " + ms + " AND  " + HabitRepetition.COLUMN_HABIT_TIMESTAMP + " < " + next_ms + ")";
         // run the query
         Cursor res = db.rawQuery(query, null);
 
