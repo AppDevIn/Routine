@@ -499,7 +499,7 @@ public class GetAchievementWorker extends Worker {
                 try {
                     destination.createNewFile();
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    result.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                    result.compress(Bitmap.CompressFormat.PNG, 0, bos);
                     byte[] bitmapdata = bos.toByteArray();
 
                     FileOutputStream fos = new FileOutputStream(destination);

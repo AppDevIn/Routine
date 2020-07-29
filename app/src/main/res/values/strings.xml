@@ -149,6 +149,8 @@
     <string name="submit">Submit</string>
     <string name="rubbish_bin">Rubbish Bin</string>
     <string name="unknown">Unknown</string>
+    <string name="storage_permission_needed">Storage Permission Needed</string>
+    <string name="storage_permission_description">In order for the resource to load, we will need storage permission</string>
 
 
 </resources>
