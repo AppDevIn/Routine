@@ -78,15 +78,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-
         UID = firebaseUser.getUid();
-
         mUser = new UserDBHelper(this).getUser(mAuth.getUid());
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         userRef = mDatabase.child("users").child(UID);
         userDBHelper = new UserDBHelper(getApplicationContext());
-
         storageProfilePicture = FirebaseStorage.getInstance().getReference().child("ProfilePicture");
 
         username = findViewById(R.id.username);
@@ -111,6 +108,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         rateApp = findViewById(R.id.rateAppButton);
         logoutButton = findViewById(R.id.logoutButton);
         changeProfile = findViewById(R.id.changeProfileButton);
+
+        //changeProfile.setBackgroundResource(R.drawable.change_pp);
 
         /*
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -227,6 +226,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                         progressDialog.dismiss();
                     }
+                    progressDialog.dismiss();
                 }
             });
         }

@@ -161,9 +161,9 @@
     <Button
         android:id="@+id/changeProfileButton"
         android:layout_width="70dp"
-        android:layout_height="46dp"
+        android:layout_height="70dp"
         android:layout_marginTop="4dp"
-        android:text="Button"
+        android:background="@drawable/change_pp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.744"
         app:layout_constraintStart_toStartOf="parent"
