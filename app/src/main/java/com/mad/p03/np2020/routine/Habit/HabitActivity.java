@@ -222,6 +222,35 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
 
+        if(habitArrayList.size() == 0){
+            if (viewSwitcher.getCurrentView() != nothing_view){
+                viewSwitcher.showNext();
+                add_habit.setVisibility(View.VISIBLE);
+                prev_indicator.setVisibility(View.INVISIBLE);
+                next_indicator.setVisibility(View.INVISIBLE);
+                indicator_num.setVisibility(View.INVISIBLE);
+                remind_text.setVisibility(View.INVISIBLE);
+            }
+        }else if (habitArrayList.size() <= page_x){
+            if (viewSwitcher.getCurrentView() == nothing_view){
+                viewSwitcher.showPrevious();
+            }
+            add_habit.setVisibility(View.VISIBLE);
+            remind_text.setVisibility(View.VISIBLE);
+            prev_indicator.setVisibility(View.INVISIBLE);
+            next_indicator.setVisibility(View.INVISIBLE);
+            indicator_num.setVisibility(View.INVISIBLE);
+        }else{
+            if (viewSwitcher.getCurrentView() == nothing_view){
+                viewSwitcher.showPrevious();
+            }
+            add_habit.setVisibility(View.VISIBLE);
+            prev_indicator.setVisibility(View.INVISIBLE);
+            next_indicator.setVisibility(View.VISIBLE);
+            indicator_num.setVisibility(View.VISIBLE);
+            remind_text.setVisibility(View.VISIBLE);
+        }
+
         indicator_num.setText("1");
     }
 
@@ -618,8 +647,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 viewSwitcher.showPrevious();
             }
             add_habit.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.INVISIBLE);
-            next_indicator.setVisibility(View.VISIBLE);
             indicator_num.setVisibility(View.VISIBLE);
             remind_text.setVisibility(View.VISIBLE);
         }
