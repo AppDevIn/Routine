@@ -567,7 +567,7 @@ public class HabitDBHelper extends DBHelper{
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "select * from " + Habit.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_HABIT_ID + " = " + habitID;
+        String query = "select * from " + Habit.TABLE_NAME + " WHERE " + Habit.COLUMN_ID + " = " + habitID;
 
         Cursor res =  db.rawQuery( query  , null );
         if (res.getCount() > 0){
