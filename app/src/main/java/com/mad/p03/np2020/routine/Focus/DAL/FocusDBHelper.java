@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.DAL;
+package com.mad.p03.np2020.routine.Focus.DAL;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -11,10 +11,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.background.DatabaseObservable;
-import com.mad.p03.np2020.routine.background.DatabaseObserver;
-import com.mad.p03.np2020.routine.models.Check;
-import com.mad.p03.np2020.routine.models.Focus;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObservable;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 
 @SuppressLint("ParcelCreator")
-public class FocusDBHelper extends DBHelper implements Parcelable, DatabaseObservable {
+public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObservable {
 
     String TAG = "FocusDBHelper";
 
@@ -39,7 +39,7 @@ public class FocusDBHelper extends DBHelper implements Parcelable, DatabaseObser
     public FocusDBHelper(@Nullable Context context) {
         super(context);
     }
-    ArrayList<DatabaseObserver> observerArrayList = new ArrayList<>();
+    ArrayList<FocusDBObserver> observerArrayList = new ArrayList<>();
 
     /**
      * this is called the first time a database is accessed. Creation a new database will involve here
@@ -426,22 +426,22 @@ public class FocusDBHelper extends DBHelper implements Parcelable, DatabaseObser
     }
 
     @Override
-    public void registerDbObserver(DatabaseObserver databaseObserver) {
-        if (!observerArrayList.contains(databaseObserver)){
-            observerArrayList.add(databaseObserver);
+    public void registerDbObserver(FocusDBObserver focusDBObserver) {
+        if (!observerArrayList.contains(focusDBObserver)){
+            observerArrayList.add(focusDBObserver);
         }
     }
 
     @Override
-    public void removeDbObserver(DatabaseObserver databaseObserver) {
-        observerArrayList.remove(databaseObserver);
+    public void removeDbObserver(FocusDBObserver focusDBObserver) {
+        observerArrayList.remove(focusDBObserver);
     }
 
     @Override
     public void notifyDbChanged() {
-        for (DatabaseObserver databaseObserver:observerArrayList){
-            if (databaseObserver!= null){
-                databaseObserver.onDatabaseChanged();
+        for (FocusDBObserver focusDBObserver :observerArrayList){
+            if (focusDBObserver != null){
+                focusDBObserver.onDatabaseChanged();
                 Log.v(TAG,"SQLiteDatabase onChanged triggered");
             }}
     }

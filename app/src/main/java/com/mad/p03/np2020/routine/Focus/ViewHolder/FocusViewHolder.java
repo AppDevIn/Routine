@@ -1,6 +1,5 @@
-package com.mad.p03.np2020.routine.ViewHolder;
+package com.mad.p03.np2020.routine.Focus.ViewHolder;
 
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
-import com.mad.p03.np2020.routine.models.Focus;
+import com.mad.p03.np2020.routine.Focus.Adapter.FocusAdapter;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.R;
 
 import java.text.ParseException;

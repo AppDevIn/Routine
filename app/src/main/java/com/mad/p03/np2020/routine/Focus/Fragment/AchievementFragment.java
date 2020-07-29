@@ -1,30 +1,25 @@
-package com.mad.p03.np2020.routine.Fragment;
+package com.mad.p03.np2020.routine.Focus.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Adapter.AchievementAdapter;
-import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
-import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
+import com.mad.p03.np2020.routine.Focus.Adapter.AchievementAdapter;
+import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.Focus.DAL.FocusDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
-import com.mad.p03.np2020.routine.models.Achievement;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.models.User;
 
 public class AchievementFragment extends Fragment implements View.OnClickListener {

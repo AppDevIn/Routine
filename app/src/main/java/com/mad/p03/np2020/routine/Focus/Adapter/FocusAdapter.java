@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Adapter;
+package com.mad.p03.np2020.routine.Focus.Adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -21,13 +21,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
-import com.mad.p03.np2020.routine.models.Focus;
-import com.mad.p03.np2020.routine.ViewHolder.FocusViewHolder;
+import com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
+import com.mad.p03.np2020.routine.Focus.ViewHolder.FocusViewHolder;
 import com.mad.p03.np2020.routine.background.FocusWorker;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
+import com.mad.p03.np2020.routine.Focus.DAL.FocusDBHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;

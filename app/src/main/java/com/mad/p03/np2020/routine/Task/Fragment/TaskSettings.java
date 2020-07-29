@@ -1,19 +1,15 @@
 package com.mad.p03.np2020.routine.Task.Fragment;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -21,32 +17,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 import android.widget.ViewSwitcher;
 
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
-import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
-import com.mad.p03.np2020.routine.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerColorAdapter;
 import com.mad.p03.np2020.routine.Home.adapters.MySpinnerIconsAdapter;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
-import com.mad.p03.np2020.routine.Task.adapter.TaskAdapter;
 import com.mad.p03.np2020.routine.Task.adapter.TeamAdapter;
 import com.mad.p03.np2020.routine.Task.model.GestureDetectorTaskSettings;
-import com.mad.p03.np2020.routine.Task.model.MyTaskTouchHelper;
 import com.mad.p03.np2020.routine.helpers.HomeIcon;
 import com.mad.p03.np2020.routine.models.Section;
-import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.models.Team;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -54,10 +41,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

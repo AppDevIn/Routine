@@ -1,16 +1,14 @@
-package com.mad.p03.np2020.routine.ViewHolder;
+package com.mad.p03.np2020.routine.Focus.ViewHolder;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.Adapter.AchievementAdapter;
-import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
+import com.mad.p03.np2020.routine.Focus.Adapter.AchievementAdapter;
 import com.mad.p03.np2020.routine.R;
 
 public class AchievementViewHolder extends RecyclerView.ViewHolder {

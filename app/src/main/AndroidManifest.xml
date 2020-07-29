@@ -64,7 +64,7 @@
         <activity android:name=".HabitEditActivity" />
         <activity android:name=".HabitGroupActivity" />
         <activity
-            android:name=".FocusActivity"
+            android:name=".Focus.FocusActivity"
             android:launchMode="singleTask" />
         <activity android:name=".HabitReminderActivity" />
 

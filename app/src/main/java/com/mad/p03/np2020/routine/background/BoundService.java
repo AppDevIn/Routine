@@ -11,11 +11,10 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
-import com.mad.p03.np2020.routine.FocusActivity;
+import com.mad.p03.np2020.routine.Focus.FocusActivity;
 import com.mad.p03.np2020.routine.R;
 
 import java.text.SimpleDateFormat;

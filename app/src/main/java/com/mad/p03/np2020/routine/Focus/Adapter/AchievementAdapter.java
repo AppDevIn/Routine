@@ -1,34 +1,28 @@
-package com.mad.p03.np2020.routine.Adapter;
+package com.mad.p03.np2020.routine.Focus.Adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
-import com.mad.p03.np2020.routine.DAL.FocusDBHelper;
-import com.mad.p03.np2020.routine.Fragment.AchievementFragment;
+import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.Focus.DAL.FocusDBHelper;
+import com.mad.p03.np2020.routine.Focus.Fragment.AchievementFragment;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.ViewHolder.AchievementViewHolder;
+import com.mad.p03.np2020.routine.Focus.ViewHolder.AchievementViewHolder;
 import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
-import com.mad.p03.np2020.routine.models.Achievement;
-import com.mad.p03.np2020.routine.models.Focus;
+import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.models.User;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class AchievementAdapter extends RecyclerView.Adapter<AchievementViewHolder> {
 
