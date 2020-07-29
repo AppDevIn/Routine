@@ -48,7 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/habit_Vertical_divider"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/create_habit"
                 android:background="@drawable/habit_btn_background2"
                 android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
@@ -62,9 +63,7 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_toEndOf="@id/habit_close"
                 android:background="@drawable/habit_btn_background"
                 android:fontFamily="@font/montserrat_regular"
                 android:letterSpacing="0.1"
@@ -95,7 +94,7 @@
             android:letterSpacing="0.1"/>
 
         <EditText
-            android:maxLength="20"
+            android:maxLength="16"
             android:inputType="text"
             android:id="@+id/add_habit_name"
             android:layout_marginTop="10dp"
