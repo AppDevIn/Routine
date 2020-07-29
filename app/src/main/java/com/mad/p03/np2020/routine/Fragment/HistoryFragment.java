@@ -264,18 +264,18 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, D
     public void setArrow(){
         Date min = user.getMinFocus();
         if(min.before(mappingDate.get(1))){
-            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
+            prevWeek.setVisibility(View.VISIBLE);
         }else{
             Log.v(TAG, "Change Color");
-            prevWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+            prevWeek.setVisibility(View.INVISIBLE);
         }
 
         Date max = new Date();
         if(max.after(mappingDate.get(7))){
-            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up));
+            nextWeek.setVisibility(View.VISIBLE);
         }else{
             Log.v(TAG, "Change Color");
-            nextWeek.setBackground(getResources().getDrawable(R.drawable.arrow_up_disabled));
+            nextWeek.setVisibility(View.INVISIBLE);
         }
     }
 
