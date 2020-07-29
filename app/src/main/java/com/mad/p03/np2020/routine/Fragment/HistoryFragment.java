@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.mad.p03.np2020.routine.Adapter.FocusAdapter;
 import com.mad.p03.np2020.routine.R.color;
+import com.mad.p03.np2020.routine.background.DatabaseObserver;
 import com.mad.p03.np2020.routine.models.Focus;
 import com.mad.p03.np2020.routine.models.ResizeableButton;
 import com.mad.p03.np2020.routine.models.User;
@@ -59,7 +60,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
  */
 
 
-public class HistoryFragment extends Fragment implements View.OnClickListener {
+public class HistoryFragment extends Fragment implements View.OnClickListener, DatabaseObserver {
 
     private static final String USER_GET = "User Get";
     private static final String FOCUS_DATABASE = "FocusDatabase";
@@ -81,6 +82,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private RadioButton week, day;
     private RadioGroup toggle;
     private int selectedDate = 1;
+
+    //used to keep track the selected value, so that when database changed. The value won't be affected
+    private Integer trackSelectValue = null;
 
     //StartDate and EndDate
     private HashMap<Integer, Date> mappingDate;
@@ -113,6 +117,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        focusDBHelper.removeDbObserver(this);
+
+    }
+
     /**
      * OnCreate the history fragment
      * Retrieve USER_GET data passed in to parceable format
@@ -124,7 +135,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(USER_GET);
-            focusDBHelper = getArguments().getParcelable("FocusDatabase");
+            focusDBHelper = getArguments().getParcelable("FocusDatabase"); //Not in used
             Log.v(TAG, "Created fragment");
         }
 
@@ -208,11 +219,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         prevWeek.setOnClickListener(this);
         toggle.setOnClickListener(this);
 
-        try {
-            initialisation();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        initialisation();
 
         buttonFragment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +234,10 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     /**
      * Used for initialization of history Fragment
      **/
-    private void initialisation() throws ParseException {
+    private void initialisation() {
+        //This is used to keep track of changes to database
+        user.readFocusFirebase(getContext(), this);
+
         textFragment.setText("My Focus History");
         Date date = new Date();
         Log.v(TAG, "Start before Change Date init: " + date);
@@ -245,7 +255,6 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         LocalDateTime ldt = LocalDateTime.ofInstant(DateTimeUtils.toInstant(date), org.threeten.bp.ZoneId.systemDefault());
 
         mappingDate = getMapWeek(ldt);
-
 
         setArrow();
         displayWeek();
@@ -334,74 +343,38 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.week:
-                try {
-                    displayWeek();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayWeek();
                 break;
             case R.id.day:
-                try {
-                    if(previousButton == null) previousButton = mon;
-                    displayResult(selectedDate, previousButton);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                if(previousButton == null) previousButton = mon;
+                displayResult(selectedDate, previousButton);
                 break;
             case R.id.mondayButton:
-                try {
-                    displayResult(1, mon);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayResult(1, mon);
                 break;
 
             case R.id.tuesdayButton:
-                try {
-                    displayResult(2, tue);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayResult(2, tue);
                 break;
 
             case R.id.wednesdayButton:
-                try {
-                    displayResult(3, wed);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayResult(3, wed);
                 break;
 
             case R.id.thursdayButton:
-                try {
-                    displayResult(4, thr);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayResult(4, thr);
                 break;
 
             case R.id.fridayButton:
-                try {
-                    displayResult(5, fri);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayResult(5, fri);
                 break;
 
             case R.id.saturdayButton:
-                try {
-                    displayResult(6, sat);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayResult(6, sat);
                 break;
 
             case R.id.sundayButton:
-                try {
-                    displayResult(7, sun);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                displayResult(7, sun);
                 break;
         }
     }
@@ -411,6 +384,8 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
      */
 
     public void setPrevWeek() throws ParseException {
+        trackSelectValue = null;
+
         Log.v(TAG, "Setting prev week");
         Date min = user.getMinFocus();
         if(min.before(mappingDate.get(1))){
@@ -431,6 +406,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
     public void setNextWeek() throws ParseException {
         Log.v(TAG, "Setting next week");
+        trackSelectValue = null;
 
         Date max = new Date();
         if(max.after(mappingDate.get(7))){
@@ -450,48 +426,59 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
 
 
-    public void displayResult(int i, ResizeableButton id) throws ParseException {
-        selectedDate = i;
-        if(previousButton != null){
-            previousButton.setTextColor(getResources().getColor(color.black));
+    public void displayResult(int i, ResizeableButton id) {
+
+        try {
+            trackSelectValue = i;
+
+            selectedDate = i;
+            if (previousButton != null) {
+                previousButton.setTextColor(getResources().getColor(color.black));
+            }
+            previousButton = id;
+            Log.v(TAG, "Button Pressed " + i + " on " + id);
+            Log.v(TAG, "Date Hashmap " + mappingDate);
+
+            id.setTextColor(getResources().getColor(color.pastelBlue));
+            toggle.check(R.id.day);
+            Date selectedDate = mappingDate.get(i);
+            ArrayList<Focus> listUpdate = user.getmFocusList(selectedDate);
+            focusAdapter.updateList(listUpdate);
+
+            updateTask(listUpdate);
+        }catch (Exception e){
+            Log.v(TAG, e.getLocalizedMessage());
         }
-        previousButton = id;
-        Log.v(TAG, "Button Pressed " + i + " on " + id);
-        Log.v(TAG, "Date Hashmap " + mappingDate);
-
-        id.setTextColor(getResources().getColor(color.pastelBlue));
-        toggle.check(R.id.day);
-        Date selectedDate = mappingDate.get(i);
-        ArrayList<Focus> listUpdate = user.getmFocusList(selectedDate);
-        focusAdapter.updateList(listUpdate);
-
-        updateTask(listUpdate);
     }
 
-    public void displayWeek() throws ParseException {
+    public void displayWeek() {
+        try {
+            trackSelectValue = null;
 
-        if(previousButton != null){
-            previousButton.setTextColor(getResources().getColor(color.black));
+            if (previousButton != null) {
+                previousButton.setTextColor(getResources().getColor(color.black));
+            }
+
+            Log.v(TAG, "Date Hashmap " + mappingDate);
+
+            toggle.check(R.id.week);
+            Date startDate = mappingDate.get(1);
+            Date endDate = mappingDate.get(7);
+            ArrayList<Focus> listUpdate = user.getmFocusList(startDate, endDate);
+
+            String pattern = "dd MMM";
+            DateFormat df = new SimpleDateFormat(pattern);
+
+            String dateAsStart = df.format(startDate);
+            String dateAsEnd = df.format(endDate);
+
+
+            dateRangeView.setText(dateAsStart + " - " + dateAsEnd);
+
+            updateTask(listUpdate);
+        }catch (Exception e){
+            Log.v(TAG, e.getLocalizedMessage());
         }
-
-        Log.v(TAG, "Date Hashmap " + mappingDate);
-
-        toggle.check(R.id.week);
-        Date startDate = mappingDate.get(1);
-        Date endDate = mappingDate.get(7);
-        ArrayList<Focus> listUpdate = user.getmFocusList(startDate, endDate);
-
-        String pattern = "dd MMM";
-        DateFormat df = new SimpleDateFormat(pattern);
-
-        String dateAsStart = df.format(startDate);
-        String dateAsEnd = df.format(endDate);
-
-
-        dateRangeView.setText(dateAsStart + " - " + dateAsEnd);
-
-        updateTask(listUpdate);
-        focusAdapter.notifyDataSetChanged();
 
 
     }
@@ -525,6 +512,29 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         }
 
         return mapDateDay;
+    }
+
+    @Override
+    public void onDatabaseChanged() {
+        Log.v(TAG, "DATABASE UPDATED TO OTHER SERVER");
+        getLocalFocus();
+        focusAdapter.notifyDataSetChanged();
+    }
+
+    private void getLocalFocus() {
+        try {
+            user.renewFocusList();
+        }catch (Exception e){
+            Log.v(TAG, "Error Exception " +  e.getLocalizedMessage());
+        }
+        if(trackSelectValue == null){
+            //get current week
+            displayWeek();
+        }else{
+            //get current day
+
+            displayResult(trackSelectValue, previousButton);
+        }
     }
 
     /**

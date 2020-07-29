@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -15,12 +16,14 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.background.DatabaseObserver;
 import com.mad.p03.np2020.routine.background.GetAchievementWorker;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.helpers.GetTaskSectionWorker;
@@ -47,7 +50,7 @@ import java.util.List;
  * @author Lee Quan Sheng and Jeyavishnu
  * @since 04-06-2020
  */
-public class User implements Parcelable {
+public class User implements Parcelable, DatabaseObserver {
 
     /**
      * The table name for this model
@@ -351,7 +354,7 @@ public class User implements Parcelable {
         }
 
         for (Focus item : aFocusList) {
-            hours = hours+item.getmTimeTaken();
+            hours = hours + item.getmTimeTaken();
         }
         Log.v(TAG, "Getting total hours: " + hours);
         return hours;
@@ -363,8 +366,13 @@ public class User implements Parcelable {
         return achievementArrayList;
     }
 
+    @Override
+    public void onDatabaseChanged() {
+
+    }
+
     //Used to be return two values for achievement page
-   public class achievementView {
+    public class achievementView {
         private final ArrayList<Achievement> arrayList;
         private final long valueOutput;
         private final int badges;
@@ -409,8 +417,8 @@ public class User implements Parcelable {
                     File file = new File(path);
                     achievement.setPathImg(file);
                     newReturnAchievements.add(achievement);
-                    badges = badges +  1;
-                }else{
+                    badges = badges + 1;
+                } else {
                     newReturnAchievements.add(null);
                 }
             }
@@ -430,9 +438,9 @@ public class User implements Parcelable {
                     File file = new File(path);
                     achievement.setPathImg(file);
                     newReturnAchievements.add(achievement);
-                    badges = badges +  1;
+                    badges = badges + 1;
 
-                }else{
+                } else {
                     newReturnAchievements.add(null);
                 }
             }
@@ -452,9 +460,9 @@ public class User implements Parcelable {
 
                     File file = new File(path);
                     achievement.setPathImg(file);
-                    badges = badges +  1;
+                    badges = badges + 1;
                     newReturnAchievements.add(achievement);
-                }else{
+                } else {
                     newReturnAchievements.add(null);
                 }
             }
@@ -501,6 +509,17 @@ public class User implements Parcelable {
         this.mFocusList.add(focus);
     }
 
+    public void renewFocusList() {
+        try {
+
+            setmFocusList(focusDBHelper.getAllMainData());
+            setaFocusList(focusDBHelper.getAllArchiveData());
+            Log.v(TAG, "List updated to " + mFocusList);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Method to add focus object to Focus List
      *
@@ -542,86 +561,147 @@ public class User implements Parcelable {
      *
      * @param context set context to the current content
      */
-    public void readFocusFirebase(Context context) {
+    public void readFocusFirebase(Context context, DatabaseObserver databaseObserver) {
+
         myRef = FirebaseDatabase.getInstance().getReference().child("archiveFocusData").child(getUID());
         focusDBHelper = new FocusDBHelper(context);
-
+        focusDBHelper.registerDbObserver(databaseObserver);
         //Clear all data since there is a change to the database so it can be updated
-
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                focusDBHelper.deleteAllArchive();
-                try {
-                    clearaFocusList();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    Focus focus = new Focus();
-                    focus.setFbID((String) singleSnapshot.child("fbID").getValue());
-                    focus.setmCompletion((String) singleSnapshot.child("mCompletion").getValue());
-                    focus.setmDateTime((String) singleSnapshot.child("mDateTime").getValue());
-                    focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
-                    focus.setmTask((String) singleSnapshot.child("mTask").getValue());
-                    focus.setmTimeTaken((long) singleSnapshot.child("mTimeTaken").getValue());
-
-                    addaFocusList(focus);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String uid = dataSnapshot.child("fbID").getValue(String.class);
+                Focus focus = getFocus(dataSnapshot);
+                if (!focusDBHelper.rowAexist(uid)) {
+                    Log.d(TAG, "Adding Archive data UID: " + uid);
                     focusDBHelper.addArchiveData(focus);
-                }
-                try {
-                    setaFocusList(focusDBHelper.getAllArchiveData());
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    renewFocusList();
+
+                } else {
+                    if (!focusDBHelper.getOneArchiveFocusData(uid).equals(focus)) {
+                        Log.d(TAG, "Updating Archive data UID: " + uid);
+                        focusDBHelper.updateAfocus(focus);
+                        renewFocusList();
+
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String uid = dataSnapshot.child("fbID").getValue(String.class);
+                Log.d(TAG, "Changed archive for UID: " + uid);
+                Focus focus = getFocus(dataSnapshot);
+                if (!focusDBHelper.rowAexist(uid)) {
+                    focusDBHelper.addArchiveData(focus);
+                    renewFocusList();
+
+                } else {
+                    if (!focusDBHelper.getOneArchiveFocusData(uid).equals(focus)) {
+                        focusDBHelper.updateAfocus(focus);
+                        renewFocusList();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                String uid = dataSnapshot.child("fbID").getValue(String.class);
+                Log.d(TAG, "Removing for archive UID: " + uid);
+                Focus focus = getFocus(dataSnapshot);
+                if (focusDBHelper.rowAexist(uid)) {
+                    focusDBHelper.removeOneAData(focus);
+                    renewFocusList();
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read value.", databaseError.toException());
+
             }
         });
 
         myRef = FirebaseDatabase.getInstance().getReference().child("focusData").child(getUID());
-        focusDBHelper = new FocusDBHelper(context);
 
         //Clear all data since there is a change to the database so it can be updated
-
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                focusDBHelper.deleteAllMain();
-                try {
-                    clearFocusList();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    Focus focus = new Focus();
-                    focus.setFbID((String) singleSnapshot.child("fbID").getValue());
-                    focus.setmCompletion((String) singleSnapshot.child("mCompletion").getValue());
-                    focus.setmDateTime((String) singleSnapshot.child("mDateTime").getValue());
-                    focus.setmDuration((String) singleSnapshot.child("mDuration").getValue());
-                    focus.setmTask((String) singleSnapshot.child("mTask").getValue());
-                    focus.setmTimeTaken((long) singleSnapshot.child("mTimeTaken").getValue());
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String uid = dataSnapshot.child("fbID").getValue(String.class);
+                Focus focus = getFocus(dataSnapshot);
+                if (!focusDBHelper.rowExist(uid)) {
+                    Log.d(TAG, "Adding data for : " + focus);
 
-                    addFocusList(focus);
                     focusDBHelper.addData(focus);
-                }
-                try {
-                    setmFocusList(focusDBHelper.getAllMainData());
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    renewFocusList();
+                } else {
+                    if (!focusDBHelper.getOneFocusData(uid).equals(focus)) {
+                        focusDBHelper.update(focus);
+                        renewFocusList();
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String uid = dataSnapshot.child("fbID").getValue(String.class);
+                Focus focus = getFocus(dataSnapshot);
+                if (!focusDBHelper.rowExist(uid)) {
+                    Log.d(TAG, "Adding for UID that change: " + focus);
+
+                    focusDBHelper.addData(focus);
+                    renewFocusList();
+
+                } else {
+                    if (!focusDBHelper.getOneFocusData(uid).equals(focus)) {
+                        focusDBHelper.update(focus);
+                        renewFocusList();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Focus focus = getFocus(dataSnapshot);
+                Log.d(TAG, "Checking for UID to remove: " + focus.getFbID());
+
+                if (focusDBHelper.rowExist(focus.getFbID())) {
+                    Log.d(TAG, "Row exist: " + focus.getFbID());
+
+                    focusDBHelper.removeOneData(focus);
+                    renewFocusList();
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read value.", databaseError.toException());
+
             }
         });
+    }
 
-
+    private Focus getFocus(@NonNull DataSnapshot dataSnapshot) {
+        Focus focus = new Focus();
+        focus.setFbID((String) dataSnapshot.child("fbID").getValue());
+        focus.setmCompletion((String) dataSnapshot.child("mCompletion").getValue());
+        focus.setmDateTime((String) dataSnapshot.child("mDateTime").getValue());
+        focus.setmDuration((String) dataSnapshot.child("mDuration").getValue());
+        focus.setmTask((String) dataSnapshot.child("mTask").getValue());
+        focus.setmTimeTaken((long) dataSnapshot.child("mTimeTaken").getValue());
+        return focus;
     }
 
 
@@ -662,7 +742,7 @@ public class User implements Parcelable {
         this.habitGroupsList = habitGroupsList;
     }
 
-    public void clearHabitGroupsList(){
+    public void clearHabitGroupsList() {
         setHabitGroupsList(new ArrayList<HabitGroup>());
     }
 
@@ -720,7 +800,7 @@ public class User implements Parcelable {
 
                 }
 
-                if (action){
+                if (action) {
                     setHabitList(habitDBHelper.getAllHabits());
                 }
 

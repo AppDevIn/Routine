@@ -61,6 +61,7 @@ import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.Fragment.AchievementFragment;
+import com.mad.p03.np2020.routine.background.DatabaseObserver;
 import com.mad.p03.np2020.routine.models.Achievement;
 import com.mad.p03.np2020.routine.models.CircularProgressBar;
 import com.mad.p03.np2020.routine.models.Focus;
@@ -87,7 +88,7 @@ import static java.lang.String.valueOf;
  */
 
 
-public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver {
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver, DatabaseObserver {
 
 
     //Fragment Variables
@@ -293,24 +294,17 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void initialization() throws ParseException {
         user.getAchievement();
-
         Intent intent = new Intent(getApplicationContext(), BoundService.class);
         startService(intent);
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
 
         focusDBHelper = new FocusDBHelper(FocusActivity.this);
-        if (focusDBHelper.isTableExists("focus")) {
+        user.readFocusFirebase(this, this);
+        focusDBHelper.registerDbObserver(this);
 
-            user.setmFocusList(focusDBHelper.getAllMainData());
 
-            Log.v(TAG, "Database Exist");
-            focusDBHelper = new FocusDBHelper(FocusActivity.this);
+        Log.v(TAG, "Focus DB Helper Contains " + focusDBHelper.getAllMainData());
 
-        } else {
-            Log.v(TAG, "Database does not exist");
-            focusDBHelper = new FocusDBHelper(FocusActivity.this);
-            user.readFocusFirebase(this);
-        }
 
         tmins = 0;
         tsecs = 0;
@@ -326,21 +320,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         // addObserver of user
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
-        FocusActivity.getInstance().setOnVisibilityChangeListener(new ValueChangeListener() {
-            @Override
-            public void onChanged(Boolean value) {
-                Log.d("isAppInBackground", String.valueOf(value));
+        FocusActivity.getInstance().setOnVisibilityChangeListener(value -> {
+            Log.d("isAppInBackground", String.valueOf(value));
 
-                if (value) {
-                    if (BUTTON_STATE.equals("Fail")) {
-                        if (Build.VERSION.SDK_INT >= 20) {
-                            if (pm.isInteractive()) {
-                                userQuitApp();
-                            }
-                        } else {
-                            if (pm.isScreenOn()) {
-                                userQuitApp();
-                            }
+            if (value) {
+                if (BUTTON_STATE.equals("Fail")) {
+                    if (Build.VERSION.SDK_INT >= 20) {
+                        if (pm.isInteractive()) {
+                            userQuitApp();
+                        }
+                    } else {
+                        if (pm.isScreenOn()) {
+                            userQuitApp();
                         }
                     }
                 }
@@ -350,7 +341,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         //Download image from google storage
         achievementDBHelper = new AchievementDBHelper(FocusActivity.this);
 
-        for (Achievement a : achievementDBHelper.getAchievementData()){
+        for (Achievement a : achievementDBHelper.getAchievementData()) {
             user.addAchievementList(a);
             Log.v(TAG, "add Achievement list(): " + a);
 
@@ -452,8 +443,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private void writeToDatabase(Focus focus) {
         focusDBHelper.addData(focus); //Add to database
-        user.addFocusList(focus); //Adding it to list
-
+        user.renewFocusList();
         writeDataFirebase(focus);
     }
 
@@ -712,6 +702,16 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void onDatabaseChanged() {
+        try {
+            user.setmFocusList(focusDBHelper.getAllMainData());
+            user.setaFocusList(focusDBHelper.getAllArchiveData());
+        }catch (Exception e){
+
+        }
     }
 
     class RptUpdater implements Runnable {
