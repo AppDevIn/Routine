@@ -70,6 +70,10 @@
 
         <activity android:name=".Profile.ProfileActivity" />
 
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+
+
         <receiver
             android:name=".models.AlarmReceiver"
             android:enabled="true"

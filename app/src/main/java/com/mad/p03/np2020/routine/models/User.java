@@ -108,6 +108,7 @@ public class User implements Parcelable, DatabaseObserver {
 
 
     private DatabaseReference myRef;
+    private DatabaseReference userRef;
     private FocusDBHelper focusDBHelper;
     private AchievementDBHelper achievementDBHelper;
 
@@ -745,6 +746,34 @@ public class User implements Parcelable, DatabaseObserver {
     public void clearHabitGroupsList() {
         setHabitGroupsList(new ArrayList<HabitGroup>());
     }
+
+    /*
+    public void readUserFirebase()
+    {
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren())
+                {
+                    User user = new User();
+                    try {
+                        user.setName((String) singleSnapshot.child("Name").getValue());
+                    } catch (FormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        })
+    }
+
+     */
 
     /**
      * This method is read the habits from firebase
