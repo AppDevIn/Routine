@@ -144,15 +144,18 @@ public class SectionDBHelper extends DBHelper{
             cursor.moveToFirst(); //Only getting the first value
 
         //Prepare a section object
-        assert cursor != null;
-        Section section = Section.fromCursor(cursor);
-        Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
 
+        Section section = new Section("test", 0,  0, "testNotNown");
+        if(cursor != null){
+             section = Section.fromCursor(cursor);
+            Log.d(TAG, "getAllSections(): Reading data" + section.toString() );
+        }
 
         //Close the DB connection
         db.close();
 
         return section;
+
 
     }
 

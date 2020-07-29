@@ -4,9 +4,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.models.Section;
+
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -62,18 +68,47 @@ public class UploadSectionWorker extends Worker {
 
 
 
+
         if(update) {
 
-            //Change the name, icon and color
-            mDatabase.child("name").setValue(name);
-            mDatabase.child("iconValue").setValue(image);
-            mDatabase.child("backgroundColor").setValue(color);
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+
+
+                    if(dataSnapshot.exists()) {
+                        //Change the name, icon and color
+                        mDatabase.child("name").setValue(name);
+                        mDatabase.child("iconValue").setValue(image);
+                        mDatabase.child("backgroundColor").setValue(color);
+                    }else {
+
+                        //Setting value using object
+                        mDatabase.setValue(new Section(name, color, image, id, position, UID));
+
+                        //Set the section id in user
+                        userDatabase.child(id).setValue(id);
+
+                        //Set the email for this section in Team
+                        teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
 
 
 
 
         }else{
+
 
             //Setting value using object
             mDatabase.setValue(new Section(name, color, image, id, position, UID));
@@ -83,6 +118,7 @@ public class UploadSectionWorker extends Worker {
 
             //Set the email for this section in Team
             teamDatabase.child(teamDatabase.push().getKey()).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
         }
 
 
