@@ -207,6 +207,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        Log.v(TAG, FirebaseAuth.getInstance().getCurrentUser().getUid());
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
@@ -801,6 +802,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     @Override
     protected void onResume() {
         super.onResume();
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         Log.v(TAG, "On Resume Activity  " + BUTTON_STATE);
         if (eCountDownTimer != null) {
             Log.v(TAG, "On CountDown");

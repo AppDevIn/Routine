@@ -144,10 +144,7 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         mTxtDate = findViewById(R.id.title);
 
 
-        //Get all the section data from SQL
-        mSectionDBHelper = new SectionDBHelper(this);
-        mSectionList = mSectionDBHelper.getAllSections(mUID);
-        Log.d(TAG, "onCreate(): Data received from SQL");
+
 
         //A list of possible colors to be user
         mColors = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.green_yellow), getResources().getColor(R.color.turquoise)};
@@ -159,12 +156,6 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
         //To set to Full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-        if (mSectionList.size() != 0) {
-            listUI();
-        } else {
-            emptyListUI();
-        }
 
 
         //Subscribing to the topic to listen to
@@ -223,6 +214,19 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: GUI is in the Foreground and Interactive");
+
+        //Get all the section data from SQL
+        mSectionDBHelper = new SectionDBHelper(this);
+        mSectionList = mSectionDBHelper.getAllSections(mUID);
+        Log.d(TAG, "onCreate(): Data received from SQL");
+
+        if (mSectionList.size() != 0) {
+            listUI();
+        } else {
+            emptyListUI();
+        }
+
+
 
         //When the add button is clicked make the card view visible
         mImgAdd.setOnClickListener(new View.OnClickListener() {
@@ -466,6 +470,18 @@ public class Home extends AppCompatActivity implements MyDatabaseListener {
             itemTouchHelper.attachToRecyclerView(mGridView);
 
             isListRun = true;
+        }else{
+            // Initialize any value
+            mHomePageAdapter = new HomePageAdapter(mSectionList, this);
+            mGridView.setAdapter(mHomePageAdapter);
+
+
+            //Setting up touchhelper
+            ItemTouchHelper.Callback callback = new MyHomeItemTouchHelper(mHomePageAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            mHomePageAdapter.setTouchHelper(itemTouchHelper);
+            itemTouchHelper.attachToRecyclerView(mGridView);
+
         }
 
     }

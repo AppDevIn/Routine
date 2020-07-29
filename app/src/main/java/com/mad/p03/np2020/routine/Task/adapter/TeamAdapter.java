@@ -22,11 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
 import com.mad.p03.np2020.routine.Task.model.TeamDataListener;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Team;
+import com.mad.p03.np2020.routine.models.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -68,8 +70,9 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
         AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner(holder, mTeam.getEmail().get(position));
         asyncTaskRunner.execute();
 
+
         holder.txtEmail.setText(mTeam.getEmail().get(position));
-        if(!mTeam.getEmail().get(position).equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+        if(!mTeam.getEmail().get(position).equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && mSection.isAdmin() ){
             holder.mConstraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
