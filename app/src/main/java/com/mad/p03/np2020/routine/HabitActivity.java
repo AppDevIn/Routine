@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,17 +39,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Adapter.HabitCheckAdapter;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
+import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.helpers.HabitHorizontalDivider;
-import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 
 import java.util.Calendar;
 
@@ -83,19 +81,19 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     private User user;
 
     //FAB
-    private FloatingActionButton add_habit;
+    private static FloatingActionButton add_habit;
 
-    private ImageView prev_indicator, next_indicator;
+    private static ImageView prev_indicator, next_indicator;
 
-    private TextView indicator_num;
+    private static TextView indicator_num;
     public static TextView remind_text;
-    private ViewSwitcher viewSwitcher;
+    private static ViewSwitcher viewSwitcher;
 
     private Button add_first_habit;
 
-    private RelativeLayout nothing_view;
+    private static RelativeLayout nothing_view;
 
-    private int page_x = 4;
+    private static int page_x = 4;
 
     private GridLayoutManager manager;
 
@@ -118,9 +116,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        // set the HabitDBHelper
-
         viewSwitcher = findViewById(R.id.switcher);
+        habitRecyclerView = findViewById(R.id.habit_recycler_view);
+        prev_indicator = findViewById(R.id.habit_indicator_prev);
+        next_indicator = findViewById(R.id.habit_indicator_next);
+        indicator_num = findViewById(R.id.habit_indicator_number);
+        remind_text = findViewById(R.id.habit_remind_text);
+        add_habit = findViewById(R.id.add_habit);
+        add_first_habit = findViewById(R.id.add_first_habit);
+        habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
+        nothing_view = findViewById(R.id.nothing_view);
 
         double screenInches = getScreenInches();
         Log.d(TAG,"Screen inches : " + screenInches);
@@ -157,11 +162,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             };
         }
 
-        nothing_view = findViewById(R.id.nothing_view);
-
         // set User
         user = new User();
-
 
         // initialise the shared preferences
         initSharedPreferences();
@@ -172,67 +174,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // initialise the notification channel
         initialiseHabitNotificationChannel();
 
-
-        habitRecyclerView = findViewById(R.id.habit_recycler_view);
-
-        prev_indicator = findViewById(R.id.habit_indicator_prev);
-        next_indicator = findViewById(R.id.habit_indicator_next);
-        indicator_num = findViewById(R.id.habit_indicator_number);
-        remind_text = findViewById(R.id.habit_remind_text);
-
-        prev_indicator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String num = indicator_num.getText().toString();
-                if (!num.equals("1")){
-                    int n = Integer.parseInt(num)-1;
-                    indicator_num.setText(String.valueOf(n));
-                    n--;
-                    if (n*page_x+1 <= habitAdapter._habitList.size()){
-                        next_indicator.setVisibility(View.VISIBLE);
-                    }
-
-                    int position = n*page_x;
-                    habitRecyclerView.scrollToPosition(position);
-                }
-
-                if (indicator_num.getText().toString().equals("1")){
-                    prev_indicator.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        next_indicator.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  String num = indicator_num.getText().toString();
-                  int n = Integer.parseInt(num);
-                  int position = (n) * page_x;
-                  int arr_size = habitAdapter._habitList.size();
-                  if (position+1 <= arr_size){
-                      n++;
-                      indicator_num.setText(String.valueOf(n));
-                      if (n*page_x+1 > arr_size) {
-                          next_indicator.setVisibility(View.INVISIBLE);
-                      }
-                      prev_indicator.setVisibility(View.VISIBLE);
-                      // 2--> 1 4-->3
-                      int i = 3;
-                      if (page_x == 2){
-                          i = 1;
-                      }
-                      habitRecyclerView.scrollToPosition(position+i);
-                  }
-              }
-          });
-
-        add_habit = findViewById(R.id.add_habit);
+        prev_indicator.setOnClickListener(this);
+        next_indicator.setOnClickListener(this);
         add_habit.setOnClickListener(this);
-
-        add_first_habit = findViewById(R.id.add_first_habit);
         add_first_habit.setOnClickListener(this);
-
-        habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
 
         habit_dbHandler = new HabitDBHelper(this);
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
@@ -257,34 +202,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         Habit.HabitList habitArrayList = initDummyList(user.getHabitList());
 
-        if(habitArrayList.size() == 0){
-            if (viewSwitcher.getCurrentView() != nothing_view){
-                viewSwitcher.showNext();
-                add_habit.setVisibility(View.VISIBLE);
-                prev_indicator.setVisibility(View.INVISIBLE);
-                next_indicator.setVisibility(View.INVISIBLE);
-                indicator_num.setVisibility(View.INVISIBLE);
-                remind_text.setVisibility(View.INVISIBLE);
-            }
-        }else if (habitArrayList.size() <= page_x){
-            if (viewSwitcher.getCurrentView() == nothing_view){
-                viewSwitcher.showPrevious();
-            }
-            add_habit.setVisibility(View.VISIBLE);
-            remind_text.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.INVISIBLE);
-            next_indicator.setVisibility(View.INVISIBLE);
-            indicator_num.setVisibility(View.INVISIBLE);
-        }else{
-            if (viewSwitcher.getCurrentView() == nothing_view){
-                viewSwitcher.showPrevious();
-            }
-            add_habit.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.INVISIBLE);
-            next_indicator.setVisibility(View.VISIBLE);
-            indicator_num.setVisibility(View.VISIBLE);
-            remind_text.setVisibility(View.VISIBLE);
-        }
+        displayView(habitArrayList);
 
         habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList, user);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
@@ -296,16 +214,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
-
-        int n = checkIncompleteHabits(habitArrayList);
-
-        if (n == 0){
-            remind_text.setText("You have completed all habits today!");
-        }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do");
-        }else{
-            remind_text.setText(String.format("You still have %d habits to do",n));
-        }
 
         indicator_num.setText("1");
     }
@@ -396,6 +304,46 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             case R.id.add_first_habit:
                 Intent activityName = new Intent(HabitActivity.this, HabitAddActivity.class);
                 startActivity(activityName);
+                break;
+
+            case R.id.habit_indicator_prev:
+                String p_num = indicator_num.getText().toString();
+                if (!p_num.equals("1")){
+                    int n = Integer.parseInt(p_num)-1;
+                    indicator_num.setText(String.valueOf(n));
+                    n--;
+                    if (n*page_x+1 <= habitAdapter._habitList.size()){
+                        next_indicator.setVisibility(View.VISIBLE);
+                    }
+
+                    int position = n*page_x;
+                    habitRecyclerView.scrollToPosition(position);
+                }
+
+                if (indicator_num.getText().toString().equals("1")){
+                    prev_indicator.setVisibility(View.INVISIBLE);
+                }
+                break;
+
+            case R.id.habit_indicator_next:
+                String n_num = indicator_num.getText().toString();
+                int n = Integer.parseInt(n_num);
+                int position = (n) * page_x;
+                int arr_size = habitAdapter._habitList.size();
+                if (position+1 <= arr_size){
+                    n++;
+                    indicator_num.setText(String.valueOf(n));
+                    if (n*page_x+1 > arr_size) {
+                        next_indicator.setVisibility(View.INVISIBLE);
+                    }
+                    prev_indicator.setVisibility(View.VISIBLE);
+                    // 2--> 1 4-->3
+                    int i = 3;
+                    if (page_x == 2){
+                        i = 1;
+                    }
+                    habitRecyclerView.scrollToPosition(position+i);
+                }
                 break;
         }
     }
@@ -529,7 +477,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         WorkManager.getInstance(this).enqueue(mywork);
     }
 
-    public int checkIncompleteHabits(Habit.HabitList habitList){
+    public static int checkIncompleteHabits(Habit.HabitList habitList){
         int n = 0;
         for (int i = 0; i < habitList.size(); i++){
             Habit habit = habitList.getItemAt(i);
@@ -636,6 +584,49 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         double y = Math.pow(dm.heightPixels/dm.ydpi,2);
 
         return Math.sqrt(x+y);
+    }
+
+    public static void displayView(Habit.HabitList habitArrayList){
+
+        if(habitArrayList.size() == 0){
+            if (viewSwitcher.getCurrentView() != nothing_view){
+                viewSwitcher.showNext();
+                add_habit.setVisibility(View.VISIBLE);
+                prev_indicator.setVisibility(View.INVISIBLE);
+                next_indicator.setVisibility(View.INVISIBLE);
+                indicator_num.setVisibility(View.INVISIBLE);
+                remind_text.setVisibility(View.INVISIBLE);
+            }
+        }else if (habitArrayList.size() <= page_x){
+            if (viewSwitcher.getCurrentView() == nothing_view){
+                viewSwitcher.showPrevious();
+            }
+            add_habit.setVisibility(View.VISIBLE);
+            remind_text.setVisibility(View.VISIBLE);
+            prev_indicator.setVisibility(View.INVISIBLE);
+            next_indicator.setVisibility(View.INVISIBLE);
+            indicator_num.setVisibility(View.INVISIBLE);
+        }else{
+            if (viewSwitcher.getCurrentView() == nothing_view){
+                viewSwitcher.showPrevious();
+            }
+            add_habit.setVisibility(View.VISIBLE);
+            prev_indicator.setVisibility(View.INVISIBLE);
+            next_indicator.setVisibility(View.VISIBLE);
+            indicator_num.setVisibility(View.VISIBLE);
+            remind_text.setVisibility(View.VISIBLE);
+        }
+
+        int n = checkIncompleteHabits(habitArrayList);
+
+        if (n == 0){
+            remind_text.setText("You have completed all habits today!");
+        }else if (n == 1){
+            remind_text.setText("You still have 1 habit to do");
+        }else{
+            remind_text.setText(String.format("You still have %d habits to do",n));
+        }
+
     }
 
 }

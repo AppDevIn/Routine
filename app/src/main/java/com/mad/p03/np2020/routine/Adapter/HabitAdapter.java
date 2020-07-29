@@ -21,16 +21,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.HabitActivity;
-import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
-import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
+import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 
-import static com.mad.p03.np2020.routine.HabitActivity.remind_text;
+import static com.mad.p03.np2020.routine.HabitActivity.displayView;
 
 /**
  *
@@ -48,7 +48,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     final static String TAG = "HabitAdapter";
     private Context c;
     private HabitItemClickListener mListener;
-    private static View view;
+    private View view;
     private HabitDBHelper dbHandler;
     private User user;
 
@@ -277,15 +277,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         this.notifyDataSetChanged();
         habitCheckAdapter.notifyDataSetChanged();
 
-        int n = checkIncompleteHabits(_habitList);
-
-        if (n == 0){
-            remind_text.setText("You have completed all habits today!");
-        }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do");
-        }else{
-            remind_text.setText(String.format("You still have %d habits to do",n));
-        }
+        displayView(habitList);
         Log.v(TAG, "Data is changed from other server");
     }
 
@@ -349,15 +341,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         this.notifyDataSetChanged();
         habitCheckAdapter.notifyDataSetChanged();
 
-        int n = checkIncompleteHabits(_habitList);
-
-        if (n == 0){
-            remind_text.setText("You have completed all habits today!");
-        }else if (n == 1){
-            remind_text.setText("You still have 1 habit to do");
-        }else{
-            remind_text.setText(String.format("You still have %d habits to do",n));
-        }
+        displayView(habitList);
         Log.v(TAG, "Data is changed from other server");
     }
 
