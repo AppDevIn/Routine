@@ -32,6 +32,7 @@ public class ReportDialog extends AppCompatDialogFragment {
     String problemText;
     String UID;
     DatabaseReference mDatabase;
+    DatabaseReference feedbackRef;
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
 
@@ -58,7 +59,11 @@ public class ReportDialog extends AppCompatDialogFragment {
 
                         problemText = problem.getText().toString();
 
-                        mDatabase.child("feedback").child(UID).setValue(problemText);
+                        feedbackRef = mDatabase.child("feedback").child(UID).push();
+
+                        feedbackRef.setValue(problemText);
+
+                        //mDatabase.child("feedback").child(UID).setValue(problemText);
 
                         Toast toast = Toast.makeText(getContext(), "Thank you for your feedback!", Toast.LENGTH_LONG);
                         toast.getView().setBackgroundColor(Color.GRAY);
