@@ -104,9 +104,9 @@ public class UserDBHelper extends DBHelper {
          return id;
     }
 
-    public void updateUser(String UID, User updateUser)
+    public void updateUserName(String UID, User updateUser)
     {
-        Log.v(TAG, "Updating database");
+        Log.v(TAG, "Updating database with new name");
 
         //Add values into the database
         // Gets the data repository in write mode

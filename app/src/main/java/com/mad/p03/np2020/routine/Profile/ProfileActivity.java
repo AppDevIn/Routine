@@ -286,7 +286,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         mDatabase.child("users").child(UID).child("Name").setValue(newUsername);
 
-        //userDBHelper.updateUser(UID, mUser);
+        userDBHelper.updateUserName(UID, mUser);
         username.setText(newUsername);
     }
 
