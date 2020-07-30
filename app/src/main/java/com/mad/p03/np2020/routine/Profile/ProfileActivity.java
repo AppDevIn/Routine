@@ -303,7 +303,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         {
                             MakeToast("Password reset email sent!");
 
-                            logout();
+                            //logout();
                         }
                         else
                         {
