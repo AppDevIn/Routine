@@ -206,6 +206,8 @@ public class GetTaskSectionWorker extends Worker {
                 String id = dataSnapshot.child("taskID").getValue(String.class);
                 String sectionID = dataSnapshot.child("sectionID").getValue(String.class);
 
+
+
                 //Check if the task exist in the database
                 if(!mTaskDBHelper.hasID(id) && mSectionDBHelper.hasID(sectionID)) {
                     Task task = Task.fromDataSnapShot(dataSnapshot);
@@ -364,7 +366,7 @@ public class GetTaskSectionWorker extends Worker {
                         //Get all the checks under this task
                         addCheck(task.getTaskID());
                     }
-                    else if (mSectionDBHelper.hasID(sectionID)){ //If doesn't exist it means it needs to be updated
+                    else if (mSectionDBHelper.hasID(sectionID) && mTaskDBHelper.hasID(id)){ //If doesn't exist it means it needs to be updated
                         Task task = Task.fromDataSnapShot(snapshot);
                         Task taskDataBase = mTaskDBHelper.getTask(id);
                         if(!task.equals(taskDataBase)){
@@ -440,10 +442,72 @@ public class GetTaskSectionWorker extends Worker {
                     if (!dataSnapshot.child(sectionList.get(i).getID()).exists()) {
                         Log.d(TAG, "onDataChange: Deleting section " + sectionList.get(i).getName());
                         mSectionDBHelper.delete(sectionList.get(i).getID());
+                    }else{
+                        CheckTaskToDelete(sectionList.get(i).getID());
                     }
                 }
 
 
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void CheckTaskToDelete(String sectionID){
+
+        DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("Task");
+        List<Task> taskList = mTaskDBHelper.getAllTask(sectionID);
+
+        taskRef.orderByChild("sectionID").equalTo(sectionID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                //Check which has a child
+                for (int i = 0; i < taskList.size(); i++) {
+                    //Remove the ones with the child
+
+                    if (!dataSnapshot.child(taskList.get(i).getTaskID()).exists()) {
+                        Log.d(TAG, "onDataChange: Deleting task " + taskList.get(i).getName());
+                        mTaskDBHelper.delete(taskList.get(i).getTaskID());
+                    }else{
+                        CheckCheckToDelete(taskList.get(i).getTaskID());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void CheckCheckToDelete(String taskID){
+
+        DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("Check");
+        List<Check> checkList = mCheckDBHelper.getAllCheck(taskID);
+
+        checkRef.orderByChild("taskID").equalTo(taskID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //Check which has a child
+                for (int i = 0; i < checkList.size(); i++) {
+                    //Remove the ones with the child
+
+                    if (!dataSnapshot.child(checkList.get(i).getID()).exists()) {
+                        Log.d(TAG, "onDataChange: Deleting task " + checkList.get(i).getName());
+                        mCheckDBHelper.delete(checkList.get(i).getID());
+                    }
+                }
 
             }
 
