@@ -91,6 +91,7 @@
     <string name="changePassword">Change Password</string>
     <string name="reportAProblem">Report A Problem</string>
     <string name="rateOurApp">Rate Our App</string>
+    <string name="tempUsername">Username</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">1560805060745865</string>
