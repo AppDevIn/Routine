@@ -279,6 +279,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         int x = 0;
         final long[] initial_timestamp ={habitRepetitionArrayList.get(habitRepetitionArrayList.size()-1).getTimestamp()};
+        Log.d(TAG, "displayWeekBarChart: initial_timestamp"+initial_timestamp);
         String range = String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0]));
         range_indicator.setText(range);
 
@@ -822,6 +823,7 @@ public class HabitViewActivity extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(ms);
+        Log.d(TAG, "getStartOfTheWeek: "+ms);
         cal.set(Calendar.DAY_OF_WEEK, 1);
         Date d = cal.getTime();
         String date = dateFormat.format(d);
@@ -832,6 +834,7 @@ public class HabitViewActivity extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(ms);
+        Log.d(TAG, "getEndOfTheWeek: "+ms);
         cal.set(Calendar.DAY_OF_WEEK, 7);
         Date d = cal.getTime();
         String date = dateFormat.format(d);
