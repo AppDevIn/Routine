@@ -135,13 +135,17 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
 
         //Have a swipe action
-        view.setOnTouchListener(new View.OnTouchListener() {
+
+        View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 gestureDetectorCompat.onTouchEvent(motionEvent);
                 return true;
             }
-        });
+        };
+
+
+        view.setOnTouchListener(mOnTouchListener);
 
         KeyboardVisibilityEvent.setEventListener(
                 getActivity(),
@@ -176,6 +180,8 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
 
     }
+
+
 
     /**
      *
