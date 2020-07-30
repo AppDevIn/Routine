@@ -12,6 +12,8 @@ import android.nfc.FormatException;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,6 +28,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.DAL.DBHelper;
 import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
@@ -41,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.LoginActivity;
+import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.models.Habit;
@@ -79,6 +83,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     DatabaseReference userRef;
     private CircleImageView profileImageView;
     private Uri imageUri;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -154,6 +159,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        bottomNavigationView = findViewById(R.id.bottomNavViewBar);
+        bottomNavInit(bottomNavigationView);
+    }
 
     @Override
     public void onClick(View v) {
@@ -449,5 +461,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+    }
+
+    /**
+     * To set the bottom nav to listen to item changes
+     * and chose the item that have been selected
+     *
+     * @param bottomNavigationView The botomNav that needs to be set to listen
+     */
+    private void bottomNavInit(BottomNavigationView bottomNavigationView) {
+
+        //To have the highlight
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(4);
+        menuItem.setChecked(true);
+
+        //To set setOnNavigationItemSelectedListener
+        NavBarHelper navBarHelper = new NavBarHelper(this);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
     }
 }
