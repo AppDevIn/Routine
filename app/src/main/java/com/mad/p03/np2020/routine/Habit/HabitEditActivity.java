@@ -45,6 +45,7 @@ import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static java.lang.String.format;
 
@@ -688,7 +689,7 @@ public class HabitEditActivity extends AppCompatActivity {
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         int type = AlarmManager.RTC_WAKEUP;
-        Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance(Locale.ENGLISH);
         c.set(Calendar.MINUTE,minutes);
         c.set(Calendar.HOUR_OF_DAY,hours);
         c.set(Calendar.SECOND,0);

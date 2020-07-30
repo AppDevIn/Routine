@@ -21,6 +21,7 @@ import com.mad.p03.np2020.routine.models.HabitRepetition;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  *
@@ -140,7 +141,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
     }
 
     public long getTodayTimestamp(){
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         int year  = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int date  = cal.get(Calendar.DATE);

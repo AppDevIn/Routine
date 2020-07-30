@@ -46,6 +46,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static java.lang.String.format;
 
@@ -687,7 +688,7 @@ public class HabitAddActivity extends AppCompatActivity {
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         int type = AlarmManager.RTC_WAKEUP;
-        Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance(Locale.ENGLISH);
         c.set(Calendar.MINUTE,reminder.getMinutes());
         c.set(Calendar.HOUR_OF_DAY,reminder.getHours());
         c.set(Calendar.SECOND,0);
