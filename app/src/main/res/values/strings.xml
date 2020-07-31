@@ -152,6 +152,8 @@
     <string name="storage_permission_needed">Storage Permission Needed</string>
     <string name="storage_permission_description">In order for the resource to load, we will need storage permission</string>
     <string name="send_again">Send Again</string>
+    <string name="reset_password"><u>Reset Password</u></string>
+    <string name="send">Send</string>
 
 
 </resources>

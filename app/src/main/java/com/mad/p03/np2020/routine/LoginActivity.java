@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Home.Home;
+import com.mad.p03.np2020.routine.Profile.ProfileActivity;
 import com.mad.p03.np2020.routine.Register.RegisterActivity;
 import com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser;
 import com.mad.p03.np2020.routine.models.User;
@@ -118,6 +120,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         checkBox = findViewById(R.id.rememberMe);
         errLogin = findViewById(R.id.errorEmail);
         errPwd = findViewById(R.id.errorPwd);
+        TextView textView = findViewById(R.id.txtReset);
 
 
         et_Email.setOnClickListener(this);
@@ -136,6 +139,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         errLogin.setVisibility(View.INVISIBLE);
         errPwd.setVisibility(View.INVISIBLE);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCustomPasswordDialog();
+            }
+        });
     }
 
     public void onStart() {
@@ -461,5 +471,67 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+    }
+
+    private void changePassword(String email)
+    {
+        //PasswordDialog passwordDialog = new PasswordDialog();
+        //passwordDialog.show(getSupportFragmentManager(), "Change Password Dialog");
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            MakeToast("Password reset email sent!");
+
+                            //logout();
+                        }
+                    }
+                });
+    }
+
+    private void showCustomPasswordDialog(){
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.login_reset_password_dialog, null, false);
+
+        Button mBtnsend = dialogView.findViewById(R.id.btnSend);
+        EditText edEmail = dialogView.findViewById(R.id.email);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+
+        RegisterFirebaseUser registerFirebaseUser = new RegisterFirebaseUser(null,this, null, null);
+
+        //When the add button is clicked
+        mBtnsend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick(): Add button is pressed ");
+                changePassword(edEmail.getText().toString().trim());
+                alertDialog.cancel();
+            }
+        });
+
+
+    }
+
+    public void MakeToast(String info)
+    {
+        Toast toast = Toast.makeText(LoginActivity.this, info, Toast.LENGTH_LONG);
+        toast.getView().setBackgroundColor(Color.GRAY);
+        TextView text = (TextView) toast.getView().findViewById(android.R.id.message);
+        text.setTextColor(Color.WHITE);
+        toast.show();
     }
 }
