@@ -226,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
      * firebase and sql and move the home layout
      */
     @Override
-    public void OnSignUpSuccess() {
+    public void OnSignUpSuccess(RegisterFirebaseUser user) {
         Log.d(TAG, mUser.getEmailAdd() + " is successfully created");
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -245,7 +245,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         mUserDBHelper.insertUser(mUser);
 
         //Send verification
-        sendEmailVerification(auth);
+        user.sendEmailVerification(auth, this);
 
         //Move to another activity
         moveToHome();

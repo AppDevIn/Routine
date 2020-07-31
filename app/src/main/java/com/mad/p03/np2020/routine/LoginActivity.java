@@ -1,8 +1,10 @@
 package com.mad.p03.np2020.routine;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -32,9 +35,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Register.RegisterActivity;
+import com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -249,8 +254,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser fbuser = mAuth.getCurrentUser();
-
-                            if(fbuser.isEmailVerified()) {
+                            if(fbuser.isEmailVerified() ) {
                                 mAuth.getAccessToken(true);
 
                                 // Sign in success, update UI with the signed-in user's information
@@ -296,7 +300,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }else{
                                 txtError.setVisibility(View.VISIBLE);
                                 txtError.setText("Email has not been verified");
-
+                                showCustomVerification();
                                 if (checkBox.isChecked()) {
                                     saveData();
                                 }
@@ -307,6 +311,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             txtError.setVisibility(View.VISIBLE);
                             txtError.setText("Invalid Email or Password");
+
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
                                 et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
                                 et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
@@ -408,5 +413,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert mgr != null;
         mgr.showSoftInput(taskInput, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void showCustomVerification() {
+
+        Button mBtnOk, mBtnAgain;
+
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.login_email_verfication_dialog, null, false);
+
+        mBtnOk = dialogView.findViewById(R.id.btnOk);
+        mBtnAgain = dialogView.findViewById(R.id.btnAgain);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+
+        RegisterFirebaseUser registerFirebaseUser = new RegisterFirebaseUser(null,this, null, null);
+
+        //When the add button is clicked
+        mBtnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick(): Add button is pressed ");
+
+                alertDialog.cancel();
+            }
+        });
+
+        mBtnAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerFirebaseUser.sendEmailVerification(FirebaseAuth.getInstance(), LoginActivity.this);
+                alertDialog.cancel();
+
+            }
+        });
+
     }
 }
