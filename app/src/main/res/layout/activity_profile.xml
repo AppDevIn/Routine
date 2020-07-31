@@ -123,7 +123,7 @@
 
     <Button
         android:id="@+id/changeNameButton"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
@@ -136,7 +136,7 @@
 
     <Button
         android:id="@+id/changePasswordButton"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
@@ -178,7 +178,7 @@
 
     <Button
         android:id="@+id/reportProblemButton"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
@@ -191,7 +191,7 @@
 
     <Button
         android:id="@+id/rateAppButton"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
@@ -204,7 +204,7 @@
 
     <Button
         android:id="@+id/logoutButton"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="50dp"
         android:background="@color/white"
         android:fontFamily="@font/montserrat_regular"
