@@ -38,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Home.Home;
 import com.mad.p03.np2020.routine.Register.RegisterActivity;
 import com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser;
+import com.mad.p03.np2020.routine.models.InternetStatus;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
