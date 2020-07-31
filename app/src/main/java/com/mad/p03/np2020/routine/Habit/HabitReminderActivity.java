@@ -21,6 +21,7 @@ import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitReminder;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import static java.lang.String.format;
 
@@ -111,7 +112,7 @@ public class HabitReminderActivity extends AppCompatActivity {
 
         // to determine what should be displayed on timePicker and time indicate field
         if (reminder != null){ // if the flag is true which indicates active reminder
-            Calendar c = Calendar.getInstance();
+            Calendar c = Calendar.getInstance(Locale.ENGLISH);
             // display time and timePicker based on the chosen hours and minutes
             c.set(Calendar.HOUR_OF_DAY, reminder.getHours());
             c.set(Calendar.MINUTE, reminder.getMinutes());

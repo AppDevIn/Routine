@@ -316,7 +316,7 @@ public class HabitViewActivity extends AppCompatActivity {
         }
 
         barEntries.add(first_barEntries);
-        
+
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
         final int[] eIndex = {barEntries.size() - 1};
@@ -805,7 +805,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getNextWeekMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         calendar.add(Calendar.WEEK_OF_YEAR,1);
 
@@ -813,7 +813,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getLastWeekMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         calendar.add(Calendar.WEEK_OF_YEAR,-1);
 
@@ -842,7 +842,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public int getDayOfWeekFromMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -855,7 +855,7 @@ public class HabitViewActivity extends AppCompatActivity {
         long ms = 0;
         try {
             date = dateFormat.parse(time);
-            Calendar c = Calendar.getInstance();
+            Calendar c = Calendar.getInstance(Locale.ENGLISH);
             c.setTime(date);
             int year  = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
@@ -876,7 +876,7 @@ public class HabitViewActivity extends AppCompatActivity {
         try {
             date = dateFormat.parse(time);
             Log.d(TAG, "getMonth: "+date);
-            Calendar c = Calendar.getInstance();
+            Calendar c = Calendar.getInstance(Locale.ENGLISH);
             c.setTime(date);
             int year  = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
@@ -892,7 +892,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public int getMonthFromMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
 
 
@@ -900,7 +900,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getNextMonthFromMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
 
         calendar.add(Calendar.MONTH, 1);
@@ -923,7 +923,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getTodayTimestamp(){
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         int year  = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int date  = cal.get(Calendar.DATE);
@@ -953,7 +953,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public String getStartOfTheMonth(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date d = cal.getTime();
@@ -963,7 +963,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public String getEndOfTheMonth(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         Date d = cal.getTime();
@@ -972,14 +972,14 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public int getMaxDayOfTheMonth(long ms){
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
 
         return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
     public int getMonthString(long ms){
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
 
         return cal.get(Calendar.MONTH)+1;
@@ -996,7 +996,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public int getDayOfMonthFromMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
@@ -1004,7 +1004,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getNextMonthMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         calendar.add(Calendar.MONTH,1);
 
@@ -1012,7 +1012,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getLastMonthMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         calendar.add(Calendar.MONTH,-1);
 
@@ -1021,7 +1021,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public String getStartOfTheYear(long ms){
         DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
         cal.set(Calendar.DAY_OF_YEAR, 1);
         Date d = cal.getTime();
@@ -1031,7 +1031,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public String getEndOfTheYear(long ms){
         DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
         cal.set(Calendar.MONTH,11);
         Date d = cal.getTime();
@@ -1061,7 +1061,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public int getMonthOfYearFromMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         int day = calendar.get(Calendar.MONTH);
 
@@ -1069,7 +1069,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getNextYearMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         calendar.add(Calendar.YEAR,1);
 
@@ -1077,7 +1077,7 @@ public class HabitViewActivity extends AppCompatActivity {
     }
 
     public long getLastYearMs(long ms){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
         calendar.add(Calendar.YEAR,-1);
 

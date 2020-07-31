@@ -54,6 +54,7 @@ import com.mad.p03.np2020.routine.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  *
@@ -590,7 +591,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         int type = AlarmManager.RTC_WAKEUP;
 
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         int year  = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int date  = cal.get(Calendar.DATE);
