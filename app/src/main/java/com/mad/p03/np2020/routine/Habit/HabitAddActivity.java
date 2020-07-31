@@ -329,7 +329,7 @@ public class HabitAddActivity extends AppCompatActivity {
                         hg = habit.getGroup();
                     }
                 }
-
+                buttonOk.setEnabled(false);
                 // create a habit object
                 Habit habit = new Habit(name, occur, period[0], dateFormat.format(date),color[0],hr,hg);
 
