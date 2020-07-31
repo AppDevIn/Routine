@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class HabitViewActivity extends AppCompatActivity {
 
@@ -279,6 +280,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         int x = 0;
         final long[] initial_timestamp ={habitRepetitionArrayList.get(habitRepetitionArrayList.size()-1).getTimestamp()};
+        Log.d(TAG, "displayWeekBarChart: initial_timestamp"+initial_timestamp[0]);
         String range = String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0]));
         range_indicator.setText(range);
 
@@ -820,7 +822,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public String getStartOfTheWeek(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
         cal.set(Calendar.DAY_OF_WEEK, 1);
         Date d = cal.getTime();
@@ -830,8 +832,9 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public String getEndOfTheWeek(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
+        Log.d(TAG, "getEndOfTheWeek: "+ms);
         cal.set(Calendar.DAY_OF_WEEK, 7);
         Date d = cal.getTime();
         String date = dateFormat.format(d);
