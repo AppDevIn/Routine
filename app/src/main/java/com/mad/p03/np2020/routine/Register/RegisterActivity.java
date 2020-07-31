@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Register;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,9 +25,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.p03.np2020.routine.LoginActivity;
 import com.mad.p03.np2020.routine.models.User;
 
 import com.mad.p03.np2020.routine.Home.Home;
@@ -237,6 +244,9 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         UserDBHelper mUserDBHelper = new UserDBHelper(RegisterActivity.this);
         mUserDBHelper.insertUser(mUser);
 
+        //Send verification
+        sendEmailVerification(auth);
+
         //Move to another activity
         moveToHome();
     }
@@ -384,8 +394,24 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
      * Move to the home page
      */
     private void moveToHome(){
-        Intent homePage = new Intent(RegisterActivity.this, Home.class);
+        Intent homePage = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(homePage);
+    }
+
+    private void sendEmailVerification(FirebaseAuth auth){
+        String email = auth.getCurrentUser().getEmail();
+        //Send email verification
+        auth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(RegisterActivity.this, "Verification email sent to " + email , Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                sendEmailVerification(auth);
+            }
+        });
     }
 
 

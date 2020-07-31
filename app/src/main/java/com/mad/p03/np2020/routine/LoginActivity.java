@@ -248,54 +248,65 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            mAuth.getAccessToken(true);
-
-                            // Sign in success, update UI with the signed-in user's information
-                            if (checkBox.isChecked()) {
-                                saveData();
-                            }
-
-                            Log.d(TAG, "signInWithEmail:success");
-
-                            //Getting current user details to pass on to the next activities
                             FirebaseUser fbuser = mAuth.getCurrentUser();
-                            String UID = fbuser.getUid();
-                            myRef = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
 
-                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(fbuser.isEmailVerified()) {
+                                mAuth.getAccessToken(true);
 
-                                    String pwd = et_Password.getText().toString();
-                                    String name = dataSnapshot.child("Name").getValue(String.class);
-                                    String email = dataSnapshot.child("Email").getValue(String.class);
-
-                                    //Storing user details into object to put into intent
-                                    User user = new User(UID, name, pwd, email);
-                                    userDatabase.insertUser(user);
-
-                                    //Get All User Routine Data
-                                    user.readHabitRepetition_Firebase(context);
-                                    user.readHabitGroup_Firebase(context);
-                                    user.getAllSectionAndTask();
-                                    user.readHabit_Firebase(context, false);
-
-                                    Intent intent = new Intent(LoginActivity.this, Home.class);
-                                    intent.putExtra("user", user);
-                                    startActivity(intent);
-                                    finish();
+                                // Sign in success, update UI with the signed-in user's information
+                                if (checkBox.isChecked()) {
+                                    saveData();
                                 }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.d(TAG, "signInWithEmail:success");
 
+                                //Getting current user details to pass on to the next activities
+                                String UID = fbuser.getUid();
+                                myRef = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
+
+                                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        String pwd = et_Password.getText().toString();
+                                        String name = dataSnapshot.child("Name").getValue(String.class);
+                                        String email = dataSnapshot.child("Email").getValue(String.class);
+
+                                        //Storing user details into object to put into intent
+                                        User user = new User(UID, name, pwd, email);
+                                        userDatabase.insertUser(user);
+
+                                        //Get All User Routine Data
+                                        user.readHabitRepetition_Firebase(context);
+                                        user.readHabitGroup_Firebase(context);
+                                        user.getAllSectionAndTask();
+                                        user.readHabit_Firebase(context, false);
+
+                                        Intent intent = new Intent(LoginActivity.this, Home.class);
+                                        intent.putExtra("user", user);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }else{
+                                txtError.setVisibility(View.VISIBLE);
+                                txtError.setText("Email has not been verified");
+
+                                if (checkBox.isChecked()) {
+                                    saveData();
                                 }
-                            });
+                            }
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             txtError.setVisibility(View.VISIBLE);
+                            txtError.setText("Invalid Email or Password");
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
                                 et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
                                 et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
@@ -321,8 +332,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void CheckLoggedIn() throws ParseException {
         mAuth = FirebaseAuth.getInstance();
 
-
-        if ((mAuth.getCurrentUser() != null) && new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null ) {
+        FirebaseUser u = mAuth.getCurrentUser();
+        if ((mAuth.getCurrentUser() != null) && new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null && u.isEmailVerified()) {
             User user;
             user = userDatabase.getUser(mAuth.getCurrentUser().getUid());
             Intent intent = new Intent(LoginActivity.this, Home.class);
