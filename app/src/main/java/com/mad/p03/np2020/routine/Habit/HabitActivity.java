@@ -636,7 +636,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 }else{
                     next_indicator.setVisibility(View.INVISIBLE);
                 }
-                prev_indicator.setVisibility(View.INVISIBLE);
+                prev_indicator.setVisibility(View.VISIBLE);
             }
         }
 
