@@ -266,6 +266,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void firebaseAuthWithGoogle(String email, String password, final Context context) {
 
 
+        btn_login.setEnabled(false);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -318,6 +319,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }else{
                                 txtError.setVisibility(View.VISIBLE);
                                 txtError.setText("Email has not been verified");
+                                btn_login.setEnabled(true);
                                 showCustomVerification();
                                 if (checkBox.isChecked()) {
                                     saveData();
@@ -332,6 +334,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             txtError.setVisibility(View.VISIBLE);
                             txtError.setText("Invalid Email or Password");
+                            btn_login.setEnabled(true);
 
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
                                 et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));

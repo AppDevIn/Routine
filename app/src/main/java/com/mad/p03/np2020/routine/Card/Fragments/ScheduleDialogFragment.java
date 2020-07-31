@@ -457,8 +457,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ChannelName = "CardNotification";
             ChannelImportance = NotificationManager.IMPORTANCE_HIGH; // set as high importance
+            createNotificationChannel(ChannelID, ChannelName, ChannelDescription, ChannelImportance);
         }
-        createNotificationChannel(ChannelID, ChannelName, ChannelDescription, ChannelImportance);
     }
 
     @TargetApi(Build.VERSION_CODES.O)
