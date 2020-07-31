@@ -223,35 +223,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
 
-        if(habitArrayList.size() == 0){
-            if (viewSwitcher.getCurrentView() != nothing_view){
-                viewSwitcher.showNext();
-                add_habit.setVisibility(View.VISIBLE);
-                prev_indicator.setVisibility(View.INVISIBLE);
-                next_indicator.setVisibility(View.INVISIBLE);
-                indicator_num.setVisibility(View.INVISIBLE);
-                remind_text.setVisibility(View.INVISIBLE);
-            }
-        }else if (habitArrayList.size() <= page_x){
-            if (viewSwitcher.getCurrentView() == nothing_view){
-                viewSwitcher.showPrevious();
-            }
-            add_habit.setVisibility(View.VISIBLE);
-            remind_text.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.INVISIBLE);
-            next_indicator.setVisibility(View.INVISIBLE);
-            indicator_num.setVisibility(View.INVISIBLE);
-        }else{
-            if (viewSwitcher.getCurrentView() == nothing_view){
-                viewSwitcher.showPrevious();
-            }
-            add_habit.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.INVISIBLE);
-            next_indicator.setVisibility(View.VISIBLE);
-            indicator_num.setVisibility(View.VISIBLE);
-            remind_text.setVisibility(View.VISIBLE);
-        }
-
         indicator_num.setText("1");
     }
 
@@ -625,6 +596,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     public static void displayView(Habit.HabitList habitArrayList){
 
+        int n = checkIncompleteHabits(habitArrayList);
+
         if(habitArrayList.size() == 0){
             if (viewSwitcher.getCurrentView() != nothing_view){
                 viewSwitcher.showNext();
@@ -633,6 +606,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 next_indicator.setVisibility(View.INVISIBLE);
                 indicator_num.setVisibility(View.INVISIBLE);
                 remind_text.setVisibility(View.INVISIBLE);
+                indicator_num.setText("1");
             }
         }else if (habitArrayList.size() <= page_x){
             if (viewSwitcher.getCurrentView() == nothing_view){
@@ -643,6 +617,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             prev_indicator.setVisibility(View.INVISIBLE);
             next_indicator.setVisibility(View.INVISIBLE);
             indicator_num.setVisibility(View.INVISIBLE);
+            indicator_num.setText("1");
         }else{
             if (viewSwitcher.getCurrentView() == nothing_view){
                 viewSwitcher.showPrevious();
@@ -650,9 +625,21 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             add_habit.setVisibility(View.VISIBLE);
             indicator_num.setVisibility(View.VISIBLE);
             remind_text.setVisibility(View.VISIBLE);
+
+            int num = Integer.parseInt(indicator_num.getText().toString());
+            if (num == 1){
+                prev_indicator.setVisibility(View.INVISIBLE);
+                next_indicator.setVisibility(View.VISIBLE);
+            }else{
+                if ((num+1)*page_x <= habitArrayList.size()){
+                   next_indicator.setVisibility(View.VISIBLE);
+                }else{
+                    next_indicator.setVisibility(View.INVISIBLE);
+                }
+                prev_indicator.setVisibility(View.INVISIBLE);
+            }
         }
 
-        int n = checkIncompleteHabits(habitArrayList);
 
         if (n == 0){
             remind_text.setText("You have completed all habits today!");
