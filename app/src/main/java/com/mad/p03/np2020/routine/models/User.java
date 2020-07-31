@@ -1146,7 +1146,7 @@ public class User implements Parcelable, FocusDBObserver {
 
                 //Error message for password when password doesn't
                 //have digit, lower and upper case, special character and min 8 letter
-                throw new FormatException("Needs to be alphanumeric, special\n character and the length of 8");
+                throw new FormatException("Needs to be alphanumeric, special character, length of 8, one uppercase and lowercase");
             }
         } else {
             //Error message for empty text

@@ -175,8 +175,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                actionId == EditorInfo.IME_ACTION_DONE ||
-                keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
+                actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
             switch (textView.getId()){
                 case R.id.edName:nameCheck(textView); break;
@@ -268,11 +267,10 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
 
         try {
             mUser.setEmailAdd(textView.getText().toString().trim());
-            mTxtErrorEmail.setVisibility(View.INVISIBLE);
             return true;
         } catch (FormatException e) {
-            mTxtErrorEmail.setVisibility(View.VISIBLE);
-            mTxtErrorEmail.setText(e.getLocalizedMessage());
+
+            textView.setError(e.getLocalizedMessage());
             e.printStackTrace();
             Log.e(TAG, "emailCheck: " + e.getLocalizedMessage());
             return false;
@@ -291,16 +289,15 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     private boolean nameCheck(TextView textView){
 
         if(textView.getText().equals("")){
-            mTxtErrorName.setVisibility(View.VISIBLE);
+
+            textView.setError("Name is empty");
         }
 
         try {
             mUser.setName(textView.getText().toString().trim());
-            mTxtErrorName.setVisibility(View.INVISIBLE);
             return true;
         } catch (FormatException e) {
-            mTxtErrorName.setVisibility(View.VISIBLE);
-            mTxtErrorName.setText(e.getLocalizedMessage());
+            textView.setError(e.getLocalizedMessage());
             e.printStackTrace();
             Log.e(TAG, "nameCheck: " + e.getLocalizedMessage());
             return false;
@@ -319,11 +316,11 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
 
         try {
             mUser.setPassword(textView.getText().toString().trim());
-            mTxtErrorPassword.setVisibility(View.INVISIBLE);
+
             return true;
         } catch (FormatException e) {
-            mTxtErrorPassword.setVisibility(View.VISIBLE);
-            mTxtErrorPassword.setText(e.getLocalizedMessage());
+
+            textView.setError(e.getLocalizedMessage());
             e.printStackTrace();
             Log.e(TAG, "passwordCheck: " + e.getLocalizedMessage());
             return false;
