@@ -17,6 +17,7 @@ public class TeamViewHolder extends RecyclerView.ViewHolder {
     public TextView txtName;
     public LinearLayout mConstraintLayout;
     public ImageView mImgPP;
+    public View mView;
     public TeamViewHolder(@NonNull View itemView) {
         super(itemView);
 
@@ -24,6 +25,8 @@ public class TeamViewHolder extends RecyclerView.ViewHolder {
         txtName = itemView.findViewById(R.id.name);
         mConstraintLayout = itemView.findViewById(R.id.cs_holder);
         mImgPP = itemView.findViewById(R.id.imgPp);
+        mView = itemView;
+
 
     }
 }

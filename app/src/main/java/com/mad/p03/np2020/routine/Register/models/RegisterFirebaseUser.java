@@ -3,14 +3,18 @@ package com.mad.p03.np2020.routine.Register.models;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.p03.np2020.routine.Register.RegisterActivity;
 import com.mad.p03.np2020.routine.Register.models.OnFirebaseAuth;
 
 import androidx.annotation.NonNull;
@@ -64,7 +68,7 @@ public class RegisterFirebaseUser extends AsyncTask<Void, Void, Void> {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //Check if is successful
                         if (task.isSuccessful()) {
-                            mOnFirebaseAuth.OnSignUpSuccess();
+                            mOnFirebaseAuth.OnSignUpSuccess(RegisterFirebaseUser.this);
                         }
 
                     }
@@ -75,5 +79,22 @@ public class RegisterFirebaseUser extends AsyncTask<Void, Void, Void> {
             }
         });
         return null;
+    }
+
+
+    public void sendEmailVerification(FirebaseAuth auth, Context context){
+        String email = auth.getCurrentUser().getEmail();
+        //Send email verification
+        auth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Verification email sent to " + email , Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                sendEmailVerification(auth, context);
+            }
+        });
     }
 }

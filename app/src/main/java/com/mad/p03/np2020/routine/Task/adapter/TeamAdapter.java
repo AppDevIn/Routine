@@ -1,10 +1,12 @@
 package com.mad.p03.np2020.routine.Task.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,6 +27,8 @@ import com.google.firebase.storage.StorageReference;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
+import com.mad.p03.np2020.routine.Task.model.GestureDetectorTaskSettings;
+import com.mad.p03.np2020.routine.Task.model.GestureDetectorTeamItem;
 import com.mad.p03.np2020.routine.Task.model.TeamDataListener;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Team;
@@ -35,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements TeamDataListener {
@@ -63,6 +68,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
         return new TeamViewHolder(view);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull TeamViewHolder holder, int position) {
 
@@ -71,16 +77,24 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
         asyncTaskRunner.execute();
 
 
+
         holder.txtEmail.setText(mTeam.getEmail().get(position));
+
+        //Create the detector
+        GestureDetectorTeamItem detectorTeamItem = new GestureDetectorTeamItem(this, position, holder);
+
+        //Set the detector in the compat
+        GestureDetectorCompat gestureDetectorCompat = new GestureDetectorCompat(mContext, detectorTeamItem);
+
+
+
+
         if(!mTeam.getEmail().get(position).equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && mSection.isAdmin() ){
-            holder.mConstraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.mConstraintLayout.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public boolean onLongClick(View view) {
-                    Log.d(TAG, "onLongClick: " + mTeam.getEmail().get(position) + " is being removed from " + mTeam.getSectionID());
-
-                    deleteEmail(position);
-
-                    return false;
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    gestureDetectorCompat.onTouchEvent(motionEvent);
+                    return true;
                 }
             });
         }
@@ -122,7 +136,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
 
     }
 
-    private void deleteEmail(int position){
+    public void deleteEmail(int position){
 
         //Delete from the firebase
         mTeam.excuteEmailDeleteFirebase(position);

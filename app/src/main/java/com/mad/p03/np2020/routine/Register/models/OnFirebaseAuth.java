@@ -1,5 +1,7 @@
 package com.mad.p03.np2020.routine.Register.models;
 
+import com.mad.p03.np2020.routine.Register.RegisterActivity;
+
 /**
  *
  * This is used to be a trigger when it
@@ -13,7 +15,7 @@ public interface OnFirebaseAuth {
     /**
      * When the user has been successful registered
      */
-    void OnSignUpSuccess();
+    void OnSignUpSuccess(RegisterFirebaseUser user);
 
     /**
      * When the user is not registered

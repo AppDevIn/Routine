@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Register;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,9 +25,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.p03.np2020.routine.LoginActivity;
 import com.mad.p03.np2020.routine.models.User;
 
 import com.mad.p03.np2020.routine.Home.Home;
@@ -175,8 +182,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 
         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                actionId == EditorInfo.IME_ACTION_DONE ||
-                keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
+                actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER){
             switch (textView.getId()){
                 case R.id.edName:nameCheck(textView); break;
@@ -220,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
      * firebase and sql and move the home layout
      */
     @Override
-    public void OnSignUpSuccess() {
+    public void OnSignUpSuccess(RegisterFirebaseUser user) {
         Log.d(TAG, mUser.getEmailAdd() + " is successfully created");
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -237,6 +243,9 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         //instantiate UserDb
         UserDBHelper mUserDBHelper = new UserDBHelper(RegisterActivity.this);
         mUserDBHelper.insertUser(mUser);
+
+        //Send verification
+        user.sendEmailVerification(auth, this);
 
         //Move to another activity
         moveToHome();
@@ -268,11 +277,10 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
 
         try {
             mUser.setEmailAdd(textView.getText().toString().trim());
-            mTxtErrorEmail.setVisibility(View.INVISIBLE);
             return true;
         } catch (FormatException e) {
-            mTxtErrorEmail.setVisibility(View.VISIBLE);
-            mTxtErrorEmail.setText(e.getLocalizedMessage());
+
+            textView.setError(e.getLocalizedMessage());
             e.printStackTrace();
             Log.e(TAG, "emailCheck: " + e.getLocalizedMessage());
             return false;
@@ -291,16 +299,15 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     private boolean nameCheck(TextView textView){
 
         if(textView.getText().equals("")){
-            mTxtErrorName.setVisibility(View.VISIBLE);
+
+            textView.setError("Name is empty");
         }
 
         try {
             mUser.setName(textView.getText().toString().trim());
-            mTxtErrorName.setVisibility(View.INVISIBLE);
             return true;
         } catch (FormatException e) {
-            mTxtErrorName.setVisibility(View.VISIBLE);
-            mTxtErrorName.setText(e.getLocalizedMessage());
+            textView.setError(e.getLocalizedMessage());
             e.printStackTrace();
             Log.e(TAG, "nameCheck: " + e.getLocalizedMessage());
             return false;
@@ -319,11 +326,11 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
 
         try {
             mUser.setPassword(textView.getText().toString().trim());
-            mTxtErrorPassword.setVisibility(View.INVISIBLE);
+
             return true;
         } catch (FormatException e) {
-            mTxtErrorPassword.setVisibility(View.VISIBLE);
-            mTxtErrorPassword.setText(e.getLocalizedMessage());
+
+            textView.setError(e.getLocalizedMessage());
             e.printStackTrace();
             Log.e(TAG, "passwordCheck: " + e.getLocalizedMessage());
             return false;
@@ -387,8 +394,24 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
      * Move to the home page
      */
     private void moveToHome(){
-        Intent homePage = new Intent(RegisterActivity.this, Home.class);
+        Intent homePage = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(homePage);
+    }
+
+    private void sendEmailVerification(FirebaseAuth auth){
+        String email = auth.getCurrentUser().getEmail();
+        //Send email verification
+        auth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(RegisterActivity.this, "Verification email sent to " + email , Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                sendEmailVerification(auth);
+            }
+        });
     }
 
 
