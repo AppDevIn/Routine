@@ -40,6 +40,7 @@
         <activity
             android:name=".LoginActivity"
             android:noHistory="true"
+            android:windowSoftInputMode="adjustResize|adjustPan"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
