@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,11 +18,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,8 +37,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Home.Home;
+import com.mad.p03.np2020.routine.Profile.ProfileActivity;
 import com.mad.p03.np2020.routine.Register.RegisterActivity;
 import com.mad.p03.np2020.routine.Register.models.RegisterFirebaseUser;
+import com.mad.p03.np2020.routine.models.InternetStatus;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 
@@ -95,8 +100,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        this.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         //Database has to be declared before login check
         userDatabase = new UserDBHelper(this);
 
@@ -118,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         checkBox = findViewById(R.id.rememberMe);
         errLogin = findViewById(R.id.errorEmail);
         errPwd = findViewById(R.id.errorPwd);
+        TextView textView = findViewById(R.id.txtReset);
 
 
         et_Email.setOnClickListener(this);
@@ -136,6 +142,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         errLogin.setVisibility(View.INVISIBLE);
         errPwd.setVisibility(View.INVISIBLE);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCustomPasswordDialog();
+            }
+        });
+        et_Password.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                HideKeyboard(et_Password);
+                Login();
+                return true;
+            }
+            return false;
+        });
+
     }
 
     public void onStart() {
@@ -162,24 +184,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 ShowKeyboard(et_Password);
                 break;
             case R.id.buttonLogin: //Login Button
+                Login();
 
-                if (!TextUtils.isEmpty(et_Email.getText().toString()) & !TextUtils.isEmpty(et_Password.getText().toString())) {
-                    email = et_Email.getText().toString();
-                    password = et_Password.getText().toString();
-                    firebaseAuthWithGoogle(email, password, this);
-                } else {
-                    errLogin.setVisibility(View.VISIBLE);
-                    errPwd.setVisibility(View.VISIBLE);
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
-                        et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                        et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                    }
-                }
                 break;
             case R.id.buttonRegister: //Registration Button
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
+        }
+    }
+
+    public void Login(){
+        if (!TextUtils.isEmpty(et_Email.getText().toString()) & !TextUtils.isEmpty(et_Password.getText().toString())) {
+            if (InternetStatus.getInstance(getApplicationContext()).isOnline()) {
+                Log.i(TAG, "User is online");
+                email = et_Email.getText().toString();
+                password = et_Password.getText().toString();
+                firebaseAuthWithGoogle(email, password, this);
+            } else {
+                Log.e(TAG, "User does not have an internet connection");
+                txtError.setText("Please Check Your Network Connectivity");
+                txtError.setVisibility(View.VISIBLE);
+            }
+        } else {
+            errLogin.setVisibility(View.VISIBLE);
+            errPwd.setVisibility(View.VISIBLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            }
         }
     }
 
@@ -217,24 +252,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * */
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        Log.i(TAG, event.toString());
-        switch (v.getId()) {
-            case R.id.editEmail:
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    Log.i(TAG, "Enter is clicked");
-                    HideKeyboard(et_Email);
-                    break;
-                }
-            case R.id.editPassword:
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    Log.i(TAG, "Enter is clicked");
-                    HideKeyboard(et_Password);
-                    break;
-                }
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    return true;
-                }
-        }
+
         return false;
     }
 
@@ -306,9 +324,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                             }
 
-                        } else {
+                        }
+                        else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            txtError.setText("Invalid Username and Password");
+
                             txtError.setVisibility(View.VISIBLE);
                             txtError.setText("Invalid Email or Password");
 
@@ -337,8 +358,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void CheckLoggedIn() throws ParseException {
         mAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser u = mAuth.getCurrentUser();
-        if ((mAuth.getCurrentUser() != null) && new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null && u.isEmailVerified()) {
+
+        if ((mAuth.getCurrentUser() != null) && new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null ) {
             User user;
             user = userDatabase.getUser(mAuth.getCurrentUser().getUid());
             Intent intent = new Intent(LoginActivity.this, Home.class);
@@ -461,5 +482,67 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+    }
+
+    private void changePassword(String email)
+    {
+        //PasswordDialog passwordDialog = new PasswordDialog();
+        //passwordDialog.show(getSupportFragmentManager(), "Change Password Dialog");
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            MakeToast("Password reset email sent!");
+
+                            //logout();
+                        }
+                    }
+                });
+    }
+
+    private void showCustomPasswordDialog(){
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.login_reset_password_dialog, null, false);
+
+        Button mBtnsend = dialogView.findViewById(R.id.btnSend);
+        EditText edEmail = dialogView.findViewById(R.id.email);
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+
+        RegisterFirebaseUser registerFirebaseUser = new RegisterFirebaseUser(null,this, null, null);
+
+        //When the add button is clicked
+        mBtnsend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick(): Add button is pressed ");
+                changePassword(edEmail.getText().toString().trim());
+                alertDialog.cancel();
+            }
+        });
+
+
+    }
+
+    public void MakeToast(String info)
+    {
+        Toast toast = Toast.makeText(LoginActivity.this, info, Toast.LENGTH_LONG);
+        toast.getView().setBackgroundColor(Color.GRAY);
+        TextView text = (TextView) toast.getView().findViewById(android.R.id.message);
+        text.setTextColor(Color.WHITE);
+        toast.show();
     }
 }

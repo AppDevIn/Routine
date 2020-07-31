@@ -29,17 +29,21 @@
         android:windowSoftInputMode="adjustResize|adjustPan">
 
         <activity android:name=".Calender.Calender"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
             ></activity>
         <activity
             android:name=".Card.CardActivity"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Register.RegisterActivity" />
         <activity
             android:name=".LoginActivity"
             android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,37 +52,56 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Home.Home"
             android:exported="true" />
         <activity
             android:name=".models.PopUp"
             android:theme="@style/AppTheme.NotificationTheme"></activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Habit.HabitActivity"
             android:launchMode="singleTask" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Settings"
             android:exported="true" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".MainActivity" />
         <activity android:name=".Habit.HabitViewActivity" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Task.TaskActivity"
             android:fitsSystemWindows="true"
             android:launchMode="singleTask"
            />
-        <activity android:name=".Habit.HabitAddActivity" />
-
-        <activity android:name=".Habit.HabitEditActivity" />
-        <activity android:name=".Habit.HabitGroupActivity" />
         <activity
+            android:screenOrientation="portrait"
+            android:name=".Habit.HabitAddActivity" />
+
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".Habit.HabitEditActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".Habit.HabitGroupActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".Focus.FocusActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".Habit.HabitReminderActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".Habit.HabitReminderActivity" />
 
-        <activity android:name=".Profile.ProfileActivity"
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".Profile.ProfileActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+        <activity
+            android:screenOrientation="portrait"
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
 
 
