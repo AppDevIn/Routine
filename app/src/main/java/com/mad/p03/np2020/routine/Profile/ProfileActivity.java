@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.DAL.ScheduleDBHelper;
 import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,11 +53,16 @@ import com.mad.p03.np2020.routine.Habit.models.AlarmReceiver;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.Habit.models.HabitReminder;
 
+import com.mad.p03.np2020.routine.models.CardNotification;
+import com.mad.p03.np2020.routine.models.Schedule;
 import com.mad.p03.np2020.routine.models.User;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.twitter.sdk.android.core.models.Card;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -97,6 +103,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private CircleImageView profileImageView;
     private Uri imageUri;
     BottomNavigationView bottomNavigationView;
+    List<Schedule> scheduleList;
+    List<Integer> uniqueIDList;
+    ScheduleDBHelper scheduleDBHelper;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -109,6 +118,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        scheduleDBHelper = new ScheduleDBHelper(getApplicationContext());
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
@@ -399,6 +410,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         clearHabitAlarm(this);
         cancelRepeatingHabit();
         removeHabitEventListener();
+        cancelScheduleAlarms();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mAuth.signOut();
@@ -477,6 +489,36 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         am.cancel(pi);
+    }
+
+    public void cancelScheduleAlarms()
+    {
+        Log.v(TAG, "cancelSchedule alarms: ");
+
+        scheduleList = scheduleDBHelper.getAllSchedule();
+        uniqueIDList = new ArrayList<>();
+
+        for (Schedule schedule : scheduleList)
+        {
+            int unique = schedule.getUnique();
+            uniqueIDList.add(unique);
+        }
+
+        for (Integer uniqueID : uniqueIDList)
+        {
+            Log.v(TAG, "Removing alarm: " + uniqueID);
+            Intent intent = new Intent(getApplicationContext(), CardNotification.class);
+            intent.setAction("CardNotification");
+            intent.putExtra("TaskID", "Null");
+            intent.putExtra("CardName", "Null");
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), uniqueID, intent, 0);
+            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            am.cancel(pendingIntent);
+        }
+
+
     }
 
     public void MakeToast(String info)
