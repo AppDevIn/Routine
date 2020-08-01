@@ -474,7 +474,6 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
     public void setNotification()
     {
-
         Intent intent = new Intent(getActivity(), CardNotification.class);
         intent.setAction("CardNotification");
         intent.putExtra("TaskID", taskID);
