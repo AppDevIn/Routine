@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  * CardAdapter class for recyclerview adapter
  *
- * @author Pritheev
+ * @author Jeyavishnu & Pritheev
  * @since 02-06-2020
  *
  */

@@ -94,6 +94,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
     Calendar validationCalendar;
 
+    Calendar previousSelected;
+
     int currentYear;
     int currentMonth;
     int currentDay;
@@ -168,11 +170,11 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
             dateButton.setText("Date: " + date);
             timeButton.setText("Time: " + time);
-        }else{
+        }
+        else {
             dateButton.setText("Date: Click to select!");
             timeButton.setText("Time: Click to select!");
         }
-
 
         //Getting current calendar
         currentCal = Calendar.getInstance();
@@ -181,6 +183,22 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         selectedCal = Calendar.getInstance();
 
         validationCalendar = Calendar.getInstance();
+
+        previousSelected = Calendar.getInstance();
+
+        previousSelected.setTime(mTask.getRemindDate());
+
+        if (previousSelected.getTimeInMillis() < currentCal.getTimeInMillis())
+        {
+            Log.v(TAG, "Resetting schedule timers!");
+            dateButton.setText("Date: Click to select!");
+            timeButton.setText("Time: Click to select!");
+
+            isReminderSet = false;
+            isTimeSet = false;
+            isDateSet = false;
+
+        }
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
