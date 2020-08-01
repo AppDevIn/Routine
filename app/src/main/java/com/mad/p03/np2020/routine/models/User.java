@@ -884,8 +884,10 @@ public class User implements Parcelable, FocusDBObserver {
     }
 
 
-
-
+    /**
+     * This method is to show a dialog on the permission reason of requesting internal storage access
+     * @param activity
+     */
     public void showPermissionDescription(Activity activity){
 
         TextView close;

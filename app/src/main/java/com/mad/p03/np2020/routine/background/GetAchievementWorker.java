@@ -28,6 +28,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ *
+ * The worker delete and update the achievement data in firebase from
+ * the background which extends the Worker.
+ *
+ * @author Lee Quan Sheng
+ * @since 02-08-2020
+ */
+
 public class GetAchievementWorker extends Worker {
     AchievementDBHelper achievementDBHelper;
     String TAG = "AchievementWorker";
@@ -47,6 +56,9 @@ public class GetAchievementWorker extends Worker {
         return Result.success();
     }
 
+    /***
+     * get achievement that is on hours
+     */
     private void achievementHour() {
         int type = 1;
 
@@ -161,6 +173,9 @@ public class GetAchievementWorker extends Worker {
         });
     }
 
+    /***
+     * get achievement that is on cycle
+     */
     private void achievementCycle() {
         int type = 2;
 
@@ -275,6 +290,11 @@ public class GetAchievementWorker extends Worker {
         });
     }
 
+
+
+    /***
+     * get achievement that is on consecutive
+     */
     private void achievementConsecutive() {
         int type = 3;
 
