@@ -31,7 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.p03.np2020.routine.DAL.DBHelper;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,9 +48,9 @@ import com.mad.p03.np2020.routine.Profile.Dialogs.PasswordDialog;
 import com.mad.p03.np2020.routine.Profile.Dialogs.ReportDialog;
 import com.mad.p03.np2020.routine.Profile.Dialogs.UsernameDialog;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.models.AlarmReceiver;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitReminder;
+import com.mad.p03.np2020.routine.Habit.models.AlarmReceiver;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitReminder;
 
 import com.mad.p03.np2020.routine.models.User;
 import com.squareup.picasso.Picasso;
@@ -60,6 +60,18 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.mad.p03.np2020.routine.models.User.habitListener;
+import static com.mad.p03.np2020.routine.models.User.hgListener;
+import static com.mad.p03.np2020.routine.models.User.hrListener;
+
+/**
+ *
+ * Profile Class for managing Profile
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, UsernameDialog.UsernameDialogListener, PasswordDialog.PasswordDialogListener {
 
     private final String TAG = "ProfileActivity";
@@ -183,7 +195,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Log.v(TAG, "onCancelled", databaseError.toException());
             }
         });
-
 
         try {
             getUserInfo();
@@ -314,8 +325,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         userDBHelper.updateUserName(UID, mUser);
         username.setText(newUsername);
-    }
 
+        if (newUsername.length() > 16)
+        {
+            MakeToast("Username limited at 16 characters!");
+        }
+    }
 
     public void changePassword()
     {
@@ -383,6 +398,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         clearHabitAlarm(this);
         cancelRepeatingHabit();
+        removeHabitEventListener();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mAuth.signOut();
@@ -512,5 +528,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //To set setOnNavigationItemSelectedListener
         NavBarHelper navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
+    public void removeHabitEventListener(){
+        String UID = mAuth.getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
+        if (habitListener != null){
+            Log.d(TAG, "removeHabitEventListener: habit");
+            ref.child("habit").removeEventListener(habitListener);
+            habitListener = null;
+        }
+        if (hrListener != null){
+            Log.d(TAG, "removeHabitEventListener: habitRepetition");
+            ref.child("habitRepetition").removeEventListener(hrListener);
+            hrListener = null;
+        }
+        if (hgListener != null){
+            Log.d(TAG, "removeHabitEventListener: habitGroup");
+            ref.child("habitGroup").removeEventListener(hgListener);
+            hgListener = null;
+
+        }
+
+
     }
 }

@@ -30,17 +30,17 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
-import com.mad.p03.np2020.routine.models.AlarmReceiver;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitGroup;
-import com.mad.p03.np2020.routine.models.HabitReminder;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.Habit.models.AlarmReceiver;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
+import com.mad.p03.np2020.routine.Habit.models.HabitReminder;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -336,7 +336,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 // insert the habit into SQLiteDatabase
                 long habitID = habit_dbHandler.insertHabit(habit, user.getUID());
                 // The insert process is success if habit id returned is not equal to 1
-
+                Log.d(TAG, "HabitAdapter: "+habit_dbHandler.getAllHabits().size());
                 if (habitID != -1){ // if habitID returned is legit
                     habit.setHabitID(habitID); // set the id to the habit
                     writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase

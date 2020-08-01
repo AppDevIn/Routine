@@ -28,12 +28,12 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
-import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.helpers.IntegerFormatter;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.Habit.helpers.IntegerFormatter;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 
 import java.text.DateFormat;
@@ -274,13 +274,17 @@ public class HabitViewActivity extends AppCompatActivity {
     public void displayWeekBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
+        if (habitRepetitionArrayList.size() <= 0){
+            Log.d(TAG, "Missing Habit Repetitions for habit");
+            habitRepetitionDBHelper.repeatingSpecificHabitByID(habit.getHabitID());
+            habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+        }
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
         ArrayList<BarEntry> first_barEntries = new ArrayList<>();
 
         int x = 0;
         final long[] initial_timestamp ={habitRepetitionArrayList.get(habitRepetitionArrayList.size()-1).getTimestamp()};
-        Log.d(TAG, "displayWeekBarChart: initial_timestamp"+initial_timestamp[0]);
         String range = String.format("%s - %s",getStartOfTheWeek(initial_timestamp[0]), getEndOfTheWeek(initial_timestamp[0]));
         range_indicator.setText(range);
 
@@ -428,6 +432,10 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public void displayMonthBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+
+        if (habitRepetitionArrayList.size() <= 0){
+            return;
+        }
 
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
@@ -581,6 +589,10 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public void displayYearBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+
+        if (habitRepetitionArrayList.size() <= 0){
+            return;
+        }
 
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
@@ -793,8 +805,10 @@ public class HabitViewActivity extends AppCompatActivity {
         Log.d(TAG, "resetChart: ");
         range_indicator.setText("");
         habit_barChart.fitScreen();
-        habit_barChart.clearValues();
-        habit_barChart.getData().clearValues();
+        if (habit_barChart.getData() != null){
+            habit_barChart.clearValues();
+            habit_barChart.getData().clearValues();
+        }
         habit_barChart.getXAxis().resetAxisMinimum();
         habit_barChart.getXAxis().resetAxisMaximum();
         habit_barChart.getAxisLeft().resetAxisMaximum();
@@ -834,7 +848,6 @@ public class HabitViewActivity extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
-        Log.d(TAG, "getEndOfTheWeek: "+ms);
         cal.set(Calendar.DAY_OF_WEEK, 7);
         Date d = cal.getTime();
         String date = dateFormat.format(d);

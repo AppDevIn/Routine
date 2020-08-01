@@ -11,8 +11,7 @@ import androidx.work.WorkerParameters;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 
 import java.util.ArrayList;
 

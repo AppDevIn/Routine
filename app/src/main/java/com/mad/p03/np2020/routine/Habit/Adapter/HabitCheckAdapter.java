@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine.Habit.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitCheckHolder;
-import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
-import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitCheckItemClickListener;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 
 public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
@@ -76,7 +75,6 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: "+habitList.size());
         return habitList.size();
     }
 

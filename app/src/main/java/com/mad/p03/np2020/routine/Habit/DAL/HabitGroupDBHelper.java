@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.DAL;
+package com.mad.p03.np2020.routine.Habit.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.models.HabitGroup;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
 
 import java.util.ArrayList;
 
@@ -176,6 +177,71 @@ public class HabitGroupDBHelper extends DBHelper {
         }
 
         db.close(); // close the db connection
+
+    }
+
+    public boolean isHabitGroupExisted(long rowID){
+        boolean isExisted = false;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitGroup.TABLE_NAME + " WHERE " + HabitGroup.COLUMN_ID + " = " + rowID;
+
+        Cursor res =  db.rawQuery( query  , null );
+        if (res.getCount() > 0){
+            isExisted = true;
+        }
+
+        db.close();
+
+        return isExisted;
+    }
+
+    public HabitGroup getHabitGroupByRowID(long id){
+        HabitGroup hg = new HabitGroup();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from " + HabitGroup.TABLE_NAME + " WHERE " + HabitGroup.COLUMN_ID + " = " + id;
+        Cursor res =  db.rawQuery( query, null );
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            hg.setGrp_id(res.getLong(res.getColumnIndex(HabitGroup.COLUMN_ID)));
+            hg.setGrp_name(res.getString(res.getColumnIndex(HabitGroup.COLUMN_GROUP_NAME)));
+        }
+
+        db.close();
+
+        return hg;
+    }
+
+    public void update(HabitGroup hg){
+        String id_filter = HabitGroup.COLUMN_ID + " = " + hg.getGrp_id();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //update row id
+        values.put(HabitGroup.COLUMN_ID, hg.getGrp_id());
+        values.put(HabitGroup.COLUMN_GROUP_NAME, hg.getGrp_name());
+
+        // update the habit column
+        db.update(HabitGroup.TABLE_NAME, values, id_filter, null);
+        db.close(); // close the db connection
+    }
+
+    public void removeOneData(HabitGroup hg) {
+
+        // Find database that match the row data. If it found, delete and return true
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(
+                HabitGroup.TABLE_NAME,  // The table to delete from
+                HabitGroup.COLUMN_ID + " = ?", //The condition
+                new String[]{String.valueOf(hg.getGrp_id())} // The args will be replaced by ?
+        );
+
+        Log.d(TAG, "removeOneData: "+hg.getGrp_id());
+        db.close();
 
     }
 

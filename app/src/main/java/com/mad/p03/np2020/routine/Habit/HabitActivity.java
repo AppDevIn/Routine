@@ -39,18 +39,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Habit.Adapter.HabitCheckAdapter;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
-import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.helpers.HabitCheckItemClickListener;
-import com.mad.p03.np2020.routine.helpers.HabitHorizontalDivider;
-import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
-import com.mad.p03.np2020.routine.models.AlarmReceiver;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitCheckItemClickListener;
+import com.mad.p03.np2020.routine.Habit.helpers.HabitHorizontalDivider;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitItemClickListener;
+import com.mad.p03.np2020.routine.Habit.models.AlarmReceiver;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 import com.mad.p03.np2020.routine.models.User;
 
 import java.util.Calendar;
@@ -172,6 +172,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set User
         user = new User();
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        user.readHabit_Firebase(this);
 
         // initialise the shared preferences
         initSharedPreferences();
@@ -194,6 +196,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
     }
 
     @Override
@@ -215,42 +218,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList, user);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
         habitCheckAdapter.setOnItemClickListener(this);
+        habitCheckAdapter.notifyDataSetChanged();
 
         habitAdapter = new HabitAdapter(this, habitArrayList, user, habitCheckAdapter);
+        habitAdapter.notifyDataSetChanged();
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
 
-        if(habitArrayList.size() == 0){
-            if (viewSwitcher.getCurrentView() != nothing_view){
-                viewSwitcher.showNext();
-                add_habit.setVisibility(View.VISIBLE);
-                prev_indicator.setVisibility(View.INVISIBLE);
-                next_indicator.setVisibility(View.INVISIBLE);
-                indicator_num.setVisibility(View.INVISIBLE);
-                remind_text.setVisibility(View.INVISIBLE);
-            }
-        }else if (habitArrayList.size() <= page_x){
-            if (viewSwitcher.getCurrentView() == nothing_view){
-                viewSwitcher.showPrevious();
-            }
-            add_habit.setVisibility(View.VISIBLE);
-            remind_text.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.INVISIBLE);
-            next_indicator.setVisibility(View.INVISIBLE);
-            indicator_num.setVisibility(View.INVISIBLE);
-        }else{
-            if (viewSwitcher.getCurrentView() == nothing_view){
-                viewSwitcher.showPrevious();
-            }
-            add_habit.setVisibility(View.VISIBLE);
-            prev_indicator.setVisibility(View.INVISIBLE);
-            next_indicator.setVisibility(View.VISIBLE);
-            indicator_num.setVisibility(View.VISIBLE);
-            remind_text.setVisibility(View.VISIBLE);
-        }
 
         indicator_num.setText("1");
     }
@@ -411,6 +388,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onHabitCheckItemClick(int position) {
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
+        if (habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID()).size() <= 0){
+            Log.d(TAG, "Missing Habit Repetitions for habit");
+            habitRepetitionDBHelper.repeatingSpecificHabitByID(habit.getHabitID());
+        }
         habit.addCount(); // add the count by 1
 
         habitAdapter.notifyDataSetChanged(); // notify the data set has changed
@@ -625,6 +606,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     public static void displayView(Habit.HabitList habitArrayList){
 
+        int n = checkIncompleteHabits(habitArrayList);
+
         if(habitArrayList.size() == 0){
             if (viewSwitcher.getCurrentView() != nothing_view){
                 viewSwitcher.showNext();
@@ -633,6 +616,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 next_indicator.setVisibility(View.INVISIBLE);
                 indicator_num.setVisibility(View.INVISIBLE);
                 remind_text.setVisibility(View.INVISIBLE);
+                indicator_num.setText("1");
             }
         }else if (habitArrayList.size() <= page_x){
             if (viewSwitcher.getCurrentView() == nothing_view){
@@ -643,6 +627,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             prev_indicator.setVisibility(View.INVISIBLE);
             next_indicator.setVisibility(View.INVISIBLE);
             indicator_num.setVisibility(View.INVISIBLE);
+            indicator_num.setText("1");
         }else{
             if (viewSwitcher.getCurrentView() == nothing_view){
                 viewSwitcher.showPrevious();
@@ -650,9 +635,21 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             add_habit.setVisibility(View.VISIBLE);
             indicator_num.setVisibility(View.VISIBLE);
             remind_text.setVisibility(View.VISIBLE);
+
+            int num = Integer.parseInt(indicator_num.getText().toString());
+            if (num == 1){
+                prev_indicator.setVisibility(View.INVISIBLE);
+                next_indicator.setVisibility(View.VISIBLE);
+            }else{
+                if ((num+1)*page_x <= habitArrayList.size()){
+                   next_indicator.setVisibility(View.VISIBLE);
+                }else{
+                    next_indicator.setVisibility(View.INVISIBLE);
+                }
+                prev_indicator.setVisibility(View.VISIBLE);
+            }
         }
 
-        int n = checkIncompleteHabits(habitArrayList);
 
         if (n == 0){
             remind_text.setText("You have completed all habits today!");

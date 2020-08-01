@@ -29,19 +29,22 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
+import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitReminder;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.GetAchievementWorker;
-import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.helpers.GetTaskSectionWorker;
 import com.mad.p03.np2020.routine.Register.models.UploadDataWorker;
 import com.mad.p03.np2020.routine.Focus.DAL.FocusDBHelper;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
-import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitGroupDBHelper;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -120,6 +123,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     private DatabaseReference myRef;
     private DatabaseReference userRef;
+    private DatabaseReference hRef;
     private FocusDBHelper focusDBHelper;
     private AchievementDBHelper achievementDBHelper;
 
@@ -140,6 +144,9 @@ public class User implements Parcelable, FocusDBObserver {
     //Dialog Builder
     AlertDialog.Builder builder;
     AlertDialog dialog;
+
+    public static ChildEventListener habitListener, hrListener, hgListener;
+
 
     /**
      * Parcelable constructor for custom object
@@ -933,182 +940,255 @@ public class User implements Parcelable, FocusDBObserver {
         setHabitGroupsList(new ArrayList<HabitGroup>());
     }
 
-    /*
-    public void readUserFirebase()
-    {
-        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
+    public Habit getHabit(@NonNull DataSnapshot singleSnapshot){
+        Habit habit = new Habit();
+        long habitID = singleSnapshot.child("habitID").getValue(Long.class);
+        habit.setHabitID(habitID);
+        habit.setTitle((String) singleSnapshot.child("title").getValue());
+        habit.setOccurrence(singleSnapshot.child("occurrence").getValue(Integer.class));
+        habit.setPeriod(singleSnapshot.child("period").getValue(Integer.class));
+        habit.setHolder_color((String) singleSnapshot.child("holder_color").getValue());
+        habit.setTime_created((String) singleSnapshot.child("time_created").getValue());
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        HabitGroup habitGroup = new HabitGroup();
+        if (singleSnapshot.hasChild("group")) {
+            habitGroup.setGrp_id(singleSnapshot.child("group").child("grp_id").getValue(Long.class));
+            habitGroup.setGrp_name((String) singleSnapshot.child("group").child("grp_name").getValue());
+            habit.setGroup(habitGroup);
+        } else {
+            habit.setGroup(null);
+        }
+
+        HabitReminder habitReminder = new HabitReminder();
+        if (singleSnapshot.hasChild("habitReminder")) {
+            habitReminder.setId(singleSnapshot.child("habitReminder").child("id").getValue(Integer.class));
+            habitReminder.setMessage((String) singleSnapshot.child("habitReminder").child("message").getValue());
+            habitReminder.setCustom_text((String) singleSnapshot.child("habitReminder").child("custom_text").getValue());
+            habitReminder.setHours(singleSnapshot.child("habitReminder").child("hours").getValue(Integer.class));
+            habitReminder.setMinutes(singleSnapshot.child("habitReminder").child("minutes").getValue(Integer.class));
+            habit.setHabitReminder(habitReminder);
+        } else {
+            habit.setHabitReminder(null);
+        }
+
+        return habit;
+    }
+
+    public HabitRepetition getHabitRepetition(@NonNull DataSnapshot singleSnapshot){
+        HabitRepetition hr = new HabitRepetition();
+        hr.setHabitID(singleSnapshot.child("habitID").getValue(Long.class));
+        hr.setRow_id(singleSnapshot.child("row_id").getValue(Long.class));
+        hr.setTimestamp(singleSnapshot.child("timestamp").getValue(Long.class));
+        hr.setCycle(singleSnapshot.child("cycle").getValue(Integer.class));
+        hr.setCycle_day(singleSnapshot.child("cycle_day").getValue(Integer.class));
+        hr.setCount(singleSnapshot.child("count").getValue(Integer.class));
+        hr.setConCount(singleSnapshot.child("conCount").getValue(Integer.class));
+
+        return hr;
+    }
+
+    public HabitGroup getHabitGroup(@NonNull DataSnapshot singleSnapshot){
+        HabitGroup habitGroup = new HabitGroup();
+        habitGroup.setGrp_id(singleSnapshot.child("grp_id").getValue(Long.class));
+        habitGroup.setGrp_name((String) singleSnapshot.child("grp_name").getValue());
+        return habitGroup;
+    }
+
+    public void renewHabitList() {
+        setHabitList(habitDBHelper.getAllHabits());
+        Log.v(TAG, "Habit List updated to " + habitList);
+    }
+
+    /**
+     * This method is read the habits from firebase
+     *
+     * @param context This is to get the context of the activity
+     */
+    public void readHabit_Firebase(Context context) {
+
+        habitDBHelper = new HabitDBHelper(context);
+        hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habit");
+        habitListener = hRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren())
-                {
-                    User user = new User();
-                    try {
-                        user.setName((String) singleSnapshot.child("Name").getValue());
-                    } catch (FormatException e) {
-                        e.printStackTrace();
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildAdded: habit");
+                long habitID = dataSnapshot.child("habitID").getValue(Long.class);
+                Habit habit = getHabit(dataSnapshot);
+
+                if (!habitDBHelper.isHabitIDExisted(habitID)){
+                    Log.d(TAG, "onChildAdded: addHabit");
+                    habitDBHelper.insertHabitFromFirebase(habit, getUID());
+                    renewHabitList();
+                }else{
+                    if (!habitDBHelper.getHabitByID(habitID).equals(habit)){
+                        Log.d(TAG, "onChildAdded: updateHabit");
+                        habitDBHelper.updateHabit(habit);
+                        renewHabitList();
                     }
                 }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildChanged: habit");
+                long habitID = dataSnapshot.child("habitID").getValue(Long.class);
+                Habit habit = getHabit(dataSnapshot);
+                if (!habitDBHelper.isHabitIDExisted(habitID)){
+                    Log.d(TAG, "onChildChanged: addHabit");
+                    habitDBHelper.insertHabitFromFirebase(habit, getUID());
+                    renewHabitList();
+                }else{
+                    if (!habitDBHelper.getHabitByID(habitID).equals(habit)){
+                        Log.d(TAG, "onChildChanged: updateHabit");
+                        habitDBHelper.updateHabit(habit);
+                        renewHabitList();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved: habit");
+                Habit habit = getHabit(dataSnapshot);
+
+                if (habitDBHelper.isHabitIDExisted(habit.getHabitID())){
+                    Log.d(TAG, "onChildRemoved: remove habit");
+                    habitDBHelper.deleteHabit(habit);
+                    renewHabitList();
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
+
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
+        hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habitRepetition");
+        hrListener = hRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildAdded: habitRepetition");
+                long id = dataSnapshot.child("row_id").getValue(Long.class);
+                HabitRepetition hr = getHabitRepetition(dataSnapshot);
+
+                if (!habitRepetitionDBHelper.isHabitRepetitionExisted(id)){
+                    Log.d(TAG, "onChildAdded: add habitRepetition");
+
+                    habitRepetitionDBHelper.insertHabitRepetitionFromFirebase(hr, getUID());
+                }else{
+                    if (!habitRepetitionDBHelper.getHabitRepetitionByRowID(id).equals(hr)){
+                        Log.d(TAG, "onChildAdded: updateHabitRepetition");
+                        habitRepetitionDBHelper.update(hr);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildChanged: habitRepetition");
+                long id = dataSnapshot.child("row_id").getValue(Long.class);
+                HabitRepetition hr = getHabitRepetition(dataSnapshot);
+
+                if (!habitRepetitionDBHelper.isHabitRepetitionExisted(id)){
+                    Log.d(TAG, "onChildChanged: add habitRepetition");
+                    habitRepetitionDBHelper.insertHabitRepetitionFromFirebase(hr, getUID());
+                }else{
+                    if (!habitRepetitionDBHelper.getHabitRepetitionByRowID(id).equals(hr)){
+                        Log.d(TAG, "onChildChanged: updateHabitRepetition");
+                        habitRepetitionDBHelper.update(hr);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved: habitRepetition");
+                HabitRepetition hr = getHabitRepetition(dataSnapshot);
+
+                if (habitRepetitionDBHelper.isHabitRepetitionExisted(hr.getRow_id())){
+                    Log.d(TAG, "onChildRemoved: remove habitRepetition");
+                    habitRepetitionDBHelper.removeOneData(hr);
+                }
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
+
+        habitGroupDBHelper = new HabitGroupDBHelper(context);
+        hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habitGroup");
+        hgListener = hRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildAdded: habitGroup");
+                long id = dataSnapshot.child("grp_id").getValue(Long.class);
+                HabitGroup hg = getHabitGroup(dataSnapshot);
+
+                if (!habitGroupDBHelper.isHabitGroupExisted(id)){
+                    Log.d(TAG, "onChildAdded: add habitGroup");
+                    habitGroupDBHelper.insertGroupFromFirebase(hg);
+                }else{
+                    if (!habitGroupDBHelper.getHabitGroupByRowID(id).equals(hg)){
+                        Log.d(TAG, "onChildAdded: updateHabitGroup");
+                        habitGroupDBHelper.update(hg);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildChanged: habitGroup");
+                long id = dataSnapshot.child("grp_id").getValue(Long.class);
+                HabitGroup hg = getHabitGroup(dataSnapshot);
+
+                if (!habitGroupDBHelper.isHabitGroupExisted(id)){
+                    Log.d(TAG, "onChildChanged: add habitGroup");
+                    habitGroupDBHelper.insertGroupFromFirebase(hg);
+                }else{
+                    if (!habitGroupDBHelper.getHabitGroupByRowID(id).equals(hg)){
+                        Log.d(TAG, "onChildChanged: updateHabitGroup");
+                        habitGroupDBHelper.update(hg);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                HabitGroup hg = getHabitGroup(dataSnapshot);
+                
+                if (habitGroupDBHelper.isHabitGroupExisted(hg.getGrp_id())){
+                    Log.d(TAG, "onChildRemoved: deleteHabitGroup");
+                    habitGroupDBHelper.removeOneData(hg);
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        })
-    }
-
-     */
-
-    /**
-     * This method is read the habits from firebase
-     *
-     * @param context This is to get the context of the activity
-     */
-    public void readHabit_Firebase(Context context, boolean action) {
-        Log.d(TAG, "read Habit_Firebase: ");
-
-        habitDBHelper = new HabitDBHelper(context);
-
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habit").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // delete all the habit
-                habitDBHelper.deleteAllHabit();
-                clearHabitList();
-                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    Habit habit = new Habit();
-                    long habitID = singleSnapshot.child("habitID").getValue(Long.class);
-                    habit.setHabitID(habitID);
-                    habit.setTitle((String) singleSnapshot.child("title").getValue());
-                    habit.setOccurrence(singleSnapshot.child("occurrence").getValue(Integer.class));
-                    habit.setPeriod(singleSnapshot.child("period").getValue(Integer.class));
-                    habit.setHolder_color((String) singleSnapshot.child("holder_color").getValue());
-                    habit.setTime_created((String) singleSnapshot.child("time_created").getValue());
-
-                    HabitGroup habitGroup = new HabitGroup();
-                    if (singleSnapshot.hasChild("group")) {
-                        habitGroup.setGrp_id(singleSnapshot.child("group").child("grp_id").getValue(Long.class));
-                        habitGroup.setGrp_name((String) singleSnapshot.child("group").child("grp_name").getValue());
-                        habit.setGroup(habitGroup);
-                    } else {
-                        habit.setGroup(null);
-                    }
-
-                    HabitReminder habitReminder = new HabitReminder();
-                    if (singleSnapshot.hasChild("habitReminder")) {
-                        habitReminder.setId(singleSnapshot.child("habitReminder").child("id").getValue(Integer.class));
-                        habitReminder.setMessage((String) singleSnapshot.child("habitReminder").child("message").getValue());
-                        habitReminder.setCustom_text((String) singleSnapshot.child("habitReminder").child("custom_text").getValue());
-                        habitReminder.setHours(singleSnapshot.child("habitReminder").child("hours").getValue(Integer.class));
-                        habitReminder.setMinutes(singleSnapshot.child("habitReminder").child("minutes").getValue(Integer.class));
-                        habit.setHabitReminder(habitReminder);
-                    } else {
-                        habit.setHabitReminder(null);
-                    }
-
-                    habitDBHelper.insertHabitFromFirebase(habit, getUID());
-                    Log.d(TAG, "reading Habit Lines");
-
-                }
-
-                if (action) {
-                    setHabitList(habitDBHelper.getAllHabits());
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
         });
     }
-
-    /**
-     * This method is read the habits from firebase
-     *
-     * @param context This is to get the context of the activity
-     */
-    public void readHabitRepetition_Firebase(Context context) {
-        Log.d(TAG, "read HabitRepetition_Firebase: ");
-
-        habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
-
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habitRepetition").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // delete all the habit
-                habitRepetitionDBHelper.deleteAllHabitRepetitions();
-                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    HabitRepetition hr = new HabitRepetition();
-                    hr.setHabitID(singleSnapshot.child("habitID").getValue(Long.class));
-                    hr.setRow_id(singleSnapshot.child("row_id").getValue(Long.class));
-                    hr.setTimestamp(singleSnapshot.child("timestamp").getValue(Long.class));
-                    hr.setCycle(singleSnapshot.child("cycle").getValue(Integer.class));
-                    hr.setCycle_day(singleSnapshot.child("cycle_day").getValue(Integer.class));
-                    hr.setCount(singleSnapshot.child("count").getValue(Integer.class));
-                    hr.setConCount(singleSnapshot.child("conCount").getValue(Integer.class));
-
-                    habitRepetitionDBHelper.insertHabitRepetitionFromFirebase(hr, getUID());
-                    Log.d(TAG, "reading HabitRepetition Lines");
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-    /**
-     * This method is read the habitGroups from firebase
-     *
-     * @param context This is to get the context of the activity
-     */
-    public void readHabitGroup_Firebase(Context context) {
-        Log.d(TAG, "read HabitGroup_Firebase: ");
-
-        habitGroupDBHelper = new HabitGroupDBHelper(context);
-
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID());
-        myRef.child("habitGroup").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // delete all habitGroups
-                habitGroupDBHelper.deleteAllHabitGroups();
-                clearHabitGroupsList();
-                Log.d(TAG, "reading HabitGroup Lines");
-                // to retrieve the data from each snapshot and insert them into SQLiteDatabase
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    HabitGroup habitGroup = new HabitGroup();
-                    habitGroup.setGrp_id(singleSnapshot.child("grp_id").getValue(Long.class));
-                    habitGroup.setGrp_name((String) singleSnapshot.child("grp_name").getValue());
-
-                    Log.d(TAG, "onDataChange: " + habitGroup.getGrp_id());
-                    Log.d(TAG, "onDataChange: " + habitGroup.getGrp_name());
-
-                    habitGroupDBHelper.insertGroupFromFirebase(habitGroup);
-                }
-                setHabitGroupsList(habitGroupDBHelper.getAllGroups());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
-    }
-
 
     public void getAllSectionAndTask() {
         //Setting condition

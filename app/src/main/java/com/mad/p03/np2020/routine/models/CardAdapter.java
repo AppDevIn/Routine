@@ -7,7 +7,14 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+/**
+ *
+ * CardAdapter for managing Recylerview
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
     ArrayList<String> data;
 

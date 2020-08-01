@@ -25,7 +25,14 @@ import com.mad.p03.np2020.routine.DAL.UserDBHelper;
 import com.mad.p03.np2020.routine.R;
 
 import static android.content.ContentValues.TAG;
-
+/**
+ *
+ * ReportDialog Class for managing ReportDialog
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class ReportDialog extends AppCompatDialogFragment {
 
     EditText problem;

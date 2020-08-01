@@ -21,13 +21,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
-import com.mad.p03.np2020.routine.models.Habit;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitItemClickListener;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 
 import static com.mad.p03.np2020.routine.Habit.HabitActivity.displayView;
@@ -65,8 +65,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         this.user = user;
         this.habitCheckAdapter = habitCheckAdapter;
 
-        user.readHabit_Firebase(c, true);
-        user.readHabitRepetition_Firebase(c);
+//        user.readHabit_Firebase(c, true);
+//        user.readHabitRepetition_Firebase(c);
         habitEventListener();
         habitRepetitionEventListener();
     }
@@ -100,7 +100,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.width = (int) (parent.getWidth() * 0.464);
-        Log.d(TAG, "onCreateViewHolder: width" + layoutParams.width);
         view.setLayoutParams(layoutParams);
 
         return new HabitHolder(view, mListener);
@@ -342,7 +341,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         habitCheckAdapter.notifyDataSetChanged();
 
         displayView(habitList);
-        Log.v(TAG, "Data is changed from other server");
+//        Log.v(TAG, "Data is changed from other server");
     }
 
     public double getScreenInches() {

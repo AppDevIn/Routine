@@ -157,7 +157,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
         taskDBHelper = new TaskDBHelper(this);
 
-        toolbar.setOnLongClickListener(this);
+        toolbar.setOnClickListener(this);
 
     }
 
@@ -262,6 +262,13 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
     public boolean onLongClick(View view) {
         Log.d(TAG, "onLongClick: Clicked");
 
+
+
+        return false;
+    }
+
+    @Override
+    public void onClick(View view) {
         //IF no internet show pop
         if(!checkConnectivity()){
             //Show pop
@@ -270,13 +277,6 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
             settingsInit();
         }
-
-        return false;
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 
     /**

@@ -8,7 +8,12 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * Not Implemented
+ *
+ * Settings Class for managing setting
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
  */
 public class Settings extends AppCompatActivity {
 

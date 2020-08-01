@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.DAL;
+package com.mad.p03.np2020.routine.Habit.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,12 +15,17 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -661,6 +666,161 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         return total;
 
+    }
+
+    public boolean isHabitRepetitionExisted(long rowID){
+        boolean isExisted = false;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_ID + " = " + rowID;
+
+        Cursor res =  db.rawQuery( query  , null );
+        if (res.getCount() > 0){
+            isExisted = true;
+        }
+
+        db.close();
+
+        return isExisted;
+    }
+
+    public HabitRepetition getHabitRepetitionByRowID(long id){
+        HabitRepetition hr = new HabitRepetition();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_ID + " = " + id;
+        Cursor res =  db.rawQuery( query, null );
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            hr.setRow_id(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID)));
+            hr.setHabitID(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_ID)));
+            hr.setTimestamp(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_TIMESTAMP)));
+            hr.setCycle(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE)));
+            hr.setCycle_day(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY)));
+            hr.setCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT)));
+            hr.setConCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT)));
+        }
+
+        db.close();
+
+        return hr;
+    }
+
+    public void update(HabitRepetition hr){
+        String id_filter = HabitRepetition.COLUMN_ID + " = " +hr.getRow_id();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //update row id
+        values.put(HabitRepetition.COLUMN_HABIT_ID, hr.getHabitID());
+        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, hr.getTimestamp());
+        values.put(HabitRepetition.COLUMN_HABIT_COUNT, hr.getCount());
+        values.put(HabitRepetition.COLUMN_HABIT_CONCOUNT, hr.getConCount());
+        values.put(HabitRepetition.COLUMN_HABIT_CYCLE, hr.getCycle());
+        values.put(HabitRepetition.COLUMN_HABIT_CYCLE_DAY, hr.getCycle_day());
+
+        // update the habit column
+        db.update(HabitRepetition.TABLE_NAME, values, id_filter, null);
+        db.close(); // close the db connection
+    }
+
+    public void removeOneData(HabitRepetition hr) {
+
+        // Find database that match the row data. If it found, delete and return true
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(
+                HabitRepetition.TABLE_NAME,  // The table to delete from
+                HabitRepetition.COLUMN_ID + " = ?", //The condition
+                new String[]{String.valueOf(hr.getRow_id())} // The args will be replaced by ?
+        );
+
+        Log.d(TAG, "removeOneData: "+hr.getRow_id());
+        db.close();
+
+    }
+
+    public void repeatingSpecificHabitByID(long habitID){
+        long todayTimeStamp = getTodayTimestamp();
+        Habit habit = habitDBHelper.getHabitByID(habitID);
+        long id = habit.getHabitID();
+        int cycle = (habit.getPeriod() == 1) ? 0 : 1;
+        int day = 0;
+        long currTimeStamp = getTimestamp(habit.getTime_created());
+        if (currTimeStamp == 0){
+            return;
+        }
+        Log.d(TAG, "repeatingSpecificHabitByID: "+currTimeStamp);
+
+        if (habitDBHelper.isHabitIDExisted(id)) {
+            while (currTimeStamp <= todayTimeStamp) {
+                boolean isUpdated = false;
+                long timestamp = currTimeStamp;
+                switch (habit.getPeriod()) {
+                    case 1:
+                        Log.d(TAG, "repeatingHabit: DAILY");
+                        if (!checkRepetitionExist(id, timestamp)) {
+                            insertNewRepetitionHabit(id, -1, ++day, 0, timestamp);
+                            isUpdated = true;
+                        }
+                        currTimeStamp += 86400000;
+                        break;
+
+                    case 7:
+                        Log.d(TAG, "repeatingHabit: WEEKLY");
+                        if (!checkRepetitionExist(id, timestamp)) {
+                            if (day == 7) {
+                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                isUpdated = true;
+                                day = 1;
+
+                            } else {
+                                int count = getLastDayTotalCount(id, timestamp);
+                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
+                                isUpdated = true;
+                            }
+                        }
+                        currTimeStamp += 86400000;
+                        break;
+
+                    case 30:
+                        Log.d(TAG, "repeatingHabit: MONTHLY");
+                        if (!checkRepetitionExist(id, timestamp)) {
+                            if (day == 30) {
+                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                isUpdated = true;
+                                day = 1;
+                            } else {
+                                int count = getLastDayTotalCount(id, timestamp);
+                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
+                                isUpdated = true;
+                            }
+                        }
+                        currTimeStamp += 86400000;
+                        break;
+
+                }
+                if (isUpdated) {
+                    Log.d(TAG, "repeatingHabit: " + habit.getHabitID() + " AT " + timestamp);
+                    HabitRepetition habitRepetition = getHabitRepetitionByTimeStamp(habit.getHabitID(), timestamp);
+                    writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                }
+            }
+        }
+    }
+
+    public long getTimestamp(String time_created) {
+        long millis = 0;
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = sdf.parse(time_created);
+            millis = date.getTime();
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        return millis;
     }
 
 

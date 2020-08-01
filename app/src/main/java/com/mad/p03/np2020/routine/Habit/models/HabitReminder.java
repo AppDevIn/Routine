@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.models;
+package com.mad.p03.np2020.routine.Habit.models;
 
 /**
  *
