@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mad.p03.np2020.routine.Card.CardActivity;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
+import com.mad.p03.np2020.routine.Profile.ProfileActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.CardNotification;
 import com.mad.p03.np2020.routine.models.Task;
@@ -438,7 +440,14 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
         Log.v(TAG, "Date time set is: " + DateTimeSet);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
+        if (timeSet < currentCal.getTimeInMillis())
+        {
+            MakeToast("Schedule must be set after current time!");
+        }
+        else
+        {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
+        }
 
 
         /*
@@ -459,6 +468,15 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         startActivity(intent);
 
          */
+    }
+
+    public void MakeToast(String info)
+    {
+        Toast toast = Toast.makeText(getContext(), info, Toast.LENGTH_LONG);
+        toast.getView().setBackgroundColor(Color.GRAY);
+        TextView text = (TextView) toast.getView().findViewById(android.R.id.message);
+        text.setTextColor(Color.WHITE);
+        toast.show();
     }
 
 
