@@ -183,8 +183,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         Log.d(TAG, "onItemMove(): From: " + fromPosition + " To: " + toPosition);
 
         Task fromTask = mTaskList.get(fromPosition);
-        mTaskList.remove(fromTask);
+
+        mTaskList.remove(fromPosition);
         mTaskList.add(toPosition, fromTask);
+
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -202,6 +204,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
         Task task = mTaskList.get(position);
         //Delete the task
         removeTask(task);
+
 
     }
 
