@@ -20,8 +20,11 @@ import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -736,6 +739,87 @@ public class HabitRepetitionDBHelper extends DBHelper {
         Log.d(TAG, "removeOneData: "+hr.getRow_id());
         db.close();
 
+    }
+
+    public void repeatingSpecificHabitByID(long habitID){
+        long todayTimeStamp = getTodayTimestamp();
+        Habit habit = habitDBHelper.getHabitByID(habitID);
+        long id = habit.getHabitID();
+        int cycle = (habit.getPeriod() == 1) ? 0 : 1;
+        int day = 0;
+        long currTimeStamp = getTimestamp(habit.getTime_created());
+        if (currTimeStamp == 0){
+            return;
+        }
+        Log.d(TAG, "repeatingSpecificHabitByID: "+currTimeStamp);
+
+        if (habitDBHelper.isHabitIDExisted(id)) {
+            while (currTimeStamp <= todayTimeStamp) {
+                boolean isUpdated = false;
+                long timestamp = currTimeStamp;
+                switch (habit.getPeriod()) {
+                    case 1:
+                        Log.d(TAG, "repeatingHabit: DAILY");
+                        if (!checkRepetitionExist(id, timestamp)) {
+                            insertNewRepetitionHabit(id, -1, ++day, 0, timestamp);
+                            isUpdated = true;
+                        }
+                        currTimeStamp += 86400000;
+                        break;
+
+                    case 7:
+                        Log.d(TAG, "repeatingHabit: WEEKLY");
+                        if (!checkRepetitionExist(id, timestamp)) {
+                            if (day == 7) {
+                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                isUpdated = true;
+                                day = 1;
+
+                            } else {
+                                int count = getLastDayTotalCount(id, timestamp);
+                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
+                                isUpdated = true;
+                            }
+                        }
+                        currTimeStamp += 86400000;
+                        break;
+
+                    case 30:
+                        Log.d(TAG, "repeatingHabit: MONTHLY");
+                        if (!checkRepetitionExist(id, timestamp)) {
+                            if (day == 30) {
+                                insertNewRepetitionHabit(id, ++cycle, 1, 0, timestamp);
+                                isUpdated = true;
+                                day = 1;
+                            } else {
+                                int count = getLastDayTotalCount(id, timestamp);
+                                insertNewRepetitionHabit(id, cycle, ++day, count, timestamp);
+                                isUpdated = true;
+                            }
+                        }
+                        currTimeStamp += 86400000;
+                        break;
+
+                }
+                if (isUpdated) {
+                    Log.d(TAG, "repeatingHabit: " + habit.getHabitID() + " AT " + timestamp);
+                    HabitRepetition habitRepetition = getHabitRepetitionByTimeStamp(habit.getHabitID(), timestamp);
+                    writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                }
+            }
+        }
+    }
+
+    public long getTimestamp(String time_created) {
+        long millis = 0;
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = sdf.parse(time_created);
+            millis = date.getTime();
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        return millis;
     }
 
 

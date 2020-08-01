@@ -388,6 +388,10 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onHabitCheckItemClick(int position) {
         final Habit habit = habitAdapter._habitList.getItemAt(position); // retrieve the habit object by its position in adapter list
+        if (habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID()).size() <= 0){
+            Log.d(TAG, "Missing Habit Repetitions for habit");
+            habitRepetitionDBHelper.repeatingSpecificHabitByID(habit.getHabitID());
+        }
         habit.addCount(); // add the count by 1
 
         habitAdapter.notifyDataSetChanged(); // notify the data set has changed
