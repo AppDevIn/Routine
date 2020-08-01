@@ -41,6 +41,7 @@ import com.mad.p03.np2020.routine.Habit.Adapter.HabitAdapter;
 import com.mad.p03.np2020.routine.Habit.Adapter.HabitCheckAdapter;
 import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.Habit.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObserver;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
@@ -65,7 +66,7 @@ import java.util.Locale;
  */
 
 
-public class HabitActivity extends AppCompatActivity implements View.OnClickListener, HabitItemClickListener, HabitCheckItemClickListener {
+public class HabitActivity extends AppCompatActivity implements View.OnClickListener, HabitItemClickListener, HabitCheckItemClickListener, HabitDBObserver {
 
     private static final String TAG = "HabitTracker";
     private static final String SHARED_PREFS = "sharedPrefs"; // initialise sharedPrefs
@@ -81,7 +82,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     //User
-    private User user;
+    private User user = new User();
 
     //FAB
     private static FloatingActionButton add_habit;
@@ -123,6 +124,15 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set the layout in full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // set User
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        user.readHabit_Firebase(this, this);
+
+        habit_dbHandler = new HabitDBHelper(this);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
+        habit_dbHandler.registerDbObserver(this);
+        habitRepetitionDBHelper.registerDbObserver(this);
 
         viewSwitcher = findViewById(R.id.switcher);
         habitRecyclerView = findViewById(R.id.habit_recycler_view);
@@ -170,11 +180,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
             };
         }
 
-        // set User
-        user = new User();
-        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        user.readHabit_Firebase(this);
-
         // initialise the shared preferences
         initSharedPreferences();
 
@@ -189,14 +194,9 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         add_habit.setOnClickListener(this);
         add_first_habit.setOnClickListener(this);
 
-        habit_dbHandler = new HabitDBHelper(this);
-        habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
-
         habitRecyclerView.setLayoutManager(manager);
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
     }
 
     @Override
@@ -210,26 +210,21 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         user.setHabitList(habit_dbHandler.getAllHabits());
         // initialise the habitAdapter
-
         Habit.HabitList habitArrayList = initDummyList(user.getHabitList());
-
-        displayView(habitArrayList);
 
         habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList, user);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
-        habitCheckAdapter.setOnItemClickListener(this);
-        habitCheckAdapter.notifyDataSetChanged();
 
         habitAdapter = new HabitAdapter(this, habitArrayList, user, habitCheckAdapter);
-        habitAdapter.notifyDataSetChanged();
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
-        // set onItemClickListener on the habitAdapter
+        // set onItemClickListener on the habitAdapters
+        habitCheckAdapter.setOnItemClickListener(this);
         habitAdapter.setOnItemClickListener(this);
 
-
         indicator_num.setText("1");
+        displayView(habitArrayList);
     }
 
     @Override
@@ -239,6 +234,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
         bottomNavInit(bottomNavigationView);
 
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause: ");
+        super.onPause();
+        habit_dbHandler.removeDbObserver(this);
+        habitRepetitionDBHelper.removeDbObserver(this);
     }
 
     /** This method is used to initialise the habit notification channel. */
@@ -661,4 +664,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    @Override
+    public void onDatabaseChanged() {
+        Log.d(TAG, "onDatabaseChanged: ");
+        Habit.HabitList habitList = initDummyList(habit_dbHandler.getAllHabits());
+        habitAdapter._habitList = habitList;
+        habitCheckAdapter.habitList = habitList;
+        habitAdapter.notifyDataSetChanged();
+        habitCheckAdapter.notifyDataSetChanged();
+        displayView(habitList);
+    }
 }

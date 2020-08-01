@@ -67,8 +67,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
 //        user.readHabit_Firebase(c, true);
 //        user.readHabitRepetition_Firebase(c);
-        habitEventListener();
-        habitRepetitionEventListener();
+//        habitEventListener();
+//        habitRepetitionEventListener();
     }
 
     /**

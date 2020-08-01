@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.DAL.DBHelper;
 import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObservable;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObserver;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
@@ -36,7 +38,7 @@ import java.util.Locale;
  * @since 20-07-2020
  */
 
-public class HabitRepetitionDBHelper extends DBHelper {
+public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservable {
 
     private final String TAG = "HabitRepetitionDatabase";
     private HabitDBHelper habitDBHelper;
@@ -53,6 +55,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
         habitDBHelper = new HabitDBHelper(context);
         this.context = context;
     }
+    ArrayList<HabitDBObserver> observerArrayList = new ArrayList<>();
 
     /**
      *
@@ -63,6 +66,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         super.onCreate(db);
+        observerArrayList = new ArrayList<>();
     }
 
     /**
@@ -446,6 +450,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
         }
         // close the database
         db.close();
+        notifyDbChanged();
 
     }
 
@@ -724,6 +729,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
         // update the habit column
         db.update(HabitRepetition.TABLE_NAME, values, id_filter, null);
         db.close(); // close the db connection
+        notifyDbChanged();
     }
 
     public void removeOneData(HabitRepetition hr) {
@@ -739,6 +745,7 @@ public class HabitRepetitionDBHelper extends DBHelper {
 
         Log.d(TAG, "removeOneData: "+hr.getRow_id());
         db.close();
+        notifyDbChanged();
 
     }
 
@@ -821,6 +828,27 @@ public class HabitRepetitionDBHelper extends DBHelper {
             e.printStackTrace();
         }
         return millis;
+    }
+
+    @Override
+    public void registerDbObserver(HabitDBObserver habitDBObserver) {
+        if (!observerArrayList.contains(habitDBObserver)){
+            observerArrayList.add(habitDBObserver);
+        }
+    }
+
+    @Override
+    public void removeDbObserver(HabitDBObserver habitDBObserver) {
+        observerArrayList.remove(habitDBObserver);
+    }
+
+    @Override
+    public void notifyDbChanged() {
+        for (HabitDBObserver habitDBObserver :observerArrayList){
+            if (habitDBObserver != null){
+                habitDBObserver.onDatabaseChanged();
+                Log.v(TAG,"SQLiteDatabase onChanged triggered");
+            }}
     }
 
 
