@@ -212,12 +212,13 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         // initialise the habitAdapter
         Habit.HabitList habitArrayList = initDummyList(user.getHabitList());
 
+        // initialise adapter
+        habitAdapter = new HabitAdapter(this, habitArrayList, user);
         habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList, user);
-        habitCheckRecyclerView.setAdapter(habitCheckAdapter);
 
-        habitAdapter = new HabitAdapter(this, habitArrayList, user, habitCheckAdapter);
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
+        habitCheckRecyclerView.setAdapter(habitCheckAdapter);
 
         // set onItemClickListener on the habitAdapters
         habitCheckAdapter.setOnItemClickListener(this);
