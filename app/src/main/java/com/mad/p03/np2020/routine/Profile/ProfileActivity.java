@@ -314,6 +314,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         userDBHelper.updateUserName(UID, mUser);
         username.setText(newUsername);
+
+        if (newUsername.length() > 16)
+        {
+            MakeToast("Username limited at 16 characters!");
+        }
     }
 
 
