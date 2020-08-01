@@ -100,9 +100,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
         toolbar.setBackground(shape);
 
-
-
-
     }
 
     @Override

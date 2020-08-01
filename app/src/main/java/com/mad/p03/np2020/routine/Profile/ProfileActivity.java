@@ -49,6 +49,7 @@ import com.mad.p03.np2020.routine.Profile.Dialogs.ReportDialog;
 import com.mad.p03.np2020.routine.Profile.Dialogs.UsernameDialog;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
+import com.mad.p03.np2020.routine.models.CardNotification;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitReminder;
 
@@ -59,7 +60,14 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+/**
+ *
+ * Profile Class for managing Profile
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, UsernameDialog.UsernameDialogListener, PasswordDialog.PasswordDialogListener {
 
     private final String TAG = "ProfileActivity";
@@ -183,7 +191,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Log.v(TAG, "onCancelled", databaseError.toException());
             }
         });
-
 
         try {
             getUserInfo();
@@ -314,8 +321,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         userDBHelper.updateUserName(UID, mUser);
         username.setText(newUsername);
-    }
 
+        if (newUsername.length() > 16)
+        {
+            MakeToast("Username limited at 16 characters!");
+        }
+    }
 
     public void changePassword()
     {

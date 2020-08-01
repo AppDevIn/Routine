@@ -14,7 +14,7 @@ import com.mad.p03.np2020.routine.models.User;
  * in the database
  *
  *
- * @author Jeyavishnu
+ * @author Jeyavishnu & Pritheev
  * @since 03-06-2020
  */
 public class UserDBHelper extends DBHelper {
