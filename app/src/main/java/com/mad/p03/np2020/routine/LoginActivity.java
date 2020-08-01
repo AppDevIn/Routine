@@ -300,10 +300,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         userDatabase.insertUser(user);
 
                                         //Get All User Routine Data
-                                        user.readHabitRepetition_Firebase(context);
-                                        user.readHabitGroup_Firebase(context);
                                         user.getAllSectionAndTask();
-                                        user.readHabit_Firebase(context, false);
+
 
                                         Intent intent = new Intent(LoginActivity.this, Home.class);
                                         intent.putExtra("user", user);

@@ -172,6 +172,8 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
         // set User
         user = new User();
+        user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        user.readHabit_Firebase(this);
 
         // initialise the shared preferences
         initSharedPreferences();
@@ -194,6 +196,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitRecyclerView.addItemDecoration(new HabitHorizontalDivider(8));
         habitCheckRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
     }
 
     @Override
@@ -215,13 +218,16 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckAdapter = new HabitCheckAdapter(this, habitArrayList, user);
         habitCheckRecyclerView.setAdapter(habitCheckAdapter);
         habitCheckAdapter.setOnItemClickListener(this);
+        habitCheckAdapter.notifyDataSetChanged();
 
         habitAdapter = new HabitAdapter(this, habitArrayList, user, habitCheckAdapter);
+        habitAdapter.notifyDataSetChanged();
         // set adapter to the recyclerview
         habitRecyclerView.setAdapter(habitAdapter);
 
         // set onItemClickListener on the habitAdapter
         habitAdapter.setOnItemClickListener(this);
+
 
         indicator_num.setText("1");
     }

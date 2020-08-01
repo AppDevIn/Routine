@@ -76,7 +76,6 @@ public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: "+habitList.size());
         return habitList.size();
     }
 

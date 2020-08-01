@@ -15,6 +15,7 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitRepetition;
@@ -660,6 +661,80 @@ public class HabitRepetitionDBHelper extends DBHelper {
         db.close();
 
         return total;
+
+    }
+
+    public boolean isHabitRepetitionExisted(long rowID){
+        boolean isExisted = false;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_ID + " = " + rowID;
+
+        Cursor res =  db.rawQuery( query  , null );
+        if (res.getCount() > 0){
+            isExisted = true;
+        }
+
+        db.close();
+
+        return isExisted;
+    }
+
+    public HabitRepetition getHabitRepetitionByRowID(long id){
+        HabitRepetition hr = new HabitRepetition();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select * from " + HabitRepetition.TABLE_NAME + " WHERE " + HabitRepetition.COLUMN_ID + " = " + id;
+        Cursor res =  db.rawQuery( query, null );
+        if (res.getCount() > 0){
+            res.moveToFirst();
+            hr.setRow_id(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_ID)));
+            hr.setHabitID(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_ID)));
+            hr.setTimestamp(res.getLong(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_TIMESTAMP)));
+            hr.setCycle(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE)));
+            hr.setCycle_day(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CYCLE_DAY)));
+            hr.setCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_COUNT)));
+            hr.setConCount(res.getInt(res.getColumnIndex(HabitRepetition.COLUMN_HABIT_CONCOUNT)));
+        }
+
+        db.close();
+
+        return hr;
+    }
+
+    public void update(HabitRepetition hr){
+        String id_filter = HabitRepetition.COLUMN_ID + " = " +hr.getRow_id();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //update row id
+        values.put(HabitRepetition.COLUMN_HABIT_ID, hr.getHabitID());
+        values.put(HabitRepetition.COLUMN_HABIT_TIMESTAMP, hr.getTimestamp());
+        values.put(HabitRepetition.COLUMN_HABIT_COUNT, hr.getCount());
+        values.put(HabitRepetition.COLUMN_HABIT_CONCOUNT, hr.getConCount());
+        values.put(HabitRepetition.COLUMN_HABIT_CYCLE, hr.getCycle());
+        values.put(HabitRepetition.COLUMN_HABIT_CYCLE_DAY, hr.getCycle_day());
+
+        // update the habit column
+        db.update(HabitRepetition.TABLE_NAME, values, id_filter, null);
+        db.close(); // close the db connection
+    }
+
+    public void removeOneData(HabitRepetition hr) {
+
+        // Find database that match the row data. If it found, delete and return true
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(
+                HabitRepetition.TABLE_NAME,  // The table to delete from
+                HabitRepetition.COLUMN_ID + " = ?", //The condition
+                new String[]{String.valueOf(hr.getRow_id())} // The args will be replaced by ?
+        );
+
+        Log.d(TAG, "removeOneData: "+hr.getRow_id());
+        db.close();
 
     }
 

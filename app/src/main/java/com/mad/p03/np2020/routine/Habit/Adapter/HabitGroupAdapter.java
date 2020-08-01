@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mad.p03.np2020.routine.DAL.HabitGroupDBHelper;
 import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
 import com.mad.p03.np2020.routine.models.HabitGroup;
 import com.mad.p03.np2020.routine.R;
@@ -39,6 +40,7 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
     private HabitItemClickListener mListener;
     private static View view;
     private User user;
+    private HabitGroupDBHelper habitGroupDBHelper;
     private static final String TAG = "HabitGroupAdapter";
 
     /**Used as the adapter habitGroupList*/
@@ -50,7 +52,7 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
         this.c = c;
         this.user = user;
 
-        user.readHabitGroup_Firebase(c);
+        habitGroupDBHelper = new HabitGroupDBHelper(c);
         eventListener();
     }
 
@@ -130,7 +132,7 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
      * Notify Item changed if user delete or add data
      */
     public void notifyItemChanged() {
-        _habitGroupList = user.getHabitGroupsList();
+        _habitGroupList = habitGroupDBHelper.getAllGroups();
         this.notifyDataSetChanged();
 
     }

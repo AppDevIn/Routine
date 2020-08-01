@@ -336,7 +336,7 @@ public class HabitAddActivity extends AppCompatActivity {
                 // insert the habit into SQLiteDatabase
                 long habitID = habit_dbHandler.insertHabit(habit, user.getUID());
                 // The insert process is success if habit id returned is not equal to 1
-
+                Log.d(TAG, "HabitAdapter: "+habit_dbHandler.getAllHabits().size());
                 if (habitID != -1){ // if habitID returned is legit
                     habit.setHabitID(habitID); // set the id to the habit
                     writeHabit_Firebase(habit, user.getUID(), false); // write habit to firebase
