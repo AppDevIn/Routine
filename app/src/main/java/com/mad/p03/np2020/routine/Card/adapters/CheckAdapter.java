@@ -21,7 +21,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
+/**
+ *
+ * CheckAdapter Class for managing check boxes
+ *
+ * @author Jeyavishnu & Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implements CardTouchHelperAdapter {
 
     private final String TAG = "CardAdapter";

@@ -20,7 +20,7 @@ import java.util.Calendar;
 
 /**
  *
- * CardActivity class used to manage card activities
+ * PopUp class used to manage card activities
  *
  * @author Pritheev
  * @since 02-06-2020

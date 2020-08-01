@@ -23,7 +23,14 @@ import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.User;
 
 import static android.content.ContentValues.TAG;
-
+/**
+ *
+ * UsernameDialog Class for managing username dialog
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class UsernameDialog extends AppCompatDialogFragment {
     private EditText changedUsername;
     private UsernameDialogListener listener;

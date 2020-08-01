@@ -16,7 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.mad.p03.np2020.routine.R;
-
+/**
+ *
+ * PasswordDialog Class for managing password dialog
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class PasswordDialog extends AppCompatDialogFragment {
     private EditText currentPassword;
     private EditText newPassword;

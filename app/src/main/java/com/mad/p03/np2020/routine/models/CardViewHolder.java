@@ -4,7 +4,14 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
+/**
+ *
+ * CardViewHolder Class for setting notification
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class CardViewHolder extends RecyclerView.ViewHolder {
     CheckedTextView stepItem;
 

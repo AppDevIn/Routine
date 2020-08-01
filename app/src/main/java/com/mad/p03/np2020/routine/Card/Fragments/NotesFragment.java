@@ -15,16 +15,14 @@ import android.widget.TextView;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.Task;
-
 /*
  *
  * Notes fragment to take notes for each task
  *
- * @author Jeyavishnu
+ * @author Jeyavishnu & Pritheev
  * @since 10-07-2020
  *
  */
-
 public class NotesFragment extends Fragment
 {
 

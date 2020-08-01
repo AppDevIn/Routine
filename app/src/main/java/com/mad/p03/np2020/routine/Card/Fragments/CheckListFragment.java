@@ -38,15 +38,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-/*
+/**
  *
- * Notes fragment to take notes for each task
+ * Checklist Fragment for managing checklist
  *
- * @author Jeyavishnu
- * @since 10-07-2020
+ * @author Pritheev & Jeyavishnu
+ * @since 02-06-2020
  *
  */
-
 public class CheckListFragment extends Fragment implements CheckDataListener, TextView.OnEditorActionListener {
 
     String mTaskID;

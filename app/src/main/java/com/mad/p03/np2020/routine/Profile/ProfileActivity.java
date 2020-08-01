@@ -59,7 +59,14 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+/**
+ *
+ * Profile Class for managing Profile
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, UsernameDialog.UsernameDialogListener, PasswordDialog.PasswordDialogListener {
 
     private final String TAG = "ProfileActivity";

@@ -49,7 +49,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
+/**
+ *
+ * CardNotification Class for setting notification
+ *
+ * @author Pritheev
+ * @since 02-06-2020
+ *
+ */
 public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
     private final String TAG = "ScheduleDialog";
