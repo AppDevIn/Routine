@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.DAL;
+package com.mad.p03.np2020.routine.Habit.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,10 +15,11 @@ import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Focus.Model.Focus;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.background.HabitRepetitionWorker;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

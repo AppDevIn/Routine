@@ -108,7 +108,7 @@
 
 
         <receiver
-            android:name=".models.AlarmReceiver"
+            android:name=".Habit.models.AlarmReceiver"
             android:enabled="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>

@@ -1,6 +1,7 @@
-package com.mad.p03.np2020.routine.models;
+package com.mad.p03.np2020.routine.Habit.models;
 
 import com.mad.p03.np2020.routine.R;
+import com.mad.p03.np2020.routine.models.User;
 
 import java.util.ArrayList;
 

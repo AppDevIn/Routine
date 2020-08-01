@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.DAL;
+package com.mad.p03.np2020.routine.Habit.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,9 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitGroup;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
 
 import java.util.ArrayList;
 

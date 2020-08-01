@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.DAL;
+package com.mad.p03.np2020.routine.Habit.DAL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,10 +8,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.HabitGroup;
-import com.mad.p03.np2020.routine.models.HabitReminder;
-import com.mad.p03.np2020.routine.models.HabitRepetition;
+import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
+import com.mad.p03.np2020.routine.Habit.models.HabitReminder;
+import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -24,7 +25,7 @@ import java.util.Locale;
  * @since 02-06-2020
  */
 
-public class HabitDBHelper extends DBHelper{
+public class HabitDBHelper extends DBHelper {
 
     private final String TAG = "HabitDatabase";
 

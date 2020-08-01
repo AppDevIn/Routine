@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.models;
+package com.mad.p03.np2020.routine.Habit.models;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -12,10 +12,10 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.mad.p03.np2020.routine.DAL.HabitRepetitionDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitRepetitionDBHelper;
 import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 
 import java.util.Calendar;
 

@@ -21,14 +21,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.DAL.HabitDBHelper;
+import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
 import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.background.HabitWorker;
-import com.mad.p03.np2020.routine.helpers.HabitItemClickListener;
-import com.mad.p03.np2020.routine.models.Habit;
-import com.mad.p03.np2020.routine.models.InternetStatus;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitItemClickListener;
+import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 
 import static com.mad.p03.np2020.routine.Habit.HabitActivity.displayView;
