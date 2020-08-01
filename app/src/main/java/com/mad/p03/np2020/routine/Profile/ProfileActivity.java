@@ -60,6 +60,11 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.mad.p03.np2020.routine.models.User.habitListener;
+import static com.mad.p03.np2020.routine.models.User.hgListener;
+import static com.mad.p03.np2020.routine.models.User.hrListener;
+
 /**
  *
  * Profile Class for managing Profile
@@ -394,6 +399,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         clearHabitAlarm(this);
         cancelRepeatingHabit();
+        removeHabitEventListener();
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mAuth.signOut();
@@ -523,5 +529,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //To set setOnNavigationItemSelectedListener
         NavBarHelper navBarHelper = new NavBarHelper(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(navBarHelper);
+    }
+
+    public void removeHabitEventListener(){
+        String UID = mAuth.getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(UID);
+        if (habitListener != null){
+            Log.d(TAG, "removeHabitEventListener: habit");
+            ref.child("habit").removeEventListener(habitListener);
+            habitListener = null;
+        }
+        if (hrListener != null){
+            Log.d(TAG, "removeHabitEventListener: habitRepetition");
+            ref.child("habitRepetition").removeEventListener(hrListener);
+            hrListener = null;
+        }
+        if (hgListener != null){
+            Log.d(TAG, "removeHabitEventListener: habitGroup");
+            ref.child("habitGroup").removeEventListener(hgListener);
+            hgListener = null;
+
+        }
+
+
     }
 }

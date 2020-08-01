@@ -142,6 +142,9 @@ public class User implements Parcelable, FocusDBObserver {
     AlertDialog.Builder builder;
     AlertDialog dialog;
 
+    public static ChildEventListener habitListener, hrListener, hgListener;
+
+
     /**
      * Parcelable constructor for custom object
      *
@@ -904,7 +907,7 @@ public class User implements Parcelable, FocusDBObserver {
 
         habitDBHelper = new HabitDBHelper(context);
         hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habit");
-        hRef.addChildEventListener(new ChildEventListener() {
+        habitListener = hRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "onChildAdded: habit");
@@ -967,7 +970,7 @@ public class User implements Parcelable, FocusDBObserver {
 
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
         hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habitRepetition");
-        hRef.addChildEventListener(new ChildEventListener() {
+        hrListener = hRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "onChildAdded: habitRepetition");
@@ -1029,7 +1032,7 @@ public class User implements Parcelable, FocusDBObserver {
 
         habitGroupDBHelper = new HabitGroupDBHelper(context);
         hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habitGroup");
-        hRef.addChildEventListener(new ChildEventListener() {
+        hgListener = hRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "onChildAdded: habitGroup");
