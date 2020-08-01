@@ -2,7 +2,13 @@ package com.mad.p03.np2020.routine.Focus.Model;
 
 import java.io.File;
 import java.util.HashMap;
+/***
+ *
+ * Model used to manage the Achievement
 
+ *  @author Lee Quan Sheng
+ *  @since 01-08-2020
+ */
 public class Achievement {
 
 

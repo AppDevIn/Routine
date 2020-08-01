@@ -11,6 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mad.p03.np2020.routine.Focus.Adapter.GridViewAdapterAchievements;
 import com.mad.p03.np2020.routine.R;
 
+/**
+ *
+ * ViewHolder used to manage the GridViewAdapterAchievements
+ *
+ * @author Lee Quan Sheng
+ * @since 02-06-2020
+ */
 public class ItemAchievementViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public GridViewAdapterAchievements adapter;
     public ViewGroup parent;

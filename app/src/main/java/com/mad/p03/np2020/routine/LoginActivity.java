@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_Email.setOnKeyListener(this);
         et_Password.setOnKeyListener(this);
         checkBox.setOnKeyListener(this);
+
         loadData();
         updateViews();
 
@@ -189,6 +190,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void Login(){
         if (!TextUtils.isEmpty(et_Email.getText().toString()) & !TextUtils.isEmpty(et_Password.getText().toString())) {
+
+            //Check if there is network connectivity before sign in from Firebase
             if (InternetStatus.getInstance(getApplicationContext()).isOnline()) {
                 Log.i(TAG, "User is online");
                 email = et_Email.getText().toString();

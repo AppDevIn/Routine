@@ -211,6 +211,13 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusViewHolder> {
         WorkManager.getInstance(context.getApplicationContext()).enqueue(mywork);
     }
 
+    /***
+     * This method is used to update the current list of the focus history.
+     * It is currently used to track for any live changes to the firebase database to update accordingly
+     *
+     *
+     * @param updateList This parameter is passed in to update the list of the adapter
+     */
     public void updateList(ArrayList<Focus> updateList){
         focusList = updateList;
         Log.v(TAG, "Set new list " + updateList);

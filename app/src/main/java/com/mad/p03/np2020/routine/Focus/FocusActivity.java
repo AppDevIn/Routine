@@ -160,7 +160,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private CountDownTimer eCountDownTimer; //Auto closed for Focus
 
     //History Widgets
-    private String dateTimeTask, currentTask, mCompletion;
+    private String dateTimeTask;
+    private String currentTask;
     private final String TAG = "Focus";
 
     /**
@@ -170,9 +171,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     final String title = "You have an ongoing Focus";
     final String message = "Come back now before your Sun becomes depressed!";
-
-    //Firebase
-    private DatabaseReference myRef;
 
     //User
     private User user = new User();
@@ -280,6 +278,14 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
+    /**
+     * the system then invokes the app's implementation
+     * When permission is changed, the images from google storage will be executed
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Log.v("Permission", "Code: " + requestCode);
@@ -308,7 +314,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     /**
      * Initialization the focusActivity
      * <p>
-     * Initialize minutes, seconds back to zero
+     * Initialize Hours, minutes, seconds back to zero
      * Get Firebase Data
      * Get Local Database Data
      * Initialize object
@@ -424,7 +430,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
                 textDisplay.setText(R.string.SUCCESS_STATUS);
                 timerSuccess();
                 BUTTON_STATE = "Reset";
-                mCompletion = "True";
+                String mCompletion = "True";
                 totalTimeSeconds = (thours * 60 * 60) + (tmins * 60) + tsecs;
                 String dateSuccess = new SimpleDateFormat("ddMMyyyy HH:mm:ss", Locale.getDefault()).format(new Date());
                 Focus focusViewHolder = new Focus(dateTimeTask, String.valueOf(totalTimeSeconds), currentTask, mCompletion, timeTaken);
@@ -715,11 +721,18 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         return false;
     }
 
+    /**
+     *
+     * @param hasCapture
+     */
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 
+    /**
+     * Interface for monitoring the state of the SQL Database update
+     */
     @Override
     public void onDatabaseChanged() {
         try {
@@ -974,7 +987,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private void FirebaseDatabase() { //Firebase Reference
 //        user.setUID("V30jZctVgSPh00CVskSYiXNRezC2");
         Log.i(TAG, "Getting firebase for User ID " + user.getUID());
-        myRef = FirebaseDatabase.getInstance().getReference().child("focusData").child(user.getUID());
+        //Firebase
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("focusData").child(user.getUID());
         Log.i(TAG, "checks for myRef: " + myRef);
     }
 
@@ -1140,7 +1154,9 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         return mInstance;
     }
 
-    //Bound Services
+    /**
+     * Interface for monitoring the state of an application service.
+     */
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -1157,7 +1173,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     };
 
-    //Popup layout to select
+    /**
+     * This is to display the selection of view that the user would like to enter, Achievement page or Focus History
+     * @param context
+     * @param p
+     */
     private void showStatusPopup(final Activity context, Point p) {
         imageButton.setRotation(90);
 

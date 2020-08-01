@@ -22,13 +22,16 @@ import com.mad.p03.np2020.routine.helpers.DividerItemDecoration;
 import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.models.User;
 
+/***
+ *
+ * Achievement fragment used to manage the fragment of Focus layout section
+ *  @author Lee Quan Sheng
+ *  @since 01-08-2020
+ */
 public class AchievementFragment extends Fragment implements View.OnClickListener {
 
     private static final String USER_GET = "User Get";
     private static final String FOCUS_DATABASE = "FocusDatabase";
-
-    private FocusDBHelper focusDBHelper;
-    private AchievementDBHelper achievementDBHelper;
 
     private OnFragmentInteractionListener mListener;
     private final String TAG = "Achievement Page";
@@ -39,6 +42,17 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         // Required empty public constructor
     }
 
+    /**
+     *
+     * Default Constructor for Fragment Achievement
+     * NewInstance() method of Constructor class invoke of 3 arguments
+     * It creates a Bundle for custom object and database to be returned
+     *
+     * @param user
+     * @param focusDBHelper
+     * @param achievementDBHelper
+     * @return
+     */
     public static AchievementFragment newInstance(User user, FocusDBHelper focusDBHelper, AchievementDBHelper achievementDBHelper) {
         AchievementFragment fragment = new AchievementFragment();
         Log.v("AchievementFragment", "Fragment Called");
@@ -62,8 +76,8 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(USER_GET);
-            focusDBHelper = getArguments().getParcelable("FocusDatabase");
-            achievementDBHelper = getArguments().getParcelable(Achievement.TABLE_NAME);
+            getArguments().getParcelable("FocusDatabase");
+            getArguments().getParcelable(Achievement.TABLE_NAME);
             Log.v(TAG, "Created fragment");
         }
     }
@@ -76,19 +90,21 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         ImageButton buttonFragment = view.findViewById(R.id.closeAchievement);
         buttonFragment.setOnClickListener(this);
 
-        //RecyclerView for display history
-        //Recycler View
+        //RecyclerView for display the achievement page
         RecyclerView recyclerView = view.findViewById(R.id.recyclerAch);
 
-        //recycler adapter
-        AchievementAdapter achievementAdapter = new AchievementAdapter(user, getActivity(), focusDBHelper, this, achievementDBHelper);
+        //The adapter for the achievement recyclerview
+        AchievementAdapter achievementAdapter = new AchievementAdapter(user, getActivity(), this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getActivity(), 1); //Declare layoutManager
+
+        //Setting the configurations for achievements
         recyclerView.addItemDecoration(new DividerItemDecoration(15)); //Add Custom Spacing
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         achievementAdapter.setHasStableIds(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         recyclerView.setAdapter(achievementAdapter);
 
         return view;

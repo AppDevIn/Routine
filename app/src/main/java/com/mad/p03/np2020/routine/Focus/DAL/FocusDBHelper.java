@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 /**
  * This created to handle the Focus Data in SQLiteDatabase
+ * The DB helper includes a listener to listen to any changes to the SQL database
  *
  * @author Lee Quan Sheng
  * @since 02-06-2020
@@ -32,7 +33,6 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
     String TAG = "FocusDBHelper";
 
     /**
-     * Show custom delete item AlertDialog
      *
      * @param context set context to this content
      */
@@ -116,7 +116,7 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
     }
 
     /**
-     * This is called to remove Data to existing Database
+     * This is called to remove Data to existing Focus Database
      *
      * @param focus set focus parameter for this content
      */
@@ -138,6 +138,11 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
 
     }
 
+    /**
+     * This is called to remove Data to existing Focus archive Database
+     *
+     * @param focus set focus parameter for this content
+     */
     public void removeOneAData(Focus focus) {
 
         // Find database that match the row data. If it found, delete and return true
@@ -294,6 +299,10 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
 
         return cursor.moveToFirst();
     }
+    /***
+     * Check if row archive exist
+     * @return
+     */
 
     public boolean rowAexist(String fbID) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -304,7 +313,8 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
     }
 
     /***
-     * check if row is updated based on firebase
+     * This method is called to get focus data item
+     * @param fbID The parameter is for Firebase UID to get a single row corresponding to the UIDs
      * @return
      */
     public Focus getOneFocusData(String fbID) {
@@ -340,6 +350,11 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
         return newFocus;
     }
 
+    /***
+     * This method is called to get archive focus data item
+     * @param fbID The parameter is for Firebase UID to get a single row corresponding to the UIDs
+     * @return
+     */
     public Focus getOneArchiveFocusData(String fbID) {
         //This is called to get one data existing in the firebase database
 
@@ -373,6 +388,12 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
         return newFocus;
     }
 
+
+    /***
+     * This method is called to update focus data item
+     * @param focus The parameter that is passing in will be updated to the FOCUS SQL database
+     * @return
+     */
     public void update(Focus focus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -395,6 +416,11 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
 
     }
 
+    /***
+     * This method is called to update focus data item
+     * @param focus The parameter that is passing in will be updated to the Archive FOCUS SQL database
+     * @return
+     */
     public void updateAfocus(Focus focus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -425,6 +451,11 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
     public void writeToParcel(Parcel dest, int flags) {
     }
 
+    /***
+     * This method is used to register the listener
+     * @param focusDBObserver Interface definition for a callback to be invoked when the database is updated.
+     * @return
+     */
     @Override
     public void registerDbObserver(FocusDBObserver focusDBObserver) {
         if (!observerArrayList.contains(focusDBObserver)){
@@ -432,11 +463,20 @@ public class FocusDBHelper extends DBHelper implements Parcelable, FocusDBObserv
         }
     }
 
+    /***
+     * This method is used to de-register the listener
+     * @param focusDBObserver Interface definition for a callback to be invoked when the database is updated.
+     * @return
+     */
     @Override
     public void removeDbObserver(FocusDBObserver focusDBObserver) {
         observerArrayList.remove(focusDBObserver);
     }
 
+    /***
+     * This method is used to execute to notify the Database has been updated
+     * @return
+     */
     @Override
     public void notifyDbChanged() {
         for (FocusDBObserver focusDBObserver :observerArrayList){

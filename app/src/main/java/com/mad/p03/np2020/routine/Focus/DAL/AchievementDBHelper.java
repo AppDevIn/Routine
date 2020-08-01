@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 
 /**
- * This created to handle the Focus Data in SQLiteDatabase
+ * This created to handle the Achievement Data in SQLiteDatabase
  *
  * @author Lee Quan Sheng
  * @since 22-07-2020
@@ -51,6 +51,11 @@ public class AchievementDBHelper extends DBHelper implements Parcelable {
         super.onDowngrade(db, oldVersion, newVersion);
     }
 
+    /***
+     * Insert new achievement into the sql database
+     * @param achievement The new achievement object that will be insert into the SQL database
+     * @return
+     */
     public String insertAchievements(Achievement achievement) {
 
         Log.d(TAG, "Hour tasks Adding");
@@ -132,6 +137,12 @@ public class AchievementDBHelper extends DBHelper implements Parcelable {
         db.close();
     }
 
+    /**
+     * This method is to check if the row exist in the database
+     * @param id
+     * @param typeAch
+     * @return
+     */
     public Boolean Exist(String id, int typeAch) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -140,6 +151,12 @@ public class AchievementDBHelper extends DBHelper implements Parcelable {
         return cursor.moveToFirst();
     }
 
+    /**
+     * This is used to get the row of the achievement item
+     * @param id
+     * @param typeAch
+     * @return
+     */
     public Achievement getAchievementItem(String id, int typeAch) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -167,6 +184,10 @@ public class AchievementDBHelper extends DBHelper implements Parcelable {
 
     }
 
+    /**
+     * This method is used to update the achievement in the SQL Database
+     * @param achievement
+     */
     public void update(Achievement achievement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -188,6 +209,11 @@ public class AchievementDBHelper extends DBHelper implements Parcelable {
         db.close();
     }
 
+    /**
+     * This is used to delete the achievement in the SQL database
+     * @param task
+     * @param type
+     */
     public void delete(String task, int type) {
         SQLiteDatabase db = this.getWritableDatabase();
 

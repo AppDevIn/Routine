@@ -29,6 +29,14 @@ import com.mad.p03.np2020.routine.models.User;
 
 import java.io.File;
 
+/***
+ *
+ * This adapter is used to display the gridviewAdpater Achievments bind to ItemAchievmentViewholder
+ * user is allowed to click on the item to show the details of the badge and share to Instagram
+ *
+ *  @author Lee Quan Sheng
+ *  @since 01-08-2020
+ */
 public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchievementViewHolder> {
 
     private final Context mContext;
@@ -38,20 +46,37 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
     AlertDialog.Builder builder;
     AlertDialog dialog;
 
-    // 1
+    /**
+     *
+     * @param context
+     * @param achievements The parameter that is passed is the user achievements to be loaded in the gridView
+     */
     public GridViewAdapterAchievements(Context context, User.achievementView achievements) {
         this.mContext = context;
         this.achievements = achievements;
     }
 
+
+    /***
+     *
+     * @param parent    The ViewGroup is the parent view that will hold your cell that you are about to create. So, the ViewGroup parent is the RecyclerView here (it will hold your cell). The parent is used during the layout inflation process so you can see it passed in to the inflate call.
+     * @param viewType The viewType is useful if you have different types of cells in your list. For example, if you have a header cell and a detail cell. You can use the viewType to make sure that you inflate the correct layout file for each of those two types of cells.
+     * @return return the Viewholder that is created within the onCreateViewHolder method
+     */
     @NonNull
     @Override
     public ItemAchievementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View historyView = LayoutInflater.from(mContext).inflate(R.layout.layout_item_achievement, parent, false);
+        View historyView = LayoutInflater.from(mContext).inflate(R.layout.layout_item_achievement, parent, false); //Display the achievement
         return new ItemAchievementViewHolder(historyView, this, parent);
 
     }
 
+
+    /***
+     *
+     * @param holder The viewholder of the badges recyclerview
+     * @param position The position of the badges recyclerview
+     */
     @Override
     public void onBindViewHolder(@NonNull ItemAchievementViewHolder holder, int position) {
         // 1
@@ -91,6 +116,11 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
         return achievements.getArrayList().size();
     }
 
+    /**
+     * this method will be executed when the share button is clicked
+     * It will share the badge logo to instagram stories
+     * @param position The position of the badge
+     */
     public void shareFileToInstagram(int position) {
         Achievement achievement = achievements.getArrayList().get(position);
 
@@ -122,11 +152,20 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
 
     }
 
+    /**
+     * Get the image URI of the badge in order to build the authority for the image to convert as URI
+     *
+     * @param imgFile
+     * @return
+     */
     private Uri getImageUri(File imgFile) {
         return FileProvider.getUriForFile(mContext.getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", imgFile);
     }
 
-
+    /**
+     * Get the description of the badge
+     * @param position
+     */
     public void showBadgeAchieved(int position) {
         if (dialog == null || !dialog.isShowing()) {
 
@@ -140,6 +179,7 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View shareCustomLayout = inflater.inflate(R.layout.custom_share_layout, null);
 
+            //Find view of each respective Widget
             badgeTitle = shareCustomLayout.findViewById(R.id.badgeTitle);
             badgeDescription = shareCustomLayout.findViewById(R.id.badgeDescription);
             close = shareCustomLayout.findViewById(R.id.closeViewAchievementPopup);
@@ -147,17 +187,23 @@ public class GridViewAdapterAchievements extends RecyclerView.Adapter<ItemAchiev
             badgeImage = shareCustomLayout.findViewById(R.id.badgeView);
 
             close.setOnClickListener(view -> dialog.cancel());
+
+            //When the share button is click, it will share the image to instagram story
             shareButton.setOnClickListener(view -> shareFileToInstagram(position));
 
+
+            //This will be displayed if the achievement is not unlocked
             if (achievement == null) {
                 badgeTitle.setText("Achievement Locked");
                 badgeDescription.setText("You have to reached ??");
                 shareButton.setVisibility(View.INVISIBLE);
             } else {
+                //This will be displayed if the achievement is unlocked
                 badgeTitle.setText("Achievement Unlocked");
                 badgeDescription.setText("You reached " + achievement.getRequirement() + " " + achievement.getAchievementName(achievement.getTypeAchievement() - 1));
                 File imgFile = achievement.getPathImg();
                 if (imgFile.exists()) {
+                    //Glide is used to load the image into the imageView of the badge
                     Glide.with(mContext).load(new File(imgFile.getAbsolutePath())).signature(new ObjectKey(String.valueOf(achievement.getBadgeUrl()))).transform(new CircleCrop()).into(badgeImage);
                 }
             }
