@@ -274,6 +274,9 @@ public class HabitViewActivity extends AppCompatActivity {
     public void displayWeekBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
+        if (habitRepetitionArrayList.size() <= 0){
+            return;
+        }
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
         ArrayList<BarEntry> first_barEntries = new ArrayList<>();
@@ -429,6 +432,10 @@ public class HabitViewActivity extends AppCompatActivity {
     public void displayMonthBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
+        if (habitRepetitionArrayList.size() <= 0){
+            return;
+        }
+
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
         ArrayList<BarEntry> first_barEntries = new ArrayList<>();
@@ -581,6 +588,10 @@ public class HabitViewActivity extends AppCompatActivity {
 
     public void displayYearBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
+
+        if (habitRepetitionArrayList.size() <= 0){
+            return;
+        }
 
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
@@ -793,8 +804,10 @@ public class HabitViewActivity extends AppCompatActivity {
         Log.d(TAG, "resetChart: ");
         range_indicator.setText("");
         habit_barChart.fitScreen();
-        habit_barChart.clearValues();
-        habit_barChart.getData().clearValues();
+        if (habit_barChart.getData() != null){
+            habit_barChart.clearValues();
+            habit_barChart.getData().clearValues();
+        }
         habit_barChart.getXAxis().resetAxisMinimum();
         habit_barChart.getXAxis().resetAxisMaximum();
         habit_barChart.getAxisLeft().resetAxisMaximum();
