@@ -49,6 +49,7 @@ import com.mad.p03.np2020.routine.Profile.Dialogs.ReportDialog;
 import com.mad.p03.np2020.routine.Profile.Dialogs.UsernameDialog;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.AlarmReceiver;
+import com.mad.p03.np2020.routine.models.CardNotification;
 import com.mad.p03.np2020.routine.models.Habit;
 import com.mad.p03.np2020.routine.models.HabitReminder;
 
@@ -191,7 +192,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-
         try {
             getUserInfo();
         } catch (Exception e) {
@@ -327,7 +327,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             MakeToast("Username limited at 16 characters!");
         }
     }
-
 
     public void changePassword()
     {

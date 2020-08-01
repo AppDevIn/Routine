@@ -197,7 +197,6 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
             isReminderSet = false;
             isTimeSet = false;
             isDateSet = false;
-
         }
 
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -207,14 +206,12 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
             }
         });
 
-
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ChooseTime();
             }
         });
-
 
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
