@@ -12,6 +12,7 @@ import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
 import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
+import com.mad.p03.np2020.routine.models.Schedule;
 import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.models.User;
@@ -62,6 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Focus.CREATE_ARCHIVE_SQL); //Create archive focus database
         sqLiteDatabase.execSQL(Check.SQL_CREATE_ENTRIES); //Create focus database
         sqLiteDatabase.execSQL(Achievement.SQL_CREATE_ENTRIES); //Create achievement database
+        sqLiteDatabase.execSQL(Schedule.SQL_CREATE_ENTRIES);//Create a schedule database
     }
 
     /**
@@ -87,6 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Focus.SQL_DELETE_ENTRIES);
         sqLiteDatabase.execSQL(Focus.SQL_DELETE_ENTRIES_ARCHIVE);
         sqLiteDatabase.execSQL(Achievement.SQL_DELETE_ENTRIES_ACHIEVEMENT);
+        sqLiteDatabase.execSQL(Schedule.SQL_DELETE_ENTRIES);
         onCreate(sqLiteDatabase);
 
         //Add previous data
@@ -117,6 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DELETE FROM " + HabitRepetition.TABLE_NAME);
         sqLiteDatabase.execSQL("DELETE FROM " + Focus.FOCUS_TABLE);
         sqLiteDatabase.execSQL("DELETE FROM " + Focus.FOCUS_Archive_TABLE);
+        sqLiteDatabase.execSQL("DELETE FROM " + Schedule.TABLE_NAME);
 
     }
 

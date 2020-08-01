@@ -39,10 +39,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Card.CardActivity;
+import com.mad.p03.np2020.routine.DAL.ScheduleDBHelper;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.Profile.ProfileActivity;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.CardNotification;
+import com.mad.p03.np2020.routine.models.Schedule;
 import com.mad.p03.np2020.routine.models.Task;
 
 import java.text.DateFormat;
@@ -128,6 +130,9 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     FirebaseUser firebaseUser;
     String UID;
 
+    Schedule schedule;
+    ScheduleDBHelper scheduleDBHelper;
+
     public ScheduleDialogFragment(Task task) {
         mTask = task;
     }
@@ -162,6 +167,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         timeButton = v.findViewById(R.id.timeButton);
         reminderButton = v.findViewById(R.id.reminderButton);
 
+        scheduleDBHelper = new ScheduleDBHelper(getContext());
+
         if(mTask.getRemindDate() != null){
             String time, date;
 
@@ -186,18 +193,22 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
         previousSelected = Calendar.getInstance();
 
-        previousSelected.setTime(mTask.getRemindDate());
-
-        if (previousSelected.getTimeInMillis() < currentCal.getTimeInMillis())
+        if (mTask.getRemindDate() != null)
         {
-            Log.v(TAG, "Resetting schedule timers!");
-            dateButton.setText("Date: Click to select!");
-            timeButton.setText("Time: Click to select!");
+            previousSelected.setTime(mTask.getRemindDate());
 
-            isReminderSet = false;
-            isTimeSet = false;
-            isDateSet = false;
+            if (previousSelected.getTimeInMillis() < currentCal.getTimeInMillis())
+            {
+                Log.v(TAG, "Resetting schedule timers!");
+                dateButton.setText("Date: Click to select!");
+                timeButton.setText("Time: Click to select!");
+
+                isReminderSet = false;
+                isTimeSet = false;
+                isDateSet = false;
+            }
         }
+
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,7 +282,7 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 currentDay = datePickerDialog.getDatePicker().getDayOfMonth();
-                currentMonth = datePickerDialog.getDatePicker().getMonth();
+                currentMonth = datePickerDialog.getDatePicker().getMonth() + 1;
                 currentYear = datePickerDialog.getDatePicker().getYear();
 
                 selectedDate = currentDay + "/" + currentMonth + "/" + currentYear;
@@ -480,6 +491,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         intent.putExtra("CardName", CardName);
 
         int uniqueID = (int) System.currentTimeMillis();
+        schedule = new Schedule(taskID, uniqueID);
+        scheduleDBHelper.insertSchedule(schedule);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), uniqueID, intent, 0);
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
