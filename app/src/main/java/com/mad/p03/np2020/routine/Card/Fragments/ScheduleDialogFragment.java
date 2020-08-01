@@ -31,6 +31,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.p03.np2020.routine.Card.CardActivity;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.Profile.ProfileActivity;
@@ -70,6 +77,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     String currentTime;
     String selectedTime;
 
+    String taskID;
+
     //Calender to set according to reminder time set
     Calendar currentCal;
 
@@ -100,8 +109,15 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     String ChannelID;
 
     String CardName;
+    int LatestID;
 
     Task mTask;
+
+    DatabaseReference mDatabase;
+    DatabaseReference notificationRef;
+    FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
+    String UID;
 
     public ScheduleDialogFragment(Task task) {
         mTask = task;
@@ -121,6 +137,16 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         ChannelImportance = NotificationManager.IMPORTANCE_DEFAULT;
         //Initialize notification channel
         initialiseNotificationChannel();
+
+        taskID = mTask.getTaskID();
+        CardName = mTask.getName();
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        UID = firebaseUser.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        notificationRef = mDatabase.child("users").child(UID);
 
         //Initializing buttons
         dateButton = v.findViewById(R.id.dateButton);
@@ -424,11 +450,16 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     }
 
 
-    public void setNotification(){
+    public void setNotification()
+    {
 
         Intent intent = new Intent(getActivity(), CardNotification.class);
         intent.setAction("CardNotification");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
+        intent.putExtra("TaskID", taskID);
+        intent.putExtra("CardName", CardName);
+
+        int uniqueID = (int) System.currentTimeMillis();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), uniqueID, intent, 0);
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getContext().ALARM_SERVICE);
 
@@ -440,14 +471,19 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
         Log.v(TAG, "Date time set is: " + DateTimeSet);
 
+        alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
+
+        /*
         if (timeSet < currentCal.getTimeInMillis())
         {
             MakeToast("Schedule must be set after current time!");
         }
         else
         {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, timeSet, pendingIntent);
+
         }
+
+         */
 
 
         /*
