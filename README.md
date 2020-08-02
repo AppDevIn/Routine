@@ -239,6 +239,9 @@ Storymap for HabitActivity and Calendar
 
 ## Class Diagram 
 
+Updated Class Diagram
+![Click here to see updated class diagram](Documentation/Routine_Class_Diagrams.vpp)
+
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/database.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/background.svg)
 ![Screenshot 2020-06-03 at 9.53.07 AM](Documentation/images/ViewHolder.svg)
