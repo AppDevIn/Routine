@@ -54,9 +54,9 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 9. [MyHomeItemTouchHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Home/models/MyHomeItemTouchHelper.java)
 
-10. [MySpinnerColorAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MySpinnerColorAdapter.java)
+10. [MySpinnerColorAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Home/adapters/MySpinnerColorAdapter.java)
 
-11. [MySpinnerIconsAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MySpinnerIconsAdapter.java)
+11. [MySpinnerIconsAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Home/adapters/MySpinnerIconsAdapter.java)
 
 13. [MyTaskTouchHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Task/model/MyTaskTouchHelper.java)
 
@@ -84,7 +84,7 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 26. [Home.java](app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java)
 
-25. [GetTaskSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/GetTaskSectionWorker.java)
+25. [GetTaskSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/helpers/GetTaskSectionWorker.java)
 
 26. [MyDatabaseListener.java](app/src/main/java/com/mad/p03/np2020/routine/helpers/MyDatabaseListener.java)
 
