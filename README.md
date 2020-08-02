@@ -6,10 +6,8 @@ All in one Productivity App
 
 ## Open Doucmentation
 
-[Routine Class Documentation](https://appdevin.github.io/routine.documentation.github.io)
+[Routine Class Documentation](https://appdevin.github.io/routine.documention/)
 
-
-g
 ## Team Members
 
 1. Jeyavishnu, S10192836C 
@@ -54,9 +52,9 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 9. [MyHomeItemTouchHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Home/models/MyHomeItemTouchHelper.java)
 
-10. [MySpinnerColorAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MySpinnerColorAdapter.java)
+10. [MySpinnerColorAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Home/adapters/MySpinnerColorAdapter.java)
 
-11. [MySpinnerIconsAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/MySpinnerIconsAdapter.java)
+11. [MySpinnerIconsAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Home/adapters/MySpinnerIconsAdapter.java)
 
 13. [MyTaskTouchHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Task/model/MyTaskTouchHelper.java)
 
@@ -84,7 +82,7 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 26. [Home.java](app/src/main/java/com/mad/p03/np2020/routine/Home/Home.java)
 
-25. [GetTaskSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/GetTaskSectionWorker.java)
+25. [GetTaskSectionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/helpers/GetTaskSectionWorker.java)
 
 26. [MyDatabaseListener.java](app/src/main/java/com/mad/p03/np2020/routine/helpers/MyDatabaseListener.java)
 
@@ -308,17 +306,29 @@ Storymap for HabitActivity and Calendar
 
 ### Task
 
-| <img src="Documentation/images/SwipeTask.png" alt="drawing" width="1600px"/> | <img src="Documentation/images/HoldMoveTask.png" alt="drawing" width="1500px"/> | <img src="Documentation/images/addTask.png" alt="drawing"/> |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| **Swipe to right to delete**                                 | **Press and hold to move**                                   | **Clicked on the textbox to add task**                      |
+| ![SwipeTask](Documentation/images/SwipeTask.png) | ![HoldMoveTask](Documentation/images/HoldMoveTask.png) | <img src="Documentation/images/addTask.png" alt="drawing"/> | <img src="Documentation/images/EditSection.png" alt="drawing"/> | <img src="Documentation/images/Teams.png" alt="drawing"/> |
+| ------------------------------------------------ | ------------------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| **Swipe to right to delete**                     | **Press and hold to move**                             | **Clicked on the textbox to add task**                      | Edit task                                                    | Share with members                                        |
+
+
+
+**My Calender**
+
+| ![ChangeDateCalender](Documentation/images/ChangeDateCalender.png) | ![BlueDotIfGotTask](Documentation/images/BlueDotIfGotTask.png) | ![ShowTask](Documentation/images/ShowTask.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------------------------------- |
+| **Press the dates text to change date**                      | Blue dot will appear if got event                            | **Shows task if the date have one**            |
+
+
 
 
 
 #### Task Info
 
-| ![setTaskNote](Documentation/images/setTaskNote.png) | ![taskSetTime](Documentation/images/taskSetTime.png)  | ![taskSetDatee](Documentation/images/taskSetDatee.png) | ![taskSetDate](Documentation/images/taskSetDate.png) |
-| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
-| **Click the circle button to add notes**             | **Click the circle button and bell icon to add time** |   **Click the circle button  and text to add date**    | **Chose the data to add the date**                   |
+| ![setTaskNote](Documentation/images/setTaskNote.png) | ![taskSetTime](Documentation/images/taskSetTime.png) | ![check](Documentation/images/check.png) |
+| ---------------------------------------------------- | ---------------------------------------------------- | :--------------------------------------- |
+| **Click the notes Tab to enter notes**               | **Click the schedule text to enter time and date**   | **Click on the check list to add check** |
+
+
 
 #### Habit Tracker
 
