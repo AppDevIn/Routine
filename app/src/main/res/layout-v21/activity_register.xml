@@ -37,6 +37,7 @@
             app:cardPreventCornerOverlap="false"
             app:contentPadding="0dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -50,9 +51,9 @@
                     android:layout_height="44dp"
                     android:layout_marginEnd="30dp"
 
+                    android:background="@drawable/back_button_design"
                     android:fontFamily="@font/montserrat_regular"
                     android:text="@string/register"
-                    android:background="@drawable/back_button_design"
                     android:textAllCaps="false"
                     app:layout_constraintBottom_toBottomOf="@+id/errorName"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -66,9 +67,9 @@
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="23dp"
                     android:autofillHints=""
-                    android:inputType="textEmailAddress"
                     android:ems="10"
                     android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtEmail"
@@ -76,19 +77,6 @@
 
                 </EditText>
 
-
-
-                <TextView
-                    android:id="@+id/txtPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="38dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="@string/prompt_password"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edEmail" />
 
                 <EditText
                     android:id="@+id/edPassword"
@@ -98,14 +86,14 @@
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="23dp"
 
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:imeOptions="actionDone"
+
+                    android:inputType="textWebPassword"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtPassword"
-
-                    android:ems="10"
-                    android:imeOptions="actionDone"
-                    android:autofillHints=""
-                    android:inputType="textWebPassword"
                     tools:ignore="LabelFor"
                     tools:layout_editor_absoluteX="44dp"
                     tools:layout_editor_absoluteY="312dp">
@@ -119,16 +107,28 @@
                     android:layout_marginStart="28dp"
                     android:layout_marginEnd="23dp"
                     android:autofillHints=""
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
                     android:ems="10"
                     android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtName"
                     tools:ignore="LabelFor">
 
                 </EditText>
+
+                <TextView
+                    android:id="@+id/txtPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="38dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="@string/prompt_password"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edEmail" />
 
                 <TextView
                     android:id="@+id/txtName"
@@ -205,11 +205,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="128dp"
                     android:layout_marginTop="38dp"
-                    android:visibility="invisible"
                     android:fontFamily="@font/montserrat_regular"
                     android:text="@string/error_empty_email"
                     android:textColor="@color/ErrorColor"
                     android:textSize="14sp"
+                    android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edName">
 

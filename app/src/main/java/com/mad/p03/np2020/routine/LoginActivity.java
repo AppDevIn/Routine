@@ -363,7 +363,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
 
 
-        if ((mAuth.getCurrentUser() != null) && new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null ) {
+        if ((mAuth.getCurrentUser() != null) && new UserDBHelper(this).getUser(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
             User user;
             user = userDatabase.getUser(mAuth.getCurrentUser().getUid());
             Intent intent = new Intent(LoginActivity.this, Home.class);

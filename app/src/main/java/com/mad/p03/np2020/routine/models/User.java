@@ -1316,7 +1316,7 @@ public class User implements Parcelable, FocusDBObserver {
     public void setPassword(String password) throws FormatException {
 
         if (!password.isEmpty()) {
-            String STRONGPASSWORD = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+            String STRONGPASSWORD = "(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$";
             if (password.trim().matches(STRONGPASSWORD)) {
                 mPassword = password;
             } else {
@@ -1331,7 +1331,7 @@ public class User implements Parcelable, FocusDBObserver {
 
                 //Error message for password when password doesn't
                 //have digit, lower and upper case, special character and min 8 letter
-                throw new FormatException("Needs to be alphanumeric, special character, length of 8, one uppercase and lowercase");
+                throw new FormatException("Needs to be alphanumeric, special character, min length of 8, one uppercase and lowercase");
             }
         } else {
             //Error message for empty text
