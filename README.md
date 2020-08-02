@@ -122,28 +122,52 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Lee Quan Sheng
 
-1. [FocusAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/FocusAdapter.java)
+1. [FocusAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Focus/Adapter/FocusAdapter.java)
 
-2. [FocusWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/FocusWorker.java)
+2. [AchievementAdapter.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Adapter/AchievementAdapter.java)
 
-3. [Focus.java](app/src/main/java/com/mad/p03/np2020/routine/Class/Focus.java)
+3. [GridViewAdapterAchievements.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Adapter/GridViewAdapterAchievements.java)
 
-4. [ItemDecoration.java](app/src/main/java/com/mad/p03/np2020/routine/Class/ItemDecoration.java)
+4. [AchievementDBHelper.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/DAL/AchievementDBHelper.java)
 
-5. [FocusDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/database/FocusDBHelper.java)
+5. [FocusDBHelper.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/DAL/FocusDBHelper.java)
 
-6. [FocusActivity.java](app/src/main/java/com/mad/p03/np2020/routine/FocusActivity.java)
+6. [AchievementFragment.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Fragment/AchievementFragment.java)
 
-7. [LoginActivity.java](app/src/main/java/com/mad/p03/np2020/routine/LoginActivity.java)
+7. [HistoryFragment.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Fragment/HistoryFragment.java)
 
-8. [HistoryFragment.java](app/src/main/java/com/mad/p03/np2020/routine/HistoryFragment.java)
+8. [FocusDBObservable.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Fragment/FocusDBObservable.java)
 
-9. [FocusViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/FocusViewHolder.java)
+9. [FocusDBObserver.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Fragment/FocusDBObserver.java)
 
-10. [BoundService.java](app/src/main/java/com/mad/p03/np2020/routine/Class/BoundService.java)
+10. [Achievement.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Model/Achievement.java)
 
+11. [Focus.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Model/Focus.java)
 
-   ​    
+12. [ItemDecoration.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Model/ItemDecoration.java)
+
+13. [ResizeableButton.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Model/ResizeableButton.java)
+
+14. [AchievementViewHolder.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/ViewHolder/AchievementViewHolder.java)
+
+15. [FocusViewHolder.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/ViewHolder/FocusViewHolder.java)
+
+16. [ItemAchievementViewHolder.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/ViewHolder/ItemAchievementViewHolder.java)
+
+17. [FocusActivity.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/FocusActivity.java)
+
+18. [BoundService.java] (app/src/main/java/com/mad/p03/np2020/routine/background/BoundService.java)
+
+19. [FocusWorker.java] (app/src/main/java/com/mad/p03/np2020/routine/background/FocusWorker.java)
+
+20. [GetAchievementWorker.java] (app/src/main/java/com/mad/p03/np2020/routine/background/GetAchievementWorker.java)
+
+21. [LoginActivity.java] (app/src/main/java/com/mad/p03/np2020/routine/LoginActivity.java)
+
+22. [InternetStatus.java] (app/src/main/java/com/mad/p03/np2020/routine/models/InternetStatus.java)
+
+22. [CircularProgressBar.java] (app/src/main/java/com/mad/p03/np2020/routine/models/CircularProgressBar.java)
+
 
 ### Wai Hou Man
 
