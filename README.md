@@ -123,63 +123,63 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Wai Hou Man
 
-1. [HabitWorker.java] (app/src/main/java/com/mad/p03/np2020/routine/background/HabitWorker.java)
+1. [HabitWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/HabitWorker.java)
 
-2. [HabitRepetitionWorker.java] (app/src/main/java/com/mad/p03/np2020/routine/background/HabitRepetitionWorker.java)
+2. [HabitRepetitionWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/HabitRepetitionWorker.java)
    ​    
-3. [HabitGroupWorker.java] (app/src/main/java/com/mad/p03/np2020/routine/background/HabitGroupWorker.java)
+3. [HabitGroupWorker.java](app/src/main/java/com/mad/p03/np2020/routine/background/HabitGroupWorker.java)
 
-4. [HabitAdapter.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/Adapter/HabitAdapter.java)
+4. [HabitAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/Adapter/HabitAdapter.java)
 
-5. [HabitCheckAdapter.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/Adapter/HabitCheckAdapter.java)
+5. [HabitCheckAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/Adapter/HabitCheckAdapter.java)
 
-6. [HabitGroupAdapter.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/Adapter/HabitGroupAdapter.java)
+6. [HabitGroupAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/Adapter/HabitGroupAdapter.java)
 
-7. [HabitHolder.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/ViewHolder/HabitHolder.java)
+7. [HabitHolder.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/ViewHolder/HabitHolder.java)
 
-8. [HabitCheckHolder.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/ViewHolder/HabitCheckHolder.java)
+8. [HabitCheckHolder.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/ViewHolder/HabitCheckHolder.java)
 
-9. [HabitGroupHolder.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/ViewHolder/HabitGroupHolder.java)
+9. [HabitGroupHolder.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/ViewHolder/HabitGroupHolder.java)
 
-10. [HabitDBHelper.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/DAL/HabitDBHelper.java)
+10. [HabitDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/DAL/HabitDBHelper.java)
 
-12. [HabitRepetitionDBHelper.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/DAL/HabitRepetitionDBHelper.java)
+12. [HabitRepetitionDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/DAL/HabitRepetitionDBHelper.java)
 
-12. [HabitGroupDBHelper.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/DAL/HabitGroupDBHelper.java)
+12. [HabitGroupDBHelper.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/DAL/HabitGroupDBHelper.java)
 
-13. [HabitHorizontalDivider.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/helpers/HabitHorizontalDivider.java)
+13. [HabitHorizontalDivider.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/helpers/HabitHorizontalDivider.java)
 
-14. [IntegerFormatter.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/helpers/IntegerFormatter.java)
+14. [IntegerFormatter.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/helpers/IntegerFormatter.java)
 
-15. [HabitItemClickListener.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitItemClickListener.java)
+15. [HabitItemClickListener.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitItemClickListener.java)
 
-16. [HabitCheckItemClickListener.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitCheckItemClickListener.java)
+16. [HabitCheckItemClickListener.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitCheckItemClickListener.java)
 
-17. [HabitDBObservable.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitDBObservable.java)
+17. [HabitDBObservable.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitDBObservable.java)
 
-18. [HabitDBObserver.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitDBObserver.java)
+18. [HabitDBObserver.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/Interface/HabitDBObserver.java)
 
-19. [AlarmReceiver.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/models/AlarmReceiver.java)
+19. [AlarmReceiver.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/models/AlarmReceiver.java)
 
-20. [Habit.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/models/Habit.java)
+20. [Habit.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/models/Habit.java)
 
-21. [HabitGroup.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/models/HabitGroup.java)
+21. [HabitGroup.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/models/HabitGroup.java)
 
-22. [HabitReminder.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/models/HabitReminder.java)
+22. [HabitReminder.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/models/HabitReminder.java)
 
-23. [HabitRepetition.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/models/HabitRepetition.java)
+23. [HabitRepetition.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/models/HabitRepetition.java)
 
-24. [HabitActivity.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitActivity.java)
+24. [HabitActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitActivity.java)
 
-25. [HabitAddActivity.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitAddActivity.java)
+25. [HabitAddActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitAddActivity.java)
 
-26. [HabitEditActivity.java] [app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitEditActivity.java]
+26. [HabitEditActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitEditActivity.java)
 
-27. [HabitGroupActivity.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitGroupActivity.java)
+27. [HabitGroupActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitGroupActivity.java)
 
-28. [HabitReminderActivity.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitReminderActivity.java)
+28. [HabitReminderActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitReminderActivity.java)
 
-29. [HabitViewActivity.java] (app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitViewActivity.java)
+29. [HabitViewActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Habit/HabitViewActivity.java)
 
 ### Pritheev Roshan
 
