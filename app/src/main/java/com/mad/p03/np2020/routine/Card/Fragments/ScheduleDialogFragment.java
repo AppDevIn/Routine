@@ -285,7 +285,7 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
                 currentMonth = datePickerDialog.getDatePicker().getMonth();
                 currentYear = datePickerDialog.getDatePicker().getYear();
 
-                selectedDate = currentDay + "/" + currentMonth + "/" + currentYear;
+                selectedDate = currentDay + "/" + currentMonth + 1 + "/" + currentYear;
 
                 selectedCal.set(Calendar.YEAR, currentYear);
                 selectedCal.set(Calendar.MONTH, currentMonth);
