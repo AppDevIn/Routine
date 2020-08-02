@@ -308,17 +308,29 @@ Storymap for HabitActivity and Calendar
 
 ### Task
 
-| ![SwipeTask](Documentation/images/SwipeTask.png) | <img src="Documentation/images/HoldMoveTask.png" alt="drawing" width="1500px"/> | <img src="Documentation/images/addTask.png" alt="drawing"/> |
-| ------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| **Swipe to right to delete**                     | **Press and hold to move**                                   | **Clicked on the textbox to add task**                      |
+| ![SwipeTask](Documentation/images/SwipeTask.png) | ![HoldMoveTask](/Users/jeyavishnu/personal/Current/Routine/Routine/Documentation/images/HoldMoveTask.png) | <img src="Documentation/images/addTask.png" alt="drawing"/> | ![EditSection](Documentation/images/EditSection.png) | ![Teams](Documentation/images/Teams.png) |
+| ------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------- |
+| **Swipe to right to delete**                     | **Press and hold to move**                                   | **Clicked on the textbox to add task**                      | Edit task                                            | Share with members                       |
+
+
+
+**My Calender**
+
+| ![ChangeDateCalender](Documentation/images/ChangeDateCalender.png) | ![BlueDotIfGotTask](Documentation/images/BlueDotIfGotTask.png) | ![ShowTask](Documentation/images/ShowTask.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------------------------------- |
+| **Press the dates text to change date**                      | Blue dot will appear if got event                            | **Shows task if the date have one**            |
+
+
 
 
 
 #### Task Info
 
-| ![setTaskNote](Documentation/images/setTaskNote.png) | ![taskSetTime](Documentation/images/taskSetTime.png)  | ![taskSetDatee](Documentation/images/taskSetDatee.png) | ![taskSetDate](Documentation/images/taskSetDate.png) |
-| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
-| **Click the circle button to add notes**             | **Click the circle button and bell icon to add time** |   **Click the circle button  and text to add date**    | **Chose the data to add the date**                   |
+| ![setTaskNote](Documentation/images/setTaskNote.png) | ![taskSetTime](Documentation/images/taskSetTime.png) | ![check](Documentation/images/check.png) |
+| ---------------------------------------------------- | ---------------------------------------------------- | :--------------------------------------- |
+| **Click the notes Tab to enter notes**               | **Click the schedule text to enter time and date**   | **Click on the check list to add check** |
+
+
 
 #### Habit Tracker
 
