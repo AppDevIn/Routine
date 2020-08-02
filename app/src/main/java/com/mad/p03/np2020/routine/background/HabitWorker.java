@@ -45,8 +45,8 @@ public class HabitWorker extends Worker {
     @Override
     public Result doWork() {
 
+        // get the inout data
         boolean isDeletion = getInputData().getBoolean("deletion", false);
-
         String UID = getInputData().getString("ID");
 
         //Deserialization from jsonObject
@@ -87,7 +87,7 @@ public class HabitWorker extends Worker {
      * */
     private void deleteToFirebase() {
         // Delete data from firebase
-        Log.d(TAG, "writeToFirebase: Habit Data being deleted with the uid of " + habitData.getHabitID());
+        Log.d(TAG, "deleteToFirebase: Habit Data being deleted with the uid of " + habitData.getHabitID());
 
         mDatabase.child(String.valueOf(habitData.getHabitID())).removeValue();
 

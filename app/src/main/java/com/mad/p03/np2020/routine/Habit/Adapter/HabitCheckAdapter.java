@@ -14,6 +14,17 @@ import com.mad.p03.np2020.routine.Habit.Interface.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.models.User;
 
+/**
+ *
+ * This will be the controller glue between the viewHolder and the model.
+ * This will inflate the the items for the habitCheck to which will give us
+ * the view from will be passed to the view holder HabitCheckViewHolder
+ *
+ * @author Hou Man
+ * @since 02-08-2020
+ */
+
+
 public class HabitCheckAdapter extends RecyclerView.Adapter<HabitCheckHolder> {
 
     final static String TAG = "HabitCheckAdapter";

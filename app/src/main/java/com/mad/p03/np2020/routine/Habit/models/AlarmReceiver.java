@@ -34,7 +34,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     private String channelId = "001";
     private static HabitDBHelper habitDBHelper;
     private Habit.HabitList habitList;
-    private HabitRepetitionDBHelper habitRepetitionDBHelper;
 
     /**
      *
@@ -74,7 +73,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             habitList = habitDBHelper.getAllHabits();
 
             re_registerAlarm(context, habitList);
-//            setRepeatingHabit(context);
+            setRepeatingHabit(context);
         }
 
         if (intent.getAction().equals("RepeatingHabit")){
@@ -94,10 +93,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             assert manager != null;
             manager.notify(id, notify);
-
-//            habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
-//            habitRepetitionDBHelper.repeatingHabit();
-
         }
     }
 

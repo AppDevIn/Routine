@@ -1,7 +1,6 @@
 package com.mad.p03.np2020.routine.Habit.ViewHolder;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -10,12 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Habit.Interface.HabitItemClickListener;
+import com.mad.p03.np2020.routine.R;
 
 /**
  *
- * To be used with the adapter HabitGroupAdapter. This
+ * To be used with the adapter HabitAdapter. This
  * holds reference to the id of the view resource
  *
  * @author Hou Man
@@ -30,10 +29,6 @@ public class HabitHolder extends RecyclerView.ViewHolder {
     public TextView mCount;
     /** Shown as habit occurrence on the habit holder*/
     public TextView mOccurrence;
-    /** Shown as habit period on the habit holder*/
-    public TextView mPeriod;
-    /** Shown as the add count button on the habit holder*/
-    public ImageButton addBtn;
     /** The background of the habit holder*/
     public CardView habit_card;
     /** The progress of the habit */
@@ -63,9 +58,6 @@ public class HabitHolder extends RecyclerView.ViewHolder {
         this.habit_progress = itemView.findViewById(R.id.habit_progress);
         this.habit_progressBar = itemView.findViewById(R.id.habit_progressBar);
         this.habit_finished = itemView.findViewById(R.id.habit_finished);
-
-//        this.addBtn = itemView.findViewById(R.id.addCnt);
-//        this.mPeriod = itemView.findViewById(R.id.habit_period);
 
         //set an onclick listener when the holder is clicked
         itemView.setOnClickListener(new View.OnClickListener() {

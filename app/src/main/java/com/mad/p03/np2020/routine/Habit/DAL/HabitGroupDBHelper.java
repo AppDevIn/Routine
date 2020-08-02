@@ -180,6 +180,14 @@ public class HabitGroupDBHelper extends DBHelper {
 
     }
 
+    /**
+     *
+     * This method is to check whether the group exist by its row id
+     *
+     * @param rowID This is to parse the row id
+     *
+     * @return boolean This will return the boolean value which indicates whether the group exist
+     * */
     public boolean isHabitGroupExisted(long rowID){
         boolean isExisted = false;
 
@@ -197,6 +205,14 @@ public class HabitGroupDBHelper extends DBHelper {
         return isExisted;
     }
 
+    /**
+     *
+     * This method is to get the habitGroup by its row id
+     *
+     * @param id This is to get the row id
+     *
+     * @return HabitGroup This will return the habitGroup object by its row id
+     * */
     public HabitGroup getHabitGroupByRowID(long id){
         HabitGroup hg = new HabitGroup();
 
@@ -214,6 +230,13 @@ public class HabitGroupDBHelper extends DBHelper {
         return hg;
     }
 
+    /**
+     *
+     * This method is to update the habitGroup row
+     *
+     * @param hg This is to get the HabitGroup object
+     *
+     * */
     public void update(HabitGroup hg){
         String id_filter = HabitGroup.COLUMN_ID + " = " + hg.getGrp_id();
 
@@ -229,6 +252,13 @@ public class HabitGroupDBHelper extends DBHelper {
         db.close(); // close the db connection
     }
 
+    /**
+     *
+     * This method is to remove the habitGroup row
+     *
+     * @param hg This is to get the HabitGroup object
+     *
+     * */
     public void removeOneData(HabitGroup hg) {
 
         // Find database that match the row data. If it found, delete and return true

@@ -5,6 +5,14 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ *
+ * This created to add spacing between recycler
+ *
+ * @author Hou Man
+ * @since 02-08-2020
+ */
+
 public class HabitHorizontalDivider extends RecyclerView.ItemDecoration {
     private int space;
 

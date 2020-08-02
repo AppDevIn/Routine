@@ -1,36 +1,18 @@
 package com.mad.p03.np2020.routine.Habit.Adapter;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.mad.p03.np2020.routine.Habit.DAL.HabitDBHelper;
-import com.mad.p03.np2020.routine.Habit.HabitActivity;
-import com.mad.p03.np2020.routine.R;
-import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitHolder;
-import com.mad.p03.np2020.routine.background.HabitWorker;
 import com.mad.p03.np2020.routine.Habit.Interface.HabitItemClickListener;
+import com.mad.p03.np2020.routine.Habit.ViewHolder.HabitHolder;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
+import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.User;
-
-import static com.mad.p03.np2020.routine.Habit.HabitActivity.displayView;
 
 /**
  *
@@ -53,10 +35,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
     /**Used as the adapter habitList*/
     public Habit.HabitList _habitList;
-    private HabitCheckAdapter habitCheckAdapter;
 
     /**This method is a constructor for habitAdapter*/
-
     public HabitAdapter(Context c, Habit.HabitList habitList, User user) {
         this.c = c;
         this._habitList = habitList;
@@ -90,6 +70,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         // create a new view
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.habit_grid_view_items, parent, false);
 
+        // set holder view to the 46% of the screen width
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.width = (int) (parent.getWidth() * 0.464);
         view.setLayoutParams(layoutParams);
@@ -146,6 +127,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         holder.mCount.setText(String.valueOf(habit.getCount()));
         holder.mOccurrence.setText(String.valueOf(habit.getOccurrence()));
 
+        // set the habit progress bar
         int progress = habit.calculateProgress();
         holder.habit_progressBar.setProgress(progress);
         holder.habit_progress.setText(String.valueOf(progress));
@@ -163,62 +145,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     @Override
     public int getItemCount() {
         return _habitList.size();
-    }
-
-    /**
-     *
-     * This method is used to send the work request
-     *  to the habitWorker(WorkManager) to do the writing firebase action
-     *  when the network is connected.
-     *  (This will be invoked when the count increases on the page of HabitTracker)
-     *
-     * @param habit This parameter is used to get the habit object
-     *
-     * @param UID This parameter is used to get the userID
-     *
-     * @param isDeletion This parameter is used to indicate whether it is deletion of habit to firebase
-     *
-     * */
-    public void writeHabit_Firebase(Habit habit, String UID, boolean isDeletion){
-        Log.i(TAG, "Uploading to Firebase");
-
-        // set constraint that the network must be connected
-        Constraints myConstraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        // put data in a data builder
-        Data firebaseUserData = new Data.Builder()
-                .putString("ID", UID)
-                .putString("habitData", habit_serializeToJson(habit))
-                .putBoolean("deletion", isDeletion)
-                .build();
-
-        // wrap the work request
-        OneTimeWorkRequest mywork =
-                new OneTimeWorkRequest.Builder(HabitWorker.class)
-                        .setConstraints(myConstraints)
-                        .setInputData(firebaseUserData)
-                        .build();
-
-        // send the work request to the work manager
-        WorkManager.getInstance(c).enqueue(mywork);
-    }
-
-
-    /**
-     *
-     * This method is used to serialize a single object. (into Json String)
-     *
-     * @param habit This parameter is used to get the habit object
-     *
-     * @return String This returns the serialized object.
-     *
-     * */
-    public String habit_serializeToJson(Habit habit) {
-        Gson gson = new Gson();
-        Log.i(TAG,"Object serialize");
-        return gson.toJson(habit);
     }
 
     /**
