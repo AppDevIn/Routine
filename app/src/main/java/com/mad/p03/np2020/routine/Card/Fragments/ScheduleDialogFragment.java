@@ -320,10 +320,12 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment
             {
                 //Gets current day, month, year from selected date
                 currentDay = datePickerDialog.getDatePicker().getDayOfMonth();
-                currentMonth = datePickerDialog.getDatePicker().getMonth() + 1;
+                currentMonth = datePickerDialog.getDatePicker().getMonth();
                 currentYear = datePickerDialog.getDatePicker().getYear();
 
-                selectedDate = currentDay + "/" + currentMonth + "/" + currentYear;
+                int modifiedMonth = currentMonth + 1;
+
+                selectedDate = currentDay + "/" + modifiedMonth + "/" + currentYear;
 
                 //Sets selected date into selectedCal
                 selectedCal.set(Calendar.YEAR, currentYear);

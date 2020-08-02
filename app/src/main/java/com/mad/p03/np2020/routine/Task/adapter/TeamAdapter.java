@@ -1,5 +1,6 @@
 package com.mad.p03.np2020.routine.Task.adapter;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
@@ -95,6 +96,39 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamViewHolder> implements
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     gestureDetectorCompat.onTouchEvent(motionEvent);
                     return true;
+                }
+            });
+            holder.mConstraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    holder.mView.
+                            animate()
+                            .translationX(holder.mView.getWidth())
+                            .alpha(0.0f)
+                            .setDuration(300)
+                            .setListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animator) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animator) {
+                                    deleteEmail(position);
+
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animator) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animator) {
+
+                                }
+                            });
+                    return false;
                 }
             });
         }

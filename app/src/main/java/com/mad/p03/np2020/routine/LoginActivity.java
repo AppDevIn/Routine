@@ -276,7 +276,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser fbuser = mAuth.getCurrentUser();
-                            if(fbuser.isEmailVerified() ) {
+                            if(fbuser.isEmailVerified()) {
                                 mAuth.getAccessToken(true);
 
                                 // Sign in success, update UI with the signed-in user's information
