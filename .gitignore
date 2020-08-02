@@ -92,3 +92,4 @@ desktop.ini
 app/release/
 
 *.plantuml
+*.puml
