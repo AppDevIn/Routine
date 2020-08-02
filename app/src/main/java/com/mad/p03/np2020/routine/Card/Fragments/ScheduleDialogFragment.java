@@ -282,10 +282,10 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 currentDay = datePickerDialog.getDatePicker().getDayOfMonth();
-                currentMonth = datePickerDialog.getDatePicker().getMonth();
+                currentMonth = datePickerDialog.getDatePicker().getMonth() + 1;
                 currentYear = datePickerDialog.getDatePicker().getYear();
 
-                selectedDate = currentDay + "/" + currentMonth + 1 + "/" + currentYear;
+                selectedDate = currentDay + "/" + currentMonth + "/" + currentYear;
 
                 selectedCal.set(Calendar.YEAR, currentYear);
                 selectedCal.set(Calendar.MONTH, currentMonth);
