@@ -59,9 +59,6 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
     DateChangeListener mDateChangeListener;
 
 
-    public CustomCalenderView(Context context) {
-        super(context);
-    }
 
     /**
      * To init the custom view
@@ -78,10 +75,27 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
 
     }
 
+    /**
+     *
+     * Constructors
+     *
+     * @param context
+     * @param attrs
+     * @param defStyleAttr
+     */
     public CustomCalenderView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
     }
+
+    /**
+     * Constructors
+     * @param context The context this calender is used at
+     */
+    public CustomCalenderView(Context context) {
+        super(context);
+    }
+
 
 
     /**
@@ -210,7 +224,7 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
      * Calculate all the values and than
      * re set the values in the gridview and notify
      * the change
-     * @param calendar
+     * @param calendar The calender that is being displayed
      */
     private void UpdateCalender(Calendar calendar) {
 
@@ -236,14 +250,25 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
     }
 
 
+    /**
+     * Get the current calender date being used
+     * @return The current date
+     */
     public Date getDate(){
         return mCalender.getTime();
     }
 
+    /**
+     * Set date change listener to trigger when the date change occur
+     * @param dateChangeListener The listener needed to trigger
+     */
     public void setDateListener(DateChangeListener dateChangeListener){
         this.mDateChangeListener = dateChangeListener;
     }
 
+    /**
+     * Resetup the calender again
+     */
     public void notifyData(){
         SetUpCalender();
     }

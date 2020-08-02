@@ -36,7 +36,7 @@ import androidx.cardview.widget.CardView;
  * @since 02-08-2020
  *
  */
-class GridViewAdapter extends ArrayAdapter {
+public class GridViewAdapter extends ArrayAdapter {
 
     List<Date> dates;
     Calendar selectedDSate, currentDate;

@@ -291,8 +291,8 @@ public class CheckDBHelper extends DBHelper{
     /**
      * This method will update the position of the given
      * row based on the ID
-     * @param ID
-     * @param position
+     * @param ID The check id
+     * @param position The position of the check id
      */
     public void update(String ID, int position){
 
@@ -318,8 +318,8 @@ public class CheckDBHelper extends DBHelper{
     /**
      * This method will update the position of the given
      * row based on the ID
-     * @param ID
-     * @param checked
+     * @param ID The check ID
+     * @param checked The boolean status if the objected is checked
      */
     public void update(String ID,boolean checked){
 
@@ -343,7 +343,7 @@ public class CheckDBHelper extends DBHelper{
      *
      * Update the check status in the check object
      *
-     * @param check
+     * @param check The object that needs to be updated
      */
     public void update(Check check){
 

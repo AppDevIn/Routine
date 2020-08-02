@@ -14,6 +14,10 @@ package com.mad.p03.np2020.routine.Calender.CustomCalender;
  */
 public interface DateChangeListener {
 
+    /**
+     * When the data is changed
+     * @param date The new data was changed to
+     */
     void onDateChange(Date date);
 
 }
