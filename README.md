@@ -350,5 +350,8 @@ Updated Class Diagram
 | **Click the timer button to set timer**             | **Set Task Input to set timer** |   **Your Focus has started** | **Click recent icon to View Focus History** |
 
 
-
+### Profile
+| ![Profile Page](Documentation/images/EnterProfile.jpeg) | ![Change Username](Documentation/images/ChangeName.jpeg) | ![Reset Password](Documentation/images/ResetPassword.jpeg) | ![Report a Problem](Documentation/images/ReportAProblem.jpeg) |
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **Click on the camera to change profile picture** | **Click on change username and type new username** | **Click on reset password to receive a password reset email** | **Click on reset a problem to submit feedback** |
 
