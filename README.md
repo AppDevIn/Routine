@@ -369,9 +369,20 @@ Updated Class Diagram
 
 #### Focus
 
-| ![Focus Main](Documentation/images/focusPage.png) | ![Focus Task Input](Documentation/images/focusTaskInput.png)  | ![Focus History](Documentation/images/focusComplete.png)| ![Focus Main](Documentation/images/focusHistoryView.png) |
-| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
-| **Click the timer button to set timer**             | **Set Task Input to set timer** |   **Your Focus has started** | **Click recent icon to View Focus History** |
+| ![Focus Main](Documentation/images/FocusMain.jpg) | ![Focus Set Task](Documentation/images/FocusSetTask.jpg)  | ![Focus Complete Time](Documentation/images/FocusCompleteTime.jpg)| ![Focus Give Up](Documentation/images/FocusGuTime.jpg) | ![Focus Set Time](Documentation/images/FocusSetTime.jpg) | ![Focus Start Time](Documentation/images/FocusStartTime.jpg) |
+| ---------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- | 
+| **Focus Main Page** | **Set the task of the focus** | **View of completed focus time** | **View of give up focus time** | **Set your focus timer** | **View of ongoing timer** |
+
+#### Focus History
+
+| ![Focus History (Week)](Documentation/images/FocusHistoryWeek.jpg) | ![Focus History (Day)](Documentation/images/FocusHistoryDay.jpg)  |
+| ---------------------------------------------------- | ----------------------------------------------------- | 
+| **View Focus History of the week** | **View Focus History of the day** |
+
+#### Focus Achievement
+
+| ![Focus Achievement](Documentation/images/FocusAchievement.jpg) | ![Focus Achievement View Unlocked Badge](Documentation/images/FocusBadgeShare.jpg)  | ![Focus Achievement View Locked Badge](Documentation/images/FocusBadgeLock.jpg)| ![Focus Insta Sticker](Documentation/images/FocusBadgeInsta.jpg) |
+| **Focus Achievement Page** | **View the details of the unlocked badge** | **View the details of the locked badge** | **View of badge on insta story** |
 
 
 ### Profile
