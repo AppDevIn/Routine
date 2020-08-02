@@ -6,10 +6,8 @@ All in one Productivity App
 
 ## Open Doucmentation
 
-[Routine Class Documentation](https://appdevin.github.io/routine.documentation.github.io)
+[Routine Class Documentation](https://appdevin.github.io/routine.documention/)
 
-
-g
 ## Team Members
 
 1. Jeyavishnu, S10192836C 
