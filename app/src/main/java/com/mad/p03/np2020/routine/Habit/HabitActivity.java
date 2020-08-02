@@ -87,15 +87,15 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     //FAB
     private static FloatingActionButton add_habit;
 
-    private static ImageView prev_indicator, next_indicator;
+    private ImageView prev_indicator, next_indicator;
 
-    private static TextView indicator_num;
-    public static TextView remind_text;
-    private static ViewSwitcher viewSwitcher;
+    private TextView indicator_num;
+    public TextView remind_text;
+    private ViewSwitcher viewSwitcher;
 
     private Button add_first_habit;
 
-    private static RelativeLayout nothing_view;
+    private RelativeLayout nothing_view;
 
     private static int page_x = 4;
 
@@ -129,11 +129,13 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
         user.readHabit_Firebase(this, this);
 
+        // initialise dbHelper and register observer
         habit_dbHandler = new HabitDBHelper(this);
         habitRepetitionDBHelper = new HabitRepetitionDBHelper(this);
         habit_dbHandler.registerDbObserver(this);
         habitRepetitionDBHelper.registerDbObserver(this);
 
+        // initialise widgets
         viewSwitcher = findViewById(R.id.switcher);
         habitRecyclerView = findViewById(R.id.habit_recycler_view);
         prev_indicator = findViewById(R.id.habit_indicator_prev);
@@ -145,6 +147,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         habitCheckRecyclerView = findViewById(R.id.habit_check_rv);
         nothing_view = findViewById(R.id.nothing_view);
 
+        // check if screen inches is smaller than 5.1, reduce one row if smaller
         double screenInches = getScreenInches();
         Log.d(TAG,"Screen inches : " + screenInches);
         if (screenInches <= 5.1){
@@ -241,6 +244,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
     protected void onPause() {
         Log.d(TAG, "onPause: ");
         super.onPause();
+        // remove dbObserver when activity onPause
         habit_dbHandler.removeDbObserver(this);
         habitRepetitionDBHelper.removeDbObserver(this);
     }
@@ -324,6 +328,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(activityName);
                 break;
 
+            // move to last page of habit grid
             case R.id.habit_indicator_prev:
                 String p_num = indicator_num.getText().toString();
                 if (!p_num.equals("1")){
@@ -343,6 +348,7 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
 
+            // move to next page of habit grid
             case R.id.habit_indicator_next:
                 String n_num = indicator_num.getText().toString();
                 int n = Integer.parseInt(n_num);
@@ -355,7 +361,6 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
                         next_indicator.setVisibility(View.INVISIBLE);
                     }
                     prev_indicator.setVisibility(View.VISIBLE);
-                    // 2--> 1 4-->3
                     int i = 3;
                     if (page_x == 2){
                         i = 1;
@@ -438,6 +443,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /**
+     *
+     * To add dummy object inside the list to enable recycler view scrolling in between pages
+     *
+     * @param habitList This is to get the habitList
+     *
+     * @return Habit.HabitList This will return the habitList with dummies.
+     */
     private Habit.HabitList initDummyList (Habit.HabitList habitList){
 
         if (habitList.size() == 0) {return habitList;}
@@ -499,6 +512,14 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         WorkManager.getInstance(this).enqueue(mywork);
     }
 
+    /**
+     *
+     * To check the number of incomplete habits in the habitList
+     *
+     * @param habitList This is to get the habitList
+     *
+     * @return int This will return the number of incomplete habits in the habitList
+     */
     public static int checkIncompleteHabits(Habit.HabitList habitList){
         int n = 0;
         for (int i = 0; i < habitList.size(); i++){
@@ -599,6 +620,12 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         am.setRepeating(type, time, AlarmManager.INTERVAL_DAY, pi);
     }
 
+    /**
+     *
+     * This method is used to get the screen inches of the device
+     *
+     * @return double This will return the screen inches
+     * */
     public double getScreenInches() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -608,7 +635,13 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
         return Math.sqrt(x+y);
     }
 
-    public static void displayView(Habit.HabitList habitArrayList){
+    /**
+     *
+     * This method is used to call to display the view based on the size of habitArrayList.
+     *
+     * @param habitArrayList This is to get the habitList
+     * */
+    public void displayView(Habit.HabitList habitArrayList){
 
         int n = checkIncompleteHabits(habitArrayList);
 
@@ -665,6 +698,11 @@ public class HabitActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /**
+     *
+     * This method is used to notify the adapter something has changed in SQLiteDatabase.
+     *
+     * */
     @Override
     public void onDatabaseChanged() {
         Log.d(TAG, "onDatabaseChanged: ");
