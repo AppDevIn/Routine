@@ -322,23 +322,13 @@ Storymap for HabitActivity and Calendar
 
 #### Habit Tracker
 
-| ![addCount](Documentation/images/routinedemo_1.png) | ![addHabit](Documentation/images/routinedemo_2.png) | ![viewHabit](Documentation/images/routinedemo_3.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Press the add button on the habit to check in**            | **Press the floating button at the bottom right to add habit**                   | **Press on the habit to view the habit**                 |
+| ![showAllHabits](Documentation/images/showAllHabits.png) | ![habitIndicators](Documentation/images/habitIndicators.png) | ![checkHabit](Documentation/images/habitChecking.png) | ![Add new habit](Documentation/images/addNewHabit.png) |
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **The upper part show all the habits in horizontal grid view. There are circular progress bar and text to indicate the habit progress.** | **The page indicator shows the page you at. Clicking on left and right arrows will redirect to previous and next page of the habits.** | **There will be a remind text to show there are how many incomplete habits.Clicking on the white habit holder to check in your habit** | **Press the floating button at the top right to add habit** |
 
-| ![add/decrease count](Documentation/images/routinedemo_4.png) | ![modifyCount](Documentation/images/routinedemo_5.png) | ![deleteHabit](Documentation/images/routinedemo_7.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Press the add or "reset" button to respectively add or decrease the count by 1 on the habit view**    | **Click on the number sign to modify habit count  on the habit view**                  | **Press the delete button on the habit view to delete the habit**                 |
-
-| ![editHabit](Documentation/images/routinedemo_6.png) | ![addHabit](Documentation/images/routinedemo_8.png) | ![viewHabit](Documentation/images/routinedemo_9.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Click on the modify button at the bottom left of the habit view to edit the habit**            | **Press the reminder indicate text to add a reminder**                   | **Turn the time picker to choose the reminder time**                 |
-
-
-| ![addGroup](Documentation/images/routinedemo_10.png) | ![createGroup](Documentation/images/routinedemo_11.png) | ![deleteGroup](Documentation/images/routinedemo_12.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------   |
-| **Click on the group indicate text to assign a group to the habit**            | **Press the "create group" button to create a group**                   | **Press the "cancel" button to remove the current group**                 |
-
+| ![habitStreak](Documentation/images/habitStreak.png) | ![habitBarChart](Documentation/images/habitBarChart.png) | ![editHabit](Documentation/images/editHabit.png) | ![deleteHabit](Documentation/images/habitDelete.png) | 
+| ---------------------------------------------------- | ----------------------------------------------------- | :----------------------------------------------------: | ---------------------------------------------------- |
+| **Click on the habit in horizontal grid view to go to this habit view page. This will give overview of the habit by showing your current and best streak, and also your total completion.** | **This visualise your habit data in bar chart. Click on week, month, or year button to see different bar chart based on that period. You can navigate to past data if there is any.** | **Click on the edit habit button to edit the habit**  | **Press on the delete button at the bottom of edit page to remove your habit**   
 
 #### Focus
 
