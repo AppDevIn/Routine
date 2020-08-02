@@ -308,9 +308,9 @@ Storymap for HabitActivity and Calendar
 
 ### Task
 
-| ![SwipeTask](Documentation/images/SwipeTask.png) | ![HoldMoveTask](Documentation/images/HoldMoveTask.png) | <img src="Documentation/images/addTask.png" alt="drawing"/> | ![EditSection](Documentation/images/EditSection.png) | ![Teams](Documentation/images/Teams.png) |
-| ------------------------------------------------ | ------------------------------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------- |
-| **Swipe to right to delete**                     | **Press and hold to move**                             | **Clicked on the textbox to add task**                      | Edit task                                            | Share with members                       |
+| ![SwipeTask](Documentation/images/SwipeTask.png) | ![HoldMoveTask](Documentation/images/HoldMoveTask.png) | <img src="Documentation/images/addTask.png" alt="drawing"/> | <img src="Documentation/images/EditSection.png" alt="drawing"/> | <img src="Documentation/images/Teams.png" alt="drawing"/> |
+| ------------------------------------------------ | ------------------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| **Swipe to right to delete**                     | **Press and hold to move**                             | **Clicked on the textbox to add task**                      | Edit task                                                    | Share with members                                        |
 
 
 
