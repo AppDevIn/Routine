@@ -119,7 +119,9 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         }
     }
 
-
+    /**
+     * OnBackPressed to close the fragment
+     */
     private void sendBack() {
         if (mListener != null) {
             mListener.onFragmentInteraction();

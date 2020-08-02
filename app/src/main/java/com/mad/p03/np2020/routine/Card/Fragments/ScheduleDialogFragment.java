@@ -59,7 +59,8 @@ import java.util.Date;
  * @since 02-06-2020
  *
  */
-public class ScheduleDialogFragment extends BottomSheetDialogFragment {
+public class ScheduleDialogFragment extends BottomSheetDialogFragment
+{
 
     private final String TAG = "ScheduleDialog";
 
@@ -94,10 +95,13 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     //Second calendar for final reminder time
     Calendar selectedCal;
 
+    //Third Calendar for validation
     Calendar validationCalendar;
 
+    //Fourth Calendar for validating if a time ahs been previously selected
     Calendar previousSelected;
 
+    //Variables for current time
     int currentYear;
     int currentMonth;
     int currentDay;
@@ -114,37 +118,43 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
     //Boolean to decide if if reminder has been set
     Boolean isReminderSet = false;
 
+    //Variables for notification channel creation
     String ChannelName;
     String ChannelDescription;
     int ChannelImportance;
     String ChannelID;
 
+    //Task variables
     String CardName;
     int LatestID;
-
     Task mTask;
 
+    //Firebase vvariables
     DatabaseReference mDatabase;
     DatabaseReference notificationRef;
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     String UID;
 
+    //Schedule DB variables
     Schedule schedule;
     ScheduleDBHelper scheduleDBHelper;
 
-    public ScheduleDialogFragment(Task task) {
+    public ScheduleDialogFragment(Task task)
+    {
         mTask = task;
     }
 
     @SuppressLint("SetTextI18n")
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
 
         //Inflate view
         View v = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        //Initializing notification variables
         ChannelID = "CardNotification";
         ChannelName = "CardNotificationChannel";
         ChannelDescription = "Channel for card notifications";
@@ -152,13 +162,14 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         //Initialize notification channel
         initialiseNotificationChannel();
 
+        //Initializing Task variables
         taskID = mTask.getTaskID();
         CardName = mTask.getName();
 
+        //Initializing Firebase variables
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         UID = firebaseUser.getUid();
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
         notificationRef = mDatabase.child("users").child(UID);
 
@@ -168,6 +179,7 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         reminderButton = v.findViewById(R.id.reminderButton);
 
         scheduleDBHelper = new ScheduleDBHelper(getContext());
+
 
         if(mTask.getRemindDate() != null){
             String time, date;
@@ -189,10 +201,13 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         //Initializing setTimeCal to cal
         selectedCal = Calendar.getInstance();
 
+        //Initializing validationCalendar to cal
         validationCalendar = Calendar.getInstance();
 
+        //Initializing previousSelected to cal
         previousSelected = Calendar.getInstance();
 
+        //Validation for if a schedules had already been previously set
         if (mTask.getRemindDate() != null)
         {
             previousSelected.setTime(mTask.getRemindDate());
@@ -209,90 +224,115 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
             }
         }
 
-
+        //Date button listener
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Date Button Pressed!");
                 ChooseDate();
             }
         });
 
+        //Time button listener
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Time Button Pressed!");
                 ChooseTime();
             }
         });
 
+        //Schedule button listener
         reminderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(TAG, "Schedule Button Pressed!");
                 onReminderClicked();
             }
         });
 
-
         return v;
     }
 
+    /**
+     *
+     * Function for when schedule is clicked
+     *
+     * */
     public void onReminderClicked()
     {
+        //Ensuring date and time variables have been set
         if (isDateSet.equals(true) && isTimeSet.equals(true))
         {
+            //Calls set notification function to set notification
             setNotification();
+            //Sets isReminderSet to true to disable setting notification until current one has passed
             isReminderSet = true;
             dismiss();
 
+            //Gets date and time set from selected cal
             long finalTime = selectedCal.getTimeInMillis();
             Date setTime = new Date(finalTime);
 
+            //Initializing a Date format
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
             String dateString = dateFormat.format(setTime);
+
+            //Setting up values for Task
             mTask.setRemindDate(dateString);
-
             mTask.executeUpdateFirebase(this);
-
             new TaskDBHelper(getContext()).update(mTask.getTaskID(), mTask.getStringRemindDate());
-
         }
         else
         {
+            //Sends a toast if date and time has not been set
             Toast reminderValidity = Toast.makeText(getContext(), "Set a date and time first!", Toast.LENGTH_SHORT);
             reminderValidity.setGravity(Gravity.CENTER, 0, 0);
             reminderValidity.show();
         }
     }
 
-    public String ChooseDate() {
+    /**
+     *
+     * Function for when date button is clicked
+     *
+     * */
+    public String ChooseDate()
+    {
         Log.v(TAG, "Date Button Pressed!");
 
+        //Gets current day, month, year from cal to set to Date picker dialog
         int year = currentCal.get(Calendar.YEAR);
         int month = currentCal.get(Calendar.MONTH);
         int day = currentCal.get(Calendar.DAY_OF_MONTH);
 
-
-
+        //Initializing date picker dialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         datePickerDialog.getDatePicker().setMinDate(validationCalendar.getTimeInMillis());
         datePickerDialog.show();
 
-        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", new DialogInterface.OnClickListener() {
+        //Listener for positive button of date picker dialog
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "SET", new DialogInterface.OnClickListener()
+        {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
+                //Gets current day, month, year from selected date
                 currentDay = datePickerDialog.getDatePicker().getDayOfMonth();
                 currentMonth = datePickerDialog.getDatePicker().getMonth() + 1;
                 currentYear = datePickerDialog.getDatePicker().getYear();
 
                 selectedDate = currentDay + "/" + currentMonth + "/" + currentYear;
 
+                //Sets selected date into selectedCal
                 selectedCal.set(Calendar.YEAR, currentYear);
                 selectedCal.set(Calendar.MONTH, currentMonth);
                 selectedCal.set(Calendar.DAY_OF_MONTH, currentDay);
 
                 isDateSet = true;
 
+                //Sets text of button to selected date
                 dateButton.setText("Date: " + selectedDate);
 
                 Log.v(TAG, "Date Set: dd/mm/yyyy: " + selectedDate);
@@ -301,6 +341,7 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         });
 
         /*
+        //Old code for listening to date picker dialog
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -324,14 +365,19 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         return selectedDate;
     }
 
-
-
+    /***
+     *
+     * Function for when time button is selected
+     *
+     */
     public String ChooseTime() {
         Log.v(TAG, "Time Button Pressed");
 
+        //Gets current hour and minute
         int hour = currentCal.get(Calendar.HOUR_OF_DAY);
         int minute = currentCal.get(Calendar.MINUTE);
 
+        //Initializing time picker dialog
         TimePickerDialog timePickerDialog;
         timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -339,24 +385,27 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
                 currentHour = hourOfDay;
                 currentMinute = minute;
 
+                //Adds current hour and minute to string
                 selectedTime = currentHour + ":" + currentMinute;
 
+                //Ensures values are 2 digits
                 if (currentHour < 10)
                 {
                     selectedTime = "0" + currentHour + ":" + currentMinute;
                 }
-
                 if (currentMinute < 10)
                 {
                     selectedTime = currentHour + ":" + "0" + currentMinute;
                 }
 
+                //Sets selectedCal with selected time
                 selectedCal.set(Calendar.HOUR_OF_DAY, currentHour);
                 selectedCal.set(Calendar.MINUTE, currentMinute);
                 selectedCal.set(Calendar.SECOND, 0);
 
                 isTimeSet = true;
 
+                //Sets button with selected time
                 timeButton.setText("Time: " + selectedTime);
 
                 Log.v(TAG, "Time Set: " + selectedTime);
@@ -365,8 +414,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         timePickerDialog.show();
 
-
         /*
+        //Old time picker dialog code
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, hour, minute, false);
         timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         timePickerDialog.show();
@@ -447,7 +496,11 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         return selectedTime;
     }
 
-
+    /**
+     *
+     * Function for creating a notification channel
+     *
+     * */
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel()
     {
@@ -462,7 +515,11 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         notificationManager.createNotificationChannel(channel);
     }
 
-
+    /**
+     *
+     * Initializes notification channel base don api level
+     *
+     * */
     public void initialiseNotificationChannel(){
         // if api > 28, create a notification channel named "Card Notification"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -472,6 +529,11 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     *
+     * Simple notification channel creator
+     *
+     * */
     @TargetApi(Build.VERSION_CODES.O)
     public void createNotificationChannel(String channelId, String channelName, String channelDescription, int importance) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
@@ -482,14 +544,22 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         notificationManager.createNotificationChannel(channel);
     }
 
-
+    /**
+     *
+     * Function for setting notification
+     * based on selected date and time
+     *
+     * */
     public void setNotification()
     {
+        //Creating intent to broadcast receiver
         Intent intent = new Intent(getActivity(), CardNotification.class);
         intent.setAction("CardNotification");
         intent.putExtra("TaskID", taskID);
         intent.putExtra("CardName", CardName);
 
+        //Creating a unique ID to be used as a request code for pending intent
+        //using millis
         int uniqueID = (int) System.currentTimeMillis();
         schedule = new Schedule(taskID, uniqueID);
         scheduleDBHelper.insertSchedule(schedule);
@@ -514,11 +584,8 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         }
         else
         {
-
         }
-
          */
-
 
         /*
         long timeSet = selectedCal.getTimeInMillis();
@@ -540,6 +607,11 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
          */
     }
 
+    /**
+     *
+     * Function to make a toast with message as parameter
+     *
+     * */
     public void MakeToast(String info)
     {
         Toast toast = Toast.makeText(getContext(), info, Toast.LENGTH_LONG);
@@ -548,7 +620,6 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment {
         text.setTextColor(Color.WHITE);
         toast.show();
     }
-
 
     /*
     @Override

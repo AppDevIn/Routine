@@ -5,19 +5,35 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+/**
+ *
+ * The class is used to check the network status of the device
+ *
+ * @author Lee Quan Sheng
+ * @since 01-08-2020
+ *
+ */
 public class InternetStatus {
 
     private static InternetStatus instance = new InternetStatus();
     static Context context;
     ConnectivityManager connectivityManager;
-    NetworkInfo wifiInfo, mobileInfo;
     boolean connected = false;
 
+    /**
+     * get the instance of the internet status
+     * @param ctx Current context of the application
+     * @return
+     */
     public static InternetStatus getInstance(Context ctx) {
         context = ctx.getApplicationContext();
         return instance;
     }
 
+    /**
+     * This method is used to check if the device network is online
+     * @return return true or false, true - Network connected, false - network not connected
+     */
     public boolean isOnline() {
         try {
             connectivityManager = (ConnectivityManager) context

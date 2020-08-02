@@ -253,6 +253,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
 
     }
 
+    /**
+     * The setArrow() method is automatically set the view of the button based on the condition
+     *
+     * How it works:
+     * The Arrow will be visible when the selected day/week is within the current date and first use of the focus
+     * The Arrow will be invisible when the week has reached where there isn't any existing data
+     */
     public void setArrow(){
         Date min = user.getMinFocus();
         if(min.before(mappingDate.get(1))){
@@ -317,6 +324,10 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
         mListener = null;
     }
 
+    /***
+     * The onclick method consist of buttons where user select their preferred date/week to filter the data
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -396,6 +407,10 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
 
     }
 
+    /****
+     * This function is used to get the next week of the current week
+     */
+
     public void setNextWeek() throws ParseException {
         Log.v(TAG, "Setting next week");
         trackSelectValue = null;
@@ -417,20 +432,25 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
     }
 
 
-
+    /***
+     * This is a method which the button is used to get which button is clicked to know what to filter
+     *
+     * @param i
+     * @param id
+     */
     public void displayResult(int i, ResizeableButton id) {
 
         try {
-            trackSelectValue = i;
 
-            selectedDate = i;
-            if (previousButton != null) {
-                previousButton.setTextColor(getResources().getColor(color.black));
-            }
-            previousButton = id;
+            trackSelectValue = i; // this is used to track the current selected value for LiveUpdateChange filter
+
+            selectedDate = i; //Select filter day
+
+            previousButton = id; // this is used to track the current selected button id so that it can be reset when a new button is clicked
             Log.v(TAG, "Button Pressed " + i + " on " + id);
             Log.v(TAG, "Date Hashmap " + mappingDate);
 
+            //Setting the selected color
             id.setTextColor(getResources().getColor(color.pastelBlue));
             toggle.check(R.id.day);
             Date selectedDate = mappingDate.get(i);
@@ -443,6 +463,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
         }
     }
 
+    /***
+     * This is used to display the current week
+     */
     public void displayWeek() {
         try {
             trackSelectValue = null;
@@ -456,6 +479,8 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
             toggle.check(R.id.week);
             Date startDate = mappingDate.get(1);
             Date endDate = mappingDate.get(7);
+
+            //Calling the getmFocusList method where you can filter the date range
             ArrayList<Focus> listUpdate = user.getmFocusList(startDate, endDate);
 
             String pattern = "dd MMM";
@@ -475,7 +500,11 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
 
     }
 
-    //Get Current week
+    /***
+     * Get the current list of date of the current week and store in a list
+     * @param date The parameter is used to pass in the date so that the method can retrieve the first and last day of the stated date week
+     * @return
+     */
     public HashMap<Integer, Date> getMapWeek(LocalDateTime date) {
 
         Log.v(TAG, "Receive date: " + date.toString());
@@ -506,6 +535,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
         return mapDateDay;
     }
 
+    /***
+     * SQL Database onChange Listener
+     */
     @Override
     public void onDatabaseChanged() {
         Log.v(TAG, "DATABASE UPDATED TO OTHER SERVER");
@@ -513,6 +545,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
         focusAdapter.notifyDataSetChanged();
     }
 
+    /***
+     * This is used to get the reset the history due to onDatabaseChange
+     */
     private void getLocalFocus() {
         try {
             user.renewFocusList();
@@ -536,6 +571,11 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
         void onFragmentInteraction();
     }
 
+    /***
+     * Convert seconds to hour min seconds
+     * @param TotalInSeconds This parameter is to pass in the milliseconds so that it can convert accordingly
+     * @return
+     */
     public List<Integer> ConvertSecondsToTime(int TotalInSeconds) {
         if (TotalInSeconds != 0) {
             int hours = (TotalInSeconds) / 3600;

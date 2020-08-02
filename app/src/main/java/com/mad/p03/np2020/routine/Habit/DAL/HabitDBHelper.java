@@ -9,11 +9,14 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.mad.p03.np2020.routine.DAL.DBHelper;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObservable;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObserver;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
 import com.mad.p03.np2020.routine.Habit.models.HabitReminder;
 import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -25,7 +28,7 @@ import java.util.Locale;
  * @since 02-06-2020
  */
 
-public class HabitDBHelper extends DBHelper {
+public class HabitDBHelper extends DBHelper implements HabitDBObservable {
 
     private final String TAG = "HabitDatabase";
 
@@ -38,6 +41,7 @@ public class HabitDBHelper extends DBHelper {
     public HabitDBHelper(@Nullable Context context) {
         super(context);
     }
+    ArrayList<HabitDBObserver> observerArrayList = new ArrayList<>();
 
     /**
      *
@@ -48,6 +52,7 @@ public class HabitDBHelper extends DBHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         super.onCreate(db);
+        observerArrayList = new ArrayList<>();
     }
 
     /**
@@ -516,6 +521,7 @@ public class HabitDBHelper extends DBHelper {
         }
         // close the database
         db.close();
+        notifyDbChanged();
 
     }
 
@@ -583,7 +589,104 @@ public class HabitDBHelper extends DBHelper {
         return isExisted;
     }
 
+    /**
+     *
+     * This method is used to update the habit object in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * */
+    public void updateHabitFromFirebase(Habit habit){
+        Log.d(TAG, "Habit: updateHabit: ");
+
+        // get the readable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String id_filter = Habit.COLUMN_ID + " = " +habit.getHabitID();
+
+        // put the values
+        ContentValues values = new ContentValues();
+        values.put(Habit.COLUMN_HABIT_TITLE, habit.getTitle());
+        values.put(Habit.COLUMN_HABIT_OCCURRENCE, habit.getOccurrence());
+        values.put(Habit.COLUMN_HABIT_PERIOD, habit.getPeriod());
+        values.put(Habit.COLUMN_HABIT_HOLDERCOLOR, habit.getHolder_color());
+
+        HabitReminder reminder = habit.getHabitReminder();
+        if (reminder != null){ // put the values if reminder object is not null
+            values.put(Habit.COLUMN_HABIT_REMINDER_ID, reminder.getId());
+            values.put(Habit.COLUMN_HABIT_REMINDER_MESSAGES, reminder.getMessage());
+            values.put(Habit.COLUMN_HABIT_REMINDER_HOURS, reminder.getHours());
+            values.put(Habit.COLUMN_HABIT_REMINDER_MINUTES, reminder.getMinutes());
+            values.put(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT, reminder.getCustom_text());
+        }else{ // put the values null if reminder object is null
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_ID);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MESSAGES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_HOURS);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_MINUTES);
+            values.putNull(Habit.COLUMN_HABIT_REMINDER_CUSTOMTEXT);
+        }
+
+        HabitGroup group = habit.getGroup();
+        if (group != null){ // put the values if group object is not null
+            values.put(Habit.COLUMN_HABIT_GROUP_NAME, group.getGrp_name());
+        }else{ // put the values null if group object is not null
+            values.putNull(Habit.COLUMN_HABIT_GROUP_NAME);
+        }
+
+        // update the habit column
+        db.update(Habit.TABLE_NAME, values, id_filter, null);
+        db.close(); // close the db connection
+
+        notifyDbChanged();
+    }
+
+    /**
+     *
+     * This method is used to delete the habit object in the SQLiteDatabase.
+     *
+     * @param habit This parameter is to get the habit object.
+     *
+     * */
+    public void deleteHabitFromFirebase(Habit habit){
+        Log.d(TAG, "Habit: deleteHabit: ");
+
+        // get the writeable database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String whereClause = Habit.COLUMN_ID + "=?"; // specify to delete based on the column id
+
+        // put the column id
+        String[] whereArgs = new String[] { String.valueOf(habit.getHabitID()) };
+
+        // delete the habit column
+        db.delete(Habit.TABLE_NAME, whereClause, whereArgs);
+
+        db.close(); // close the db connection
+
+        notifyDbChanged();
+    }
 
 
 
+    @Override
+    public void registerDbObserver(HabitDBObserver habitDBObserver) {
+        if (!observerArrayList.contains(habitDBObserver)){
+            observerArrayList.add(habitDBObserver);
+        }
+    }
+
+    @Override
+    public void removeDbObserver(HabitDBObserver habitDBObserver) {
+        observerArrayList.remove(habitDBObserver);
+    }
+
+    @Override
+    public void notifyDbChanged() {
+        Log.d(TAG, "notifyDbChanged: ");
+        for (HabitDBObserver habitDBObserver :observerArrayList){
+            if (habitDBObserver != null){
+                habitDBObserver.onDatabaseChanged();
+                Log.v(TAG,"SQLiteDatabase onChanged triggered");
+            }}
+    }
 }

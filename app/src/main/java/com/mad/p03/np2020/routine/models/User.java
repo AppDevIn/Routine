@@ -33,6 +33,8 @@ import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObservable;
+import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObserver;
 import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
 import com.mad.p03.np2020.routine.Habit.models.HabitReminder;
@@ -884,8 +886,10 @@ public class User implements Parcelable, FocusDBObserver {
     }
 
 
-
-
+    /**
+     * This method is to show a dialog on the permission reason of requesting internal storage access
+     * @param activity
+     */
     public void showPermissionDescription(Activity activity){
 
         TextView close;
@@ -1004,9 +1008,12 @@ public class User implements Parcelable, FocusDBObserver {
      *
      * @param context This is to get the context of the activity
      */
-    public void readHabit_Firebase(Context context) {
+    public void readHabit_Firebase(Context context, HabitDBObserver habitDBObserver) {
 
         habitDBHelper = new HabitDBHelper(context);
+        habitDBHelper.registerDbObserver(habitDBObserver);
+        habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
+        habitRepetitionDBHelper.registerDbObserver(habitDBObserver);
         hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habit");
         habitListener = hRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -1022,7 +1029,7 @@ public class User implements Parcelable, FocusDBObserver {
                 }else{
                     if (!habitDBHelper.getHabitByID(habitID).equals(habit)){
                         Log.d(TAG, "onChildAdded: updateHabit");
-                        habitDBHelper.updateHabit(habit);
+                        habitDBHelper.updateHabitFromFirebase(habit);
                         renewHabitList();
                     }
                 }
@@ -1040,7 +1047,7 @@ public class User implements Parcelable, FocusDBObserver {
                 }else{
                     if (!habitDBHelper.getHabitByID(habitID).equals(habit)){
                         Log.d(TAG, "onChildChanged: updateHabit");
-                        habitDBHelper.updateHabit(habit);
+                        habitDBHelper.updateHabitFromFirebase(habit);
                         renewHabitList();
                     }
                 }
@@ -1053,7 +1060,7 @@ public class User implements Parcelable, FocusDBObserver {
 
                 if (habitDBHelper.isHabitIDExisted(habit.getHabitID())){
                     Log.d(TAG, "onChildRemoved: remove habit");
-                    habitDBHelper.deleteHabit(habit);
+                    habitDBHelper.deleteHabitFromFirebase(habit);
                     renewHabitList();
                 }
             }
@@ -1069,7 +1076,7 @@ public class User implements Parcelable, FocusDBObserver {
             }
         });
 
-        habitRepetitionDBHelper = new HabitRepetitionDBHelper(context);
+
         hRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUID()).child("habitRepetition");
         hrListener = hRef.addChildEventListener(new ChildEventListener() {
             @Override

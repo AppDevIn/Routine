@@ -46,7 +46,11 @@ public class UsernameDialog extends AppCompatDialogFragment {
 
     }
      */
-
+    /**
+     *
+     * Dialog for resetting username
+     *
+     * */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

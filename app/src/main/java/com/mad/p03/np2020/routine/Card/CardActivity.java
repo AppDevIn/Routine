@@ -43,7 +43,7 @@ import static java.security.AccessController.getContext;
 *
 * CardActivity class used to manage card activities
 *
-* @author Jeyavishnu & Pritheev
+* @author Pritheev & Jeyavishnu
  *@since 10-07-2020
 *
  */
@@ -55,7 +55,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     //Member Variable
     Task mTask;
     EditText mEdTitle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +176,11 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     *
+     * Initializes schedule dialog
+     *
+     * */
     private void schedule() {
         ScheduleDialogFragment scheduleDialogFragment = new ScheduleDialogFragment(mTask);
         scheduleDialogFragment.show(getSupportFragmentManager(), "Schedule Dialog Fragment");
@@ -198,6 +202,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         fragmentTransaction.commit();
     }
 
+    /**
+     *
+     * Creates an intent and opens up focus activity*/
     private void focus() {
         ActivityOptions options =
                 ActivityOptions.makeCustomAnimation(this, 0, 0);
@@ -249,7 +256,5 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         view.setFocusable(false);
 
     }
-
-
 
 }

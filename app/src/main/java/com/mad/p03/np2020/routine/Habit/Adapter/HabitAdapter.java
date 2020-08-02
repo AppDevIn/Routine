@@ -49,7 +49,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
     private Context c;
     private HabitItemClickListener mListener;
     private View view;
-    private HabitDBHelper dbHandler;
     private User user;
 
     /**Used as the adapter habitList*/
@@ -58,17 +57,10 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
 
     /**This method is a constructor for habitAdapter*/
 
-    public HabitAdapter(Context c, Habit.HabitList habitList, User user,HabitCheckAdapter habitCheckAdapter) {
+    public HabitAdapter(Context c, Habit.HabitList habitList, User user) {
         this.c = c;
         this._habitList = habitList;
-        dbHandler = new HabitDBHelper(c);
         this.user = user;
-        this.habitCheckAdapter = habitCheckAdapter;
-
-//        user.readHabit_Firebase(c, true);
-//        user.readHabitRepetition_Firebase(c);
-        habitEventListener();
-        habitRepetitionEventListener();
     }
 
     /**
@@ -246,111 +238,6 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitHolder> {
         return txt;
 
 //        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
-    }
-
-    /**
-     * Listen to firebase data change to update views on the recyclerView
-     */
-    private void habitEventListener() {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
-        myRef.child("habit").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifyHabitChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-    /**
-     * Notify Item changed if user delete or add data
-     */
-    public void notifyHabitChanged() {
-        Habit.HabitList habitList = initDummyList(user.getHabitList());
-        _habitList = habitList;
-        habitCheckAdapter.habitList = habitList;
-        this.notifyDataSetChanged();
-        habitCheckAdapter.notifyDataSetChanged();
-
-        displayView(habitList);
-        Log.v(TAG, "Data is changed from other server");
-    }
-
-    private Habit.HabitList initDummyList (Habit.HabitList habitList){
-
-        if (habitList.size() == 0) {return habitList;}
-        int size = habitList.size();
-
-        if (getScreenInches() <= 5.1){
-            if (size % 2 != 0){
-                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
-            }
-        }else{
-            int dummy_size = 4-(size % 4);
-            if (dummy_size == 4) {return habitList;}
-
-            for (int i = 0; i<dummy_size; i++){
-                habitList.addItem(new Habit("dummy",0,0,"cyangreen"));
-            }
-        }
-
-        return habitList;
-    }
-
-    public int checkIncompleteHabits(Habit.HabitList habitList){
-        int n = 0;
-        for (int i = 0; i < habitList.size(); i++){
-            Habit habit = habitList.getItemAt(i);
-            if (!habit.getTitle().toLowerCase().equals("dummy") && habit.getOccurrence() > habit.getCount() ){
-                n++;
-            }
-        }
-        return n;
-    }
-
-    /**
-     * Listen to firebase data change to update views on the recyclerView
-     */
-    private void habitRepetitionEventListener() {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUID());
-        myRef.child("habitRepetition").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notifyHabitRepetitionChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-    /**
-     * Notify Item changed if user delete or add data
-     */
-    public void notifyHabitRepetitionChanged() {
-        Habit.HabitList habitList = initDummyList(dbHandler.getAllHabits());
-        _habitList = habitList;
-        habitCheckAdapter.habitList = habitList;
-        this.notifyDataSetChanged();
-        habitCheckAdapter.notifyDataSetChanged();
-
-        displayView(habitList);
-//        Log.v(TAG, "Data is changed from other server");
-    }
-
-    public double getScreenInches() {
-        DisplayMetrics dm = new DisplayMetrics();
-        ((HabitActivity) c).getWindowManager().getDefaultDisplay().getMetrics(dm);
-        double x = Math.pow(dm.widthPixels/dm.xdpi,2);
-        double y = Math.pow(dm.heightPixels/dm.ydpi,2);
-
-        return Math.sqrt(x+y);
     }
 }
 
