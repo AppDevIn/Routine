@@ -13,6 +13,15 @@ import com.mad.p03.np2020.routine.Task.Fragment.TaskSettings;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TeamViewHolder;
 import com.mad.p03.np2020.routine.Task.adapter.TeamAdapter;
 
+/**
+ *
+ * This class is used to capture the gesture of the swipe
+ * action on the team members profiled
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ *
+ */
 public class GestureDetectorTeamItem extends GestureDetector.SimpleOnGestureListener {
     // Minimal x and y axis swipe distance.
     private static int MIN_SWIPE_DISTANCE_X = 100;

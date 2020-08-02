@@ -17,6 +17,15 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
+/**
+ *
+ * This is the database that is used create the section table
+ * in the database
+ *
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ */
 public class CheckDBHelper extends DBHelper{
 
     private final String TAG = "CheckDatabase";
@@ -53,6 +62,14 @@ public class CheckDBHelper extends DBHelper{
     }
 
 
+    /**
+     *
+     * To get check object based
+     * on the checkid
+     *
+     * @param id The id of the check object
+     * @return A check object
+     */
     public Check getCheck(String id){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -77,6 +94,14 @@ public class CheckDBHelper extends DBHelper{
 
     }
 
+    /**
+     *
+     * Get all the check object that
+     * belongs to a task id
+     *
+     * @param taskID The taskid that need to be filtered
+     * @return A list of check object
+     */
     public List<Check> getAllCheck(String taskID){
 
         List<Check> checkList = new ArrayList<>();
@@ -109,6 +134,15 @@ public class CheckDBHelper extends DBHelper{
 
     }
 
+    /**
+     *
+     * Insert the check object into the
+     * sqlite
+     *
+     * @param check The object that you want insert
+     * @param taskID The TaskID this object is associated with
+     * @return The id of the table this is inserted to
+     */
     public String insertCheck(Check check, String taskID) {
         Log.d(TAG, "insertCheck(): Preparing to insert the new Check ");
 
@@ -140,6 +174,14 @@ public class CheckDBHelper extends DBHelper{
 
     }
 
+    /**
+     *
+     * Insert the check object into the
+     * sqlite
+     *
+     * @param check The object that you want insert
+     * @return The id of the table this is inserted to
+     */
     public String insertCheck(Check check) {
         Log.d(TAG, "insertCheck(): Preparing to insert the new Check ");
 
@@ -176,8 +218,8 @@ public class CheckDBHelper extends DBHelper{
     /**
      * This method will update the position of the given
      * row based on the ID
-     * @param ID
-     * @param name
+     * @param ID The checkid that need to be updated
+     * @param name The name of the check object that need to be changed
      */
     public void update(String ID, String name){
 
@@ -201,9 +243,9 @@ public class CheckDBHelper extends DBHelper{
 
     /**
      * This will delete the data from checkList table with
-     * section
+     * ID
      *
-     * @param ID ID that will be used find the task and delete it
+     * @param ID ID that will be used find the check and delete it
      */
     public void delete(String ID){
 
@@ -297,6 +339,12 @@ public class CheckDBHelper extends DBHelper{
     }
 
 
+    /**
+     *
+     * Update the check status in the check object
+     *
+     * @param check
+     */
     public void update(Check check){
 
         SQLiteDatabase db = this.getWritableDatabase();

@@ -14,6 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ *
+ * This is part of the custom calender to show all the dates
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ *
+ */
 public class MyCheckViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
 

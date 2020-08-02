@@ -1,11 +1,10 @@
-package com.mad.p03.np2020.routine.Calender;
+package com.mad.p03.np2020.routine.Calender.CustomCalender;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,19 +14,28 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mad.p03.np2020.routine.Calender.CustomCalender.GridViewAdapter;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.models.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.Nullable;
 
+/**
+ *
+ * This is a custom view for calender
+ *
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ *
+ */
 public class CustomCalenderView extends LinearLayout implements View.OnClickListener {
 
 
@@ -50,10 +58,16 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
 
     DateChangeListener mDateChangeListener;
 
+
     public CustomCalenderView(Context context) {
         super(context);
     }
 
+    /**
+     * To init the custom view
+     * @param context The context where the object is used
+     * @param attrs
+     */
     public CustomCalenderView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
@@ -70,6 +84,11 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
     }
 
 
+    /**
+     * Click listener for all the clicks in this
+     * custom calender view
+     * @param view The view that is being clicked
+     */
     @Override
     public void onClick(View view) {
 
@@ -83,7 +102,10 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
     }
 
 
-
+    /**
+     * The init the layout and find id from that layout
+     * and set click listener
+     */
     private void IntializeLayout(){
 
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -115,6 +137,9 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
 
     }
 
+    /**
+     * Set up the grid view with 48 values
+     */
     private void SetUpCalender(){
         String currentDate = dateFormat.format(mCalender.getTime());
         txtCalender.setText(currentDate);
@@ -130,12 +155,15 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        mGridViewAdapter = new GridViewAdapter(mContext, dates, mCalender, taskList );
+        mGridViewAdapter = new GridViewAdapter(mContext, dates, mCalender );
         mGridView.setAdapter(mGridViewAdapter);
 
     }
 
-    //Is a datetime picker method
+
+    /**
+     * This is to trigger the datetime picker
+     */
     private void ChooseDate() {
         Log.v(TAG, "Date Button Pressed!");
 
@@ -178,6 +206,12 @@ public class CustomCalenderView extends LinearLayout implements View.OnClickList
 
     }
 
+    /**
+     * Calculate all the values and than
+     * re set the values in the gridview and notify
+     * the change
+     * @param calendar
+     */
     private void UpdateCalender(Calendar calendar) {
 
 

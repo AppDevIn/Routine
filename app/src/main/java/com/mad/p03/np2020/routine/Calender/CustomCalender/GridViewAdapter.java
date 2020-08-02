@@ -1,4 +1,4 @@
-package com.mad.p03.np2020.routine.Calender;
+package com.mad.p03.np2020.routine.Calender.CustomCalender;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -28,6 +28,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+/**
+ *
+ * This is part of the custom calender to show all the dates
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ *
+ */
 class GridViewAdapter extends ArrayAdapter {
 
     List<Date> dates;
@@ -39,7 +47,13 @@ class GridViewAdapter extends ArrayAdapter {
     final private String TAG = "Calender";
 
 
-    public GridViewAdapter(@NonNull Context context, List<Date> dates, Calendar selectedDSate,   List<Task> taskList) {
+    /**
+     * The constructor
+     * @param context The context this view is used
+     * @param dates The dates list
+     * @param selectedDSate The date that is currently selected
+     */
+    public GridViewAdapter(@NonNull Context context, List<Date> dates, Calendar selectedDSate) {
         super(context, R.layout.single_cell_layout);
         this.dates = dates;
         this.selectedDSate = selectedDSate;
@@ -49,6 +63,7 @@ class GridViewAdapter extends ArrayAdapter {
 
 
     }
+
 
     @NonNull
     @Override
@@ -134,11 +149,10 @@ class GridViewAdapter extends ArrayAdapter {
         return dates.get(position);
     }
 
-
-    public List<Date> getDates() {
-        return dates;
-    }
-
+    /**
+     * To set the current date
+     * @param selectedDSate
+     */
     public void setCurrentDate(Calendar selectedDSate) {
         this.selectedDSate = selectedDSate;
     }

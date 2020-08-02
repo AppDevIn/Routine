@@ -90,7 +90,23 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 27. [OnFirebaseAuth.java](app/src/main/java/com/mad/p03/np2020/routine/Interface/OnFirebaseAuth.java)
 
-   
+28. [Calender](app/src/main/java/com/mad/p03/np2020/routine/Calender/Calender.java)
+
+29. [CustomCalenderView](app/src/main/java/com/mad/p03/np2020/routine/Calender/CustomCalender/CustomCalenderView.java)
+
+30. [DateChangeListener](app/src/main/java/com/mad/p03/np2020/routine/Calender/CustomCalender/DateChangeListener.java)
+
+31. [GridViewAdapter](app/src/main/java/com/mad/p03/np2020/routine/Calender/CustomCalender/GridViewAdapter.java)
+
+32. [NotesFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Card/Fragments/NotesFragment.java)
+
+33. [CheckAdapter](app/src/main/java/com/mad/p03/np2020/routine/Card/adapters/CheckAdapter.java)
+
+34. [CardTouchHelperAdapter](app/src/main/java/com/mad/p03/np2020/routine/Card/models/CardTouchHelperAdapter.java)
+
+35. [MyCheckViewHolder](app/src/main/java/com/mad/p03/np2020/routine/Card/ViewHolder/MyCheckViewHolder.java)
+
+     
 
 ### Quan Sheng and Jeya
 
@@ -172,11 +188,9 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 5.[CardNotification.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardNotification.java)
 
-6.[NotesFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/NotesFragment.java)
+6.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/StepsFragment.java)
 
-7.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/StepsFragment.java)
-
-8.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Settings.java)
+7.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Settings.java)
 
 ## Story Mapping 
 

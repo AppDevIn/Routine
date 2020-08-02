@@ -109,6 +109,9 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(db,oldVersion,newVersion);
     }
 
+    /**
+     * To delete all the data in all the table
+     */
     public void deleteAll() {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.execSQL("DELETE FROM " + User.TABLE_NAME);

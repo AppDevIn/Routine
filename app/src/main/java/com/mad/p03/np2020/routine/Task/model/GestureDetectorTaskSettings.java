@@ -10,6 +10,14 @@ import android.view.animation.AnimationUtils;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.Fragment.TaskSettings;
 
+/**
+ *
+ * This is used to capture the swipe action on the task settings page
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ *
+ */
 public class GestureDetectorTaskSettings extends GestureDetector.SimpleOnGestureListener {
     // Minimal x and y axis swipe distance.
     private static int MIN_SWIPE_DISTANCE_X = 100;

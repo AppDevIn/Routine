@@ -25,8 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * CheckAdapter Class for managing check boxes
  *
- * @author Jeyavishnu & Pritheev
- * @since 02-06-2020
+ * @author Jeyavishnu
+ * @since 02-08-2020
  *
  */
 public class CheckAdapter extends RecyclerView.Adapter<MyCheckViewHolder> implements CardTouchHelperAdapter {
