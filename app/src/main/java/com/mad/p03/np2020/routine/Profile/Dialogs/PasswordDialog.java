@@ -31,7 +31,6 @@ public class PasswordDialog extends AppCompatDialogFragment {
     private PasswordDialogListener listener;
     private Button positiveButton;
 
-
 /*
     @NonNull
     @Override
@@ -59,8 +58,12 @@ public class PasswordDialog extends AppCompatDialogFragment {
         return builder.create();
     }
 
-
  */
+    /**
+     *
+     * Function that creates a dialog for resetting password
+     *
+     * */
     @Override
     @NonNull
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

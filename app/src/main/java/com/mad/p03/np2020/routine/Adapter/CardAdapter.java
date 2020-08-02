@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  * CardAdapter class for recyclerview adapter
  *
- * @author Jeyavishnu & Pritheev
+ * @author Pritheev
  * @since 02-06-2020
  *
  */
@@ -24,8 +24,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     private final String TAG = "CardAdapter";
 
+    /**ArrayList to store recyclerview data*/
     private ArrayList<String> data = new ArrayList<>();
 
+    /**
+     *
+     * CardAdapter constructor
+     *
+     * */
     public CardAdapter(ArrayList<String> input) {
 
         data.add("lol");
@@ -47,6 +53,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
         Log.v(TAG, "View bound to holder");
     }
 
+    /**
+     *
+     * Function to getItemCount of items in recyclerview
+     *
+     * */
     public int getItemCount(){
         Log.v(TAG, "List item count is : " + data.size());
         return data.size();

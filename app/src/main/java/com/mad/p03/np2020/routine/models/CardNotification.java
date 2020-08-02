@@ -48,6 +48,11 @@ public class CardNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        /**
+         *
+         * Receiving intent with action for setting a notification
+         *
+         * */
         if (intent.getAction().equals("CardNotification"))
         {
             Bundle bundle = intent.getExtras();
@@ -123,7 +128,6 @@ public class CardNotification extends BroadcastReceiver {
             });
 
              */
-
 
         }
 

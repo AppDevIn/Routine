@@ -121,6 +121,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         scheduleDBHelper = new ScheduleDBHelper(getApplicationContext());
 
+        //Initializing database variables
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         UID = firebaseUser.getUid();
@@ -133,6 +134,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         username = findViewById(R.id.username);
 
+        //Listener for name change
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -169,6 +171,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
          */
 
+        //On touch listeners
         changeName.setOnClickListener(this);
         changePassword.setOnClickListener(this);
         reportProblem.setOnClickListener(this);
@@ -254,6 +257,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    /**
+     *
+     * When crop activity called to open up image selector
+     *
+     * */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -272,6 +280,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     *
+     * Function for uploading profile image to firebase
+     *
+     * */
     private void uploadProfileImage()
     {
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -320,12 +333,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    //Calls username dialog
     public void changeUsername()
     {
         UsernameDialog usernameDialog = new UsernameDialog();
         usernameDialog.show(getSupportFragmentManager(), "Change Username Dialog");
     }
 
+    //Changes username and sets it in firebase and SQL
     @Override
     public void getNewUsername(String newUsername) throws FormatException {
         //mUser.setName(newUsername);
@@ -343,6 +358,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    //Changes password by calling firebase
     public void changePassword()
     {
         //PasswordDialog passwordDialog = new PasswordDialog();
@@ -370,6 +386,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    //Opens an intent to google play to rate the app
     public void rateApp()
     {
         try
@@ -384,6 +401,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    //Function for validating url to google play link of app
     private Intent rateIntentForUrl(String url)
     {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, getPackageName())));
@@ -401,6 +419,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return intent;
     }
 
+    /**
+     *
+     * Logout function that clears all alarms
+     * and logs user out
+     *
+     * */
     public void logout()
     {
         //Remove animation
@@ -491,6 +515,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         am.cancel(pi);
     }
 
+    /**
+     *
+     * Function is used to cancel all alarms of task
+     *
+     * */
     public void cancelScheduleAlarms()
     {
         Log.v(TAG, "cancelSchedule alarms: ");
@@ -521,6 +550,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    /**
+     *
+     * Method t make a toast
+     *
+     * */
     public void MakeToast(String info)
     {
         Toast toast = Toast.makeText(ProfileActivity.this, info, Toast.LENGTH_LONG);
@@ -530,18 +564,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         toast.show();
     }
 
+    /**
+     *
+     * Opens up report dialog
+     *
+     * */
     public void reportAProblem()
     {
         ReportDialog reportDialog = new ReportDialog();
         reportDialog.show(getSupportFragmentManager(), "Report a problem dialog");
     }
 
+    /**
+     *
+     * Change profile picture based on image selected
+     * and uploads it to firebase
+     * */
     public void changeProfilePicture()
     {
         CropImage.activity().setAspectRatio(1, 1).start(ProfileActivity.this);
         uploadProfileImage();
     }
 
+    /**
+     *
+     * Gets user info from firebase to set the profile picture if it exists
+     *
+     * */
     public void getUserInfo()
     {
         storageProfilePicture.child(mAuth.getCurrentUser().getUid() + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -591,7 +640,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             hgListener = null;
 
         }
-
 
     }
 }

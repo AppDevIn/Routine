@@ -38,6 +38,13 @@ public class ScheduleDBHelper extends DBHelper {
         super.onDowngrade(db, oldVersion, newVersion);
     }
 
+    /**
+     *
+     * Function to insert schedule
+     *
+     * @param schedule to pass through a schedule object
+     *
+     * */
     public void insertSchedule(Schedule schedule)
     {
         Log.v(TAG, "Inserting Schedule");
@@ -55,6 +62,12 @@ public class ScheduleDBHelper extends DBHelper {
         db.close();
     }
 
+    /**
+     * Function to delete schedule
+     *
+     * @param id for finding in db based on id
+     *
+     * */
     public void deleteSchedule(int id)
     {
         Log.v(TAG, "Deleting Schedule: ");
@@ -63,10 +76,13 @@ public class ScheduleDBHelper extends DBHelper {
         // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
 
-
     }
 
-
+    /**
+     *
+     * Function to get all schedule from sqlLite db
+     *
+     * */
     public List<Schedule> getAllSchedule()
     {
         List<Schedule> scheduleList = new ArrayList<>();
