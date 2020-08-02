@@ -44,6 +44,7 @@ public class HabitGroupWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        //get input data
         String UID = getInputData().getString("ID");
 
         //Deserialization from jsonObject

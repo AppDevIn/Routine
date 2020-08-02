@@ -134,6 +134,5 @@ public class HabitGroupAdapter extends RecyclerView.Adapter<HabitGroupHolder> {
     public void notifyItemChanged() {
         _habitGroupList = habitGroupDBHelper.getAllGroups();
         this.notifyDataSetChanged();
-
     }
 }

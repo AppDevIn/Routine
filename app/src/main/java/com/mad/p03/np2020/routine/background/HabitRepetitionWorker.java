@@ -15,6 +15,15 @@ import com.mad.p03.np2020.routine.Habit.models.HabitRepetition;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * This is to upload the data to HabitRepetition data from
+ * the background which implements the Worker.
+ *
+ * @author Hou Man
+ * @since 02-08-2020
+ */
+
 public class HabitRepetitionWorker extends Worker {
 
     private static final String TAG = "HabitRepetitionWorker";
@@ -36,6 +45,8 @@ public class HabitRepetitionWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+
+        // get the input data
         boolean isDeletion = getInputData().getBoolean("deletion", false);
         String UID = getInputData().getString("ID");
 
@@ -45,7 +56,6 @@ public class HabitRepetitionWorker extends Worker {
         //Referencing Data
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(UID).child("habitRepetition");
 
-        Log.d(TAG, "doWork: "+isDeletion);
         if (isDeletion) {
             deleteToFirebase();
         } else {
@@ -73,14 +83,13 @@ public class HabitRepetitionWorker extends Worker {
     /**
      *
      * This method is used to
-     *  delete the habit object from the firebase.
+     *  delete the habitRepetiiton object from the firebase.
      *
      * */
     private void deleteToFirebase() {
-        Log.d(TAG, "writeToFirebase: HabitRepetition Data being deleted)");
+        Log.d(TAG, "deleteToFirebase: HabitRepetition Data being deleted");
 
         ArrayList<Long> arr = habitRepetition.getRowList();
-        Log.d(TAG, "deleteToFirebase: "+arr.size());
 
         for (long rowID : arr){
             Log.d(TAG, "deleteToFirebase: "+ rowID);

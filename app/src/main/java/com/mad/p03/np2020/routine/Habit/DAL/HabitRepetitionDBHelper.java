@@ -32,7 +32,7 @@ import java.util.Locale;
 
 /**
  *
- * Model used to manage the habitRepetition
+ * Model used to manage the habitRepetition in SQLiteDatabase
  *
  * @author Hou Man
  * @since 20-07-2020
@@ -43,6 +43,7 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
     private final String TAG = "HabitRepetitionDatabase";
     private HabitDBHelper habitDBHelper;
     private Context context;
+    ArrayList<HabitDBObserver> observerArrayList = new ArrayList<>();
 
     /**
      *
@@ -55,7 +56,6 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         habitDBHelper = new HabitDBHelper(context);
         this.context = context;
     }
-    ArrayList<HabitDBObserver> observerArrayList = new ArrayList<>();
 
     /**
      *
@@ -149,6 +149,13 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return id;
     }
 
+    /**
+     *
+     * This method is to get today timestamp.
+     *
+     * @return long This will return today timestamp in millisecond
+     *
+     * */
     public long getTodayTimestamp(){
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         int year  = cal.get(Calendar.YEAR);
@@ -184,6 +191,11 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         db.close(); // close the db connection
     }
 
+    /**
+     *
+     * This method is to repeat the habit based on its period.
+     *
+     * */
     public void repeatingHabit(){
         Log.d(TAG, "repeatingHabit: ");
         // get the readable database
@@ -254,16 +266,14 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
 
                     }
                     if (isUpdated){
+                        // write to firebase when there is changed in sql
                         Log.d(TAG, "repeatingHabit: "+habit.getHabitID()+ " AT " + timestamp );
                         HabitRepetition habitRepetition = getHabitRepetitionByTimeStamp(habit.getHabitID(), timestamp);
                         writeHabitRepetition_Firebase(habitRepetition, FirebaseAuth.getInstance().getCurrentUser().getUid());
                     }
                 }
 
-
-
             }
-
 
             res.moveToNext(); // move to the next result
 
@@ -271,6 +281,16 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         db.close();
     }
 
+    /**
+     *
+     * This method is to insert new habit repetition to SQLiteDatabase
+     *
+     * @param habitID This is to parse the habitID
+     * @param cycle This is to parse the cycle
+     * @param cycle_day This is to parse the cycle day
+     * @param conCount This is to parse the consecutive count
+     * @param timestamp This is to parse the timestamp
+     * */
     public void insertNewRepetitionHabit(long habitID, int cycle, int cycle_day, int conCount, long timestamp){
         // insert the values
         ContentValues values = new ContentValues();
@@ -301,6 +321,14 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         db.close();
     }
 
+    /**
+     *
+     * This method is to get today habitRepetition by its id
+     *
+     * @param id This is to parse the id
+     *
+     * @return HabitRepetition This will return the habitRepetition object found in SQLiteDatabase.
+     * */
     public HabitRepetition getTodayHabitRepetitionByID(long id){
         HabitRepetition hr = new HabitRepetition();
 
@@ -324,6 +352,16 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
 
     }
 
+    /**
+     *
+     * This method is to get habitRepetition by its id and timestamp
+     *
+     * @param id This is to parse the id
+     *
+     * @param timestamp This is to parse the timestamp
+     *
+     * @return HabitRepetition This will return the habitRepetition object found in SQLiteDatabase.
+     * */
     public HabitRepetition getHabitRepetitionByTimeStamp(long id, long timestamp){
         HabitRepetition hr = new HabitRepetition();
 
@@ -411,7 +449,7 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
 
     /**
      *
-     * This method is used to insert the habit to the habit column in the SQLiteDatabase from firebase.
+     * This method is used to insert the habitRepetition to the habitRepetition table in the SQLiteDatabase from firebase.
      *
      * @param hr This parameter is to get the habitRepetition object.
      *
@@ -454,6 +492,12 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
 
     }
 
+    /**
+     *
+     * This method is to get last assigned row id in habitRepetition table.
+     *
+     * @return long this will return the last assigned row id.
+     * */
     public long getLastAssignedRowID(){
         SQLiteDatabase db = this.getReadableDatabase();
         long id = 1;
@@ -492,6 +536,14 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         db.close(); // close the db connection
     }
 
+    /**
+     *
+     * This method is to get all habitRepetitionsID by the habitID
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @return ArrayList<Long> this will return the habitRepetitionsID in long array list
+     * */
     public ArrayList<Long> getAllHabitRepetitionsIDByHabitID(long habitID) {
         ArrayList<Long> arr = new ArrayList<>();
 
@@ -519,6 +571,14 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return arr;
     }
 
+    /**
+     *
+     * This method is to get all habitRepetitions by the habitID
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @return ArrayList<HabitRepetition> this will return the habitRepetitions in array list
+     * */
     public ArrayList<HabitRepetition> getAllHabitRepetitionsByHabitID(long habitID) {
         ArrayList<HabitRepetition> arr = new ArrayList<>();
 
@@ -552,6 +612,14 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return arr;
     }
 
+    /**
+     *
+     * This method is to get the max cycle by the habitID
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @return int This will return the max cycle for the habit
+     * */
     public int getMaxCycle(long habitID){
         int cycle = 0;
         // get the readable database
@@ -574,6 +642,16 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return cycle;
     }
 
+    /**
+     *
+     * This method is to get the max count for specific cycle by the habitID
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @param cycle This is to parse the cycle
+     *
+     * @return int This will return the max count for specific cycle of the habit
+     * */
     public int getMaxCountByCycle(long habitID, int cycle){
         int count = 0;
         // get the readable database
@@ -596,6 +674,16 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return count;
     }
 
+    /**
+     *
+     * This method is to check whether there is next month data for the habit
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @param next_ms This is to parse the next month ms
+     *
+     * @return boolean This will return the boolean value to indicate whether there is next month data for the habit
+     * */
     public boolean isNextMonth(long habitID, long next_ms){
         boolean isNextMonth = false;
         // get the readable database
@@ -618,6 +706,18 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return isNextMonth;
     }
 
+    /**
+     *
+     * This method is to get count between months
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @param ms This is to parse the month ms
+     *
+     * @param next_ms This is to parse the next month ms
+     *
+     * @return int This will return count between months
+     * */
     public int getCountBetweenMonth(long habitID, long ms, long next_ms){
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -636,6 +736,16 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return count;
     }
 
+    /**
+     *
+     * This method is to check whether the repetition exist
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @param timestamp This is to get the timestamp
+     *
+     * @return boolean This will return the boolean value which indicates whether the repetition exist
+     * */
     public boolean checkRepetitionExist(long habitID, long timestamp){
         boolean isExisted = false;
 
@@ -651,6 +761,16 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return isExisted;
     }
 
+    /**
+     *
+     * This method is to get the last day total count
+     *
+     * @param habitID This is to parse the habitID
+     *
+     * @param timestamp This is to get the timestamp
+     *
+     * @return int This will return the last day total count
+     * */
     public int getLastDayTotalCount(long habitID, long timestamp){
         int total = 0;
         timestamp -= 86400000;
@@ -673,6 +793,14 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
 
     }
 
+    /**
+     *
+     * This method is to check whether the repetition exist by its row id
+     *
+     * @param rowID This is to parse the row id
+     *
+     * @return boolean This will return the boolean value which indicates whether the repetition exist
+     * */
     public boolean isHabitRepetitionExisted(long rowID){
         boolean isExisted = false;
 
@@ -690,6 +818,14 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return isExisted;
     }
 
+    /**
+     *
+     * This method is to get the habitRepetition by its row id
+     *
+     * @param id This is to get the row id
+     *
+     * @return HabitRepetition This will return the habitRepetition object by its row id
+     * */
     public HabitRepetition getHabitRepetitionByRowID(long id){
         HabitRepetition hr = new HabitRepetition();
 
@@ -712,6 +848,13 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return hr;
     }
 
+    /**
+     *
+     * This method is to update the habitRepetition row
+     *
+     * @param hr This is to get the HabitRepetition object
+     *
+     * */
     public void update(HabitRepetition hr){
         String id_filter = HabitRepetition.COLUMN_ID + " = " +hr.getRow_id();
 
@@ -732,6 +875,13 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         notifyDbChanged();
     }
 
+    /**
+     *
+     * This method is to remove the habitRepetition row
+     *
+     * @param hr This is to get the HabitRepetition object
+     *
+     * */
     public void removeOneData(HabitRepetition hr) {
 
         // Find database that match the row data. If it found, delete and return true
@@ -749,6 +899,13 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
 
     }
 
+    /**
+     *
+     * This method is to repeat the specific habit
+     *
+     * @param habitID This is to get the habitID
+     *
+     * */
     public void repeatingSpecificHabitByID(long habitID){
         long todayTimeStamp = getTodayTimestamp();
         Habit habit = habitDBHelper.getHabitByID(habitID);
@@ -818,6 +975,15 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         }
     }
 
+    /**
+     *
+     * This method is to get the timestamp ms from dateString
+     *
+     * @param time_created This is to get the dateString
+     *
+     * @return long This will return the timestamp in millisecond
+     *
+     * */
     public long getTimestamp(String time_created) {
         long millis = 0;
         try{
@@ -830,6 +996,11 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         return millis;
     }
 
+    /**
+     *
+     * This method is to register the habitDBObserver in the observerArrayList
+     *
+     * */
     @Override
     public void registerDbObserver(HabitDBObserver habitDBObserver) {
         if (!observerArrayList.contains(habitDBObserver)){
@@ -837,11 +1008,21 @@ public class HabitRepetitionDBHelper extends DBHelper implements HabitDBObservab
         }
     }
 
+    /**
+     *
+     * This method is to remove the habitDBObserver in the observerArrayList
+     *
+     * */
     @Override
     public void removeDbObserver(HabitDBObserver habitDBObserver) {
         observerArrayList.remove(habitDBObserver);
     }
 
+    /**
+     *
+     * This method is to notify the backend when there is changes is sql triggered by firebase.
+     *
+     * */
     @Override
     public void notifyDbChanged() {
         for (HabitDBObserver habitDBObserver :observerArrayList){

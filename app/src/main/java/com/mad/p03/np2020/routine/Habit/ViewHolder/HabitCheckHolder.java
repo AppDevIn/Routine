@@ -11,6 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mad.p03.np2020.routine.Habit.Interface.HabitCheckItemClickListener;
 import com.mad.p03.np2020.routine.R;
 
+/**
+ *
+ * To be used with the adapter HabitCheckAdapter. This
+ * holds reference to the id of the view resource
+ *
+ * @author Hou Man
+ * @since 02-08-2020
+ */
+
 public class HabitCheckHolder extends RecyclerView.ViewHolder {
     public TextView title;
     /** The progress bar of the habit */
