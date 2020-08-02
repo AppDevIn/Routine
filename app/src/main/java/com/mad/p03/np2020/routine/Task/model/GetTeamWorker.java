@@ -14,6 +14,16 @@ import androidx.annotation.RequiresApi;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+/**
+ *
+ * This is to get the data in firebase Section node from
+ * the background which implements the Worker. This will retrieve
+ * information on the emails that the section is shared with
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ *
+ */
 public class GetTeamWorker extends Worker {
 
     public GetTeamWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -25,6 +35,17 @@ public class GetTeamWorker extends Worker {
         mTeamDataListener = teamDataListener;
     }
 
+    /**
+     *
+     * To do background processing, to get the tea, data
+     * in firebase
+     *
+     * Data that need to be sent over is SectionID.
+     * You can use {@code OneTimeWorkRequest.setInputData(data)} to send and
+     * {@code getInputData()} to retrieve it.
+     *
+     * @return Result This is tell what happen to the background work
+     */
     @NonNull
     @Override
     public Result doWork() {

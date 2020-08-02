@@ -11,6 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ *
+ *
+ * To be used with the adapter TeamAdapter. This
+ * holds reference to the id of the view resource.
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ */
 public class TeamViewHolder extends RecyclerView.ViewHolder {
 
     public TextView txtEmail;

@@ -43,8 +43,8 @@ import static java.security.AccessController.getContext;
 *
 * CardActivity class used to manage card activities
 *
-* @author Pritheev & Jeyavishnu
- *@since 10-07-2020
+* @author Jeyavishnu & Pritheev
+ *@since 02-08-2020
 *
  */
 
@@ -187,6 +187,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * Init the notes fragment
+     */
     private void notes() {
         //Initializing fragment manager and fragment transaction
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -245,6 +248,10 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         mgr.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
+    /**
+     * This view hide the keyboard based on the view
+     * @param view
+     */
     private void hideKeyboard(View view){
         //auto hide keyboard after entry
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);

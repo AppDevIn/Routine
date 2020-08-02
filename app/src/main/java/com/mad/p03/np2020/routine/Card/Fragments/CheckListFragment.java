@@ -42,8 +42,8 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * Checklist Fragment for managing checklist
  *
- * @author Pritheev & Jeyavishnu
- * @since 02-06-2020
+ * @author Jeyavishnu
+ * @since 02-08-2020
  *
  */
 public class CheckListFragment extends Fragment implements CheckDataListener, TextView.OnEditorActionListener {
@@ -200,6 +200,10 @@ public class CheckListFragment extends Fragment implements CheckDataListener, Te
         return false;
     }
 
+    /**
+     * To init the recycler view for the
+     * Check list
+     */
     private void initRecyclerView(){
 
 

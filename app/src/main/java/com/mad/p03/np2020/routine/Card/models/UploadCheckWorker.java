@@ -20,7 +20,7 @@ import androidx.work.WorkerParameters;
  * the background which implements the Worker.
  *
  * @author Jeyavishnu
- * @since 02-06-2020
+ * @since 02-08-2020
  *
  */
 
@@ -73,7 +73,12 @@ public class UploadCheckWorker extends Worker {
 
 }
 
-
+/**
+ * CheckList class for firebase
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ */
 class CheckFirebase{
     String TaskID;
     Boolean Checked;

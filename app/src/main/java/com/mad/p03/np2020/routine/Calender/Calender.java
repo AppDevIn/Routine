@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +16,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CalendarView;
 import android.widget.ViewSwitcher;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mad.p03.np2020.routine.Calender.CustomCalender.CustomCalenderView;
+import com.mad.p03.np2020.routine.Calender.CustomCalender.DateChangeListener;
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
@@ -33,6 +33,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *
+ * This is the controller for the calender activity
+ *
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ *
+ */
 public class Calender extends AppCompatActivity implements DateChangeListener, MyDatabaseListener {
 
 
@@ -53,6 +62,15 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         overridePendingTransition(0, 0);
     }
 
+    /**
+     *
+     * This is the set listener for the database and find the id for the views
+     * and add animation to the view switcher
+     *
+     * @param savedInstanceState will be null at first as
+     *                           the orientation changes it will get
+     *                           in use
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +79,9 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         //Set the listener
         TaskDBHelper.setMyDatabaseListener(this);
 
-        //Make full screen
 
         //To set to Full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 
 
 
@@ -85,6 +101,9 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     }
 
+    /**
+     * Init the customcalender view and set listener
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -106,6 +125,12 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         bottomNavInit(bottomNavigationView);
     }
 
+    /**
+     * To set the bottom nav to listen to item changes
+     * and chose the item that have been selected
+     *
+     * @param bottomNavigationView The botomNav that needs to be set to listen
+     */
     private void bottomNavInit(BottomNavigationView bottomNavigationView) {
 
         //To have the highlight
@@ -119,6 +144,13 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
     }
 
 
+    /**
+     *
+     * When the date changes in the customcalender this will
+     * be notified and trigger the code to change the task view
+     *
+     * @param date
+     */
     @Override
     public void onDateChange(Date date) {
 
@@ -141,6 +173,12 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     }
 
+    /**
+     * This is another interface that that will
+     * get triggered when the DbHelper add data into
+     * task
+     * @param object The task object that is being added
+     */
     @Override
     public void onDataAdd(Object object) {
 
@@ -166,6 +204,12 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     }
 
+    /**
+     * This is interface that that will
+     * get triggered when the DbHelper updates data into
+     * task table
+     * @param object The task object that is being updated
+     */
     @Override
     public void onDataUpdate(Object object) {
         Task task = (Task) object;
@@ -187,6 +231,12 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     }
 
+    /**
+     * This is interface that that will
+     * get triggered when the DbHelper deletes data from
+     * task table
+     * @param ID The Task ID of the task object being deleted
+     */
     @Override
     public void onDataDelete(String ID) {
 
@@ -213,7 +263,11 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         viewSwitch();
     }
 
-    //Initialize the recycler view
+    /**
+     * This is to init the recycler for the task
+     * list
+     * @param date the data the task will filter
+     */
     public void initRecyclerView(Date date){
 
 
@@ -242,6 +296,10 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
 
     }
 
+    /**
+     * This is to change the viewswitcher based
+     * between the different views
+     */
     private void viewSwitch(){
         View zero = findViewById(R.id.view1);
         View list = findViewById(R.id.view2);

@@ -8,7 +8,7 @@
     tools:context=".Calender.Calender">
 
 
-    <com.mad.p03.np2020.routine.Calender.CustomCalenderView
+    <com.mad.p03.np2020.routine.Calender.CustomCalender.CustomCalenderView
         android:id="@+id/calendar"
         android:layout_width="0dp"
         android:layout_height="0dp"

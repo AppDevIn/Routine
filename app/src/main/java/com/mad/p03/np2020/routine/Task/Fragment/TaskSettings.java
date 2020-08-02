@@ -45,6 +45,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ *
+ * Fragment used for task settings
+ *
+ * @author Jeyavishnu
+ * @since 02-08-2020
+ */
 public class TaskSettings extends Fragment implements TextView.OnEditorActionListener, View.OnClickListener {
 
     final private String TAG = "TaskSettings";
@@ -64,7 +71,10 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     public ViewSwitcher viewSwitcher;
 
 
-
+    /**
+     * Constructor
+     * @param id The section id
+     */
     public TaskSettings(String id) {
         mSectionID = id;
 
@@ -236,7 +246,15 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
         }
     }
 
+    /**
+     *
+     * Init the team recycler view
+     *
+     * @param view The current view
+     * @param team The team object
+     */
     private void initRecyclerView(View view, Team team) {
+
         mRecyclerView = view.findViewById(R.id.recyclerViewEmail);
         mRecyclerView.setHasFixedSize(true);
 
@@ -263,6 +281,14 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
 
     }
 
+    /**
+     *
+     * Setup the edit section portion
+     *
+     * @param color The spinner
+     * @param backgrounds The background spinner
+     * @param editText The editect view
+     */
     private void setUpEdit(Spinner color, Spinner backgrounds, EditText editText){
         //A list of possible colors to be user
          mColorsList = new Integer[]{getResources().getColor(R.color.superiorityBlue), getResources().getColor(R.color.rosyBrown), getResources().getColor(R.color.mandarin), getResources().getColor(R.color.green_yellow), getResources().getColor(R.color.turquoise)};
@@ -330,13 +356,18 @@ public class TaskSettings extends Fragment implements TextView.OnEditorActionLis
     }
 
 
+    /**
+     * Switch views
+     */
     public void switchView(){
 
         viewSwitcher.showNext();
     }
 
 
-
+    /**
+     * When the fragment is closing animation
+     */
     public void animateOut()
     {
         TranslateAnimation trans=new TranslateAnimation(0,0, 0,300*getContext().getResources().getDisplayMetrics().density);

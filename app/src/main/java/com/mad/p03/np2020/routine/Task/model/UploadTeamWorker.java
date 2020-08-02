@@ -18,6 +18,15 @@ import androidx.annotation.RequiresApi;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+/**
+ *
+ * This is to upload the data to team in section from
+ * the background which implements the Worker.
+ *
+ * @author Jeyavishnu
+ * @since 02-06-2020
+ *
+ */
 public class UploadTeamWorker extends Worker {
 
 
@@ -26,6 +35,18 @@ public class UploadTeamWorker extends Worker {
         super(context, workerParams);
     }
 
+    /**
+     *
+     * To do background processing, to add the team in section data
+     * in firebase
+     *
+     * Data that need to be sent over are email and section ID
+     * You can use {@code OneTimeWorkRequest.setInputData(data)} to send and
+     * {@code getInputData()} to retrieve it.
+     *
+     *
+     * @return Result This is tell what happen to the background work
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @NonNull
     @Override

@@ -19,7 +19,7 @@ import com.mad.p03.np2020.routine.models.Task;
  *
  * Notes fragment to take notes for each task
  *
- * @author Jeyavishnu & Pritheev
+ * @author Jeyavishnu
  * @since 10-07-2020
  *
  */
