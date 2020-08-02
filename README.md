@@ -122,7 +122,7 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Lee Quan Sheng
 
-1. [FocusAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Focus/Adapter/FocusAdapter.java)
+1. [FocusAdapter.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Adapter/FocusAdapter.java)
 
 2. [AchievementAdapter.java] (app/src/main/java/com/mad/p03/np2020/routine/Focus/Adapter/AchievementAdapter.java)
 
