@@ -106,7 +106,13 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 35. [MyCheckViewHolder](app/src/main/java/com/mad/p03/np2020/routine/Card/ViewHolder/MyCheckViewHolder.java)
 
-     
+36. [TaskSettings](app/src/main/java/com/mad/p03/np2020/routine/Task/Fragment/TaskSettings.java)
+
+37. [GetTeamWorker](app/src/main/java/com/mad/p03/np2020/routine/Task/model/GetTeamWorker.java)
+
+38. [TeamDataListener](app/src/main/java/com/mad/p03/np2020/routine/Task/model/TeamDataListener.java)
+
+       
 
 ### Quan Sheng and Jeya
 

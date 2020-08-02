@@ -90,3 +90,5 @@ desktop.ini
 
 
 app/release/
+
+*.plantuml
