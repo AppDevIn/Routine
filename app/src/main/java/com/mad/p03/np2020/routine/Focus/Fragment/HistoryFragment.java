@@ -449,6 +449,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
             previousButton = id; // this is used to track the current selected button id so that it can be reset when a new button is clicked
             Log.v(TAG, "Button Pressed " + i + " on " + id);
             Log.v(TAG, "Date Hashmap " + mappingDate);
+            previousButton.setTextColor(getResources().getColor(color.black));
 
             //Setting the selected color
             id.setTextColor(getResources().getColor(color.pastelBlue));
