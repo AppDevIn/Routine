@@ -44,6 +44,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ *
+ * Habit activity used to manage the habit analysis section
+ *
+ * @author Hou Man
+ * @since 02-06-2020
+ */
+
 public class HabitViewActivity extends AppCompatActivity {
 
     private static final String TAG = "HabitViewActivity";
@@ -93,6 +101,7 @@ public class HabitViewActivity extends AppCompatActivity {
         chart_left = findViewById(R.id.chart_left);
         chart_right = findViewById(R.id.chart_right);
 
+        // initialise the typeface
         tf = ResourcesCompat.getFont(this, R.font.montserrat_regular);
 
         habit_dbHandler = new HabitDBHelper(this);
@@ -192,6 +201,14 @@ public class HabitViewActivity extends AppCompatActivity {
 //        return text.substring(0,1).toUpperCase() + text.substring(1).toLowerCase();
     }
 
+    /**
+     *
+     * This method is used to get the period text by its period
+     *
+     * @param periodCnt This is to get the period count
+     *
+     * @return String This returns the period text
+     * */
     public String getPeriodText(int periodCnt){
         String period;
         switch (periodCnt){
@@ -211,6 +228,11 @@ public class HabitViewActivity extends AppCompatActivity {
         return period;
     }
 
+    /**
+     *
+     * This method is used to set the goal text
+     *
+     * */
     public void setGoalText(){
         int occurrence = habit.getOccurrence();
         String period = getPeriodText(habit.getPeriod());
@@ -218,6 +240,11 @@ public class HabitViewActivity extends AppCompatActivity {
         goal_text.setText(String.format("%d Times a %s",occurrence,period));
     }
 
+    /**
+     *
+     * This method is calculate the streak for the particular habit
+     *
+     * */
     public void calculateStreak(){
         int occurrence = habit.getOccurrence();
         int period = habit.getPeriod();
@@ -225,6 +252,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habitID);
 
+        // different calculation to get the current streak and best steak based on its period
         int curr_streak = 0, max_streak = 0;
         int max_cycle = 0, completion = 0;
         switch (period){
@@ -251,6 +279,7 @@ public class HabitViewActivity extends AppCompatActivity {
                 break;
         }
 
+        // set the text on the text fields
         curr_streak_text.setText(String.valueOf(curr_streak));
         best_streak_text.setText(String.valueOf(max_streak));
 
@@ -271,14 +300,21 @@ public class HabitViewActivity extends AppCompatActivity {
         progress_text_period.setText(String.format("%d/%d %s",completion,max_cycle,goal_period_text));
     }
 
+    /**
+     *
+     * This method is used to display the week bar chart
+     *
+     * */
     public void displayWeekBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
+        // to call the repeating habit method if no habitRepetition for the habit is found
         if (habitRepetitionArrayList.size() <= 0){
             Log.d(TAG, "Missing Habit Repetitions for habit");
             habitRepetitionDBHelper.repeatingSpecificHabitByID(habit.getHabitID());
             habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
         }
+
         ArrayList<ArrayList<String>> timeStampList = new ArrayList<>();
         ArrayList<ArrayList<BarEntry>> barEntries = new ArrayList<>();
         ArrayList<BarEntry> first_barEntries = new ArrayList<>();
@@ -296,6 +332,7 @@ public class HabitViewActivity extends AppCompatActivity {
             first_barEntries.add(new BarEntry(++x, 0));
         }
 
+        // a loop to appending habitCount into the list
         for (HabitRepetition hr : habitRepetitionArrayList){
             // to reset week
             if (getDayOfWeekFromMs(hr.getTimestamp()) == 1 && hr.getTimestamp() != firstTimeStamp){
@@ -313,14 +350,14 @@ public class HabitViewActivity extends AppCompatActivity {
             }
         }
 
-
-        // add dummy data
+        // add remaining entries after the last day of the habit if any
         while (first_barEntries.size() % 7 != 0){
             first_barEntries.add(new BarEntry(++x, 0));
         }
 
         barEntries.add(first_barEntries);
 
+        // get the indexes
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
         final int[] eIndex = {barEntries.size() - 1};
@@ -332,8 +369,10 @@ public class HabitViewActivity extends AppCompatActivity {
         }
         chart_right.setVisibility(View.INVISIBLE);
 
+        // call the helper to display the week bar chart based on the index
         displayWeekBarChartHelper(lastEntry, lastTimeStamp);
 
+        // go back to previous week and call the helper to display the week bar chart based on the index
         chart_left.setOnClickListener(v -> {
             resetChart();
             if (eIndex[0] - 1 >= 0){
@@ -350,7 +389,7 @@ public class HabitViewActivity extends AppCompatActivity {
             }
         });
 
-
+        // go to next week and call the helper to display the week bar chart based on the index
         chart_right.setOnClickListener(v -> {
             resetChart();
             if (eIndex[0] + 1 < barEntries.size()){
@@ -369,6 +408,15 @@ public class HabitViewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * This method is used to draw the week bar chart
+     *
+     * @param lastEntry This is to get the entries (y-axis)
+     *
+     * @param lastTimeStamp This is to get the timestamp (x-axis)
+     *
+     * */
     public void displayWeekBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<String> lastTimeStamp){
         BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Bar Chart");
 //        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
@@ -430,6 +478,11 @@ public class HabitViewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * This method is used to display the week bar chart
+     *
+     * */
     public void displayMonthBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
@@ -455,8 +508,9 @@ public class HabitViewActivity extends AppCompatActivity {
             first_barEntries.add(new BarEntry(++x, 0));
         }
 
+        // a loop to appending habitCount into the list
         for (HabitRepetition hr : habitRepetitionArrayList){
-            // to reset week
+            // to reset month
             if (getDayOfMonthFromMs(hr.getTimestamp()) == 1 && hr.getTimestamp() != firstTimeStamp){
                 barEntries.add(first_barEntries);
                 first_barEntries = new ArrayList<>();
@@ -472,6 +526,7 @@ public class HabitViewActivity extends AppCompatActivity {
         int lastDay = getDayOfMonthFromMs(initial_timestamp[0]);
         int maxDay = getMaxDayOfTheMonth(initial_timestamp[0]);
 
+        // add remaining entries after the last day of the habit if any
         while (lastDay < maxDay){
             first_barEntries.add(new BarEntry(++x, 0));
             ++lastDay;
@@ -479,6 +534,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         barEntries.add(first_barEntries);
 
+        // get the indexes
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
         final int[] eIndex = {barEntries.size() - 1};
@@ -490,8 +546,10 @@ public class HabitViewActivity extends AppCompatActivity {
         }
         chart_right.setVisibility(View.INVISIBLE);
 
+        // call the helper to display the month bar chart based on the index
         displayMonthBarChartHelper(lastEntry, lastTimeStamp);
 
+        // go back to previous month and call the helper to display the month bar chart based on the index
         chart_left.setOnClickListener(v -> {
             resetChart();
             if (eIndex[0] - 1 >= 0){
@@ -509,6 +567,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         });
 
+        // go to next month and call the helper to display the month bar chart based on the index
         chart_right.setOnClickListener(v ->{
             resetChart();
             if (eIndex[0] + 1 < barEntries.size()){
@@ -528,6 +587,15 @@ public class HabitViewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * This method is used to draw the month bar chart
+     *
+     * @param lastEntry This is to get the entries (y-axis)
+     *
+     * @param lastTimeStamp This is to get the timestamp (x-axis)
+     *
+     * */
     public void displayMonthBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<String> lastTimeStamp){
         BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Month Bar Chart");
 //        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
@@ -587,6 +655,11 @@ public class HabitViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * This method is used to display the year bar chart
+     *
+     * */
     public void displayYearBarChart(){
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
@@ -617,6 +690,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         boolean isNextMonth;
 
+        // a loop to appending habitCount into the list
         do{
             int count = habitRepetitionDBHelper.getCountBetweenMonth(habit.getHabitID(), initial_ms, next_ms);
             first_barEntries.add(new BarEntry(++x, count));
@@ -636,6 +710,7 @@ public class HabitViewActivity extends AppCompatActivity {
         int lastMonth = getMonthFromMs(initial_timestamp[0]);
         int maxMonth = 11;
 
+        // add remaining entries after the last month of the habit in the year if any
         while (lastMonth < maxMonth){
             first_barEntries.add(new BarEntry(++x, 0));
             ++lastMonth;
@@ -643,6 +718,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         barEntries.add(first_barEntries);
 
+        // get the indexes
         ArrayList<BarEntry> lastEntry = barEntries.get(barEntries.size()-1);
         ArrayList<String> lastTimeStamp = timeStampList.get(timeStampList.size()-1);
         final int[] eIndex = {barEntries.size() - 1};
@@ -654,8 +730,10 @@ public class HabitViewActivity extends AppCompatActivity {
         }
         chart_right.setVisibility(View.INVISIBLE);
 
+        // call the helper to display the year bar chart based on the index
         displayYearBarChartHelper(lastEntry, lastTimeStamp);
 
+        // go back to previous year and call the helper to display the year bar chart based on the index
         chart_left.setOnClickListener(v -> {
             resetChart();
             if (eIndex[0] - 1 >= 0){
@@ -673,6 +751,7 @@ public class HabitViewActivity extends AppCompatActivity {
 
         });
 
+        // go to next year and call the helper to display the year bar chart based on the index
         chart_right.setOnClickListener(v ->{
             resetChart();
             if (eIndex[0] + 1 < barEntries.size()){
@@ -691,6 +770,15 @@ public class HabitViewActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * This method is used to draw the year bar chart
+     *
+     * @param lastEntry This is to get the entries (y-axis)
+     *
+     * @param lastTimeStamp This is to get the timestamp (x-axis)
+     *
+     * */
     public void displayYearBarChartHelper(ArrayList<BarEntry> lastEntry, ArrayList<String> lastTimeStamp){
         BarDataSet barDataSet = new BarDataSet(lastEntry, "Habit Year Bar Chart");
 //        barDataSet.setColors(getResources().getColor(habit.returnColorID(habit.getHolder_color())));
@@ -751,6 +839,12 @@ public class HabitViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * This method is used to populate the chart buttons and the bg color will become grey when clicked
+     *
+     *
+     * */
     public void populateChartButtons(){
         Button button = findViewById(chart_buttonIDS[0]);
         button.setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
@@ -779,6 +873,12 @@ public class HabitViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * This method is used to display bar chart based on which button is clicked
+     *
+     *
+     * */
     public void displayCharts(int i){
         switch (i){
             case 0:
@@ -801,6 +901,11 @@ public class HabitViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * This method is used to reset the drawn chart
+     *
+     * */
     public void resetChart(){
         Log.d(TAG, "resetChart: ");
         range_indicator.setText("");
@@ -818,6 +923,16 @@ public class HabitViewActivity extends AppCompatActivity {
         habit_barChart.notifyDataSetChanged();
     }
 
+    // helper methods to get the time using calendar library
+
+    /**
+     *
+     * This method is get the next week in milliseconds
+     *
+     * @param ms This is to parse in the milliseconds
+     *
+     * @return long This will return next week in milliseconds
+     * */
     public long getNextWeekMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -826,6 +941,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is get the last week in milliseconds
+     *
+     * @param ms This is to parse in the milliseconds
+     *
+     * @return long This will return last week in milliseconds
+     * */
     public long getLastWeekMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -834,6 +957,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is get the start of the week(sunday) in milliseconds
+     *
+     * @param ms This is to parse in the milliseconds
+     *
+     * @return String This will return the date string which is the first day of the week
+     * */
     public String getStartOfTheWeek(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -844,6 +975,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return date;
     }
 
+    /**
+     *
+     * This method is get the end of the week(saturday) in milliseconds
+     *
+     * @param ms This is to parse in the milliseconds
+     *
+     * @return String This will return the date string which is the last day of the week
+     * */
     public String getEndOfTheWeek(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -854,6 +993,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return date;
     }
 
+    /**
+     *
+     * This method is get the day of the week
+     *
+     * @param ms This is to parse in the milliseconds
+     *
+     * @return int This will return the day of the week in integer
+     * */
     public int getDayOfWeekFromMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -862,6 +1009,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return day;
     }
 
+    /**
+     *
+     * This method is get the month of the date string
+     *
+     * @param time This is to parse the date string
+     *
+     * @return long This will return the month in milliseconds
+     * */
     public long getMonth(String time) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date;
@@ -882,6 +1037,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return ms;
     }
 
+    /**
+     *
+     * This method is get the next month of the date string
+     *
+     * @param time This is to parse the date string
+     *
+     * @return long This will return the next month in milliseconds
+     * */
     public long getNextMonthFromString(String time) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date;
@@ -904,6 +1067,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return ms;
     }
 
+    /**
+     *
+     * This method is get the month timestamp in milliseconds
+     *
+     * @param ms This is to get the ms
+     *
+     * @return long This will return the month in milliseconds
+     * */
     public int getMonthFromMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -912,6 +1083,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.get(Calendar.MONTH);
     }
 
+    /**
+     *
+     * This method is get the next month timestamp in milliseconds
+     *
+     * @param ms This is to get the ms
+     *
+     * @return long This will return the next month in milliseconds
+     * */
     public long getNextMonthFromMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -921,6 +1100,13 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is add days to timestamp for week
+     *
+     * @param arr This is to get the 2d string array list
+     *
+     * */
     public void addDaysToTimeStampForWeek(ArrayList<ArrayList<String>> arr){
         ArrayList<String> timestampList = new ArrayList<>();
         Log.d(TAG, "addDaysToTimeStamp: next week");
@@ -935,6 +1121,13 @@ public class HabitViewActivity extends AppCompatActivity {
         arr.add(timestampList);
     }
 
+    /**
+     *
+     * This method is to get today timestamp.
+     *
+     * @return long This will return today timestamp in millisecond
+     *
+     * */
     public long getTodayTimestamp(){
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         int year  = cal.get(Calendar.YEAR);
@@ -946,6 +1139,13 @@ public class HabitViewActivity extends AppCompatActivity {
         return cal.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is to calculate the maximum val in the array
+     *
+     * @return int This return the maximum val in the array
+     *
+     * */
     public int calculateRangeMaximum(ArrayList<BarEntry> arr){
         int max = 0;
         for (int i = 0; i < arr.size(); i++){
@@ -955,6 +1155,13 @@ public class HabitViewActivity extends AppCompatActivity {
         return max;
     }
 
+    /**
+     *
+     * This method is to check whether the sum of the array is zero
+     *
+     * @return boolean This will return the boolean value which indicates whether the sum of the array is zero
+     *
+     * */
     public boolean isRangeSumZero(ArrayList<BarEntry> arr){
         int sum = 0;
         for (int i = 0; i < arr.size(); i++){
@@ -964,6 +1171,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return sum == 0;
     }
 
+    /**
+     *
+     * This method is to get the start of the month in date string
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return String This will return the start of the month in date string
+     *
+     * */
     public String getStartOfTheMonth(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -974,6 +1190,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return date;
     }
 
+    /**
+     *
+     * This method is to get the end of the month in date string
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return String This will return the end of the month in date string
+     *
+     * */
     public String getEndOfTheMonth(long ms){
         DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -984,6 +1209,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return date;
     }
 
+    /**
+     *
+     * This method is to get the max day of the month
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return int This will return the max day of the month
+     *
+     * */
     public int getMaxDayOfTheMonth(long ms){
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
@@ -991,6 +1225,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     *
+     * This method is to get the month
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return int This will return the month in integer value
+     *
+     * */
     public int getMonthString(long ms){
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(ms);
@@ -998,6 +1241,17 @@ public class HabitViewActivity extends AppCompatActivity {
         return cal.get(Calendar.MONTH)+1;
     }
 
+    /**
+     *
+     * This method is add days to timestamp for month
+     *
+     * @param timestampList This is to get the timestampList
+     *
+     * @param max_of_month This is to get the max of the month
+     *
+     * @param month This is to get the month
+     *
+     * */
     public void addDaysToTimeStampForMonth(ArrayList<ArrayList<String>> timestampList, int max_of_month, int month){
         ArrayList<String> arr = new ArrayList<>();
         for (int i = 1; i <= max_of_month; i++){
@@ -1008,6 +1262,15 @@ public class HabitViewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * This method is to get the day of the month
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return int This will return the day of month in integer value
+     *
+     * */
     public int getDayOfMonthFromMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -1016,6 +1279,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return day;
     }
 
+    /**
+     *
+     * This method is to get the next month in milliseconds
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return long This will return the next month in milliseconds
+     *
+     * */
     public long getNextMonthMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -1024,6 +1296,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is to get the last month in milliseconds
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return long This will return the last month in milliseconds
+     *
+     * */
     public long getLastMonthMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -1032,6 +1313,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is get the start of the year in milliseconds
+     *
+     * @param ms This is to parse in the milliseconds
+     *
+     * @return String This will return the date string which is the first day of the year
+     * */
     public String getStartOfTheYear(long ms){
         DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -1042,6 +1331,14 @@ public class HabitViewActivity extends AppCompatActivity {
         return date;
     }
 
+    /**
+     *
+     * This method is get the end of the year in milliseconds
+     *
+     * @param ms This is to parse in the milliseconds
+     *
+     * @return String This will return the date string which is the end day of the year
+     * */
     public String getEndOfTheYear(long ms){
         DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -1052,6 +1349,13 @@ public class HabitViewActivity extends AppCompatActivity {
         return date;
     }
 
+    /**
+     *
+     * This method is add months to timestamp for year
+     *
+     * @param arr This is to get the 2d string array list
+     *
+     * */
     public void addMonthsToTimeStampForYear(ArrayList<ArrayList<String>> arr){
         Log.d(TAG, "addMonthsToTimeStampForYear: ");
         ArrayList<String> timestampList = new ArrayList<>();
@@ -1073,6 +1377,15 @@ public class HabitViewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * This method is to get the month of year
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return int This will return the month of year in integer value
+     *
+     * */
     public int getMonthOfYearFromMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -1081,6 +1394,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return day;
     }
 
+    /**
+     *
+     * This method is to get the next year in milliseconds
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return long This will return the next year in milliseconds
+     *
+     * */
     public long getNextYearMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);
@@ -1089,6 +1411,15 @@ public class HabitViewActivity extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    /**
+     *
+     * This method is to get the last year in milliseconds
+     *
+     * @param ms This is to get the milliseconds
+     *
+     * @return long This will return the last year in milliseconds
+     *
+     * */
     public long getLastYearMs(long ms){
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(ms);

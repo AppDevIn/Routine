@@ -62,7 +62,7 @@ public class HabitEditActivity extends AppCompatActivity {
     private static final String TAG = "HabitEditActivity";
     private static final String SHARED_PREFS = "sharedPrefs"; // initialise sharedPrefs
 
-    private TextView habit_name, habit_occur, period_text, habit_reminder_indicate_text, group_indicate_text, habit_count;
+    private TextView habit_name, habit_reminder_indicate_text, group_indicate_text, habit_count;
     private Button buttonClose, buttonOk, buttonDelete;
     private ImageButton menu_add_count, menu_minus_count, menu_edit_count;
 
@@ -75,8 +75,7 @@ public class HabitEditActivity extends AppCompatActivity {
     //User
     private User user;
 
-    // Period and color section
-//    private int[] period;
+    // color section
     private String[] color;
 
     /**
@@ -99,8 +98,6 @@ public class HabitEditActivity extends AppCompatActivity {
 
         // initialise the widgets
         habit_name = findViewById(R.id.add_habit_name);
-//        habit_occur = findViewById(R.id.habit_occurence);
-//        period_text = findViewById(R.id.period_txt);
         habit_reminder_indicate_text = findViewById(R.id.reminder_indicate_text);
         group_indicate_text = findViewById(R.id.group_indicate_text);
         buttonClose = findViewById(R.id.habit_close);
@@ -119,10 +116,6 @@ public class HabitEditActivity extends AppCompatActivity {
         user = new User();
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        // initialise period section
-//        period = new int[1]; // this is used to store the chosen period
-//        populatePeriodBtn(this, period, period_text);
-
         // initialise color section
         color = new String[1]; // this is used to store the chosen color
         populateColorBtn(this,color);
@@ -135,13 +128,11 @@ public class HabitEditActivity extends AppCompatActivity {
             Log.d(TAG, "LOADING HABIT ERROR ");
         }
 
-        // initialise the period and color section
-//        habit_edit_initialise_periodSection(this, habit, period, period_text);
+        // initialise the color section
         habit_edit_initialise_colorSection(this, habit, color);
 
         // set text on the input fields based on habit
         habit_name.setText(habit.getTitle());
-//        habit_occur.setText(String.valueOf(habit.getOccurrence()));
         habit_count.setText(String.valueOf(habit.getCount()));
         HideKeyboard();
         // Retrieve tha habitGroup object
@@ -162,8 +153,6 @@ public class HabitEditActivity extends AppCompatActivity {
             habit_reminder_indicate_text.setText("NONE");
         }
 
-//        menu_add_count.setBackgroundColor(Color.TRANSPARENT);
-//        menu_minus_count.setBackgroundColor(Color.TRANSPARENT);
         menu_edit_count.setBackgroundColor(Color.TRANSPARENT);
 
         // set onClickListener on the add count button
@@ -388,18 +377,6 @@ public class HabitEditActivity extends AppCompatActivity {
                     habit.setCount(Integer.parseInt(habit_count.getText().toString())); // modify the occurrence
                 }
 
-//                // update habit occurrence if modified
-//                if (habit.getOccurrence() != Integer.parseInt(habit_occur.getText().toString())){
-//                    Log.d(TAG, "Habit: Update habit occurrence");
-//                    habit.setOccurrence(Integer.parseInt(habit_occur.getText().toString())); // modify the occurrence
-//                }
-//
-//                // update habit period if modified
-//                if (habit.getPeriod() != period[0]){
-//                    Log.d(TAG, "Habit: Update habit period");
-//                    habit.setPeriod(period[0]); // modify the period
-//                }
-
                 // update habit holder color if modified
                 if (!habit.getHolder_color().equals(color[0])){
                     Log.d(TAG, "Habit: Update habit holder color");
@@ -467,54 +444,14 @@ public class HabitEditActivity extends AppCompatActivity {
 
         String name = habit_name.getText().toString(); // retrieve the title of the habit from the input field
         int count = Integer.parseInt(habit_count.getText().toString());
-//        int occur = Integer.parseInt(habit_occur.getText().toString()); // retrieve the occurrence of the habit from the input field
 
         _habit.setTitle(name);
         _habit.setCount(count);
-//        _habit.setOccurrence(occur);
-//        _habit.setPeriod(period[0]);
         _habit.setHolder_color(color[0]);
 
         return _habit;
 
     }
-
-//    /**
-//     *
-//     * This method is used to populate the period button by setting onclickListener on them
-//     * and it will change the color based on the user's option in period section.
-//     * @param dialogView This parameter refers to the view
-//     *
-//     * @param period This parameter refers to the period list which indicates the chosen period
-//     * @param period_text This parameter refers to the period TextView in the view  */
-//    public void populatePeriodBtn(final HabitEditActivity dialogView, final int[] period, final TextView period_text){
-//        // set listener on buttons to change the color based on the user's option in period section
-//        for (final int i :Habit.period_buttonIDS){
-//            final Button btn = dialogView.findViewById(i); // find button in the view
-//            btn.setBackgroundColor(Color.TRANSPARENT);
-//            btn.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    int id = btn.getId(); // retrieve the buttonID
-//
-//                    for (int i = 0; i < 4; i++){
-//                        Button _btn = dialogView.findViewById(Habit.period_buttonIDS[i]);
-//                        if (id == Habit.period_buttonIDS[i]){
-//                            // if is selected by the user, add a grey background.
-//                            _btn.setBackgroundColor(Color.parseColor("#dfdfdf"));
-//                            period_text.setText(Habit.period_textList[i]);  // set the period text
-//                            period[0] = Habit.period_countList[i];  // update the chosen period
-//                        }else {
-//                            // if is not selected by the user, remove the grey background.
-//                            _btn.setBackgroundColor(Color.TRANSPARENT);
-//                        }
-//
-//                    }
-//                }
-//            });
-//        }
-//
-//    }
 
     /**
      *
@@ -578,26 +515,6 @@ public class HabitEditActivity extends AppCompatActivity {
 
     }
 
-//    /**
-//     *
-//     * This method is used to initialise the color of button at period section based on the habit period of the habit
-//     * @param dialogView This parameter refers to the view
-//     *
-//     * @param habit This parameter refers to the habit object.
-//     * @param period This parameter refers to the period list which indicates the chosen period
-//     * @param period_text This parameter refers to the period TextView in the view */
-//    public void habit_edit_initialise_periodSection(HabitEditActivity dialogView, final Habit habit, final int[] period, final TextView period_text){
-//        // initialise the color of button at period section based on the habit period of the habit
-//        for(int i = 0; i < 4; i++){
-//            if (Habit.period_countList[i] == habit.getPeriod()){ // loop to find matches value
-//                period[0] = Habit.period_countList[i]; // update the chosen period
-//                period_text.setText(Habit.period_textList[i]); // set the period text
-//                // set grey background on the period button
-//                dialogView.findViewById(Habit.period_buttonIDS[i]).setBackgroundColor(getResources().getColor(R.color.colorWhiteGrey));
-//                break;
-//            }
-//        }
-//    }
 
     /**
      *
