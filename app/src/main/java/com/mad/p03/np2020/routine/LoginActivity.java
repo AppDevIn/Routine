@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView txtError;
     CheckBox checkBox;
     TextView errLogin, errPwd;
+    ProgressDialog progressDialog;
 
     String TAG = "LOGIN_ACITVITY";
 
@@ -185,6 +187,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 ShowKeyboard(et_Password);
                 break;
             case R.id.buttonLogin: //Login Button
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("Login");
+                progressDialog.setMessage("Please wait while we login");
+                progressDialog.show();
+
                 Login();
 
                 break;
@@ -210,6 +217,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.e(TAG, "User does not have an internet connection");
                 txtError.setText("Please Check Your Network Connectivity");
                 txtError.setVisibility(View.VISIBLE);
+                progressDialog.dismiss();
             }
         } else {
             errLogin.setVisibility(View.VISIBLE);
@@ -218,6 +226,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 et_Email.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
                 et_Password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             }
+            progressDialog.dismiss();
+
         }
     }
 
@@ -305,6 +315,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         //Get All User Routine Data
                                         user.getAllSectionAndTask();
 
+                                        progressDialog.dismiss();
 
                                         Intent intent = new Intent(LoginActivity.this, Home.class);
                                         intent.putExtra("user", user);
@@ -318,6 +329,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     }
                                 });
                             }else{
+                                progressDialog.dismiss();
+
                                 txtError.setVisibility(View.VISIBLE);
                                 txtError.setText("Email has not been verified");
                                 btn_login.setEnabled(true);
@@ -329,6 +342,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         }
                         else {
+                            progressDialog.dismiss();
+
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             txtError.setText("Invalid Username and Password");
