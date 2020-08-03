@@ -220,10 +220,10 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
                     mUser.getEmailAdd(),
                     mUser.getPassword()
                     );
-            
+
             progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Registration of student");
-            progressDialog.setMessage("Please wait, while we are register you 😅");
+            progressDialog.setTitle("Registration of user");
+            progressDialog.setMessage("Please wait, while we register you 😅");
             progressDialog.show();
 
             registerFirebaseUser.execute();
