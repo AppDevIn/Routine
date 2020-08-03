@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.mad.p03.np2020.routine.DAL.TaskDBHelper;
@@ -44,6 +46,10 @@ public class NotesFragment extends Fragment
 
         notes.setText(mTask.getNotes());
 
+
+        notes.setScroller(new Scroller(getContext()));
+        notes.setVerticalScrollBarEnabled(true);
+        notes.setMovementMethod(new ScrollingMovementMethod());
 
         return view;
     }
