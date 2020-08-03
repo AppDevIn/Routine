@@ -1273,7 +1273,7 @@ public class User implements Parcelable, FocusDBObserver {
         if (!name.isEmpty()) {
             mName = name;
         } else
-            throw new FormatException("Text is empty");
+            throw new FormatException("Name is empty");
     }
 
     /**
@@ -1288,19 +1288,10 @@ public class User implements Parcelable, FocusDBObserver {
     public void setEmailAdd(String emailAdd) throws FormatException {
 
         if (!emailAdd.isEmpty()) {
-            //Declare Constants
-            String EMAILPATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            if (emailAdd.trim().matches(EMAILPATTERN)) {
-                mEmailAddr = emailAdd;
+            mEmailAddr = emailAdd;
 
-            } else {
-                //Error message for email when .com and @ is not present
-                throw new FormatException("Text does not have @ and .com");
-
-
-            }
         } else {
-            throw new FormatException("Text is empty");
+            throw new FormatException("Email is empty");
         }
     }
 
@@ -1316,26 +1307,11 @@ public class User implements Parcelable, FocusDBObserver {
     public void setPassword(String password) throws FormatException {
 
         if (!password.isEmpty()) {
-            String STRONGPASSWORD = "(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$";
-            if (password.trim().matches(STRONGPASSWORD)) {
-                mPassword = password;
-            } else {
+            mPassword = password;
 
-
-                //a digit must occur at least once
-                //a lower case letter must occur at least once
-                //an upper case letter must occur at least once
-                //a special character must occur at least once
-                //    no whitespace allowed in the entire string
-                //anything, at least eight places though
-
-                //Error message for password when password doesn't
-                //have digit, lower and upper case, special character and min 8 letter
-                throw new FormatException("Needs to be alphanumeric, special character, min length of 8, one uppercase and lowercase");
-            }
         } else {
             //Error message for empty text
-            throw new FormatException("Text is empty");
+            throw new FormatException("Password is empty");
         }
 
     }
