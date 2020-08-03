@@ -212,10 +212,6 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         boolean isPasswordAllowed = passwordCheck(findViewById(R.id.edPassword));
         boolean isNameAllowed = nameCheck(findViewById(R.id.edName));
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Registration of student");
-        progressDialog.setMessage("Please wait, while we are register you 😅");
-        progressDialog.show();
 
         if(isNameAllowed && isEmailAllowed && isPasswordAllowed){
             RegisterFirebaseUser registerFirebaseUser = new RegisterFirebaseUser(
@@ -224,6 +220,11 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
                     mUser.getEmailAdd(),
                     mUser.getPassword()
                     );
+            
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Registration of student");
+            progressDialog.setMessage("Please wait, while we are register you 😅");
+            progressDialog.show();
 
             registerFirebaseUser.execute();
         }
