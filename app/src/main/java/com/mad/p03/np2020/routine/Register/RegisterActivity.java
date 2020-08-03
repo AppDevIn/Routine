@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.ObjectAnimator;
 
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -59,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     //Declare member variables
     User mUser;
     TextView mTxtErrorName, mTxtErrorEmail, mTxtErrorPassword;
+    ProgressDialog progressDialog;
 
     /**
      *
@@ -210,12 +212,18 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         boolean isPasswordAllowed = passwordCheck(findViewById(R.id.edPassword));
         boolean isNameAllowed = nameCheck(findViewById(R.id.edName));
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Registration of student");
+        progressDialog.setMessage("Please wait, while we are register you 😅");
+        progressDialog.show();
+
         if(isNameAllowed && isEmailAllowed && isPasswordAllowed){
             RegisterFirebaseUser registerFirebaseUser = new RegisterFirebaseUser(
                     this,
                     this,
                     mUser.getEmailAdd(),
-                    mUser.getPassword());
+                    mUser.getPassword()
+                    );
 
             registerFirebaseUser.execute();
         }
@@ -228,6 +236,9 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
     @Override
     public void OnSignUpSuccess(RegisterFirebaseUser user) {
         Log.d(TAG, mUser.getEmailAdd() + " is successfully created");
+
+        progressDialog.dismiss();
+
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -260,8 +271,11 @@ public class RegisterActivity extends AppCompatActivity implements TextView.OnEd
         Log.d(TAG, mUser.getEmailAdd() + " is unsuccessfully");
         Log.e(TAG, "Firebase error: " + e.getLocalizedMessage());
 
+        progressDialog.dismiss();
+
         //Show error dialog to the user and move the email section
         firebaseFailedError(e.getLocalizedMessage());
+
     }
 
     /**
