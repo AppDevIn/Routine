@@ -240,9 +240,12 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
                 event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")){
+            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")  ){
                 textView.setError("Task name cannot be empty");
-            }else {
+            }else if(textView.getText().toString().length() >= 22 ){
+                textView.setError("Task name cannot be more than 22");
+            }
+            else {
                 Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
 
                 //Create a task object
