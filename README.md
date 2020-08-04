@@ -398,6 +398,8 @@ Updated Class Diagram
 #### Focus Achievement
 
 | ![Focus Achievement](Documentation/images/FocusAchievement.jpg) | ![Focus Achievement View Unlocked Badge](Documentation/images/FocusBadgeShare.jpg)  | ![Focus Achievement View Locked Badge](Documentation/images/FocusBadgeLock.jpg)| ![Focus Insta Sticker](Documentation/images/FocusBadgeInsta.jpg) |
+| ---------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- | 
+
 | **Focus Achievement Page** | **View the details of the unlocked badge** | **View the details of the locked badge** | **View of badge on insta story** |
 
 
