@@ -44,6 +44,11 @@ public class Schedule {
         this.Unique = unique;
     }
 
+    public Schedule()
+    {
+
+    }
+
     /**
      *
      * This is to convert the data received from SQL and

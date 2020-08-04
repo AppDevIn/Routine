@@ -43,6 +43,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/holder"
 
+
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/txtTime"

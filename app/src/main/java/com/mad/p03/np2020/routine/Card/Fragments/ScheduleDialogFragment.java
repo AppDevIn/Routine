@@ -49,8 +49,12 @@ import com.mad.p03.np2020.routine.models.Task;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 /**
  *
  * CardNotification Class for setting notification
@@ -261,6 +265,19 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment
      * */
     public void onReminderClicked()
     {
+        if (mTask.getRemindDate() != null)
+        {
+            Log.v(TAG, "Getting previously set alarm for current task");
+            String ScheduleID = mTask.getTaskID();
+
+            Schedule CancelSchedule = scheduleDBHelper.getSchedule(ScheduleID);
+
+            int UniqueID = CancelSchedule.getUnique();
+
+            //To cancel current alarm so that multiple alarms are not received
+            cancelScheduleAlarms(UniqueID);
+        }
+
         //Ensuring date and time variables have been set
         if (isDateSet.equals(true) && isTimeSet.equals(true))
         {
@@ -621,6 +638,26 @@ public class ScheduleDialogFragment extends BottomSheetDialogFragment
         TextView text = (TextView) toast.getView().findViewById(android.R.id.message);
         text.setTextColor(Color.WHITE);
         toast.show();
+    }
+
+    /**
+     *
+     * Function is used to cancel all alarms of task
+     *
+     * */
+    public void cancelScheduleAlarms(int Unique)
+    {
+        Log.v(TAG, "Removing alarm: " + Unique);
+        Intent intent = new Intent(getContext(), CardNotification.class);
+        intent.setAction("CardNotification");
+        intent.putExtra("TaskID", "Null");
+        intent.putExtra("CardName", "Null");
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), Unique, intent, 0);
+        AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+
+        am.cancel(pendingIntent);
+
     }
 
     /*

@@ -174,6 +174,10 @@ public class HabitReminderActivity extends AppCompatActivity {
                     if (isModified){
                         // set a new reminder if the reminder is modified
                         habit.setHabitReminder(new HabitReminder(habit.getTitle(),minutes, hours, chosen_txt));
+                    }else{
+                        if (habit.getHabitReminder() == null){
+                            habit.setHabitReminder(new HabitReminder(habit.getTitle(),minutes, hours, chosen_txt));
+                        }
                     }
 
                     // go the respective activity based on action

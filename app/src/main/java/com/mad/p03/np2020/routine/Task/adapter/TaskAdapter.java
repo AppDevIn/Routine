@@ -3,6 +3,13 @@ package com.mad.p03.np2020.routine.Task.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +19,11 @@ import android.widget.TextView;
 
 
 import com.mad.p03.np2020.routine.Card.CardActivity;
+import com.mad.p03.np2020.routine.DAL.ScheduleDBHelper;
+import com.mad.p03.np2020.routine.DAL.SectionDBHelper;
 import com.mad.p03.np2020.routine.Task.model.TaskTouchHelperAdapter;
 import com.mad.p03.np2020.routine.models.Check;
+import com.mad.p03.np2020.routine.models.Section;
 import com.mad.p03.np2020.routine.models.Task;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Task.ViewHolder.TaskViewHolder;
@@ -47,6 +57,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     private List<Task> mTaskList;
     private LifecycleOwner mOwner;
     private TaskDBHelper mTaskDBHelper;
+    private SectionDBHelper mSectionDBHelper;
+    private Boolean isCalender;
 
 
     //Listener
@@ -63,10 +75,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      * @param owner Owner of the lifecycle to be able to see
      *             lifecycle changes
      */
-    public TaskAdapter(List<Task> taskList, LifecycleOwner owner) {
+    public TaskAdapter(List<Task> taskList, LifecycleOwner owner, Boolean isCalender) {
 
         this.mOwner = owner;
         mTaskList = taskList;
+        this.isCalender = isCalender;
 
         Log.d(TAG, "TaskAdapter: " + mTaskList);
     }
@@ -102,6 +115,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         mContext = parent.getContext();
         mTaskDBHelper = new TaskDBHelper(parent.getContext());
+        mSectionDBHelper = new SectionDBHelper(parent.getContext());
         return new TaskViewHolder(view, mItemTouchHelper, this);
     }
 
@@ -123,7 +137,23 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         Task task = mTaskList.get(position);
 
-        holder.mListName.setText(mTaskList.get(position).getName());
+        String Name = mTaskList.get(position).getName();
+
+        if(isCalender) {
+            //Get the section
+            Section section = mSectionDBHelper.getSection(task.getSectionID());
+
+
+            Name = mTaskList.get(position).getName() + " " + "(" + section.getName() + ")";
+
+            SpannableString str = new SpannableString(Name);
+            str.setSpan(new ForegroundColorSpan(section.getBackgroundColor()), mTaskList.get(position).getName().length(), Name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            str.setSpan(new StyleSpan(Typeface.BOLD), mTaskList.get(position).getName().length(), Name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.mListName.setText(str);
+        }else{
+            holder.mListName.setText(Name);
+        }
+
         holder.mCheckBox.setChecked(mTaskList.get(position).isChecked());
 
         //Get the date formatted

@@ -154,19 +154,26 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
                 keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            Log.d(TAG, "onEditorAction(): Updating the task name too " + textView.getText());
+            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")){
+                textView.setError("Task name cannot be empty");
+            }else if(textView.getText().toString().length() >= 22 ){
+                textView.setError("Task name cannot be more than 22");
+            }else {
 
-            hideKeyboard(textView);
+                Log.d(TAG, "onEditorAction(): Updating the task name too " + textView.getText());
 
-            //Set the text to the object
-            mTask.setName(textView.getText().toString());
+                hideKeyboard(textView);
 
-            //Update the SQL
-            TaskDBHelper taskDBHelper = new TaskDBHelper(this);
-            taskDBHelper.update(mTask);
+                //Set the text to the object
+                mTask.setName(textView.getText().toString());
 
-            //Update firebase of the change name
-            mTask.executeUpdateFirebase(this);
+                //Update the SQL
+                TaskDBHelper taskDBHelper = new TaskDBHelper(this);
+                taskDBHelper.update(mTask);
+
+                //Update firebase of the change name
+                mTask.executeUpdateFirebase(this);
+            }
 
 
             return true;

@@ -21,6 +21,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -239,9 +240,12 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
                 event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")){
+            if(textView.getText().toString().isEmpty() || textView.getText().toString().trim().equals("")  ){
                 textView.setError("Task name cannot be empty");
-            }else {
+            }else if(textView.getText().toString().length() >= 22 ){
+                textView.setError("Task name cannot be more than 22");
+            }
+            else {
                 Log.d(TAG, "onEditorAction(): User eneted \"ENTER\" in keyboard ");
 
                 //Create a task object
@@ -458,7 +462,7 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTaskAdapter = new TaskAdapter(mTaskList, this);
+        mTaskAdapter = new TaskAdapter(mTaskList, this, false);
         mRecyclerView.setAdapter(mTaskAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

@@ -78,6 +78,27 @@ public class ScheduleDBHelper extends DBHelper {
 
     }
 
+    public Schedule getSchedule(String ScheduleID)
+    {
+        Schedule schedule = null;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("select * from " + Schedule.TABLE_NAME + " where " + Schedule.COLUMN_SCHEDULE_ID + "='" + ScheduleID+"';", null);
+
+        if (cursor.moveToFirst()) {
+            //Prepare a user object
+            schedule = new Schedule(
+                    cursor.getString(cursor.getColumnIndex(Schedule.COLUMN_SCHEDULE_ID)),
+                    cursor.getInt(cursor.getColumnIndex(Schedule.COLUMN_UNIQUE))
+            );
+        }
+
+        //Close the DB connection
+        db.close();
+
+        return schedule;
+    }
+
     /**
      *
      * Function to get all schedule from sqlLite db
