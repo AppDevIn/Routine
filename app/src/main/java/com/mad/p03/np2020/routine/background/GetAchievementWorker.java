@@ -20,13 +20,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
+import com.mad.p03.np2020.routine.Focus.FocusActivity;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDownloadObservable;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDownloadObserver;
 import com.mad.p03.np2020.routine.Focus.Model.Achievement;
+import com.mad.p03.np2020.routine.models.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -37,9 +46,12 @@ import java.io.InputStream;
  * @since 02-08-2020
  */
 
-public class GetAchievementWorker extends Worker {
+public class GetAchievementWorker extends Worker implements FocusDownloadObservable {
     AchievementDBHelper achievementDBHelper;
     String TAG = "AchievementWorker";
+    ArrayList<FocusDownloadObserver> observerArrayList = new ArrayList<>();
+    HashMap<String, Boolean> trackDownload = new HashMap<>();
+
 
     public GetAchievementWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -460,6 +472,29 @@ public class GetAchievementWorker extends Worker {
         });
     }
 
+    @Override
+    public void registerDownloadObserver(FocusDownloadObserver focusDownloadObserver) {
+        if (!observerArrayList.contains(focusDownloadObserver)){
+            observerArrayList.add(focusDownloadObserver);
+        }
+    }
+
+    @Override
+    public void removeDownloadObserver(FocusDownloadObserver focusDBObserver) {
+        observerArrayList.remove(focusDBObserver);
+
+    }
+
+    @Override
+    public void notifyDownloadOngoing() {
+        FocusActivity.completeAchievementbackground = false;
+    }
+
+    @Override
+    public void notifyDownloadComplete() {
+        FocusActivity.completeAchievementbackground = true;
+    }
+
 
     class DownloadFileFromURL extends AsyncTask<Object, Void, Bitmap> {
         String filename;
@@ -470,6 +505,7 @@ public class GetAchievementWorker extends Worker {
          */
         @Override
         protected void onPreExecute() {
+            notifyDownloadOngoing();
             super.onPreExecute();
         }
 
@@ -479,8 +515,10 @@ public class GetAchievementWorker extends Worker {
         @Override
         protected Bitmap doInBackground(Object... URL) {
             String imageURL = (String) URL[0];
+
             filename = (String) URL[1];
             foldername = (String) URL[2];
+            trackDownload.put(foldername + filename, false);
 
             Log.v(TAG, "Getting file: " + filename);
 
@@ -489,6 +527,7 @@ public class GetAchievementWorker extends Worker {
             try {
                 // Download Image from URL
                 InputStream input = new java.net.URL(imageURL).openStream();
+
                 // Decode Bitmap
                 bitmap = BitmapFactory.decodeStream(input);
             } catch (Exception e) {
@@ -528,7 +567,18 @@ public class GetAchievementWorker extends Worker {
                     fos.close();
 
                     Log.v(TAG, "File saved in " + destination);
+                    trackDownload.put(foldername + filename, true);
+                    Log.v(TAG, "Track download status " + trackDownload );
 
+                    notifyDownloadComplete();
+
+                    for (Boolean value : trackDownload.values()) {
+                        if(!value){
+                            return;
+                        };
+                    }
+
+                    notifyDownloadComplete();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

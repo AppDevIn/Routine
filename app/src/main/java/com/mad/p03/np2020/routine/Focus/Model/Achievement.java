@@ -1,5 +1,8 @@
 package com.mad.p03.np2020.routine.Focus.Model;
 
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObservable;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDownloadObserver;
+
 import java.io.File;
 import java.util.HashMap;
 /***

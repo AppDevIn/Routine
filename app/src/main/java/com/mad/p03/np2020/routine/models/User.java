@@ -17,12 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +33,6 @@ import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.Focus.Model.Achievement;
 import com.mad.p03.np2020.routine.Focus.Model.Focus;
 import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
-import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObservable;
 import com.mad.p03.np2020.routine.Habit.Interface.HabitDBObserver;
 import com.mad.p03.np2020.routine.Habit.models.HabitGroup;
 import com.mad.p03.np2020.routine.Habit.models.Habit;
@@ -137,7 +134,7 @@ public class User implements Parcelable, FocusDBObserver {
     private Habit.HabitList habitList;
     private ArrayList<HabitGroup> habitGroupsList;
     ArrayList<Date> dateArrayList = new ArrayList<>();
-    public OneTimeWorkRequest getSectionTask;
+    public OneTimeWorkRequest getAchievementTask;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -646,7 +643,6 @@ public class User implements Parcelable, FocusDBObserver {
 
     public void renewFocusList() {
         try {
-
             setmFocusList(focusDBHelper.getAllMainData());
             setaFocusList(focusDBHelper.getAllArchiveData());
             Log.v(TAG, "List updated to " + mFocusList);
@@ -862,7 +858,6 @@ public class User implements Parcelable, FocusDBObserver {
      * Achievement Database
      */
     public void getAchievement(Activity activity) {
-
         // Check if we have write permission
         if (getPermission(activity)) {
             Constraints constraints = new Constraints.Builder()
@@ -870,12 +865,14 @@ public class User implements Parcelable, FocusDBObserver {
                     .build();
 
 
-            getSectionTask = new OneTimeWorkRequest.
+            getAchievementTask = new OneTimeWorkRequest.
                     Builder(GetAchievementWorker.class)
                     .setConstraints(constraints)
                     .build();
 
-            WorkManager.getInstance().enqueue(getSectionTask);
+            WorkManager.getInstance().enqueue(getAchievementTask);
+
+
 
         }
     }

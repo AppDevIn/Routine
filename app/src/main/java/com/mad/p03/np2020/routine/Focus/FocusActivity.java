@@ -64,13 +64,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.mad.p03.np2020.routine.Focus.DAL.AchievementDBHelper;
 import com.mad.p03.np2020.routine.Focus.Fragment.AchievementFragment;
+import com.mad.p03.np2020.routine.Focus.Interface.FocusDownloadObserver;
 import com.mad.p03.np2020.routine.Habit.HabitActivity;
 import com.mad.p03.np2020.routine.NavBarHelper;
 import com.mad.p03.np2020.routine.R;
 import com.mad.p03.np2020.routine.Focus.Interface.FocusDBObserver;
 import com.mad.p03.np2020.routine.Focus.Model.Achievement;
+import com.mad.p03.np2020.routine.background.GetAchievementWorker;
 import com.mad.p03.np2020.routine.models.CircularProgressBar;
 import com.mad.p03.np2020.routine.Focus.Model.Focus;
+import com.mad.p03.np2020.routine.models.RepeatListener;
 import com.mad.p03.np2020.routine.models.User;
 import com.mad.p03.np2020.routine.Focus.Fragment.HistoryFragment;
 import com.mad.p03.np2020.routine.background.BoundService;
@@ -94,8 +97,7 @@ import static java.lang.String.valueOf;
  */
 
 
-public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, View.OnLongClickListener, View.OnTouchListener, LifecycleObserver, FocusDBObserver {
-
+public class FocusActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, HistoryFragment.OnFragmentInteractionListener, AchievementFragment.OnFragmentInteractionListener, LifecycleObserver, FocusDBObserver, FocusDownloadObserver {
 
     //Fragment Variables
     HistoryFragment fragmentFocus;
@@ -155,10 +157,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     private ImageView hourup, hourdown, minup, mindown, secup, secdown, mface;
 
-    /**
-     * Button used for event control the timer
-     */
-    private boolean bupmin, bdownmin, bupsec, bdownsec, buphour, bdownhour;
 
     private Handler repeatUpdateHandler = new Handler(); //For long touch view
     private CountDownTimer mCountDownTimer; //Main Counteractive for Focus
@@ -168,8 +166,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private String dateTimeTask;
     private String currentTask;
     private final String TAG = "Focus";
-    private boolean completeAchievementbackground = false;
-
+    public static boolean completeAchievementbackground = true;
     /**
      * Notification channel ID is set to channel 1
      */
@@ -247,30 +244,8 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         //SetOnclickListener
         imageButton.setOnClickListener(this);
-        minup.setOnClickListener(this);
-        secdown.setOnClickListener(this);
-        secup.setOnClickListener(this);
-        mindown.setOnClickListener(this);
-        hourup.setOnClickListener(this);
-        hourdown.setOnClickListener(this);
         focusButton.setOnClickListener(this);
         taskSubmit.setOnClickListener(this);
-
-        //SetLongClickListener
-        hourdown.setOnLongClickListener(this);
-        hourup.setOnLongClickListener(this);
-        minup.setOnLongClickListener(this);
-        secdown.setOnLongClickListener(this);
-        secup.setOnLongClickListener(this);
-        mindown.setOnLongClickListener(this);
-
-        //SetLongClickListener
-        hourdown.setOnTouchListener(this);
-        hourup.setOnTouchListener(this);
-        minup.setOnTouchListener(this);
-        secdown.setOnTouchListener(this);
-        secup.setOnTouchListener(this);
-        mindown.setOnTouchListener(this);
 
         taskInput.setOnFocusChangeListener(this);
 
@@ -280,6 +255,43 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         circularProgressBar.setColor(Color.GREEN);
         circularProgressBar.setMin(0);
         circularProgressBar.setMax(100);
+
+        hourup.setOnTouchListener(new RepeatListener(400, 100, view -> {
+            thours = increment(thours, "hours");
+            hour.setText(format(Locale.getDefault(), "%02d", thours));
+            Log.v(TAG, "Increase Hour: " + thours);
+        }));
+
+        hourdown.setOnTouchListener(new RepeatListener(400, 100, view -> {
+            thours = decrement(thours, "hours");
+            hour.setText(format(Locale.getDefault(), "%02d", thours));
+            Log.v(TAG, "Increase Hour: " + thours);
+        }));
+
+        minup.setOnTouchListener(new RepeatListener(400, 100, view -> {
+            tmins = increment(tmins, "min");
+            min.setText(format(Locale.getDefault(), "%02d", tmins));
+            Log.v(TAG, "Increase tmins: " + tmins);
+        }));
+
+        mindown.setOnTouchListener(new RepeatListener(400, 100, view -> {
+            tmins = decrement(tmins, "min");
+            min.setText(format(Locale.getDefault(), "%02d", tmins));
+            Log.v(TAG, "Decrease tmins: " + tmins);
+        }));
+
+        secup.setOnTouchListener(new RepeatListener(400, 100, view -> {
+            tsecs = increment(tsecs, "seconds");
+            sec.setText(format(Locale.getDefault(), "%02d", tsecs));
+            Log.v(TAG, "Increase tsecs: " + tsecs);
+        }));
+
+        secdown.setOnTouchListener(new RepeatListener(400, 100, view -> {
+            tsecs = decrement(tsecs, "seconds");
+            sec.setText(format(Locale.getDefault(), "%02d", tsecs));
+            Log.v(TAG, "Decrease tsecs: " + tsecs);
+        }));
+
 
     }
 
@@ -324,6 +336,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      * Get Local Database Data
      * Initialize object
      */
+    @SuppressLint("ClickableViewAccessibility")
     private void initialization() {
 
         Intent intent = new Intent(getApplicationContext(), BoundService.class);
@@ -374,21 +387,11 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
         //Download image from google storage
         user.setAchievementDBHelper(new AchievementDBHelper(FocusActivity.this));
+
         user.renewAchievementList();
-        completeAchievementbackground = false;
 
         Log.v(TAG, "Achievement list " + user.getAchievementArrayList());
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(user.getSectionTask.getId())
-                .observe(this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        if (workInfo != null && workInfo.getState().isFinished()) {
-                            completeAchievementbackground = true;
-                        }
-                    }
-
-                });
     }
 
     //
@@ -628,37 +631,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
 
                 break;
-
-            case R.id.HourUp: //Increment hours
-                thours = increment(thours, "hours");
-                hour.setText(format(Locale.US, "%02d", thours));
-                Log.v(TAG, "Increase Hour: " + thours);
-                break;
-            case R.id.HourDown:  //Decrement hours
-                thours = decrement(thours, "hours");
-                hour.setText(format(Locale.US, "%02d", thours));
-                Log.v(TAG, "Decrease Hour: " + thours);
-                break;
-            case R.id.minUp: //Increment Minutes
-                tmins = increment(tmins, "min");
-                min.setText(format(Locale.US, "%02d", tmins));
-                Log.v(TAG, "Increase Minutes: " + tmins);
-                break;
-            case R.id.minDown:  //Decrement Minutes
-                tmins = decrement(tmins, "min");
-                min.setText(format(Locale.US, "%02d", tmins));
-                Log.v(TAG, "Decrease Minutes: " + tmins);
-                break;
-            case R.id.secUp:    //Increment seconds
-                tsecs = increment(tsecs, "sec");
-                sec.setText(format(Locale.US, "%02d", tsecs));
-                Log.v(TAG, "Increase Seconds:" + tsecs);
-                break;
-            case R.id.secDown:  //Decrement seconds
-                tsecs = decrement(tsecs, "sec");
-                sec.setText(format(Locale.US, "%02d", tsecs));
-                Log.v(TAG, "Decrease Seconds:" + tsecs);
-                break;
             case R.id.start:
                 //this button has 4 types: Start, Give up, Try Again, Restart, Enter Task
                 focusTime();
@@ -695,48 +667,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
-    /**
-     * Event State onLongClick
-     */
-    @Override
-    public boolean onLongClick(View v) {
-        switch (v.getId() /*to get clicked view id**/) {
-            case R.id.minUp:
-                bupmin = true;
-                break;
-            case R.id.minDown:
-                bdownmin = true;
-                break;
-            case R.id.secUp:
-                bupsec = true;
-                break;
-            case R.id.secDown:
-                bdownsec = true;
-                break;
-            case R.id.HourUp:
-                buphour = true;
-                break;
-            case R.id.HourDown:
-                bdownhour = true;
-                break;
-        }
-        repeatUpdateHandler.post(new RptUpdater());
-        return false;
-    }
-
-    /**
-     * Event State touchRelease
-     * <p>
-     * The event onTouch used to stop increment/decrement timer continuously when the button is onRelease
-     *
-     * @Param
-     */
-    public boolean touchRelease(boolean btimer, MotionEvent event) { //On release hold of timer
-        if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL && btimer) {
-            return false;
-        }
-        return false;
-    }
 
     /**
      * @param hasCapture
@@ -757,62 +687,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         } catch (Exception e) {
 
         }
-    }
-
-    class RptUpdater implements Runnable {
-        public void run() {
-            if (bupmin) {
-                tmins = increment(tmins, "min");
-                min.setText(format(Locale.US, "%02d", tmins));
-            } else if (bdownmin) {
-                tmins = decrement(tmins, "min");
-                min.setText(format(Locale.US, "%02d", tmins));
-            } else if (bupsec) {
-                tsecs = increment(tsecs, "sec");
-                sec.setText(format(Locale.US, "%02d", tsecs));
-            } else if (bdownsec) {
-                tsecs = decrement(tsecs, "sec");
-                sec.setText(format(Locale.US, "%02d", tsecs));
-            } else if (buphour) {
-                thours = increment(thours, "hour");
-                hour.setText(format(Locale.US, "%02d", thours));
-            } else if (bdownhour) {
-                thours = decrement(thours, "hour");
-                hour.setText(format(Locale.US, "%02d", thours));
-            }
-            repeatUpdateHandler.postDelayed(new RptUpdater(), 150);
-        }
-    }
-
-    /**
-     * Event State onTouch
-     * <p>
-     * The event onTouch used to increment/decrement timer continuously when the button is onhold
-     */
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        switch (v.getId() /*to get clicked view id**/) {
-            case R.id.minUp:
-                bupmin = touchRelease(bupmin, event);
-                break;
-            case R.id.minDown:
-                bdownmin = touchRelease(bdownmin, event);
-                break;
-            case R.id.secUp:
-                bupsec = touchRelease(bupsec, event);
-                break;
-            case R.id.secDown:
-                bdownsec = touchRelease(bdownsec, event);
-                break;
-            case R.id.HourUp:
-                buphour = touchRelease(buphour, event);
-                break;
-            case R.id.HourDown:
-                bdownhour = touchRelease(bdownhour, event);
-                break;
-        }
-        return false;
     }
 
     /**
@@ -1149,6 +1023,17 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     public void onEnterBackground() {
         Log.d("AppController", "Background");
         isAppInBackground(true);
+    }
+
+    @Override
+    public void onFileGoing() {
+        completeAchievementbackground = false;
+
+    }
+
+    @Override
+    public void onFileComplete() {
+        completeAchievementbackground = true;
     }
 
     // Adding some callbacks for test and log

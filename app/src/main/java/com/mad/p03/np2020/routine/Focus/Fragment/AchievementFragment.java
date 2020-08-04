@@ -62,6 +62,8 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         args.putParcelable(FOCUS_DATABASE, focusDBHelper);
         args.putParcelable(Achievement.TABLE_NAME, achievementDBHelper);
         fragment.setArguments(args);
+        user.renewAchievementList();
+
         return fragment;
     }
 

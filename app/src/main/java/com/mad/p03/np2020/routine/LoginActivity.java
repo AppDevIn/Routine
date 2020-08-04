@@ -138,7 +138,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         et_Email.setOnKeyListener(this);
         et_Password.setOnKeyListener(this);
-        checkBox.setOnKeyListener(this);
 
         loadData();
         updateViews();
@@ -146,16 +145,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         errLogin.setVisibility(View.INVISIBLE);
         errPwd.setVisibility(View.INVISIBLE);
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showCustomPasswordDialog();
-            }
-        });
+        textView.setOnClickListener(view -> showCustomPasswordDialog());
         et_Password.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 HideKeyboard(et_Password);
-                Login();
                 return true;
             }
             return false;
@@ -292,6 +285,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 // Sign in success, update UI with the signed-in user's information
                                 if (checkBox.isChecked()) {
                                     saveData();
+                                }else{
+                                    destoryData();
                                 }
 
                                 Log.d(TAG, "signInWithEmail:success");
@@ -399,6 +394,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString(Username, et_Email.getText().toString());
         editor.putString(Password, et_Password.getText().toString());
         editor.putBoolean(SWITCH1, checkBox.isChecked());
+        editor.apply();
+        Log.v(TAG, "Data saved");
+    }
+    public void destoryData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Username, "");
+        editor.putString(Password, "");
         editor.apply();
         Log.v(TAG, "Data saved");
     }
