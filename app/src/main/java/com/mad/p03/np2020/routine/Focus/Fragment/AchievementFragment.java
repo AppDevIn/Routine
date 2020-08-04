@@ -79,6 +79,8 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
             getArguments().getParcelable("FocusDatabase");
             getArguments().getParcelable(Achievement.TABLE_NAME);
             Log.v(TAG, "Created fragment");
+            user.renewAchievementList();
+
         }
     }
 

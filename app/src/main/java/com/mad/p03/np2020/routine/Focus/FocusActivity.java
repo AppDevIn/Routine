@@ -35,7 +35,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -44,12 +46,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -113,6 +117,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     public Button focusButton;
     public ImageButton imageButton;
 
+
     /**
      * Timer for minutes and seconds
      */
@@ -163,6 +168,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     private String dateTimeTask;
     private String currentTask;
     private final String TAG = "Focus";
+    private boolean completeAchievementbackground = false;
 
     /**
      * Notification channel ID is set to channel 1
@@ -207,7 +213,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         Log.v(TAG, FirebaseAuth.getInstance().getCurrentUser().getUid());
         user.setUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
         Animation translateAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anims);
         initialization(); //Process of data
 
@@ -348,6 +353,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         // addObserver of user
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
+
         FocusActivity.getInstance().setOnVisibilityChangeListener(value -> {
             Log.d("isAppInBackground", String.valueOf(value));
 
@@ -369,9 +375,20 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         //Download image from google storage
         user.setAchievementDBHelper(new AchievementDBHelper(FocusActivity.this));
         user.renewAchievementList();
+        completeAchievementbackground = false;
 
         Log.v(TAG, "Achievement list " + user.getAchievementArrayList());
 
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(user.getSectionTask.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            completeAchievementbackground = true;
+                        }
+                    }
+
+                });
     }
 
     //
@@ -722,7 +739,6 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
     }
 
     /**
-     *
      * @param hasCapture
      */
     @Override
@@ -738,7 +754,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         try {
             user.setmFocusList(focusDBHelper.getAllMainData());
             user.setaFocusList(focusDBHelper.getAllArchiveData());
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -857,16 +873,20 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
      */
     public void openAchievement() {
 
-        fragmentAchievements = AchievementFragment.newInstance(user, focusDBHelper, achievementDBHelper);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        if (completeAchievementbackground == true) {
+            fragmentAchievements = AchievementFragment.newInstance(user, focusDBHelper, achievementDBHelper);
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
 
-        Fragment fragmentA = getSupportFragmentManager().findFragmentByTag("ACHIEVEMENT FRAGMENT");
+            Fragment fragmentA = getSupportFragmentManager().findFragmentByTag("ACHIEVEMENT FRAGMENT");
 
-        if (fragmentA == null) {
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.add(R.id.fragment_container, fragmentAchievements, "ACHIEVEMENT FRAGMENT").commit();
+            if (fragmentA == null) {
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.add(R.id.fragment_container, fragmentAchievements, "ACHIEVEMENT FRAGMENT").commit();
+            }
+        } else {
+            Toast.makeText(this, "Resources are loading...", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -1175,6 +1195,7 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
 
     /**
      * This is to display the selection of view that the user would like to enter, Achievement page or Focus History
+     *
      * @param context
      * @param p
      */
@@ -1196,10 +1217,10 @@ public class FocusActivity extends AppCompatActivity implements View.OnFocusChan
         });
 
         achievement_item.setOnClickListener(view -> {
-            if(user.getPermission(this)) {
+            if (user.getPermission(this)) {
                 openAchievement();
                 changeStatusPopUp.dismiss();
-            }else{
+            } else {
                 user.showPermissionDescription(this);
             }
 

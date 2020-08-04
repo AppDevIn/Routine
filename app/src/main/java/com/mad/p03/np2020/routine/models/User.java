@@ -17,10 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -135,6 +137,7 @@ public class User implements Parcelable, FocusDBObserver {
     private Habit.HabitList habitList;
     private ArrayList<HabitGroup> habitGroupsList;
     ArrayList<Date> dateArrayList = new ArrayList<>();
+    public OneTimeWorkRequest getSectionTask;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -263,7 +266,7 @@ public class User implements Parcelable, FocusDBObserver {
      *
      * @return
      */
-    public void setAchievementDBHelper(AchievementDBHelper achievementDBHelper){
+    public void setAchievementDBHelper(AchievementDBHelper achievementDBHelper) {
         this.achievementDBHelper = achievementDBHelper;
     }
 
@@ -313,6 +316,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * Get all unsuccessful focus
+     *
      * @return
      */
     public ArrayList<Focus> getmUnsuccessFocusList() {
@@ -332,6 +336,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * Get all successful focus
+     *
      * @return
      */
     public ArrayList<Focus> getmSuccessFocusList() {
@@ -358,6 +363,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * get the highest recurrence that is consecutive successful focus
+     *
      * @return
      */
     public int getHighestRecurrence() {
@@ -382,6 +388,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * Filter the list of focus based on unsuccessful
+     *
      * @param mFocusList
      * @return
      */
@@ -402,6 +409,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * Filter the list of focus based on successful focus
+     *
      * @param mFocusList
      * @return
      */
@@ -421,6 +429,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * Get total hour that the user achieves for focus (This does not include archive data)
+     *
      * @return
      */
     public int getTotalHours() {
@@ -436,6 +445,7 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * get all hour including the archive data
+     *
      * @return
      */
     public long getAllHours() {
@@ -669,7 +679,6 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * Method to add focus object to Focus List
-     *
      */
 
     public void renewAchievementList() {
@@ -861,18 +870,19 @@ public class User implements Parcelable, FocusDBObserver {
                     .build();
 
 
-
-            OneTimeWorkRequest getSectionTask = new OneTimeWorkRequest.
+            getSectionTask = new OneTimeWorkRequest.
                     Builder(GetAchievementWorker.class)
                     .setConstraints(constraints)
                     .build();
 
             WorkManager.getInstance().enqueue(getSectionTask);
+
         }
     }
 
     /**
      * Getting the permission from the user
+     *
      * @param activity
      * @return
      */
@@ -888,9 +898,10 @@ public class User implements Parcelable, FocusDBObserver {
 
     /**
      * This method is to show a dialog on the permission reason of requesting internal storage access
+     *
      * @param activity
      */
-    public void showPermissionDescription(Activity activity){
+    public void showPermissionDescription(Activity activity) {
 
         TextView close;
 
@@ -944,7 +955,7 @@ public class User implements Parcelable, FocusDBObserver {
         setHabitGroupsList(new ArrayList<HabitGroup>());
     }
 
-    public Habit getHabit(@NonNull DataSnapshot singleSnapshot){
+    public Habit getHabit(@NonNull DataSnapshot singleSnapshot) {
         Habit habit = new Habit();
         long habitID = singleSnapshot.child("habitID").getValue(Long.class);
         habit.setHabitID(habitID);
@@ -978,7 +989,7 @@ public class User implements Parcelable, FocusDBObserver {
         return habit;
     }
 
-    public HabitRepetition getHabitRepetition(@NonNull DataSnapshot singleSnapshot){
+    public HabitRepetition getHabitRepetition(@NonNull DataSnapshot singleSnapshot) {
         HabitRepetition hr = new HabitRepetition();
         hr.setHabitID(singleSnapshot.child("habitID").getValue(Long.class));
         hr.setRow_id(singleSnapshot.child("row_id").getValue(Long.class));
@@ -991,7 +1002,7 @@ public class User implements Parcelable, FocusDBObserver {
         return hr;
     }
 
-    public HabitGroup getHabitGroup(@NonNull DataSnapshot singleSnapshot){
+    public HabitGroup getHabitGroup(@NonNull DataSnapshot singleSnapshot) {
         HabitGroup habitGroup = new HabitGroup();
         habitGroup.setGrp_id(singleSnapshot.child("grp_id").getValue(Long.class));
         habitGroup.setGrp_name((String) singleSnapshot.child("grp_name").getValue());
@@ -1022,12 +1033,12 @@ public class User implements Parcelable, FocusDBObserver {
                 long habitID = dataSnapshot.child("habitID").getValue(Long.class);
                 Habit habit = getHabit(dataSnapshot);
 
-                if (!habitDBHelper.isHabitIDExisted(habitID)){
+                if (!habitDBHelper.isHabitIDExisted(habitID)) {
                     Log.d(TAG, "onChildAdded: addHabit");
                     habitDBHelper.insertHabitFromFirebase(habit, getUID());
                     renewHabitList();
-                }else{
-                    if (!habitDBHelper.getHabitByID(habitID).equals(habit)){
+                } else {
+                    if (!habitDBHelper.getHabitByID(habitID).equals(habit)) {
                         Log.d(TAG, "onChildAdded: updateHabit");
                         habitDBHelper.updateHabitFromFirebase(habit);
                         renewHabitList();
@@ -1040,12 +1051,12 @@ public class User implements Parcelable, FocusDBObserver {
                 Log.d(TAG, "onChildChanged: habit");
                 long habitID = dataSnapshot.child("habitID").getValue(Long.class);
                 Habit habit = getHabit(dataSnapshot);
-                if (!habitDBHelper.isHabitIDExisted(habitID)){
+                if (!habitDBHelper.isHabitIDExisted(habitID)) {
                     Log.d(TAG, "onChildChanged: addHabit");
                     habitDBHelper.insertHabitFromFirebase(habit, getUID());
                     renewHabitList();
-                }else{
-                    if (!habitDBHelper.getHabitByID(habitID).equals(habit)){
+                } else {
+                    if (!habitDBHelper.getHabitByID(habitID).equals(habit)) {
                         Log.d(TAG, "onChildChanged: updateHabit");
                         habitDBHelper.updateHabitFromFirebase(habit);
                         renewHabitList();
@@ -1058,7 +1069,7 @@ public class User implements Parcelable, FocusDBObserver {
                 Log.d(TAG, "onChildRemoved: habit");
                 Habit habit = getHabit(dataSnapshot);
 
-                if (habitDBHelper.isHabitIDExisted(habit.getHabitID())){
+                if (habitDBHelper.isHabitIDExisted(habit.getHabitID())) {
                     Log.d(TAG, "onChildRemoved: remove habit");
                     habitDBHelper.deleteHabitFromFirebase(habit);
                     renewHabitList();
@@ -1085,12 +1096,12 @@ public class User implements Parcelable, FocusDBObserver {
                 long id = dataSnapshot.child("row_id").getValue(Long.class);
                 HabitRepetition hr = getHabitRepetition(dataSnapshot);
 
-                if (!habitRepetitionDBHelper.isHabitRepetitionExisted(id)){
+                if (!habitRepetitionDBHelper.isHabitRepetitionExisted(id)) {
                     Log.d(TAG, "onChildAdded: add habitRepetition");
 
                     habitRepetitionDBHelper.insertHabitRepetitionFromFirebase(hr, getUID());
-                }else{
-                    if (!habitRepetitionDBHelper.getHabitRepetitionByRowID(id).equals(hr)){
+                } else {
+                    if (!habitRepetitionDBHelper.getHabitRepetitionByRowID(id).equals(hr)) {
                         Log.d(TAG, "onChildAdded: updateHabitRepetition");
                         habitRepetitionDBHelper.update(hr);
                     }
@@ -1103,11 +1114,11 @@ public class User implements Parcelable, FocusDBObserver {
                 long id = dataSnapshot.child("row_id").getValue(Long.class);
                 HabitRepetition hr = getHabitRepetition(dataSnapshot);
 
-                if (!habitRepetitionDBHelper.isHabitRepetitionExisted(id)){
+                if (!habitRepetitionDBHelper.isHabitRepetitionExisted(id)) {
                     Log.d(TAG, "onChildChanged: add habitRepetition");
                     habitRepetitionDBHelper.insertHabitRepetitionFromFirebase(hr, getUID());
-                }else{
-                    if (!habitRepetitionDBHelper.getHabitRepetitionByRowID(id).equals(hr)){
+                } else {
+                    if (!habitRepetitionDBHelper.getHabitRepetitionByRowID(id).equals(hr)) {
                         Log.d(TAG, "onChildChanged: updateHabitRepetition");
                         habitRepetitionDBHelper.update(hr);
                     }
@@ -1120,7 +1131,7 @@ public class User implements Parcelable, FocusDBObserver {
                 Log.d(TAG, "onChildRemoved: habitRepetition");
                 HabitRepetition hr = getHabitRepetition(dataSnapshot);
 
-                if (habitRepetitionDBHelper.isHabitRepetitionExisted(hr.getRow_id())){
+                if (habitRepetitionDBHelper.isHabitRepetitionExisted(hr.getRow_id())) {
                     Log.d(TAG, "onChildRemoved: remove habitRepetition");
                     habitRepetitionDBHelper.removeOneData(hr);
                 }
@@ -1147,11 +1158,11 @@ public class User implements Parcelable, FocusDBObserver {
                 long id = dataSnapshot.child("grp_id").getValue(Long.class);
                 HabitGroup hg = getHabitGroup(dataSnapshot);
 
-                if (!habitGroupDBHelper.isHabitGroupExisted(id)){
+                if (!habitGroupDBHelper.isHabitGroupExisted(id)) {
                     Log.d(TAG, "onChildAdded: add habitGroup");
                     habitGroupDBHelper.insertGroupFromFirebase(hg);
-                }else{
-                    if (!habitGroupDBHelper.getHabitGroupByRowID(id).equals(hg)){
+                } else {
+                    if (!habitGroupDBHelper.getHabitGroupByRowID(id).equals(hg)) {
                         Log.d(TAG, "onChildAdded: updateHabitGroup");
                         habitGroupDBHelper.update(hg);
                     }
@@ -1164,11 +1175,11 @@ public class User implements Parcelable, FocusDBObserver {
                 long id = dataSnapshot.child("grp_id").getValue(Long.class);
                 HabitGroup hg = getHabitGroup(dataSnapshot);
 
-                if (!habitGroupDBHelper.isHabitGroupExisted(id)){
+                if (!habitGroupDBHelper.isHabitGroupExisted(id)) {
                     Log.d(TAG, "onChildChanged: add habitGroup");
                     habitGroupDBHelper.insertGroupFromFirebase(hg);
-                }else{
-                    if (!habitGroupDBHelper.getHabitGroupByRowID(id).equals(hg)){
+                } else {
+                    if (!habitGroupDBHelper.getHabitGroupByRowID(id).equals(hg)) {
                         Log.d(TAG, "onChildChanged: updateHabitGroup");
                         habitGroupDBHelper.update(hg);
                     }
@@ -1178,8 +1189,8 @@ public class User implements Parcelable, FocusDBObserver {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 HabitGroup hg = getHabitGroup(dataSnapshot);
-                
-                if (habitGroupDBHelper.isHabitGroupExisted(hg.getGrp_id())){
+
+                if (habitGroupDBHelper.isHabitGroupExisted(hg.getGrp_id())) {
                     Log.d(TAG, "onChildRemoved: deleteHabitGroup");
                     habitGroupDBHelper.removeOneData(hg);
                 }
