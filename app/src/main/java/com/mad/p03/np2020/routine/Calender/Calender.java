@@ -284,7 +284,7 @@ public class Calender extends AppCompatActivity implements DateChangeListener, M
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mTaskAdapter = new TaskAdapter(mTaskList, this);
+        mTaskAdapter = new TaskAdapter(mTaskList, this, true);
         mRecyclerView.setAdapter(mTaskAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 

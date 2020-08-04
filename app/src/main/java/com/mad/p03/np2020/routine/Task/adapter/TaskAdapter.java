@@ -58,6 +58,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
     private LifecycleOwner mOwner;
     private TaskDBHelper mTaskDBHelper;
     private SectionDBHelper mSectionDBHelper;
+    private Boolean isCalender;
 
 
     //Listener
@@ -74,10 +75,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
      * @param owner Owner of the lifecycle to be able to see
      *             lifecycle changes
      */
-    public TaskAdapter(List<Task> taskList, LifecycleOwner owner) {
+    public TaskAdapter(List<Task> taskList, LifecycleOwner owner, Boolean isCalender) {
 
         this.mOwner = owner;
         mTaskList = taskList;
+        this.isCalender = isCalender;
 
         Log.d(TAG, "TaskAdapter: " + mTaskList);
     }
@@ -135,17 +137,23 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> implements
 
         Task task = mTaskList.get(position);
 
-        //Get the section
-        Section section = mSectionDBHelper.getSection(task.getSectionID());
+        String Name = mTaskList.get(position).getName();
+
+        if(isCalender) {
+            //Get the section
+            Section section = mSectionDBHelper.getSection(task.getSectionID());
 
 
-        String Name = mTaskList.get(position).getName() + " " + "(" + section.getName() + ")";
+            Name = mTaskList.get(position).getName() + " " + "(" + section.getName() + ")";
 
-        SpannableString str = new SpannableString(Name);
-        str.setSpan(new ForegroundColorSpan(section.getBackgroundColor()), mTaskList.get(position).getName().length(), Name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        str.setSpan(new StyleSpan(Typeface.BOLD), mTaskList.get(position).getName().length(), Name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString str = new SpannableString(Name);
+            str.setSpan(new ForegroundColorSpan(section.getBackgroundColor()), mTaskList.get(position).getName().length(), Name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            str.setSpan(new StyleSpan(Typeface.BOLD), mTaskList.get(position).getName().length(), Name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.mListName.setText(str);
+        }else{
+            holder.mListName.setText(Name);
+        }
 
-        holder.mListName.setText(str);
         holder.mCheckBox.setChecked(mTaskList.get(position).isChecked());
 
         //Get the date formatted

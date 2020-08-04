@@ -110,7 +110,7 @@ public class TaskDBHelper extends DBHelper {
         values.put(Task.COLUMN_CHECKED, task.isChecked());
         values.put(Task.COLUMN_REMIND_DATE, task.getRemindDate() != null ? task.getStringRemindDate() : null);
         values.put(Task.COLUMN_DUE_DATE, task.getDueDate() != null ? task.getDueDate().toString() : null);
-        values.put(Task.COLUMN_DUE_DATE, task.getNotes());
+        values.put(Task.COLUMN_NOTES, task.getNotes());
 
         // Insert the new row, returning the primary key value of the new row
         //If -1 means there is an error
