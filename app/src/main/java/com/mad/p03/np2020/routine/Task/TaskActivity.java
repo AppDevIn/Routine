@@ -70,7 +70,7 @@ import java.util.List;
  */
 public class TaskActivity extends AppCompatActivity implements TextView.OnEditorActionListener, MyDatabaseListener, View.OnLongClickListener, View.OnClickListener {
 
-    private final String TAG = "Task";
+    private final String TAG = "Task Activity";
 
     //Member variables
     ViewSwitcher viewSwitcher;
@@ -136,8 +136,11 @@ public class TaskActivity extends AppCompatActivity implements TextView.OnEditor
 
             @Override
             public void onDataUpdate(Object object) {
-                mSection = (Section) object;
-                startUpUI();
+                Section section = (Section) object;
+                if(mSection.getID().equals(section.getID())){
+                    mSection = section;
+                    startUpUI();
+                }
             }
 
             @Override
