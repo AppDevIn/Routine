@@ -231,19 +231,35 @@ Routine is an all-in-one app consisting of many popular productivity features in
 
 ### Pritheev Roshan
 
-1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/CardActivity.java)
+1.[CardActivity.java](app/src/main/java/com/mad/p03/np2020/routine/Card/CardActivity.java)
 
-2.[PopUp.java](app/src/main/java/com/mad/p03/np2020/routine/Class/PopUp.java)
+2.[ScheduleDialogFragment](app/src/main/java/com/mad/p03/np2020/routine/DAL/ScheduleDBHelper.java)
 
-3.[CardAdapter.java](app/src/main/java/com/mad/p03/np2020/routine/Adapter/CardAdapter.java)
+3.[ScheduleDBHelper](app/src/main/java/com/mad/p03/np2020/routine/Card/CardActivity.java)
 
-4.[CardViewHolder.java](app/src/main/java/com/mad/p03/np2020/routine/ViewHolder/CardViewHolder.java)
+4.[Schedule](app/src/main/java/com/mad/p03/np2020/routine/models/Schedule.java)
 
-5.[CardNotification.java](app/src/main/java/com/mad/p03/np2020/routine/Class/CardNotification.java)
+5.[ProfileActivity](app/src/main/java/com/mad/p03/np2020/routine/Profile/ProfileActivity.java)
 
-6.[StepsFragment.java](app/src/main/java/com/mad/p03/np2020/routine/Fragment/StepsFragment.java)
+6.[PasswordDialog](app/src/main/java/com/mad/p03/np2020/routine/Profile/Dialogs/PasswordDialog.java)
 
-7.[Settings.java](app/src/main/java/com/mad/p03/np2020/routine/Settings.java)
+7.[ReportDialog](app/src/main/java/com/mad/p03/np2020/routine/Profile/Dialogs/ReportDialog.java)
+
+8.[UsernameDialog](app/src/main/java/com/mad/p03/np2020/routine/Profile/Dialogs/UsernameDialog.java)
+
+9.[CardNotification](app/src/main/java/com/mad/p03/np2020/routine/models/CardNotification.java)
+
+10.[PopUp](app/src/main/java/com/mad/p03/np2020/routine/models/PopUp.java)
+
+11.[CardAdapter](app/src/main/java/com/mad/p03/np2020/routine/models/CardAdapter.java)
+
+12.[CardViewHolder](app/src/main/java/com/mad/p03/np2020/routine/models/CardViewHolder.java)
+
+13.[StepsFragment](app/src/main/java/com/mad/p03/np2020/routine/Fragment/StepsFragment.java)
+
+14.[NotesFragment](app/src/main/java/com/mad/p03/np2020/routine/Card/Fragment/NotesFragment.java)
+
+15.[Settings](app/src/main/java/com/mad/p03/np2020/routine/Settings.java)
 
 ## Story Mapping 
 
@@ -382,6 +398,8 @@ Updated Class Diagram
 #### Focus Achievement
 
 | ![Focus Achievement](Documentation/images/FocusAchievement.jpg) | ![Focus Achievement View Unlocked Badge](Documentation/images/FocusBadgeShare.jpg)  | ![Focus Achievement View Locked Badge](Documentation/images/FocusBadgeLock.jpg)| ![Focus Insta Sticker](Documentation/images/FocusBadgeInsta.jpg) |
+| ---------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- | 
+
 | **Focus Achievement Page** | **View the details of the unlocked badge** | **View the details of the locked badge** | **View of badge on insta story** |
 
 
