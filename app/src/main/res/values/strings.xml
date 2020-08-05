@@ -33,7 +33,7 @@
     <string name="empty_text_error">This input is empty</string>
     <string name="addMessage">Add New Card</string>
 
-    <string name="account"><b><u>Account</u></b></string>
+    <string name="account"><b>Account</b></string>
     <string name="notifications"><b><u>Notifications</u></b></string>
     <string name="general"><b><u>General</u></b></string>
     <string name="StepAdd"><b>Steps</b></string>
@@ -85,7 +85,7 @@
     <string name="home">Home</string>
 
     <string name="profile">Profile</string>
-    <string name="more">More</string>
+    <string name="more"><b>More</b></string>
     <string name="logout">Logout</string>
     <string name="changeName">Change Name</string>
     <string name="changePassword">Change Password</string>
