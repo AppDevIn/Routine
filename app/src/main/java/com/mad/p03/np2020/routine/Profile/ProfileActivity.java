@@ -273,6 +273,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             profileImageView.setImageURI(imageUri);
             uploadProfileImage();
+            getUserInfo();
         }
         else
         {
