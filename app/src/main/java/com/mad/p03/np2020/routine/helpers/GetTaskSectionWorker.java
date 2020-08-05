@@ -353,6 +353,14 @@ public class GetTaskSectionWorker extends Worker {
         });
     }
 
+    /**
+     *
+     * Add all the data for the task
+     * based on the section id from firebase
+     * into sql
+     *
+     * @param sectionID The task you need to get based on the sectionID
+     */
     private void addTask(String sectionID){
         DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("Task");
 
@@ -394,6 +402,13 @@ public class GetTaskSectionWorker extends Worker {
         });
     }
 
+    /**
+     *
+     * Add the check from firebase
+     * based on the TaskID
+     *
+     * @param TaskID The check based on the TaskID
+     */
     private void addCheck(String TaskID){
         DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("Check");
 
@@ -432,6 +447,11 @@ public class GetTaskSectionWorker extends Worker {
 
     }
 
+    /**
+     * Delete the section based
+     * by checking firebase
+     *
+     */
     private void CheckSectionToDelete(){
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("Section");
@@ -465,6 +485,13 @@ public class GetTaskSectionWorker extends Worker {
     }
 
 
+    /**
+     *
+     * Delete the Task by checking firebase
+     * and comparing with SQL based on the section id
+     *
+     * @param sectionID The sectionID the task is associated with
+     */
     private void CheckTaskToDelete(String sectionID){
 
         DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child("Task");
@@ -496,6 +523,12 @@ public class GetTaskSectionWorker extends Worker {
         });
     }
 
+    /**
+     * Delete the check by checking firebase
+     * and comparing with SQL based on the Task id
+     *
+     * @param taskID The TaskId is to find the check based on it
+     */
     private void CheckCheckToDelete(String taskID){
 
         DatabaseReference checkRef = FirebaseDatabase.getInstance().getReference().child("Check");
