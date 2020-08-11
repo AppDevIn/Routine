@@ -63,8 +63,7 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
  * @since 02-06-2020
  *
  */
-public class ScheduleDialogFragment extends BottomSheetDialogFragment
-{
+public class ScheduleDialogFragment extends BottomSheetDialogFragment {
 
     private final String TAG = "ScheduleDialog";
 

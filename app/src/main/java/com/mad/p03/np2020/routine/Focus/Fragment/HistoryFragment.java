@@ -435,8 +435,8 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, F
     /***
      * This is a method which the button is used to get which button is clicked to know what to filter
      *
-     * @param i
-     * @param id
+     * @param i The key to hashmap date
+     * @param id The button id
      */
     public void displayResult(int i, ResizeableButton id) {
 

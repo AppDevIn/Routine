@@ -306,6 +306,7 @@ public class HabitViewActivity extends AppCompatActivity {
      *
      * */
     public void displayWeekBarChart(){
+        //Get all the data
         ArrayList<HabitRepetition> habitRepetitionArrayList = habitRepetitionDBHelper.getAllHabitRepetitionsByHabitID(habit.getHabitID());
 
         // to call the repeating habit method if no habitRepetition for the habit is found
