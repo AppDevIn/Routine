@@ -93,3 +93,6 @@ app/release/
 
 *.plantuml
 *.puml
+
+# Block the key
+.Keys
