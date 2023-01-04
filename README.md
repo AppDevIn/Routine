@@ -1,6 +1,6 @@
 # Routine App
 
-All in one Productivity App
+All in one Productivity App ([Google Play](https://play.google.com/store/apps/details?id=com.mad.p03.np2020.routine&pli=1))
 
 
 
